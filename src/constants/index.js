@@ -1,4 +1,4 @@
-import hero1 from "../assets/hero_images/traceX-home-hero.png";
+import hero1 from "../assets/hero_images/tracex-home-hero.png";
 import hero2 from "../assets/hero_images/hero-2.png";
 import hero3 from "../assets/hero_images/DMRV-Hero.png";
 import hero4 from "../assets/hero_images/Sustainability-Hero-Image.png";
