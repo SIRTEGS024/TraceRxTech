@@ -33,6 +33,10 @@ import managementCarouselImg2 from "../assets/trust_carousel/management2.jpg";
 import agribusinessCarouselImg1 from "../assets/trust_carousel/agribusiness1.jpg";
 import carbonCarouselImg1 from "../assets/trust_carousel/agribusiness1.jpg";
 import carbonCarouselImg2 from "../assets/trust_carousel/agribusiness1.jpg";
+import processCarouselImg1 from "../assets/trust_carousel/agribusiness1.jpg";
+import processCarouselImg2 from "../assets/trust_carousel/sustainability1.jpg";
+import foundationCarouselImg1 from "../assets/trust_carousel/agribusiness1.jpg";
+import foundationCarouselImg2 from "../assets/trust_carousel/agribusiness1.jpg";
 import deforestationImg from '../assets/dark_blue/eu-deforestation.png';
 import guideImg from '../assets/dark_blue/Guide-to-Voluntary.png';
 import sustainImg from '../assets/dark_blue/sustainable-future.png';
@@ -40,6 +44,10 @@ import traceImg from '../assets/dark_blue/book-cover-2.png';
 import guideManagImg from '../assets/dark_blue/Guide-to-Farm.png';
 import agribusiness from '../assets/dark_blue/Agri-Business.png';
 import carbon from '../assets/dark_blue/carbon.png';
+import process from '../assets/dark_blue/process.png';
+import consultant from '../assets/dark_blue/consultant.png';
+import foundation from '../assets/dark_blue/foundation.png';
+import placeholder from '../assets/dark_blue/placeholder.png';
 import startX from "../assets/start.jpg";
 import auditLogo1 from "../assets/audit_logo/audit-1.png";
 import auditLogo2 from "../assets/audit_logo/audit-2.png";
@@ -113,8 +121,41 @@ import choose1 from "../assets/choose_images/agribusiness1.svg";
 import choose2 from "../assets/choose_images/agribusiness2.png";
 import choose3 from "../assets/choose_images/agribusiness3.svg";
 import choose4 from "../assets/choose_images/agribusiness4.png";
-
-
+import login1 from "../assets/login_back/image1.jpg";
+import login2 from "../assets/login_back/image2.jpg";
+import login3 from "../assets/login_back/image3.jpg";
+import signup1 from "../assets/signup_back/image1.jpg";
+import signup2 from "../assets/signup_back/image2.jpg";
+import signup3 from "../assets/login_back/image3.jpg";
+import gallery1 from "../assets/real/025A3308.jpg";
+import gallery2 from "../assets/real/025A3325.jpg";
+import gallery3 from "../assets/real/025A3428.jpg";
+import gallery4 from "../assets/real/025A3603-3.jpg";
+import gallery6 from "../assets/real/_MG_4164.jpg";
+import gallery7 from "../assets/real/025A3407.jpg";
+import gallery8 from "../assets/real/025A3442.jpg";
+import gallery9 from "../assets/real/025A3597-3.jpg";
+import gallery10 from "../assets/real/_MG_4192.jpg";
+import gallery11 from "../assets/real/_MG_4142.jpg";
+import gallery12 from "../assets/real/025A3422.jpg";
+import gallery13 from "../assets/real/025A3463.jpg";
+import gallery14 from "../assets/real/025A5235.jpg";
+import gallery15 from "../assets/real/025A5573.jpg";
+import gallery16 from "../assets/real/025A3355.jpg";
+import gallery18 from "../assets/real/025A5617.jpg";
+import gallery19 from "../assets/real/025A3631-3.jpg";
+import gallery20 from "../assets/real/025A3603-3.jpg";
+import gallery21 from "../assets/real/025A3639-3.jpg";
+import gallery22 from "../assets/real/025A3301.jpg";
+import gallery23 from "../assets/real/_MG_4168.jpg";
+import gallery24 from "../assets/real/_MG_4130.jpg";
+import gallery25 from "../assets/real/_MG_4187.jpg";
+import gallery26 from "../assets/real/025A5702.jpg";
+import gallery27 from "../assets/real/025A3446.jpg";
+import gallery28 from "../assets/real/025A3586-3.jpg";
+import gallery29 from "../assets/real/025A4903.jpg";
+import galler30 from "../assets/real/025A4891.jpg";
+import gallery31 from "../assets/real/025A5689.jpg";
 
 export const NAV_LINKS = [
   {
@@ -125,18 +166,18 @@ export const NAV_LINKS = [
       { name: "Digital MRV Platform", url: "/digital-mrv-platform" },
       { name: "Sustainability Platform", url: "/sustainability-platform" },
       { name: "Food Traceability Platform", url: "/food-traceability-platform" },
-      { name: "Farm Management Platform", url: "/farm-management-platform" }
+      { name: "Forest/Farm Management Platform", url: "/forest-farm-management-platform" }
     ]
   },
   {
     name: "Industries",
     url: "/industries",
     subLinks: [
-      { name: "Agribusiness", url: "/industry/agribusiness" },
-      { name: "Carbon Project Developer", url: "/industry/carbon-project-developer" },
-      { name: "Processor", url: "/industry/processor" },
-      { name: "Foundations", url: "/industry/foundations" },
-      { name: "Consultants", url: "/industry/consultants" }
+      { name: "Agribusiness", url: "/agribusiness" },
+      { name: "Carbon Project Developer", url: "/carbon-project-developer" },
+      { name: "Processor", url: "/processor" },
+      { name: "Foundations", url: "/foundations" },
+      { name: "Consultants", url: "/consultants" }
     ]
   },
   {
@@ -145,10 +186,10 @@ export const NAV_LINKS = [
     subLinks: [
       { name: "Blog", url: "/blog" },
       { name: "Media", url: "/media" },
-      { name: "Ebooks", url: "/ebooks" },
-      { name: "Glossary", url: "/glossary" },
-      { name: "Webinars", url: "/webinars" },
-      { name: "Whitepapers", url: "/whitepapers" }
+      // { name: "Ebooks", url: "/ebooks" },
+      // { name: "Glossary", url: "/glossary" },
+      // { name: "Webinars", url: "/webinars" },
+      // { name: "Whitepapers", url: "/whitepapers" }
     ]
   },
   {
@@ -156,14 +197,14 @@ export const NAV_LINKS = [
     url: "/company",
     subLinks: [
       { name: "About Us", url: "/about-us" },
-      { name: "Become a Partner", url: "/company/become-a-partner" }
+      { name: "Become a Partner", url: "partner" }
     ]
   },
-  {
-    name: "Customer Stories",
-    url: "/customer-stories",
-    subLinks: []
-  }
+  // {
+  //   name: "Customer Stories",
+  //   url: "/customer-stories",
+  //   subLinks: []
+  // }
 ];
 
 
@@ -179,7 +220,7 @@ export const HERO_SECTIONS = {
       text: "BOOK DEMO"
     },
     image: {
-      src: hero1,
+      src: gallery1,
       alt: "hero1"
     }
   },
@@ -198,7 +239,7 @@ export const HERO_SECTIONS = {
       text: "Check your EUDR Compliance Readiness"
     },
     image: {
-      src: hero2,
+      src: gallery2,
       alt: "hero2"
     }
   },
@@ -217,7 +258,7 @@ export const HERO_SECTIONS = {
       text: "Explore platform features"
     },
     image: {
-      src: hero3,
+      src: gallery3,
       alt: "hero3"
     }
   },
@@ -236,7 +277,7 @@ export const HERO_SECTIONS = {
       text: "Explore platform features"
     },
     image: {
-      src: hero4,
+      src: gallery4,
       alt: "hero4"
     }
   },
@@ -255,13 +296,13 @@ export const HERO_SECTIONS = {
       text: "Explore platform features"
     },
     image: {
-      src: hero5,
+      src: gallery7,
       alt: "hero5"
     }
   },
   managementSection: {
     heading: "Farmer/Grower management Platform",
-    subheading: "Enhance sustainable procurement, harvest success, and lower on-farm emissions with our Farm Management Platform",
+    subheading: "Enhance sustainable procurement, harvest success, and lower on-farm emissions with our Forest/Farm Management Platform",
     checklist: [
       "Boost yields and minimize wastes",
       "Empower growers and strenghten partnerships",
@@ -274,7 +315,7 @@ export const HERO_SECTIONS = {
       text: "Explore platform features"
     },
     image: {
-      src: hero6,
+      src: gallery6,
       alt: "hero6"
     }
   },
@@ -318,7 +359,7 @@ export const TEXT_IMAGE_CAROUSEL = {
     {
       id: 1,
       logo: trust1,
-      image: homeCarouselImg1,
+      image: gallery1,
       subtitle: "Tobacco Giant's Success Story",
       title: "Drive Sustainable Procurement at Scale with TraceRxTech",
       quote: "I appreciate how TraceRxTech tackles the entire challenge of sustainable tobacco production...",
@@ -327,7 +368,7 @@ export const TEXT_IMAGE_CAROUSEL = {
     {
       id: 2,
       logo: trust2,
-      image: homeCarouselImg2,
+      image: gallery2,
       subtitle: "AgriTech Transformation",
       title: "Seamless Supply Chain with TraceRxTech",
       quote: "With TraceRxTech, we digitalized every farmer interaction, streamlined our sourcing, and improved transparency...",
@@ -336,7 +377,7 @@ export const TEXT_IMAGE_CAROUSEL = {
     {
       id: 3,
       logo: trust3,
-      image: homeCarouselImg3,
+      image: gallery6,
       subtitle: "Digital Agriculture Impact",
       title: "From Field to Data: TraceRxTech Leads the Way",
       quote: "TraceRxTech enabled us to build a strong digital footprint across our farming operations...",
@@ -347,7 +388,7 @@ export const TEXT_IMAGE_CAROUSEL = {
     {
       id: 1,
       logo: "",
-      image: eudrCarouselImg1,
+      image: gallery7,
       subtitle: "",
       title: "How TraceRxTech enabled EUDR compliance",
       quote: "A Nigerian company enhanced data accuracy, improved operational efficiency, achieved supply chain traceability and thereby ensured compliance leveraging the EUDR compliance software.",
@@ -358,7 +399,7 @@ export const TEXT_IMAGE_CAROUSEL = {
     {
       id: 1,
       logo: "",
-      image: mrvCarouselImg1,
+      image: gallery11,
       subtitle: "",
       title: "How TraceRxTech enabled VNV to implement Carbon Reduction initiatives",
       quote: "VNV adopted TraceRxTech’s Digital MRV Platform to streamline monitoring of sustainable practices, guarantee data accuracy, and empower them to implement carbon reduction initiatives.",
@@ -367,7 +408,7 @@ export const TEXT_IMAGE_CAROUSEL = {
     {
       id: 2,
       logo: "",
-      image: mrvCarouselImg2,
+      image: gallery13,
       subtitle: "",
       title: "Enabling The Sustainability Foundation to supercharge their tree planting initiative",
       quote: "The Sustainability Foundation leverages TraceRxTech’s DMRV platform to supercharge their tree planting efforts. This powerful combination boosts operational efficiency, fosters transparency with partners, and empowers data-driven decisions.",
@@ -378,7 +419,7 @@ export const TEXT_IMAGE_CAROUSEL = {
     {
       id: 1,
       logo: "",
-      image: sustainabilityCarouselImg1,
+      image: gallery7,
       subtitle: "",
       title: "From Paddy to Plate: How TraceRxTech Cultivated a Sustainable Rice Revolution",
       quote: "Through TraceRxTech solutions, an agribusiness exporter revolutionized sustainable rice cultivation, implementing precision farming techniques, optimizing resource utilization, and ensuring traceability across the supply chain, driving both environmental stewardship and market competitiveness.",
@@ -387,7 +428,7 @@ export const TEXT_IMAGE_CAROUSEL = {
     {
       id: 2,
       logo: "",
-      image: sustainabilityCarouselImg2,
+      image: gallery24,
       subtitle: "",
       title: "How TraceRxTech Empowered Sustainable Land Restoration",
       quote: "By harnessing TraceRxTech solutions, a leading sustainability certification organization streamlined land restoration projects, ensuring efficient resource allocation, transparent progress tracking, and effective stakeholder engagement, fostering a greener and more sustainable future.",
@@ -398,7 +439,7 @@ export const TEXT_IMAGE_CAROUSEL = {
     {
       id: 1,
       logo: "",
-      image: traceabilityCarouselImg1,
+      image: gallery13,
       subtitle: "",
       title: "Organic India",
       quote: "Organic India leveraged TraceRxTech’s traceability solutions to deliver healthy organic products to consumers",
@@ -407,7 +448,7 @@ export const TEXT_IMAGE_CAROUSEL = {
     {
       id: 2,
       logo: "",
-      image: traceabilityCarouselImg2,
+      image: gallery15,
       subtitle: "",
       title: "Svojas Farms",
       quote: "Svojas was able to establish itself as a reliable food brand by offering consumers a transparent view of its product journey through QR codes with TraceRxTech’s traceability solutions",
@@ -418,19 +459,19 @@ export const TEXT_IMAGE_CAROUSEL = {
     {
       id: 1,
       logo: "",
-      image: managementCarouselImg1,
+      image: gallery9,
       subtitle: "",
-      title: "Enabling effective addressing of sustainability & procurement challenges through TraceRxTech's Farm Management Solutions",
-      quote: "VST effectively addressed challenges in sustainability and procurement by leveraging TraceRxTech farm management solutions. Moreover, they optimized procurement workflows, ensuring efficient sourcing, accurate grading of tobacco leaves, and seamless coordination with farmers and buying points.",
+      title: "Enabling effective addressing of sustainability & procurement challenges through TraceRxTech's Forest/Farm Management Solutions",
+      quote: "VST effectively addressed challenges in sustainability and procurement by leveraging TraceRxTech forest/farm management solutions. Moreover, they optimized procurement workflows, ensuring efficient sourcing, accurate grading of tobacco leaves, and seamless coordination with farmers and buying points.",
       attribution: ""
     },
     {
       id: 2,
       logo: "",
-      image: managementCarouselImg2,
+      image: gallery19,
       subtitle: "",
       title: "Tackling challenges in ethical sourcing, and harvest production planning",
-      quote: "Nesso effectively tackled challenges in ethical sourcing, aggregation of flower agents, and harvest production planning and procurement by implementing TraceRxTech Farm Management Solutions",
+      quote: "Nesso effectively tackled challenges in ethical sourcing, aggregation of flower agents, and harvest production planning and procurement by implementing TraceRxTech Forest/Farm Management Solutions",
       attribution: ""
     },
   ],
@@ -438,7 +479,7 @@ export const TEXT_IMAGE_CAROUSEL = {
     {
       id: 1,
       logo: "",
-      image: agribusinessCarouselImg1,
+      image: gallery21,
       subtitle: "",
       title: "How TraceX enabled EUDR compliance",
       quote: "A Nigerian company enhanced data accuracy, improved operational efficiency, achieved supply chain traceability and thereby ensured compliance leveraging the EUDR compliance software.",
@@ -449,7 +490,7 @@ export const TEXT_IMAGE_CAROUSEL = {
     {
       id: 1,
       logo: "",
-      image: carbonCarouselImg1,
+      image: gallery25,
       subtitle: "",
       title: "VNV",
       quote: "VNV leveraged DMRV Platform for tracking sustainable practices, ensuring data collection and enabling carbon reduction activities",
@@ -458,10 +499,50 @@ export const TEXT_IMAGE_CAROUSEL = {
     {
       id: 2,
       logo: "",
-      image: carbonCarouselImg2,
+      image: gallery26,
       subtitle: "",
       title: "Sustainability Foundation",
       quote: "The Sustainability Foundation utilizes the TraceX DMRV platform to enhance operational efficiency, improve transparency with partners, and make data-driven decisions. This empowerment allows them to accelerate large-scale tree planting efforts and maximize their environmental impact.",
+      attribution: ""
+    },
+  ],
+  processSection: [
+    {
+      id: 1,
+      logo: "",
+      image: gallery27,
+      subtitle: "",
+      title: "Svojas",
+      quote: "Svojas leverages Traceability platform, offering consumers a farm to fork story and reinforcing its commitment to sustainable and safe food products.",
+      attribution: ""
+    },
+    {
+      id: 2,
+      logo: "",
+      image: gallery31,
+      subtitle: "",
+      title: "Nigerian Company",
+      quote: "The Nigerian firm boosted data accuracy for EUDR compliance, optimized operational efficiency, and attained full supply chain traceability, solidifying their dedication to quality and sustainable sourcing practices.",
+      attribution: ""
+    },
+  ],
+  foundationSection: [
+    {
+      id: 1,
+      logo: "",
+      image: gallery27,
+      subtitle: "",
+      title: "Technoserve",
+      quote: "TechnoServe  collaborated with TraceX to maintain consistent coffee quality by implementing sustainable farming practices. This partnership has enhanced farmer incomes, strengthened market connections, and delivered significant socio-economic and environmental benefits.",
+      attribution: ""
+    },
+    {
+      id: 2,
+      logo: "",
+      image: gallery29,
+      subtitle: "",
+      title: "CSR Foundation",
+      quote: "A CSR foundation leveraged TraceX Forest/Farm Management Platform to drive sustainable practices in agriculture, support farmers in adopting responsible techniques and create a positive impact on the environment and communities.",
       attribution: ""
     },
   ],
@@ -473,41 +554,41 @@ export const TEXT_IMAGE = {
     heading: 'Guide to EU Deforestation Regulations (EUDR)',
     description: 'Navigating EUDR Compliance with Ease – Your eBook for the EU Market',
     buttonText: 'EMAIL ME THE COPY',
-    image: deforestationImg,
+    image: placeholder,
   },
   eudrSection: {
     heading: 'Guide to EU Deforestatin Regulations',
     description: 'In a world grappling with climate change, the voluntary carbon market emerges as a critical player in addressing environmental challenges and advancing sustainability.',
     buttonText: 'EMAIL ME THE COPY',
-    image: deforestationImg,
+    image: placeholder,
   },
   mrvSection: {
     heading: 'DMRV for Nature-Based Carbon Projects is your free guide to unlocking the potential of Digital MRV (DMRV) in this critical field.',
     description: 'The fight against climate change demands innovative solutions. Nature-based carbon projects offer a promising approach, but ensuring their effectiveness and credibility requires robust measurement, reporting, and verification (MRV) systems.Download your free copy today and contribute to a more sustainable future through the power of technology and nature-based solutions!',
     buttonText: 'EMAIL ME THE COPY',
-    image: guideImg,
+    image: placeholder,
   },
   sustainabilitySection: {
     heading: 'The Sustainable Plate: A Guide for Food and Agribusiness Success in a Changing World',
     description: 'The global food system faces unprecedented challenges. Climate change, resource scarcity, and evolving consumer demands necessitate a shift towards a more sustainable food future.The Sustainable Plate is your roadmap to a successful and sustainable future in the food and agribusiness industry. Download your free copy today and start building a more responsible and resilient food system!',
     buttonText: 'EMAIL ME THE COPY',
-    image: sustainImg,
+    image: placeholder,
   },
   traceabilitySection: {
     heading: 'The Sustainable Plate: A Guide for Food and Agribusiness Success in a Changing World',
     description: 'The agricultural sector is at a crossroads. Global forces like population growth, climate change, and evolving consumer preferences are demanding a new way forward.This free ebook, “Traceability in Agriculture Value Chains”, equips you with the knowledge and tools to navigate this changing landscape.Don’t wait! Download your free copy today and start your journey towards a more sustainable and transparent agricultural future!',
     buttonText: 'EMAIL ME THE COPY',
-    image: traceImg,
+    image: placeholder,
   },
   managementSection: {
-    heading: 'Choosing the Right Farm Management Software for Your Agribusiness Success',
-    description: 'Farming today is a complex business. Between managing crops, livestock, financials, and regulations, the pressure to optimize operations is high. This is your free guide to navigating the world of farm management software and selecting the perfect solution for your unique needs.Download your free copy today and start cultivating a more efficient, productive, and profitable future for your farm!',
+    heading: 'Choosing the Right Forest/Farm Management Software for Your Agribusiness Success',
+    description: 'Farming today is a complex business. Between managing crops, livestock, financials, and regulations, the pressure to optimize operations is high. This is your free guide to navigating the world of forest/farm management software and selecting the perfect solution for your unique needs.Download your free copy today and start cultivating a more efficient, productive, and profitable future for your forest/farm!',
     buttonText: 'EMAIL ME THE COPY',
-    image: guideManagImg,
+    image: placeholder,
   },
   agribusinessSection: {
     heading: 'Revolutionize agribusiness with our Technology Platform',
-    description: 'We offer a suite of cutting-edge platforms designed to enhance every aspect of your agribusiness operations. From traceability to sustainability, compliance to farm management, our solutions are tailored to meet your unique needs and drive your success.',
+    description: 'We offer a suite of cutting-edge platforms designed to enhance every aspect of your agribusiness operations. From traceability to sustainability, compliance to forest/farm management, our solutions are tailored to meet your unique needs and drive your success.',
     buttonText: 'Start a free trial',
     image: agribusiness,
   },
@@ -516,6 +597,24 @@ export const TEXT_IMAGE = {
     description: 'We provide cutting-edge platforms specifically designed to enhance your carbon projects tailored to meet the unique needs of carbon projects, ensuring you stay ahead in delivering impactful and compliant carbon reduction initiatives.',
     buttonText: 'Request demo',
     image: carbon,
+  },
+  processorSection: {
+    heading: 'Streamline your Supply chain compliance with a technology edge',
+    description: 'We offer a suite of advanced platforms designed to support food processors in achieving the critical goals of  sustainability and compliance and  provide the tools you need to excel in today’s market.',
+    buttonText: 'Request demo',
+    image: process,
+  },
+  foundationSection: {
+    heading: 'Drive Sustainable Impact with Technology',
+    description: 'We offer a suite of specialized platforms designed to enhance your initiatives and ensure greater transparency, accuracy, and compliance and provide the tools you need to advance your mission effectively.',
+    buttonText: 'Request demo',
+    image: foundation,
+  },
+  cosultantSection: {
+    heading: 'Boost your expertise with our cutting edge platform',
+    description: 'We offer specialized platforms designed to support your advisory services and ensure your clients achieve their sustainability and regulatory goals. Our platforms are tailored to meet the complex needs of your consulting practice.',
+    buttonText: 'Request demo',
+    image: consultant,
   },
 };
 
@@ -633,7 +732,7 @@ export const SECTION_HEADERS = {
     subTitle: "Farm-to-Fork Transparency to gain insights into the origin of food, farming practices, and environmental impact, enabling informed and sustainable purchasing decisions."
   },
   manage: {
-    title: "Manage Pre-Harvest Management, Procurement, and Farm Emissions across these value chains",
+    title: "Manage Pre-Harvest Management, Procurement, and Forest/Farm Emissions across these value chains",
     subTitle: ""
   },
   promote: {
@@ -642,7 +741,7 @@ export const SECTION_HEADERS = {
   },
   responsibility: {
     title: "Platform Features for Profitability and Environmental Responsibility",
-    subTitle: "Gain real-time insights into farm performance, streamline workflows, mitigate potential risks and facilitate access to new markets"
+    subTitle: "Gain real-time insights into forest/farm performance, streamline workflows, mitigate potential risks and facilitate access to new markets"
   },
   empowering: {
     title: "Empowering Agribusiness for a Sustainable Future",
@@ -659,6 +758,18 @@ export const SECTION_HEADERS = {
   Transformative: {
     title: "Transformative Journeys with our Platforms",
     subTitle: ""
+  },
+  maximize: {
+    title: "Maximize Efficiency and Compliance in Food Processing",
+    subTitle: "Food processors encounter several challenges that can impact operational efficiency and compliance. TraceX offers a suite of platforms tailored to address these challenges"
+  },
+  elevate: {
+    title: "Elevate your Impact for a Green future",
+    subTitle: "Sustainability foundations often encounter significant challenges that can impact their effectiveness and outreach. TraceX offers a suite of platforms tailored to address these challenges"
+  },
+  empower: {
+    title: "Empower your Advisory services and Drive Efficiency",
+    subTitle: "Consultants often face several challenges when providing expert advice and solutions. TraceX offers a suite of platforms tailored to address these challenges"
   },
 };
 
@@ -719,47 +830,74 @@ export const BLUE_SECTION = {
     "buttonText": "Get a free trial",
     "imageSrc": startX,
     "imageAlt": "TraceRxTech Demo"
+  },
+  processSection: {
+    "title": "Transform Your Food Processing Operations Today",
+    "subtitle": "Empower your processing operations with our innovative platforms and lead the industry in quality, sustainability, and compliance.",
+    "buttonText": "Start a free trial",
+    "imageSrc": startX,
+    "imageAlt": "TraceRxTech Demo"
+  },
+  foundationSection: {
+    "title": "Transform Your Sustainability Initiatives Today",
+    "subtitle": "Empower your foundation’s mission with our innovative platforms and drive meaningful impact in the communities you serve.",
+    "buttonText": "Get a free trial",
+    "imageSrc": startX,
+    "imageAlt": "TraceRxTech Demo"
+  },
+  consultantSection: {
+    "title": "Transform Your Consulting Services Today",
+    "subtitle": "Elevate your consulting services with our advanced platforms and deliver unparalleled value to your clients.",
+    "buttonText": "Book a free trial",
+    "imageSrc": startX,
+    "imageAlt": "TraceRxTech Demo"
   }
 }
 
 export const FOOTER_LINKS = [
   {
     heading: "Company",
-    links: ["About us", "Partnership", "Media", "Careers", "Contact Us"],
+    links: [
+      { name: "About us", url: "/about-us" },
+      { name: "Partnership", url: "/partner" },
+      { name: "Media", url: "/media" },
+      // { name: "Careers", url: "/careers" },
+      // { name: "Contact Us", url: "/contact-us" },
+    ],
   },
   {
     heading: "Resources",
     links: [
-      "Case Studies",
-      "Blogs",
-      "Ebooks",
-      "Whitepapers",
-      "Glossary",
-      "Webinars",
+      { name: "media", url: "/media" },
+      { name: "Blogs", url: "/blog" },
+      // { name: "Ebooks", url: "/ebooks" },
+      // { name: "Whitepapers", url: "/whitepapers" },
+      // { name: "Glossary", url: "/glossary" },
+      // { name: "Webinars", url: "/webinars" },
     ],
   },
   {
     heading: "Quick Links",
     links: [
-      "EUDR",
-      "Climate Smart Agriculture",
-      "DMRV",
-      "CSRD",
-      "ESG for the Food and Agribusiness",
+      { name: "EUDR", url: "/eudr-compliance-platform" },
+      { name: "DMRV", url: "/digital-mrv-platform" },
+      { name: "Carbon Project Developer", url: "/carbon-project-developer" },
+      { name: "ESG for the Food and Agribusiness", url: "/agribusiness" },
     ],
   },
-  {
-    heading: "Value Chains",
-    links: [
-      "Agri Value Chain",
-      "Dairy Value Chain",
-      "Spice Value Chain",
-      "Plantation Crops Value Chain",
-      "Field Crops Value Chain",
-      "Fruit & Vegetable Value Chain",
-    ],
-  },
+  // {
+  //   heading: "Value Chains",
+  //   links: [
+  //     { name: "Agri Value Chain", url: "/agri-value-chain" },
+  //     { name: "Dairy Value Chain", url: "/dairy-value-chain" },
+  //     { name: "Spice Value Chain", url: "/spice-value-chain" },
+  //     { name: "Plantation Crops Value Chain", url: "/plantation-crops-value-chain" },
+  //     { name: "Field Crops Value Chain", url: "/field-crops-value-chain" },
+  //     { name: "Fruit & Vegetable Value Chain", url: "/fruit-and-vegetable-value-chain" },
+  //   ],
+  // },
 ];
+
 
 export const AUDIT_LOGOS = [
   { src: auditLogo1, alt: "Brand Partner 1" },
@@ -792,19 +930,19 @@ export const IMAGE_ROW_COLUMN_CARDS = {
       "heading": "Agribusiness",
       "subText": "Mitigate Deforestation risks, enable sustainable sourcing and protect your business.",
       "link": "Explore now",
-      "image": eudr1,
+      "image": gallery12,
     },
     {
       "heading": "Food Processors",
       "subText": "Ensure your ingredients are deforestation-free and empower responsible sourcing to build consumer trust.",
       "link": "Explore now",
-      "image": eudr2,
+      "image": gallery14,
     },
     {
       "heading": "Compliance Tools",
       "subText": "Ensure alignment with global carbon regulations using advanced tools.",
       "link": "Explore now",
-      "image": eudr3,
+      "image": gallery3,
     }
   ],
   "mrv": [
@@ -812,19 +950,19 @@ export const IMAGE_ROW_COLUMN_CARDS = {
       "heading": "Carbon Project Developers",
       "subText": "Automate tasks and simplify carbon project management and verification",
       "link": "Explore now ",
-      "image": mrv1,
+      "image": gallery4,
     },
     {
       "heading": "Foundations",
       "subText": "Showcase true impact of carbon sequestration projects with data driven solutions",
       "link": "Explore now ",
-      "image": mrv2,
+      "image": gallery22,
     },
     {
       "heading": "Agribusiness - CPG",
       "subText": "Address emission hot sports in your commodity value chains and demonstrate commitment to carbon neutrality",
       "link": "Explore now ",
-      "image": mrv3,
+      "image": gallery27,
     }
   ],
   "sustainability": [
@@ -832,13 +970,13 @@ export const IMAGE_ROW_COLUMN_CARDS = {
       "heading": "Agribusiness",
       "subText": "Showcase your commitment to sustainability, reduce costs and boost efficiency with data driven sustainability practices",
       "link": "Explore now ",
-      "image": sustainability1,
+      "image": gallery26,
     },
     {
       "heading": "Foundations",
       "subText": "Drive sustainable practices, measure and scale your impact to accelerate positive change.",
       "link": "Explore now ",
-      "image": sustainability2,
+      "image": gallery14,
     },
   ],
   "traceability": [
@@ -846,27 +984,27 @@ export const IMAGE_ROW_COLUMN_CARDS = {
       "heading": "Agribusiness",
       "subText": "Ensure product quality, prevent recalls and gain access to premium markets.",
       "link": "Explore now ",
-      "image": traceability1,
+      "image": gallery11,
     },
     {
       "heading": "Food Processors",
       "subText": "Differentiate your brand with verifiable traceability and responsible sourcing.",
       "link": "Explore now ",
-      "image": traceability2,
+      "image": gallery19,
     },
   ],
   "management": [
     {
       "heading": "Agribusiness",
-      "subText": "Gain real time farm data to maximize yields, optimize resources, reduce waste and manage environmental impact.",
+      "subText": "Gain real time forest/farm data to maximize yields, optimize resources, reduce waste and manage environmental impact.",
       "link": "Explore now ",
-      "image": management1,
+      "image": gallery16,
     },
     {
       "heading": "Foundations",
       "subText": "Harness the power of data to increase productivity and improve livelihoods and drive positive change.",
       "link": "Explore now ",
-      "image": management2,
+      "image": gallery1,
     },
   ],
 }
@@ -1005,7 +1143,7 @@ export const COMPLIANCE_CARD_DATA = {
     {
       heading: "Source Level Visibility with GIS",
       items: [
-        "Geomap farms and generate GeoJSONs.",
+        "Geomap farms/forests and generate GeoJSONs.",
         "Custom Reports for Your Business",
         "Create farmer master, capture",
       ],
@@ -1014,9 +1152,9 @@ export const COMPLIANCE_CARD_DATA = {
     {
       heading: "Risk Assessment",
       items: [
-        "Overlay national forest maps to monitor risky farms",
+        "Overlay national forest maps to monitor risky farms/forests",
         "Conduct risk by enabling supplier due diligence",
-        "Management and Reporting of compliant and non-compliant farms and product",
+        "Management and Reporting of compliant and non-compliant forest/farms and product",
       ],
       buttonText: "Get the Assessment",
     },
@@ -1067,7 +1205,7 @@ export const FARMING_DETAILS = {
         ]
       },
       {
-        "title": "Farm Mapping",
+        "title": "Forest/Farm Mapping",
         "subtext": "",
         "img": mapping,
         "listItems": [
@@ -1213,7 +1351,7 @@ export const FARMING_DETAILS = {
         ]
       },
       {
-        "title": "Farm Plotting",
+        "title": "Forest/Farm Plotting",
         "subtext": "Harness the power of GIS integration with digital mapping and visualization of land where practices are implemented, detect boundary overlaps and unlock invaluable insights.",
         "img": plotting,
         "listItems": [
@@ -1222,7 +1360,7 @@ export const FARMING_DETAILS = {
             "listItems": [
               "Access to accurate land parcel boundaries is a challenge",
               "Manual data collection can lead to errors",
-              "Seamless integration of farm plot data is required"
+              "Seamless integration of forest/farm plot data is required"
             ]
           },
         ]
@@ -1285,7 +1423,7 @@ export const FARMING_DETAILS = {
           {
             "listTitle": "Challenges addressed",
             "listItems": [
-              "Limited Visibility into Farm Practices",
+              "Limited Visibility into Forest/Farm Practices",
               "Fragmented Data and Decision Making",
               "Data Capture on Ethical and Sustainable Practices"
             ]
@@ -1293,7 +1431,7 @@ export const FARMING_DETAILS = {
         ]
       },
       {
-        "title": "GIS of Farm Plots",
+        "title": "GIS of Forest/Farm Plots",
         "subtext": "Drive compliance and sustainability with our GIS technology, facilitating walk-and-plot capabilities and polygon mapping to ensure adherence to environmental regulations, protect restricted areas, and promote deforestation-free farming practices.",
         "img": plots,
         "listItems": [
@@ -1408,8 +1546,8 @@ export const FARMING_DETAILS = {
         ]
       },
       {
-        "title": "Farm Plot Management",
-        "subtext": "Create precise digital maps of your farm, accurately defining field boundaries, planting areas, thereby minimizing human error and ensuring data consistency.",
+        "title": "Forest/Farm Plot Management",
+        "subtext": "Create precise digital maps of your forest/farm, accurately defining field boundaries, planting areas, thereby minimizing human error and ensuring data consistency.",
         "img": pManagement,
         "listItems": [
           {
@@ -1528,8 +1666,8 @@ export const GRADIENT_CARDS_DATA = {
   ],
   management: [
     {
-      title: "Farm & Crop Management",
-      text: "Provides a centralized platform for onboarding farmers, farms and crops along with package of practices to facilitate resource allocation and optimize production"
+      title: "Forest/Farm & Crop Management",
+      text: "Provides a centralized platform for onboarding farmers, forests/farms and crops along with package of practices to facilitate resource allocation and optimize production"
     },
     {
       title: "Harvest Planners",
@@ -1540,7 +1678,7 @@ export const GRADIENT_CARDS_DATA = {
       text: "Streamline procurement processes facilitating fair pricing and ethical practices and ensure transparency in transactions"
     },
     {
-      title: "Tracking Farm Gate Emissions",
+      title: "Tracking Forest/Farm Gate Emissions",
       text: "Record fuel usage, fertilizer application rates, livestock numbers, and soil management practices, calculate GHG emissions, provide data visualizations and reports and take control of the environmental impact, contributing to a more sustainable future."
     },
   ],
@@ -1574,9 +1712,9 @@ export const TAILORED_CARDS_DATA = {
     },
     {
       heading: "Optimize Operations and Boost Productivity",
-      subtext: "Transform your farm management with our all-in-one platform. From crop planning to yield forecasting, manage every aspect of your farm efficiently, and make data-driven decisions that maximize productivity.",
+      subtext: "Transform your forest/farm management with our all-in-one platform. From crop planning to yield forecasting, manage every aspect of your forest/farm efficiently, and make data-driven decisions that maximize productivity.",
       tailoredFor: ["Contract Farmers", "Procurement Managers", "Sustainability Heads"],
-      buttonText: "Explore our Farm Management Platform",
+      buttonText: "Explore our Forest/Farm Management Platform",
     },
   ],
   carbonSection: [
@@ -1592,6 +1730,75 @@ export const TAILORED_CARDS_DATA = {
       subtext: "The Digital MRV Platform provides a robust solution for accurate and transparent MRV. Simplify the process of documenting and verifying carbon reductions with real-time data and advanced analytics, ensuring compliance and building trust with stakeholders.",
       tailoredFor: ["Carbon Project Developers", "Validation & Verification Bodies", "Sustainability Heads"],
       buttonText: "Explore our Traceability Platform",
+    },
+  ],
+  processSection: [
+    {
+      heading: "Achieve Full Transparency in Your Supply Chain",
+      subtext: "Our Traceability Platform provides end-to-end visibility of your supply chain, ensuring the authenticity and quality of your products. Track every ingredient from source to shelf, reduce the risk of fraud, and enhance consumer trust with comprehensive traceability solutions.",
+      tailoredFor: ["Quality Managers", "Supply Chain Managers",
+        "Procurement Heads"],
+      buttonText: "Explore our Traceability Platform",
+    },
+    {
+      heading: "Integrate and Monitor Sustainable Practices Effectively",
+      subtext: "With our Sustainability Platform, you can seamlessly implement and oversee sustainability initiatives. Optimize resource use, manage environmental impact, and demonstrate your commitment to sustainable practices, all while meeting regulatory and consumer demands.",
+      tailoredFor: ["Procurement Heads", "Sustainability Heads", "Compliance Officers"],
+      buttonText: "Explore our Sustainabiliity Platform",
+    },
+    {
+      heading: "Navigate EUDR Requirements with Confidence",
+      subtext: "Ensure your operations comply with the EU Deforestation Regulation (EUDR) using our specialized compliance platform. Assess risk factors, monitor supply chain practices, and maintain transparency to avoid disruptions and meet regulatory standards.",
+      tailoredFor: ["Operators/Traders", "Procurement Heads", "Sustainability Heads", "Compliance Officers"],
+      buttonText: "Explore our EUDR Compliance Platform",
+    },
+  ],
+  foundationSection: [
+    {
+      heading: "Achieve Full Transparency Across Your Projects",
+      subtext: "Our Traceability Platform provides detailed visibility into supply chains, ensuring the authenticity and sustainability of sourced materials. Track every product from origin to end-use, validate sustainability claims, and enhance transparency in your initiatives.",
+      tailoredFor: ["Program Managers", "Sustainability Officers",
+        "Procurement Heads"],
+      buttonText: "Explore our Traceability Platform",
+    },
+    {
+      heading: "Implement and Monitor Sustainable Practices Seamlessly",
+      subtext: "With our Sustainability Platform, integrate and oversee sustainability practices across your projects with ease. Monitor progress, optimize resource use, and manage environmental impact effectively, while showcasing your commitment to sustainable development.",
+      tailoredFor: ["Sustainability Officers", "Compliance Officers", "Grant Managers"],
+      buttonText: "Explore our Sustainabiliity Platform",
+    },
+    {
+      heading: "Ensure Accurate Measurement, Reporting, and Verification",
+      subtext: "The Digital MRV Platform offers a robust solution for precise and transparent MRV of sustainability metrics. Simplify the process of documenting and verifying your initiatives, ensuring accurate reporting and compliance with industry standards.",
+      tailoredFor: ["Sustainability Heads", "Carbon Consultants", "Compliance Officers", "Compliance Officers"],
+      buttonText: "Explore our DMRV Platform",
+    },
+    {
+      heading: "Navigate EUDR Requirements with Confidence",
+      subtext: "Our EU Deforestation Regulation Compliance Platform helps you meet stringent regulatory standards and assess risk factors. Monitor your supply chain practices, ensure transparency, and stay compliant with evolving regulations to support your sustainability goals.",
+      tailoredFor: ["Sustainability Heads", "Compliance Heads", "Procurement Heads", "Compliance Officers"],
+      buttonText: "Explore our EUDR Compliance Platform",
+    },
+  ],
+  consultantSection: [
+    {
+      heading: "Guide Clients to Effective Sustainable Practices",
+      subtext: "Our Sustainability Platform allows you to advise clients on integrating and tracking sustainability practices with ease. Manage environmental impact, optimize resource use, and demonstrate your clients’ commitment to sustainability through comprehensive and user-friendly tools.",
+      tailoredFor: ["Environmental Consultants", "Regulatory Consultatns",
+        "Procurement Heads"],
+      buttonText: "Explore our Sustainability Platform",
+    },
+    {
+      heading: "Ensure Precise Measurement and Reporting for Your Clients",
+      subtext: "The Digital MRV Platform provides a robust solution for accurate and transparent measurement, reporting, and verification of sustainability metrics. Streamline the process of documenting and verifying your clients’ sustainability initiatives, ensuring compliance and credibility.",
+      tailoredFor: ["Sustainability Consultants", "Carbon Consultants", "Regulatory Consultants"],
+      buttonText: "Explore our DMRV Platform",
+    },
+    {
+      heading: "Support Clients in Navigating EUDR Requirements",
+      subtext: "Help your clients meet the stringent requirements of the EU Deforestation Regulation with our specialized compliance platform. Assess risk factors, monitor supply chain practices, and ensure adherence to regulations, supporting your clients’ regulatory and sustainability goals.",
+      tailoredFor: ["Sustainability Consultants", "Regulatory Consultants", "Environmental Consultatns"],
+      buttonText: "Explore our EUDR Compliance Platform",
     },
   ]
 }
@@ -1640,9 +1847,354 @@ export const CHOOSE_SECTION = {
       title: "Increased Transparency",
       subtext: "Provide clear, trustworthy reports and data to stakeholders, enhancing credibility and compliance."
     }
+  ],
+  processSection: [
+    {
+      logo: choose1,
+      title: "Comprehensive Solutions",
+      subtext: "Integrated platforms that address traceability, sustainability, and regulatory compliance."
+    },
+    {
+      logo: choose2,
+      title: "Enhanced Transparency",
+      subtext: "Achieve full visibility and accountability throughout your supply chain."
+    },
+    {
+      logo: choose3,
+      title: "Efficient Data-Management",
+      subtext: "Handle and report data accurately with our user-friendly tools."
+    },
+    {
+      logo: choose4,
+      title: "Regulatory Assurance",
+      subtext: "Stay compliant with evolving regulations, including the EU Deforestation Regulation."
+    }
+  ],
+  foundationSection: [
+    {
+      logo: choose1,
+      title: "Comprehensive Solutions",
+      subtext: "Platforms designed to address traceability, sustainability, MRV, and regulatory compliance."
+    },
+    {
+      logo: choose2,
+      title: "Enhanced Transparency",
+      subtext: "Achieve clear visibility and accountability across your projects and supply chains."
+    },
+    {
+      logo: choose3,
+      title: "Efficient Data-Management",
+      subtext: "Handle and analyze data effectively to drive insights and reporting."
+    },
+    {
+      logo: choose4,
+      title: "Regulatory Assurance",
+      subtext: "Stay aligned with regulatory requirements, including the EU Deforestation Regulation."
+    }
+  ],
+  consultantSection: [
+    {
+      logo: choose1,
+      title: "Comprehensive Solutions",
+      subtext: "Platforms designed to address sustainability, MRV, and regulatory compliance needs."
+    },
+    {
+      logo: choose2,
+      title: "Enhanced Data Accuracy",
+      subtext: "Ensure reliable measurement and reporting for your clients’ sustainability initiatives."
+    },
+    {
+      logo: choose3,
+      title: "Streamlined Compliance",
+      subtext: "Assist clients in navigating complex regulations with ease."
+    },
+    {
+      logo: choose4,
+      title: "Effective Data Management",
+      subtext: "Handle and analyze data efficiently to provide actionable insights and recommendations."
+    }
   ]
 }
 
+export const LOGIN_BG_IMAGES = [
+  {
+    src: gallery16,
+    alt: "Login Background 1",
+  },
+  {
+    src: gallery18,
+    alt: "Login Background 2",
+  },
+  {
+    src: gallery23,
+    alt: "Login Background 3",
+  },
+];
+
+export const SIGNUP_BG_IMAGES = [
+  {
+    src: gallery22,
+    alt: "signup Background 1",
+  },
+  {
+    src: gallery8,
+    alt: "signup Background 2",
+  },
+  {
+    src: gallery10,
+    alt: "signup Background 3",
+  },
+];
+
+export const BLOG_DATA = [
+  {
+    id: 1,
+    image:
+      "https://cdn-front.freepik.com/images/ai/image-generator/gallery/resource-tti-13.webp",
+    title: "Urban Gardening Mastery",
+    excerpt:
+      "Transform your small spaces into lush green oases with our expert tips.",
+    date: "May 7, 2024",
+  },
+  {
+    id: 2,
+    image:
+      "https://cdn-front.freepik.com/images/ai/image-generator/gallery/resource-tti-13.webp",
+    title: "Seasonal Harvest Recipes",
+    excerpt: "Delicious meals using fresh produce from your local market.",
+    date: "May 6, 2024",
+  },
+  {
+    id: 3,
+    image:
+      "https://cdn-front.freepik.com/images/ai/image-generator/gallery/resource-tti-13.webp",
+    title: "Seasonal Harvest Recipes",
+    excerpt: "Delicious meals using fresh produce from your local market.",
+    date: "May 6, 2024",
+  },
+  {
+    id: 4,
+    image:
+      "https://cdn-front.freepik.com/images/ai/image-generator/gallery/resource-tti-13.webp",
+    title: "Seasonal Harvest Recipes",
+    excerpt: "Delicious meals using fresh produce from your local market.",
+    date: "May 6, 2024",
+  },
+  {
+    id: 5,
+    image:
+      "https://cdn-front.freepik.com/images/ai/image-generator/gallery/resource-tti-13.webp",
+    title: "Seasonal Harvest Recipes",
+    excerpt: "Delicious meals using fresh produce from your local market.",
+    date: "May 6, 2024",
+  },
+];
 
 
+export const MEDIA_DATA = [
+  {
+    id: 1,
+    title: "Nigeria risks trade as EU sets December 2025 deadline for deforestation compliance ",
+    summary:
+      "Nigeria risks trade as EU sets December 2025 deadline for deforestation compliance ",
+    image: gallery11,
+    source: "The Nation",
+    date: "March 2, 2025",
+    link: "https://thenationonlineng.net/nigeria-risks-trade-as-eu-sets-december-2025-deadline-for-deforestation-compliance/",
+  },
+  {
+    id: 2,
+    title: "Nigeria Must Meet EU’s Deforestation-free Products Regulation, Say Experts",
+    summary:
+      "Nigeria Must Meet EU’s Deforestation-free Products Regulation, Say Experts",
+    image: gallery25,
+    source: "This Day",
+    date: "Tuesday, 13th May, 2025",
+    link: "https://www.thisdaylive.com/index.php/2025/03/04/nigeria-must-meet-eus-deforestation-free-products-regulation-say-experts/",
+  },
+  {
+    id: 3,
+    title: "Nigeria risks EU ban on export of over 8 commodities from Dec. 31, 2025",
+    summary:
+      "Nigeria risks EU ban on export of over 8 commodities from Dec. 31, 2025",
+    image: gallery24,
+    source: "Facebook/AIT",
+    date: "March 5, 2025",
+    link: "https://www.facebook.com/share/v/18iA1ZGE2A/",
+  },
+  {
+    id: 4,
+    title: "Partnership with Nigerian Universities Announced",
+    summary:
+      "TraceRxTech teams up with local institutions to foster innovation and research.",
+    image: "https://cdn-front.freepik.com/images/ai/image-generator/gallery/resource-tti-13.webp",
+    source: "Nigeria Today",
+    date: "February 10, 2025",
+    link: "https://example.com/article4",
+  },
+  {
+    id: 5,
+    title: "TraceRxTech CEO Talks Sustainability at Global Forum",
+    summary:
+      "Keynote address focuses on the future of digital agriculture and global sustainability.",
+    image: "https://cdn-front.freepik.com/images/ai/image-generator/gallery/resource-tti-13.webp",
+    source: "Global Ag Forum",
+    date: "January 25, 2025",
+    link: "https://example.com/article5",
+  },
+];
 
+export const GALLERY_IMAGES = [
+  {
+    id: 1,
+    imageUrl: gallery1,
+    alt: "Farmers working in the field",
+  },
+  {
+    id: 2,
+    imageUrl: gallery2,
+    alt: "Agricultural technology",
+  },
+  {
+    id: 3,
+    imageUrl: gallery3,
+    alt: "Greenhouse environment",
+  },
+  {
+    id: 4,
+    imageUrl: gallery4,
+    alt: "Team collaboration",
+  },
+  {
+    id: 5,
+    imageUrl: gallery14,
+    alt: "Plantation overview",
+  },
+  {
+    id: 6,
+    imageUrl: gallery12,
+    alt: "Harvest season",
+  },
+  {
+    id: 7,
+    imageUrl: gallery20,
+    alt: "Company meeting",
+  },
+  {
+    id: 8,
+    imageUrl: gallery16,
+    alt: "Innovation in agri-tech",
+  },
+];
+
+export const EXECUTIVES = [
+  {
+    id: 1,
+    name: "Jane Doe",
+    role: "Chief Executive Officer",
+    image: "https://img.freepik.com/free-photo/portrait-expressive-young-man-wearing-formal-suit_273609-6943.jpg?uid=R110150958&ga=GA1.1.659726106.1689687094&semt=ais_hybrid&w=740"
+  },
+  {
+    id: 2,
+    name: "John Smith",
+    role: "Chief Technology Officer",
+    image: "https://img.freepik.com/free-photo/portrait-expressive-young-man-wearing-formal-suit_273609-6943.jpg?uid=R110150958&ga=GA1.1.659726106.1689687094&semt=ais_hybrid&w=740"
+  },
+  {
+    id: 3,
+    name: "Mary Johnson",
+    role: "Chief Operating Officer",
+    image: "https://img.freepik.com/free-photo/portrait-expressive-young-man-wearing-formal-suit_273609-6943.jpg?uid=R110150958&ga=GA1.1.659726106.1689687094&semt=ais_hybrid&w=740"
+  }
+];
+
+export const PARTNER_TYPES = [
+  {
+    id: "technology",
+    title: "Technology Partner",
+    description: "Integrate and co-develop with us to build groundbreaking agri-tech solutions.",
+    benefits: [
+      "Access to our APIs and technical support",
+      "Co-branding and joint marketing opportunities",
+      "Influence product roadmap with your innovations",
+    ],
+  },
+  {
+    id: "reseller",
+    title: "Reseller Partner",
+    description: "Expand your portfolio and revenue by reselling our solutions in your region.",
+    benefits: [
+      "Attractive commission structures",
+      "Dedicated partner manager",
+      "Marketing and sales enablement support",
+    ],
+  },
+  {
+    id: "consultation",
+    title: "Consultation Partner",
+    description: "Collaborate with us to provide advisory services to agri-businesses using our solutions.",
+    benefits: [
+      "Consulting toolkit and documentation",
+      "Priority access to platform updates",
+      "Earn consulting fees through direct referrals",
+    ],
+  },
+];
+
+export const PARTNER_STEPS = [
+  {
+    id: 1,
+    title: "Submit Application",
+    description: "Fill out the online form to express your interest and share your company info.",
+  },
+  {
+    id: 2,
+    title: "Get Reviewed",
+    description: "Our team will review your submission and get in touch for a discovery call.",
+  },
+  {
+    id: 3,
+    title: "Start Onboarding",
+    description: "Once approved, begin onboarding with documentation, tools, and support.",
+  },
+];
+
+export const PARTNER_COMPANIES = [
+  {
+    id: 1,
+    name: "AgriCorp",
+    logo: company1,
+    address: "123 Green Valley, Lagos, Nigeria",
+    role: "Technology Partner",
+  },
+  {
+    id: 2,
+    name: "FarmLink",
+    logo: company2,
+    address: "Plot 9, Market Street, Accra, Ghana",
+    role: "Reseller Partner",
+  },
+  {
+    id: 3,
+    name: "GreenAdvisors",
+    logo: company3,
+    address: "45 AgTech Drive, Nairobi, Kenya",
+    role: "Consultation Partner",
+  },
+  // Add more
+];
+
+export const MISSION_VISSION = [
+  {
+    title: "The Problem",
+    text: "Many African farmers lack access to modern technologies and scalable platforms to improve their agricultural productivity and sustainability.",
+  },
+  {
+    title: "Our Mission",
+    text: "To revolutionize agriculture by providing innovative, data-driven tools and platforms that empower farmers and agri-businesses.",
+  },
+  {
+    title: "Our Vision",
+    text: "To be the leading green-tech company transforming agriculture across Africa through transparency, traceability, and technological advancement.",
+  },
+]

@@ -1,17 +1,25 @@
+// src/components/Navbar.jsx
 import { useState, useEffect } from "react";
-import { useLocation, Link } from "react-router-dom";
-import { FaBars, FaTimes, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { useNavigate, Link } from "react-router-dom";
+import {
+  FaBars,
+  FaTimes,
+  FaChevronDown,
+  FaChevronUp,
+  FaSearch,
+} from "react-icons/fa";
 import { MdEmail, MdPhone } from "react-icons/md";
 import logo from "../assets/TRACE_RX.jpg";
-import TopNavbar from "./TopNavbar";
 import { NAV_LINKS } from "../constants";
+import ReusableInput from "./ReusableInput";
 
 export default function Navbar() {
-  const location = useLocation();
-  const isHome = location.pathname === "/";
+  const navigate = useNavigate();
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [mobileOpenDropdown, setMobileOpenDropdown] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const closeDropdowns = () => {
@@ -22,37 +30,50 @@ export default function Navbar() {
     return () => document.removeEventListener("click", closeDropdowns);
   }, []);
 
-  const toggleDropdown = (menu) => {
-    setOpenDropdown(openDropdown === menu ? null : menu);
+  const handleMobileLinkClick = () => {
+    setMobileOpenDropdown(null);
+    setMenuOpen(false);
   };
 
-  const toggleMobileDropdown = (menu) => {
-    setMobileOpenDropdown(mobileOpenDropdown === menu ? null : menu);
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      navigate(`/partners?search=${encodeURIComponent(searchTerm.trim())}`);
+      setSearchTerm("");
+    }
   };
 
   return (
-    <div
-      className={`w-full relative z-50 min-h-[150px] ${isHome ? "pt-14" : ""}`}
-    >
-      {isHome && <TopNavbar />}
-      <div className="w-[84vw] mx-auto p-2 relative">
+    <div className="w-full fixed left-0 bg-white shadow z-50">
+      <div className="w-[84vw] mx-auto p-2">
         <div className="flex justify-between items-center">
           <Link to="/">
-            <img src={logo} alt="Logo" className="h-16" />
+            <img src={logo} alt="Logo" className="h-10" />
           </Link>
-          <div className="hidden md:flex gap-2 items-center">
-            <div>
-              Contact:{" "}
-              <a href="tel:+919972524322" className="underline">
+
+          {/* Desktop: contact + search */}
+          <div className="hidden md:flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <MdPhone size={18} />
+              <a href="tel:+919972524322" className="text-gray-700 font-medium">
                 +91 99725 24322
               </a>
             </div>
-            <div className="h-5 w-0.5 bg-black" />
             <a href="mailto:contact@example.com">
-              <MdEmail size={18} className="text-black" />
+              <MdEmail size={18} className="text-gray-700" />
             </a>
+            <form onSubmit={handleSearch} className="max-w-xs">
+              <ReusableInput
+                placeholder="Search by company..."
+                icon={FaSearch}
+                variant="black"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </form>
           </div>
 
+          {/* Mobile: menu toggle */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden"
@@ -62,13 +83,25 @@ export default function Navbar() {
           </button>
         </div>
 
-        <div className="h-px w-full mt-4 bg-emerald-200" />
+        <div className="h-px w-full mt-2 bg-emerald-200" />
+
+        {/* Mobile: always show search input */}
+        <form onSubmit={handleSearch} className="md:hidden my-4">
+          <ReusableInput
+            placeholder="Search by company..."
+            icon={FaSearch}
+            variant="black"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </form>
 
         <div
-          className={`w-full flex-col md:flex md:flex-row justify-between items-center p-4 ${
+          className={`w-full flex-col md:flex md:flex-row justify-between items-center p-1 ${
             menuOpen ? "flex" : "hidden"
           } md:flex`}
         >
+          {/* Mobile: extra contact info */}
           {menuOpen && (
             <div className="md:hidden flex items-center gap-2 mb-4 w-full">
               <MdPhone size={18} />
@@ -78,6 +111,7 @@ export default function Navbar() {
             </div>
           )}
 
+          {/* Nav links */}
           <div className="flex flex-col md:flex-row gap-6 w-full md:w-auto">
             {NAV_LINKS.map((link) => (
               <div
@@ -87,7 +121,7 @@ export default function Navbar() {
               >
                 {link.subLinks.length > 0 ? (
                   <>
-                    {/* Desktop Version */}
+                    {/* Desktop submenu */}
                     <div className="hidden md:block">
                       <div
                         className="relative pb-1 group"
@@ -97,40 +131,42 @@ export default function Navbar() {
                           className="flex items-center text-gray-700 text-sm font-medium"
                           onClick={(e) => {
                             e.stopPropagation();
-                            toggleDropdown(link.name);
+                            setOpenDropdown(
+                              openDropdown === link.name ? null : link.name
+                            );
                           }}
                         >
                           {link.name}
                           <FaChevronDown className="ml-1 text-xs" />
-                          <div className="absolute left-0 bottom-0 w-full h-[2px] bg-emerald-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+                          <div className="absolute left-0 bottom-0 w-full h-[2px] bg-emerald-500 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
                         </button>
                       </div>
-
-                      {/* Dropdown */}
                       <div
-                        className={`absolute left-0 top-full bg-white text-black shadow-lg p-0 space-y-0 w-56 transition-all duration-200 ${
+                        className={`absolute left-0 top-full bg-white text-black shadow-lg w-56 transition-all duration-200 ${
                           openDropdown === link.name ? "block" : "hidden"
                         } z-50`}
                       >
-                        {link.subLinks.map((subLink) => (
+                        {link.subLinks.map((s) => (
                           <Link
-                            key={subLink.name}
-                            to={subLink.url}
-                            className="block px-5 py-3 text-gray-700 hover:bg-black hover:text-white text-sm font-medium transition-colors duration-200 w-full"
+                            key={s.name}
+                            to={s.url}
+                            className="block px-5 py-3 text-gray-700 hover:bg-black hover:text-white text-sm font-medium"
                           >
-                            {subLink.name}
+                            {s.name}
                           </Link>
                         ))}
                       </div>
                     </div>
 
-                    {/* Mobile Version */}
-                    <div className="md:hidden relative">
+                    {/* Mobile submenu */}
+                    <div className="md:hidden">
                       <button
                         className="flex items-center justify-between w-full text-gray-700 text-sm font-medium"
                         onClick={(e) => {
                           e.stopPropagation();
-                          toggleMobileDropdown(link.name);
+                          setMobileOpenDropdown(
+                            mobileOpenDropdown === link.name ? null : link.name
+                          );
                         }}
                       >
                         <span>{link.name}</span>
@@ -140,7 +176,6 @@ export default function Navbar() {
                           <FaChevronDown className="ml-1 text-xs" />
                         )}
                       </button>
-
                       <div
                         className={`pl-4 overflow-hidden transition-all duration-300 ease-in-out bg-white ${
                           mobileOpenDropdown === link.name
@@ -148,36 +183,41 @@ export default function Navbar() {
                             : "max-h-0"
                         }`}
                       >
-                        {link.subLinks.map((subLink) => (
+                        {link.subLinks.map((s) => (
                           <Link
-                            key={subLink.name}
-                            to={subLink.url}
+                            key={s.name}
+                            to={s.url}
+                            onClick={handleMobileLinkClick}
                             className="block py-3 px-4 text-gray-700 hover:bg-gray-100 text-sm font-medium"
                           >
-                            {subLink.name}
+                            {s.name}
                           </Link>
                         ))}
                       </div>
                     </div>
                   </>
                 ) : (
-                  <div className="relative group pb-1">
-                    <Link
-                      to={link.url}
-                      className="text-gray-700 text-sm font-medium w-full text-left md:w-auto"
-                    >
-                      {link.name}
-                      <div className="absolute left-0 bottom-0 w-full h-[2px] bg-emerald-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
-                    </Link>
-                  </div>
+                  <Link
+                    to={link.url}
+                    onClick={handleMobileLinkClick}
+                    className="text-gray-700 text-sm font-medium pb-1 relative group"
+                  >
+                    {link.name}
+                    <div className="absolute left-0 bottom-0 w-full h-[2px] bg-emerald-500 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
+                  </Link>
                 )}
               </div>
             ))}
           </div>
 
-          <button className="bg-emerald-600 text-white px-4 py-2 rounded-md font-medium hover:bg-emerald-700 mt-4 md:mt-0 w-full md:w-auto transition-colors duration-200">
-            Request Demo
-          </button>
+          {/* Sign In button */}
+          <Link
+            to="/login"
+            onClick={handleMobileLinkClick}
+            className="bg-emerald-600 text-white px-4 py-2 rounded-md font-medium hover:bg-emerald-700 mt-4 md:mt-0 w-full md:w-auto text-center"
+          >
+            SIGN IN
+          </Link>
         </div>
       </div>
     </div>

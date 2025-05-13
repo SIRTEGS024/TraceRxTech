@@ -3,6 +3,7 @@ import ReusableInput from "./ReusableInput";
 import { FOOTER_LINKS } from "../constants";
 import { AUDIT_LOGOS } from "../constants";
 import { INPUTS_CONFIG } from "../constants";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -11,19 +12,19 @@ const Footer = () => {
         {/* Top section with links */}
         <div className="flex flex-col md:flex-row pb-8 md:pb-12">
           {/* Link columns */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 w-full">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-8 w-full">
             {FOOTER_LINKS.map((column, index) => (
               <div key={index} className="space-y-4">
                 <h3 className="font-bold text-lg">{column.heading}</h3>
                 <ul className="space-y-2">
                   {column.links.map((link, linkIndex) => (
                     <li key={linkIndex}>
-                      <a
-                        href="#"
+                      <Link
+                        to={link.url}
                         className="underline hover:opacity-80 text-white/90 hover:text-white"
                       >
-                        {link}
-                      </a>
+                        {link.name}
+                      </Link>
                     </li>
                   ))}
                 </ul>

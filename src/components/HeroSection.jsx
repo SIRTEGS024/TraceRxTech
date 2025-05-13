@@ -128,11 +128,17 @@ export default function HeroSection({
           transition={{ duration: 0.8, delay: 1 }}
           className="w-full relative z-20 overflow-visible"
         >
-          <img
-            src={image.src}
-            alt={image.alt}
-            className="mx-auto w-[90vw] max-w-[1038px] h-auto object-contain object-bottom translate-y-20 sm:translate-y-24 md:translate-y-28"
-          />
+          <div className="relative mx-auto w-[90vw] max-w-[1038px] translate-y-20 sm:translate-y-24 md:translate-y-28 rounded-3xl overflow-hidden">
+            {/* Image */}
+            <img
+              src={image.src}
+              alt={image.alt}
+              className="w-full h-auto object-contain object-bottom"
+            />
+
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-emerald-900 bg-opacity-45 pointer-events-none" />
+          </div>
         </motion.div>
       )}
     </div>
