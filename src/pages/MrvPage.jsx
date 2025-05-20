@@ -25,7 +25,7 @@ const MrvPage = () => {
   return (
     <>
       <HeroSection
-        {...HERO_SECTIONS.mrvSection}
+        slides={HERO_SECTIONS.mrvSection}
         size={FONT.size.large}
         color={FONT.color.light}
       />

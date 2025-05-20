@@ -49,7 +49,7 @@ const ComplianceForm = () => {
 
           <div className="w-full flex justify-end">
             <button className="flex items-center gap-2 bg-green-600 text-white px-5 py-3 rounded-md hover:bg-green-700 transition">
-              Get My Report
+              GO TO PORTAL
               <FiArrowRight className="text-white" />
             </button>
           </div>

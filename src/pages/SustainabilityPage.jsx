@@ -25,7 +25,7 @@ const SustainabilityPage = () => {
   return (
     <>
       <HeroSection
-        {...HERO_SECTIONS.sustainabilitySection}
+        slides={HERO_SECTIONS.sustainabilitySection}
         size={FONT.size.large}
         color={FONT.color.light}
       />

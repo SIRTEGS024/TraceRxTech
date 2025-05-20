@@ -45,7 +45,7 @@ export default function App() {
             element={<TraceabilityPage />}
           />
           <Route
-            path="/farm-management-platform"
+            path="/forest-farm-management-platform"
             element={<ManagementPage />}
           />
           <Route path="/agribusiness" element={<AgribusinessPage />} />
@@ -56,7 +56,6 @@ export default function App() {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/media" element={<MediaPage />} />
           <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/partner" element={<BecomePartner />} />
           <Route path="/partner" element={<BecomePartner />} />
           <Route path="/partners" element={<PartnerDirectory />} />
 

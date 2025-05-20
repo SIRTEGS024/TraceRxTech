@@ -25,7 +25,7 @@ const ManagementPage = () => {
   return (
     <>
       <HeroSection
-        {...HERO_SECTIONS.managementSection}
+        slides={HERO_SECTIONS.managementSection}
         size={FONT.size.large}
         color={FONT.color.light}
       />

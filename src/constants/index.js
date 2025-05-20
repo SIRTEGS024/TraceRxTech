@@ -1,9 +1,9 @@
-import hero1 from "../assets/hero_images/tracex-home-hero.png";
-import hero2 from "../assets/hero_images/hero-2.png";
-import hero3 from "../assets/hero_images/DMRV-Hero.png";
-import hero4 from "../assets/hero_images/Sustainability-Hero-Image.png";
-import hero5 from "../assets/hero_images/hero5.png";
-import hero6 from "../assets/hero_images/hero6.png";
+// import hero1 from "../assets/hero_images/tracex-home-hero.png";
+// import hero2 from "../assets/hero_images/hero-2.png";
+// import hero3 from "../assets/hero_images/DMRV-Hero.png";
+// import hero4 from "../assets/hero_images/Sustainability-Hero-Image.png";
+// import hero5 from "../assets/hero_images/hero5.png";
+// import hero6 from "../assets/hero_images/hero6.png";
 import company1 from "../assets/company/aws-logo.png";
 import company2 from "../assets/company/BW-logo.png";
 import company3 from "../assets/company/Final-HA-logo-updated-21-dark.png";
@@ -18,30 +18,30 @@ import eudrImage from "../assets/impact-image.png";
 import trust1 from "../assets/trust_company/trust-1.png";
 import trust2 from "../assets/trust_company/trust-2.png";
 import trust3 from "../assets/trust_company/trust-3.svg";
-import homeCarouselImg1 from "../assets/trust_carousel/coffee.png";
-import homeCarouselImg2 from "../assets/trust_carousel/rice.png";
-import homeCarouselImg3 from "../assets/trust_carousel/tobacco.png";
-import eudrCarouselImg1 from "../assets/trust_carousel/eudr-single.jpg";
-import mrvCarouselImg1 from "../assets/trust_carousel/vnv_cs.jpg";
-import mrvCarouselImg2 from "../assets/trust_carousel/CASESTUDY2_IMAGE.png";
-import sustainabilityCarouselImg1 from "../assets/trust_carousel/sustainability1.jpg";
-import sustainabilityCarouselImg2 from "../assets/trust_carousel/sustainability2.jpg";
-import traceabilityCarouselImg1 from "../assets/trust_carousel/traceability1.png";
-import traceabilityCarouselImg2 from "../assets/trust_carousel/traceability2.jpg";
-import managementCarouselImg1 from "../assets/trust_carousel/management1.png";
-import managementCarouselImg2 from "../assets/trust_carousel/management2.jpg";
-import agribusinessCarouselImg1 from "../assets/trust_carousel/agribusiness1.jpg";
-import carbonCarouselImg1 from "../assets/trust_carousel/agribusiness1.jpg";
-import carbonCarouselImg2 from "../assets/trust_carousel/agribusiness1.jpg";
-import processCarouselImg1 from "../assets/trust_carousel/agribusiness1.jpg";
-import processCarouselImg2 from "../assets/trust_carousel/sustainability1.jpg";
-import foundationCarouselImg1 from "../assets/trust_carousel/agribusiness1.jpg";
-import foundationCarouselImg2 from "../assets/trust_carousel/agribusiness1.jpg";
-import deforestationImg from '../assets/dark_blue/eu-deforestation.png';
-import guideImg from '../assets/dark_blue/Guide-to-Voluntary.png';
-import sustainImg from '../assets/dark_blue/sustainable-future.png';
-import traceImg from '../assets/dark_blue/book-cover-2.png';
-import guideManagImg from '../assets/dark_blue/Guide-to-Farm.png';
+// import homeCarouselImg1 from "../assets/trust_carousel/coffee.png";
+// import homeCarouselImg2 from "../assets/trust_carousel/rice.png";
+// import homeCarouselImg3 from "../assets/trust_carousel/tobacco.png";
+// import eudrCarouselImg1 from "../assets/trust_carousel/eudr-single.jpg";
+// import mrvCarouselImg1 from "../assets/trust_carousel/vnv_cs.jpg";
+// import mrvCarouselImg2 from "../assets/trust_carousel/CASESTUDY2_IMAGE.png";
+// import sustainabilityCarouselImg1 from "../assets/trust_carousel/sustainability1.jpg";
+// import sustainabilityCarouselImg2 from "../assets/trust_carousel/sustainability2.jpg";
+// import traceabilityCarouselImg1 from "../assets/trust_carousel/traceability1.png";
+// import traceabilityCarouselImg2 from "../assets/trust_carousel/traceability2.jpg";
+// import managementCarouselImg1 from "../assets/trust_carousel/management1.png";
+// import managementCarouselImg2 from "../assets/trust_carousel/management2.jpg";
+// import agribusinessCarouselImg1 from "../assets/trust_carousel/agribusiness1.jpg";
+// import carbonCarouselImg1 from "../assets/trust_carousel/agribusiness1.jpg";
+// import carbonCarouselImg2 from "../assets/trust_carousel/agribusiness1.jpg";
+// import processCarouselImg1 from "../assets/trust_carousel/agribusiness1.jpg";
+// import processCarouselImg2 from "../assets/trust_carousel/sustainability1.jpg";
+// import foundationCarouselImg1 from "../assets/trust_carousel/agribusiness1.jpg";
+// import foundationCarouselImg2 from "../assets/trust_carousel/agribusiness1.jpg";
+// import deforestationImg from '../assets/dark_blue/eu-deforestation.png';
+// import guideImg from '../assets/dark_blue/Guide-to-Voluntary.png';
+// import sustainImg from '../assets/dark_blue/sustainable-future.png';
+// import traceImg from '../assets/dark_blue/book-cover-2.png';
+// import guideManagImg from '../assets/dark_blue/Guide-to-Farm.png';
 import agribusiness from '../assets/dark_blue/Agri-Business.png';
 import carbon from '../assets/dark_blue/carbon.png';
 import process from '../assets/dark_blue/process.png';
@@ -53,18 +53,18 @@ import auditLogo1 from "../assets/audit_logo/audit-1.png";
 import auditLogo2 from "../assets/audit_logo/audit-2.png";
 import auditLogo3 from "../assets/audit_logo/audit-3.png";
 import { FaEnvelope } from "react-icons/fa";
-import eudr1 from "../assets/energy/eudr1.png";
-import eudr2 from "../assets/energy/eudr2.png";
-import eudr3 from "../assets/energy/eudr3.png";
-import mrv1 from "../assets/energy/mrv1.png";
-import mrv2 from "../assets/energy/mrv2.png";
-import mrv3 from "../assets/energy/mrv3.png";
-import sustainability1 from "../assets/energy/sustainability1.png";
-import sustainability2 from "../assets/energy/sustainability2.png";
-import traceability1 from "../assets/energy/traceability1.png";
-import traceability2 from "../assets/energy/traceability2.png";
-import management1 from "../assets/energy/management1.png";
-import management2 from "../assets/energy/management2.png";
+// import eudr1 from "../assets/energy/eudr1.png";
+// import eudr2 from "../assets/energy/eudr2.png";
+// import eudr3 from "../assets/energy/eudr3.png";
+// import mrv1 from "../assets/energy/mrv1.png";
+// import mrv2 from "../assets/energy/mrv2.png";
+// import mrv3 from "../assets/energy/mrv3.png";
+// import sustainability1 from "../assets/energy/sustainability1.png";
+// import sustainability2 from "../assets/energy/sustainability2.png";
+// import traceability1 from "../assets/energy/traceability1.png";
+// import traceability2 from "../assets/energy/traceability2.png";
+// import management1 from "../assets/energy/management1.png";
+// import management2 from "../assets/energy/management2.png";
 import beef from "../assets/eudr_comp/beef.png";
 import cocoa from "../assets/eudr_comp/cocoa.png";
 import coffee from "../assets/eudr_comp/coffee.png";
@@ -121,12 +121,12 @@ import choose1 from "../assets/choose_images/agribusiness1.svg";
 import choose2 from "../assets/choose_images/agribusiness2.png";
 import choose3 from "../assets/choose_images/agribusiness3.svg";
 import choose4 from "../assets/choose_images/agribusiness4.png";
-import login1 from "../assets/login_back/image1.jpg";
-import login2 from "../assets/login_back/image2.jpg";
-import login3 from "../assets/login_back/image3.jpg";
-import signup1 from "../assets/signup_back/image1.jpg";
-import signup2 from "../assets/signup_back/image2.jpg";
-import signup3 from "../assets/login_back/image3.jpg";
+// import login1 from "../assets/login_back/image1.jpg";
+// import login2 from "../assets/login_back/image2.jpg";
+// import login3 from "../assets/login_back/image3.jpg";
+// import signup1 from "../assets/signup_back/image1.jpg";
+// import signup2 from "../assets/signup_back/image2.jpg";
+// import signup3 from "../assets/login_back/image3.jpg";
 import gallery1 from "../assets/real/025A3308.jpg";
 import gallery2 from "../assets/real/025A3325.jpg";
 import gallery3 from "../assets/real/025A3428.jpg";
@@ -154,7 +154,7 @@ import gallery26 from "../assets/real/025A5702.jpg";
 import gallery27 from "../assets/real/025A3446.jpg";
 import gallery28 from "../assets/real/025A3586-3.jpg";
 import gallery29 from "../assets/real/025A4903.jpg";
-import galler30 from "../assets/real/025A4891.jpg";
+import gallery30 from "../assets/real/025A4891.jpg";
 import gallery31 from "../assets/real/025A5689.jpg";
 
 export const NAV_LINKS = [
@@ -209,117 +209,224 @@ export const NAV_LINKS = [
 
 
 export const HERO_SECTIONS = {
-  homeSection: {
-    heading: "Sustainability Solutions for Food & Agri Supply Chains",
-    subheading: "Our Blockchain powered data driven platform enables digitization, transparency and compliance in fragmented supply chains to align with Climate targets and Sustainable Development Goals",
-    checklist: [],
-    primaryButton: {
-      text: "START A FREE TRIAL",
+  homeSection: [
+    {
+      heading: "Sustainability Solutions for Food & Agri Supply Chains",
+      subheading: "Our Blockchain powered data driven platform enables digitization, transparency and compliance in fragmented supply chains to align with Climate targets and Sustainable Development Goals",
+      checklist: [],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "BOOK DEMO" },
+      image: { src: gallery3, alt: "hero1" }
     },
-    secondaryButton: {
-      text: "BOOK DEMO"
+   {
+      heading: "Sustainability Solutions for Food & Agri Supply Chains",
+      subheading: "Our Blockchain powered data driven platform enables digitization, transparency and compliance in fragmented supply chains to align with Climate targets and Sustainable Development Goals",
+      checklist: [],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "BOOK DEMO" },
+      image: { src: gallery31, alt: "hero1" }
     },
-    image: {
-      src: gallery1,
-      alt: "hero1"
-    }
-  },
-  eudrSection: {
-    heading: "EUDR Compliance platform",
-    subheading: "Empower Your Business with Sustainable Practices and Transparent Supply Chains with our Compliance Platform",
-    checklist: [
-      "Record and verify transparent data for EUDR compliance.",
-      "Monitor and evaluate environmental and social risks across your supply chain.",
-      "Regularly document risk assessments and detail mitigation strategies."
-    ],
-    primaryButton: {
-      text: "START A FREE TRIAL",
+    {
+      heading: "Sustainability Solutions for Food & Agri Supply Chains",
+      subheading: "Our Blockchain powered data driven platform enables digitization, transparency and compliance in fragmented supply chains to align with Climate targets and Sustainable Development Goals",
+      checklist: [],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "BOOK DEMO" },
+      image: { src: gallery13, alt: "hero1" }
     },
-    secondaryButton: {
-      text: "Check your EUDR Compliance Readiness"
+  ],
+  eudrSection: [
+    {
+      heading: "EUDR Compliance platform",
+      subheading: "Empower Your Business with Sustainable Practices and Transparent Supply Chains with our Compliance Platform",
+      checklist: [
+        "Record and verify transparent data for EUDR compliance.",
+        "Monitor and evaluate environmental and social risks across your supply chain.",
+        "Regularly document risk assessments and detail mitigation strategies."
+      ],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
+      image: { src: gallery12, alt: "hero2" }
     },
-    image: {
-      src: gallery2,
-      alt: "hero2"
-    }
-  },
-  mrvSection: {
-    heading: "DMRV platform",
-    subheading: "Accurate Monitoring, Streamlined Reporting, and Verified Data for Trusted Carbon Credits",
-    checklist: [
-      "Enhanced Data Accuracy",
-      "Verified Data for Compliance",
-      "Cost effective Audit REady Reports"
-    ],
-    primaryButton: {
-      text: "Request Demo",
+    {
+      heading: "EUDR Compliance platform",
+      subheading: "Empower Your Business with Sustainable Practices and Transparent Supply Chains with our Compliance Platform",
+      checklist: [
+        "Record and verify transparent data for EUDR compliance.",
+        "Monitor and evaluate environmental and social risks across your supply chain.",
+        "Regularly document risk assessments and detail mitigation strategies."
+      ],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
+      image: { src: gallery22, alt: "hero2" }
     },
-    secondaryButton: {
-      text: "Explore platform features"
+     {
+      heading: "EUDR Compliance platform",
+      subheading: "Empower Your Business with Sustainable Practices and Transparent Supply Chains with our Compliance Platform",
+      checklist: [
+        "Record and verify transparent data for EUDR compliance.",
+        "Monitor and evaluate environmental and social risks across your supply chain.",
+        "Regularly document risk assessments and detail mitigation strategies."
+      ],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
+      image: { src: gallery14, alt: "hero2" }
     },
-    image: {
-      src: gallery3,
-      alt: "hero3"
-    }
-  },
-  sustainabilitySection: {
-    heading: "Sustainability platform",
-    subheading: "Empower Your Business to GROW Sustainably WITH OUR SUSTAINABILITY PLATFORM",
-    checklist: [
-      "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
-      "Enhanced Environmental Stewardship",
-      "Commitment to Corporate Responsibility"
-    ],
-    primaryButton: {
-      text: "Start a free trial",
+  ],
+  mrvSection: [
+    {
+      heading: "DMRV platform",
+      subheading: "Accurate Monitoring, Streamlined Reporting, and Verified Data for Trusted Carbon Credits",
+      checklist: [
+        "Enhanced Data Accuracy",
+        "Verified Data for Compliance",
+        "Cost effective Audit REady Reports"
+      ],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "Explore platform features" },
+      image: { src: gallery3, alt: "hero3" }
     },
-    secondaryButton: {
-      text: "Explore platform features"
+   {
+      heading: "DMRV platform",
+      subheading: "Accurate Monitoring, Streamlined Reporting, and Verified Data for Trusted Carbon Credits",
+      checklist: [
+        "Enhanced Data Accuracy",
+        "Verified Data for Compliance",
+        "Cost effective Audit REady Reports"
+      ],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "Explore platform features" },
+      image: { src: gallery13, alt: "hero3" }
     },
-    image: {
-      src: gallery4,
-      alt: "hero4"
-    }
-  },
-  traceabilitySection: {
-    heading: "Food Traceability Platform",
-    subheading: "Transform your Food and Agri Supply Chains to be Trustable, Traceable and Transparent with our Traceability platform",
-    checklist: [
-      "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
-      "Enhanced Environmental Stewardship",
-      "Commitment to Corporate Responsibility"
-    ],
-    primaryButton: {
-      text: "Book a demo",
+    {
+      heading: "DMRV platform",
+      subheading: "Accurate Monitoring, Streamlined Reporting, and Verified Data for Trusted Carbon Credits",
+      checklist: [
+        "Enhanced Data Accuracy",
+        "Verified Data for Compliance",
+        "Cost effective Audit REady Reports"
+      ],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "Explore platform features" },
+      image: { src: gallery12, alt: "hero3" }
     },
-    secondaryButton: {
-      text: "Explore platform features"
+  ],
+  sustainabilitySection: [
+    {
+      heading: "Sustainability platform",
+      subheading: "Empower Your Business to GROW Sustainably WITH OUR SUSTAINABILITY PLATFORM",
+      checklist: [
+        "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+        "Enhanced Environmental Stewardship",
+        "Commitment to Corporate Responsibility"
+      ],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "Explore platform features" },
+      image: { src: gallery24, alt: "hero4" }
     },
-    image: {
-      src: gallery7,
-      alt: "hero5"
-    }
-  },
-  managementSection: {
-    heading: "Farmer/Grower management Platform",
-    subheading: "Enhance sustainable procurement, harvest success, and lower on-farm emissions with our Forest/Farm Management Platform",
-    checklist: [
-      "Boost yields and minimize wastes",
-      "Empower growers and strenghten partnerships",
-      "Promotes Climate Action"
-    ],
-    primaryButton: {
-      text: "Request Demo",
+    {
+      heading: "Sustainability platform",
+      subheading: "Empower Your Business to GROW Sustainably WITH OUR SUSTAINABILITY PLATFORM",
+      checklist: [
+        "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+        "Enhanced Environmental Stewardship",
+        "Commitment to Corporate Responsibility"
+      ],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "Explore platform features" },
+      image: { src: gallery6, alt: "hero4" }
     },
-    secondaryButton: {
-      text: "Explore platform features"
+   {
+      heading: "Sustainability platform",
+      subheading: "Empower Your Business to GROW Sustainably WITH OUR SUSTAINABILITY PLATFORM",
+      checklist: [
+        "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+        "Enhanced Environmental Stewardship",
+        "Commitment to Corporate Responsibility"
+      ],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "Explore platform features" },
+      image: { src: gallery27, alt: "hero4" }
     },
-    image: {
-      src: gallery6,
-      alt: "hero6"
-    }
-  },
+  ],
+  traceabilitySection: [
+    {
+      heading: "Food Traceability Platform",
+      subheading: "Transform your Food and Agri Supply Chains to be Trustable, Traceable and Transparent with our Traceability platform",
+      checklist: [
+        "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+        "Enhanced Environmental Stewardship",
+        "Commitment to Corporate Responsibility"
+      ],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "Explore platform features" },
+      image: { src: gallery11, alt: "hero5" }
+    },
+     {
+      heading: "Food Traceability Platform",
+      subheading: "Transform your Food and Agri Supply Chains to be Trustable, Traceable and Transparent with our Traceability platform",
+      checklist: [
+        "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+        "Enhanced Environmental Stewardship",
+        "Commitment to Corporate Responsibility"
+      ],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "Explore platform features" },
+      image: { src: gallery22, alt: "hero5" }
+    },
+     {
+      heading: "Food Traceability Platform",
+      subheading: "Transform your Food and Agri Supply Chains to be Trustable, Traceable and Transparent with our Traceability platform",
+      checklist: [
+        "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+        "Enhanced Environmental Stewardship",
+        "Commitment to Corporate Responsibility"
+      ],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "Explore platform features" },
+      image: { src: gallery26, alt: "hero5" }
+    },
+  ],
+  managementSection: [
+    {
+      heading: "Farmer/Grower management Platform",
+      subheading: "Enhance sustainable procurement, harvest success, and lower on-farm emissions with our Forest/Farm Management Platform",
+      checklist: [
+        "Boost yields and minimize wastes",
+        "Empower growers and strengthen partnerships",
+        "Promotes Climate Action"
+      ],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "Explore platform features" },
+      image: { src: gallery16, alt: "hero6" }
+    },
+    {
+      heading: "Farmer/Grower management Platform",
+      subheading: "Enhance sustainable procurement, harvest success, and lower on-farm emissions with our Forest/Farm Management Platform",
+      checklist: [
+        "Boost yields and minimize wastes",
+        "Empower growers and strengthen partnerships",
+        "Promotes Climate Action"
+      ],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "Explore platform features" },
+      image: { src: gallery8, alt: "hero6" }
+    },
+     {
+      heading: "Farmer/Grower management Platform",
+      subheading: "Enhance sustainable procurement, harvest success, and lower on-farm emissions with our Forest/Farm Management Platform",
+      checklist: [
+        "Boost yields and minimize wastes",
+        "Empower growers and strengthen partnerships",
+        "Promotes Climate Action"
+      ],
+      primaryButton: { text: "GO TO PORTAL" },
+      // secondaryButton: { text: "Explore platform features" },
+      image: { src: gallery18, alt: "hero6" }
+    },
+  ]
 };
+
 
 export const COMPANY_LOGOS_CAROUSEL = {
   companies: [
@@ -329,11 +436,24 @@ export const COMPANY_LOGOS_CAROUSEL = {
 };
 
 export const HOME_PLATFORM_CARDS = [
-  "SUSTAINABILITY PLATFORM",
-  "DMRV PLATFORM",
-  "TRACEABILITY PLATFORM",
-  "EUDR PLATFORM"
+  {
+    title: "SUSTAINABILITY PLATFORM",
+    url: "/sustainability-platform"
+  },
+  {
+    title: "DMRV PLATFORM",
+    url: "/digital-mrv-platform"
+  },
+  {
+    title: "TRACEABILITY PLATFORM",
+    url: "/food-traceability-platform"
+  },
+  {
+    title: "EUDR PLATFORM",
+    url: "/eudr-compliance-platform"
+  }
 ];
+
 
 export const CONTENT_SECTIONS = {
   homeSection: {
@@ -346,7 +466,7 @@ export const CONTENT_SECTIONS = {
       "Operators & Traders",
       "Consultants"
     ],
-    buttonText: "Learn More",
+    buttonText: "Go To Portal",
     imageSrc: eudrImage,
     imageAlt: "EUDR compliance illustration"
   },
@@ -553,67 +673,67 @@ export const TEXT_IMAGE = {
   homeSection: {
     heading: 'Guide to EU Deforestation Regulations (EUDR)',
     description: 'Navigating EUDR Compliance with Ease – Your eBook for the EU Market',
-    buttonText: 'EMAIL ME THE COPY',
+    buttonText: 'GO TO PORTAL',
     image: placeholder,
   },
   eudrSection: {
     heading: 'Guide to EU Deforestatin Regulations',
     description: 'In a world grappling with climate change, the voluntary carbon market emerges as a critical player in addressing environmental challenges and advancing sustainability.',
-    buttonText: 'EMAIL ME THE COPY',
+    buttonText: 'GO TO PORTAL',
     image: placeholder,
   },
   mrvSection: {
     heading: 'DMRV for Nature-Based Carbon Projects is your free guide to unlocking the potential of Digital MRV (DMRV) in this critical field.',
     description: 'The fight against climate change demands innovative solutions. Nature-based carbon projects offer a promising approach, but ensuring their effectiveness and credibility requires robust measurement, reporting, and verification (MRV) systems.Download your free copy today and contribute to a more sustainable future through the power of technology and nature-based solutions!',
-    buttonText: 'EMAIL ME THE COPY',
+    buttonText: 'GO TO PORTAL',
     image: placeholder,
   },
   sustainabilitySection: {
     heading: 'The Sustainable Plate: A Guide for Food and Agribusiness Success in a Changing World',
     description: 'The global food system faces unprecedented challenges. Climate change, resource scarcity, and evolving consumer demands necessitate a shift towards a more sustainable food future.The Sustainable Plate is your roadmap to a successful and sustainable future in the food and agribusiness industry. Download your free copy today and start building a more responsible and resilient food system!',
-    buttonText: 'EMAIL ME THE COPY',
+    buttonText: 'GO TO PORTAL',
     image: placeholder,
   },
   traceabilitySection: {
     heading: 'The Sustainable Plate: A Guide for Food and Agribusiness Success in a Changing World',
     description: 'The agricultural sector is at a crossroads. Global forces like population growth, climate change, and evolving consumer preferences are demanding a new way forward.This free ebook, “Traceability in Agriculture Value Chains”, equips you with the knowledge and tools to navigate this changing landscape.Don’t wait! Download your free copy today and start your journey towards a more sustainable and transparent agricultural future!',
-    buttonText: 'EMAIL ME THE COPY',
+    buttonText: 'GO TO PORTAL',
     image: placeholder,
   },
   managementSection: {
     heading: 'Choosing the Right Forest/Farm Management Software for Your Agribusiness Success',
     description: 'Farming today is a complex business. Between managing crops, livestock, financials, and regulations, the pressure to optimize operations is high. This is your free guide to navigating the world of forest/farm management software and selecting the perfect solution for your unique needs.Download your free copy today and start cultivating a more efficient, productive, and profitable future for your forest/farm!',
-    buttonText: 'EMAIL ME THE COPY',
+    buttonText: 'GO TO PORTAL',
     image: placeholder,
   },
   agribusinessSection: {
     heading: 'Revolutionize agribusiness with our Technology Platform',
     description: 'We offer a suite of cutting-edge platforms designed to enhance every aspect of your agribusiness operations. From traceability to sustainability, compliance to forest/farm management, our solutions are tailored to meet your unique needs and drive your success.',
-    buttonText: 'Start a free trial',
+    buttonText: 'GO TO PORTAL',
     image: agribusiness,
   },
   carbonSection: {
     heading: 'Fast track your net zero goals with our robust DMRV',
     description: 'We provide cutting-edge platforms specifically designed to enhance your carbon projects tailored to meet the unique needs of carbon projects, ensuring you stay ahead in delivering impactful and compliant carbon reduction initiatives.',
-    buttonText: 'Request demo',
+    buttonText: 'GO TO PORTAL',
     image: carbon,
   },
   processorSection: {
     heading: 'Streamline your Supply chain compliance with a technology edge',
     description: 'We offer a suite of advanced platforms designed to support food processors in achieving the critical goals of  sustainability and compliance and  provide the tools you need to excel in today’s market.',
-    buttonText: 'Request demo',
+    buttonText: 'GO TO PORTAL',
     image: process,
   },
   foundationSection: {
     heading: 'Drive Sustainable Impact with Technology',
     description: 'We offer a suite of specialized platforms designed to enhance your initiatives and ensure greater transparency, accuracy, and compliance and provide the tools you need to advance your mission effectively.',
-    buttonText: 'Request demo',
+    buttonText: 'GO TO PORTAL',
     image: foundation,
   },
   cosultantSection: {
     heading: 'Boost your expertise with our cutting edge platform',
     description: 'We offer specialized platforms designed to support your advisory services and ensure your clients achieve their sustainability and regulatory goals. Our platforms are tailored to meet the complex needs of your consulting practice.',
-    buttonText: 'Request demo',
+    buttonText: 'GO TO PORTAL',
     image: consultant,
   },
 };
@@ -778,49 +898,49 @@ export const BLUE_SECTION = {
   homeSection: {
     "title": "Start using TraceRxTech",
     "subtitle": "Transparency, Trust and Success for your Climate Journey.",
-    "buttonText": "Get the demo",
+    "buttonText": "GO TO PORTAL",
     "imageSrc": startX,
     "imageAlt": "TraceRxTech Demo"
   },
   eudrSection: {
     "title": "Start using TraceRxTech",
     "subtitle": "Transparency, Trust and Success for your Climate Journey.",
-    "buttonText": "Get the demo",
+    "buttonText": "GO TO PORTAL",
     "imageSrc": startX,
     "imageAlt": "TraceRxTech Demo"
   },
   mrvSection: {
     "title": "Start using TraceRxTech",
     "subtitle": "Transparency, Trust and Success for your Climate Journey.",
-    "buttonText": "Get the demo",
+    "buttonText": "GO TO PORTAL",
     "imageSrc": startX,
     "imageAlt": "TraceRxTech Demo"
   },
   sustainabilitySection: {
     "title": "Start using TraceRxTech",
     "subtitle": "Transparency, Trust and Success for your Climate Journey.",
-    "buttonText": "Get the demo",
+    "buttonText": "GO TO PORTAL",
     "imageSrc": startX,
     "imageAlt": "TraceRxTech Demo"
   },
   traceabilitySection: {
     "title": "Start using TraceRxTech",
     "subtitle": "Transparency, Trust and Success for your Climate Journey.",
-    "buttonText": "Get the demo",
+    "buttonText": "GO TO PORTAL",
     "imageSrc": startX,
     "imageAlt": "TraceRxTech Demo"
   },
   managementSection: {
     "title": "Start using TraceRxTech",
     "subtitle": "Transparency, Trust and Success for your Climate Journey.",
-    "buttonText": "Get the demo",
+    "buttonText": "GO TO PORTAL",
     "imageSrc": startX,
     "imageAlt": "TraceRxTech Demo"
   },
   agribusinessSection: {
     "title": "Start using TraceRxTech",
     "subtitle": "Transparency, Trust and Success for your Climate Journey.",
-    "buttonText": "Get the demo",
+    "buttonText": "GO TO PORTAL",
     "imageSrc": startX,
     "imageAlt": "TraceRxTech Demo"
   },
@@ -834,7 +954,7 @@ export const BLUE_SECTION = {
   processSection: {
     "title": "Transform Your Food Processing Operations Today",
     "subtitle": "Empower your processing operations with our innovative platforms and lead the industry in quality, sustainability, and compliance.",
-    "buttonText": "Start a free trial",
+    "buttonText": "GO TO PORTAL",
     "imageSrc": startX,
     "imageAlt": "TraceRxTech Demo"
   },
@@ -929,19 +1049,19 @@ export const IMAGE_ROW_COLUMN_CARDS = {
     {
       "heading": "Agribusiness",
       "subText": "Mitigate Deforestation risks, enable sustainable sourcing and protect your business.",
-      "link": "Explore now",
+      "link": "GO TO PORTAL",
       "image": gallery12,
     },
     {
       "heading": "Food Processors",
       "subText": "Ensure your ingredients are deforestation-free and empower responsible sourcing to build consumer trust.",
-      "link": "Explore now",
+      "link": "GO TO PORTAL",
       "image": gallery14,
     },
     {
       "heading": "Compliance Tools",
       "subText": "Ensure alignment with global carbon regulations using advanced tools.",
-      "link": "Explore now",
+      "link": "GO TO PORTAL",
       "image": gallery3,
     }
   ],
@@ -949,19 +1069,19 @@ export const IMAGE_ROW_COLUMN_CARDS = {
     {
       "heading": "Carbon Project Developers",
       "subText": "Automate tasks and simplify carbon project management and verification",
-      "link": "Explore now ",
+      "link": "GO TO PORTAL",
       "image": gallery4,
     },
     {
       "heading": "Foundations",
       "subText": "Showcase true impact of carbon sequestration projects with data driven solutions",
-      "link": "Explore now ",
+      "link": "GO TO PORTAL",
       "image": gallery22,
     },
     {
       "heading": "Agribusiness - CPG",
       "subText": "Address emission hot sports in your commodity value chains and demonstrate commitment to carbon neutrality",
-      "link": "Explore now ",
+      "link": "GO TO PORTAL",
       "image": gallery27,
     }
   ],
@@ -969,13 +1089,13 @@ export const IMAGE_ROW_COLUMN_CARDS = {
     {
       "heading": "Agribusiness",
       "subText": "Showcase your commitment to sustainability, reduce costs and boost efficiency with data driven sustainability practices",
-      "link": "Explore now ",
+      "link": "GO TO PORTAL",
       "image": gallery26,
     },
     {
       "heading": "Foundations",
       "subText": "Drive sustainable practices, measure and scale your impact to accelerate positive change.",
-      "link": "Explore now ",
+      "link": "GO TO PORTAL",
       "image": gallery14,
     },
   ],
@@ -983,13 +1103,13 @@ export const IMAGE_ROW_COLUMN_CARDS = {
     {
       "heading": "Agribusiness",
       "subText": "Ensure product quality, prevent recalls and gain access to premium markets.",
-      "link": "Explore now ",
+      "link": "GO TO PORTAL",
       "image": gallery11,
     },
     {
       "heading": "Food Processors",
       "subText": "Differentiate your brand with verifiable traceability and responsible sourcing.",
-      "link": "Explore now ",
+      "link": "GO TO PORTAL",
       "image": gallery19,
     },
   ],
@@ -997,13 +1117,13 @@ export const IMAGE_ROW_COLUMN_CARDS = {
     {
       "heading": "Agribusiness",
       "subText": "Gain real time forest/farm data to maximize yields, optimize resources, reduce waste and manage environmental impact.",
-      "link": "Explore now ",
+      "link": "GO TO PORTAL",
       "image": gallery16,
     },
     {
       "heading": "Foundations",
       "subText": "Harness the power of data to increase productivity and improve livelihoods and drive positive change.",
-      "link": "Explore now ",
+      "link": "GO TO PORTAL",
       "image": gallery1,
     },
   ],
@@ -1147,7 +1267,7 @@ export const COMPLIANCE_CARD_DATA = {
         "Custom Reports for Your Business",
         "Create farmer master, capture",
       ],
-      buttonText: "Get in touch",
+      buttonText: "GO TO PORTAL",
     },
     {
       heading: "Risk Assessment",
@@ -1156,7 +1276,7 @@ export const COMPLIANCE_CARD_DATA = {
         "Conduct risk by enabling supplier due diligence",
         "Management and Reporting of compliant and non-compliant forest/farms and product",
       ],
-      buttonText: "Get the Assessment",
+      buttonText: "GO TO PORTAL",
     },
     {
       heading: "Due Diligence & Compliance",
@@ -1165,7 +1285,7 @@ export const COMPLIANCE_CARD_DATA = {
         "Centralized system for supporting documentation, GeoJSONs and DDS",
         "EU-IS integration for DDS filing.",
       ],
-      buttonText: "Get the Compliance",
+      buttonText: "GO TO PORTAL",
     },
     {
       heading: "Seamless Downstream Integration",
@@ -1173,7 +1293,7 @@ export const COMPLIANCE_CARD_DATA = {
         "Seamlessly share information with downstream customers in Europe",
         "Easy consolidation of GeoJSON and DDS",
       ],
-      buttonText: "Get in touch",
+      buttonText: "GO TO PORTAL",
     },
   ],
 }
@@ -2084,6 +2204,66 @@ export const GALLERY_IMAGES = [
     id: 8,
     imageUrl: gallery16,
     alt: "Innovation in agri-tech",
+  },
+  {
+    id: 9,
+    imageUrl: gallery18,
+    alt: "image",
+  },
+  {
+    id: 10,
+    imageUrl: gallery19,
+    alt: "image",
+  },
+  {
+    id: 11,
+    imageUrl: gallery9,
+    alt: "image",
+  },
+  {
+    id: 13,
+    imageUrl: gallery12,
+    alt: "image",
+  },
+  {
+    id: 15,
+    imageUrl: gallery22,
+    alt: "image",
+  },
+  {
+    id: 16,
+    imageUrl: gallery23,
+    alt: "image",
+  },
+  {
+    id: 17,
+    imageUrl: gallery25,
+    alt: "image",
+  },
+  {
+    id: 18,
+    imageUrl: gallery28,
+    alt: "image",
+  },
+  {
+    id: 19,
+    imageUrl: gallery30,
+    alt: "image",
+  },
+  {
+    id: 14,
+    imageUrl: gallery22,
+    alt: "image",
+  },
+  {
+    id: 20,
+    imageUrl: gallery11,
+    alt: "image",
+  },
+  {
+    id: 21,
+    imageUrl: gallery29,
+    alt: "image",
   },
 ];
 

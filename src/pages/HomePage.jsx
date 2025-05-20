@@ -22,7 +22,7 @@ const HomePage = () => {
   return (
     <>
       <HeroSection
-        {...HERO_SECTIONS.homeSection}
+        slides={HERO_SECTIONS.homeSection}
         size={FONT.size.large}
         color={FONT.color.light}
       />

@@ -26,7 +26,7 @@ const EudrPage = () => {
   return (
     <>
       <HeroSection
-        {...HERO_SECTIONS.eudrSection}
+        slides={HERO_SECTIONS.eudrSection}
         size={FONT.size.large}
         color={FONT.color.light}
       />

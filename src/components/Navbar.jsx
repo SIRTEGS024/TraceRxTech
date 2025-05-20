@@ -56,7 +56,7 @@ export default function Navbar() {
             <div className="flex items-center gap-2">
               <MdPhone size={18} />
               <a href="tel:+919972524322" className="text-gray-700 font-medium">
-                +91 99725 24322
+                07012507260
               </a>
             </div>
             <a href="mailto:contact@example.com">

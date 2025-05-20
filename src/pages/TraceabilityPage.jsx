@@ -25,7 +25,7 @@ const TraceabilityPage = () => {
   return (
     <>
       <HeroSection
-        {...HERO_SECTIONS.traceabilitySection}
+        slides={HERO_SECTIONS.traceabilitySection}
         size={FONT.size.large}
         color={FONT.color.light}
       />

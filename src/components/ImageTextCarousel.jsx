@@ -110,7 +110,7 @@ const ImageTextCarousel = ({ textImageCarousel = [] }) => {
                       </p>
                     )}
                     <button className="px-6 py-2 bg-green-700 text-white text-sm font-medium rounded hover:bg-green-800 transition-colors">
-                      Learn more
+                      GO TO PORTAL
                     </button>
                   </div>
                 </div>
