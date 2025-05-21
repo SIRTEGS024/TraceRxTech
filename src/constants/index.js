@@ -211,24 +211,24 @@ export const NAV_LINKS = [
 export const HERO_SECTIONS = {
   homeSection: [
     {
-      heading: "Sustainability Solutions for Food & Agri Supply Chains",
-      subheading: "Our Blockchain powered data driven platform enables digitization, transparency and compliance in fragmented supply chains to align with Climate targets and Sustainable Development Goals",
+      heading: "Stakeholders/MDAs portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [],
       primaryButton: { text: "GO TO PORTAL" },
       // secondaryButton: { text: "BOOK DEMO" },
-      image: { src: gallery3, alt: "hero1" }
+      image: { src: gallery24, alt: "hero1" }
     },
    {
-      heading: "Sustainability Solutions for Food & Agri Supply Chains",
-      subheading: "Our Blockchain powered data driven platform enables digitization, transparency and compliance in fragmented supply chains to align with Climate targets and Sustainable Development Goals",
+      heading: "Exporters portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [],
       primaryButton: { text: "GO TO PORTAL" },
       // secondaryButton: { text: "BOOK DEMO" },
       image: { src: gallery31, alt: "hero1" }
     },
     {
-      heading: "Sustainability Solutions for Food & Agri Supply Chains",
-      subheading: "Our Blockchain powered data driven platform enables digitization, transparency and compliance in fragmented supply chains to align with Climate targets and Sustainable Development Goals",
+      heading: "Importers portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [],
       primaryButton: { text: "GO TO PORTAL" },
       // secondaryButton: { text: "BOOK DEMO" },
@@ -237,8 +237,8 @@ export const HERO_SECTIONS = {
   ],
   eudrSection: [
     {
-      heading: "EUDR Compliance platform",
-      subheading: "Empower Your Business with Sustainable Practices and Transparent Supply Chains with our Compliance Platform",
+      heading: "Stakeholders/MDAs portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [
         "Record and verify transparent data for EUDR compliance.",
         "Monitor and evaluate environmental and social risks across your supply chain.",
@@ -249,24 +249,24 @@ export const HERO_SECTIONS = {
       image: { src: gallery12, alt: "hero2" }
     },
     {
-      heading: "EUDR Compliance platform",
-      subheading: "Empower Your Business with Sustainable Practices and Transparent Supply Chains with our Compliance Platform",
+      heading: "Exporters portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [
-        "Record and verify transparent data for EUDR compliance.",
-        "Monitor and evaluate environmental and social risks across your supply chain.",
-        "Regularly document risk assessments and detail mitigation strategies."
+        // "Record and verify transparent data for EUDR compliance.",
+        // "Monitor and evaluate environmental and social risks across your supply chain.",
+        // "Regularly document risk assessments and detail mitigation strategies."
       ],
       primaryButton: { text: "GO TO PORTAL" },
       // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
       image: { src: gallery22, alt: "hero2" }
     },
      {
-      heading: "EUDR Compliance platform",
-      subheading: "Empower Your Business with Sustainable Practices and Transparent Supply Chains with our Compliance Platform",
+      heading: "Importers portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [
-        "Record and verify transparent data for EUDR compliance.",
-        "Monitor and evaluate environmental and social risks across your supply chain.",
-        "Regularly document risk assessments and detail mitigation strategies."
+        // "Record and verify transparent data for EUDR compliance.",
+        // "Monitor and evaluate environmental and social risks across your supply chain.",
+        // "Regularly document risk assessments and detail mitigation strategies."
       ],
       primaryButton: { text: "GO TO PORTAL" },
       // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
@@ -275,36 +275,36 @@ export const HERO_SECTIONS = {
   ],
   mrvSection: [
     {
-      heading: "DMRV platform",
-      subheading: "Accurate Monitoring, Streamlined Reporting, and Verified Data for Trusted Carbon Credits",
+      heading: "Stakeholders/MDAs portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [
-        "Enhanced Data Accuracy",
-        "Verified Data for Compliance",
-        "Cost effective Audit REady Reports"
+        // "Enhanced Data Accuracy",
+        // "Verified Data for Compliance",
+        // "Cost effective Audit REady Reports"
       ],
       primaryButton: { text: "GO TO PORTAL" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery3, alt: "hero3" }
     },
    {
-      heading: "DMRV platform",
-      subheading: "Accurate Monitoring, Streamlined Reporting, and Verified Data for Trusted Carbon Credits",
+      heading: "Exporters portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [
-        "Enhanced Data Accuracy",
-        "Verified Data for Compliance",
-        "Cost effective Audit REady Reports"
+        // "Enhanced Data Accuracy",
+        // "Verified Data for Compliance",
+        // "Cost effective Audit REady Reports"
       ],
       primaryButton: { text: "GO TO PORTAL" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery13, alt: "hero3" }
     },
     {
-      heading: "DMRV platform",
-      subheading: "Accurate Monitoring, Streamlined Reporting, and Verified Data for Trusted Carbon Credits",
+      heading: "Importers portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [
-        "Enhanced Data Accuracy",
-        "Verified Data for Compliance",
-        "Cost effective Audit REady Reports"
+        // "Enhanced Data Accuracy",
+        // "Verified Data for Compliance",
+        // "Cost effective Audit REady Reports"
       ],
       primaryButton: { text: "GO TO PORTAL" },
       // secondaryButton: { text: "Explore platform features" },
@@ -313,36 +313,36 @@ export const HERO_SECTIONS = {
   ],
   sustainabilitySection: [
     {
-      heading: "Sustainability platform",
-      subheading: "Empower Your Business to GROW Sustainably WITH OUR SUSTAINABILITY PLATFORM",
+      heading: "Stakeholders/MDAs portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [
-        "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
-        "Enhanced Environmental Stewardship",
-        "Commitment to Corporate Responsibility"
+        // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+        // "Enhanced Environmental Stewardship",
+        // "Commitment to Corporate Responsibility"
       ],
       primaryButton: { text: "GO TO PORTAL" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery24, alt: "hero4" }
     },
     {
-      heading: "Sustainability platform",
-      subheading: "Empower Your Business to GROW Sustainably WITH OUR SUSTAINABILITY PLATFORM",
+      heading: "Exporters portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [
-        "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
-        "Enhanced Environmental Stewardship",
-        "Commitment to Corporate Responsibility"
+        // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+        // "Enhanced Environmental Stewardship",
+        // "Commitment to Corporate Responsibility"
       ],
       primaryButton: { text: "GO TO PORTAL" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery6, alt: "hero4" }
     },
    {
-      heading: "Sustainability platform",
-      subheading: "Empower Your Business to GROW Sustainably WITH OUR SUSTAINABILITY PLATFORM",
+      heading: "Importers portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [
-        "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
-        "Enhanced Environmental Stewardship",
-        "Commitment to Corporate Responsibility"
+        // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+        // "Enhanced Environmental Stewardship",
+        // "Commitment to Corporate Responsibility"
       ],
       primaryButton: { text: "GO TO PORTAL" },
       // secondaryButton: { text: "Explore platform features" },
@@ -351,36 +351,36 @@ export const HERO_SECTIONS = {
   ],
   traceabilitySection: [
     {
-      heading: "Food Traceability Platform",
-      subheading: "Transform your Food and Agri Supply Chains to be Trustable, Traceable and Transparent with our Traceability platform",
+      heading: "Stakeholders/MDAs portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [
-        "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
-        "Enhanced Environmental Stewardship",
-        "Commitment to Corporate Responsibility"
+        // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+        // "Enhanced Environmental Stewardship",
+        // "Commitment to Corporate Responsibility"
       ],
       primaryButton: { text: "GO TO PORTAL" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery11, alt: "hero5" }
     },
      {
-      heading: "Food Traceability Platform",
-      subheading: "Transform your Food and Agri Supply Chains to be Trustable, Traceable and Transparent with our Traceability platform",
+      heading: "Exporters portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [
-        "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
-        "Enhanced Environmental Stewardship",
-        "Commitment to Corporate Responsibility"
+        // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+        // "Enhanced Environmental Stewardship",
+        // "Commitment to Corporate Responsibility"
       ],
       primaryButton: { text: "GO TO PORTAL" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery22, alt: "hero5" }
     },
      {
-      heading: "Food Traceability Platform",
-      subheading: "Transform your Food and Agri Supply Chains to be Trustable, Traceable and Transparent with our Traceability platform",
+      heading: "Importers portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [
-        "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
-        "Enhanced Environmental Stewardship",
-        "Commitment to Corporate Responsibility"
+        // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+        // "Enhanced Environmental Stewardship",
+        // "Commitment to Corporate Responsibility"
       ],
       primaryButton: { text: "GO TO PORTAL" },
       // secondaryButton: { text: "Explore platform features" },
@@ -389,36 +389,36 @@ export const HERO_SECTIONS = {
   ],
   managementSection: [
     {
-      heading: "Farmer/Grower management Platform",
-      subheading: "Enhance sustainable procurement, harvest success, and lower on-farm emissions with our Forest/Farm Management Platform",
+      heading: "Stakeholders/MDAs portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [
-        "Boost yields and minimize wastes",
-        "Empower growers and strengthen partnerships",
-        "Promotes Climate Action"
+        // "Boost yields and minimize wastes",
+        // "Empower growers and strengthen partnerships",
+        // "Promotes Climate Action"
       ],
       primaryButton: { text: "GO TO PORTAL" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery16, alt: "hero6" }
     },
     {
-      heading: "Farmer/Grower management Platform",
-      subheading: "Enhance sustainable procurement, harvest success, and lower on-farm emissions with our Forest/Farm Management Platform",
+      heading: "Exporters portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [
-        "Boost yields and minimize wastes",
-        "Empower growers and strengthen partnerships",
-        "Promotes Climate Action"
+        // "Boost yields and minimize wastes",
+        // "Empower growers and strengthen partnerships",
+        // "Promotes Climate Action"
       ],
       primaryButton: { text: "GO TO PORTAL" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery8, alt: "hero6" }
     },
      {
-      heading: "Farmer/Grower management Platform",
-      subheading: "Enhance sustainable procurement, harvest success, and lower on-farm emissions with our Forest/Farm Management Platform",
+      heading: "Importers portal",
+      subheading: "Click the button below to visit the portal",
       checklist: [
-        "Boost yields and minimize wastes",
-        "Empower growers and strengthen partnerships",
-        "Promotes Climate Action"
+        // "Boost yields and minimize wastes",
+        // "Empower growers and strengthen partnerships",
+        // "Promotes Climate Action"
       ],
       primaryButton: { text: "GO TO PORTAL" },
       // secondaryButton: { text: "Explore platform features" },
@@ -891,6 +891,10 @@ export const SECTION_HEADERS = {
     title: "Empower your Advisory services and Drive Efficiency",
     subTitle: "Consultants often face several challenges when providing expert advice and solutions. TraceX offers a suite of platforms tailored to address these challenges"
   },
+  system:{
+    title:"Welcome to the Trade Monitoring System (TRMS)",
+    subTitle:"Trade facilitation tool for access to trade forms (Forms NXP, NCX, A) and data exchange between stakeholders in the trade chain. Visit any of the Portals below to Get Started!"
+  }
 };
 
 
@@ -2378,3 +2382,24 @@ export const MISSION_VISSION = [
     text: "To be the leading green-tech company transforming agriculture across Africa through transparency, traceability, and technological advancement.",
   },
 ]
+
+export const SYSTEM_CARD_DATA = [
+  {
+    image: gallery1,
+    title: "Applicant",
+    subtext: "Click here to Register on the portal with your Tax Identification Number (TIN) from FIRS or your Bank Verification Number (BVN). Once concluded, you can fill out your Form A, NCX or NXP.",
+    buttonText: "GO TO PORTAL",
+  },
+  {
+    image: gallery12,
+    title: "Authorised Dealer Bank (ADB)",
+    subtext: "Authorised Dealers review submissions of exporters and validate trade forms.",
+    buttonText: "GO TO PORTAL",
+  },
+  {
+    image: gallery22,
+    title: "Stakeholder/MDA",
+    subtext: "Pre Shipment Inspection Agents, Relevant Regulatory Agencies, Shipping lines & Airlines and Nigeria Customs Service.",
+    buttonText: "GO TO PORTAL",
+  },
+];

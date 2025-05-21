@@ -2,10 +2,11 @@ import BlueSection from "../components/BlueSection";
 import Featured from "../components/Featured";
 import HeroSection from "../components/HeroSection";
 import ImpactSection from "../components/ImpactSection";
+import SystemCardSection from "../components/SystemCardSection";
 import TestimonialCarousel from "../components/TestimonialCarousel";
 import TextImage from "../components/TextImage";
 import TrustedCompanies from "../components/TrustedCompany";
-import { HERO_SECTIONS } from "../constants";
+import { HERO_SECTIONS, SYSTEM_CARD_DATA } from "../constants";
 import {
   COMPANY_LOGOS_CAROUSEL,
   HOME_PLATFORM_CARDS,
@@ -25,6 +26,11 @@ const HomePage = () => {
         slides={HERO_SECTIONS.homeSection}
         size={FONT.size.large}
         color={FONT.color.light}
+      />
+      <SystemCardSection
+        title={SECTION_HEADERS.system.title}
+        subTitle={SECTION_HEADERS.system.subTitle}
+        systemData ={SYSTEM_CARD_DATA}
       />
       <TrustedCompanies
         companyLogos={COMPANY_LOGOS_CAROUSEL.companies}
