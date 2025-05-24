@@ -20,6 +20,7 @@ import MediaPage from "./pages/MediaPage";
 import AboutUs from "./pages/AboutUs";
 import BecomePartner from "./pages/BecomePartner";
 import PartnerDirectory from "./pages/PartnerDirectory";
+import ChatWidget from "./components/ChatWidget";
 
 export default function App() {
   const location = useLocation();
@@ -69,6 +70,7 @@ export default function App() {
       </main>
 
       {!hideNavFooter && <Footer />}
+      <ChatWidget />
     </div>
   );
 }

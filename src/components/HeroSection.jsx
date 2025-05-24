@@ -5,8 +5,9 @@ import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
-export default function HeroCarousel({ slides = [] }) {
+export default function HeroCarousel({ slides = [],size, color }) {
   return (
     <div className="w-full text-black  relative"> {/* Removed pt-20 to align with navbar */}
       <Swiper
@@ -47,8 +48,8 @@ export default function HeroCarousel({ slides = [] }) {
                     title={item.heading}
                     subTitle={item.subheading}
                     underline="none"
-                    size="large"
-                    color="white"
+                    size={size}
+                    color={color}
                   />
                 </motion.div>
 
@@ -74,15 +75,15 @@ export default function HeroCarousel({ slides = [] }) {
 
                 <div className="flex flex-col sm:flex-row gap-3 items-center mt-4">
                   {item.primaryButton && (
-                    <button className="bg-transparent border border-white text-white px-6 py-3 rounded-md font-bold hover:bg-white hover:text-black  transition duration-200 flex items-center gap-2 text-sm w-full sm:w-auto sm:min-w-[200px]">
+                    <Link to={item.primaryButton.url}  className="bg-transparent border border-white text-white px-6 py-3 rounded-md font-bold hover:bg-white hover:text-black  transition duration-200 flex items-center gap-2 text-sm w-full sm:w-auto sm:min-w-[200px]">
                       {item.primaryButton.text}
                       <FiArrowRight />
-                    </button>
+                    </Link>
                   )}
                   {item.secondaryButton && (
-                    <button className="bg-transparent border border-white text-white px-6 py-3 rounded-md font-bold hover:bg-white hover:text-black transition duration-200 text-sm w-full sm:w-auto">
+                    <Link to={item.secondaryButton.url} className="bg-transparent border border-white text-white px-6 py-3 rounded-md font-bold hover:bg-white hover:text-black transition duration-200 text-sm w-full sm:w-auto">
                       {item.secondaryButton.text}
-                    </button>
+                    </Link>
                   )}
                 </div>
               </div>

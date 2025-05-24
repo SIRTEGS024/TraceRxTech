@@ -1,3 +1,4 @@
+import AgroProductCarousel from "../components/AgroProductCarousel";
 import BlueSection from "../components/BlueSection";
 import Featured from "../components/Featured";
 import HeroSection from "../components/HeroSection";
@@ -6,7 +7,7 @@ import SystemCardSection from "../components/SystemCardSection";
 import TestimonialCarousel from "../components/TestimonialCarousel";
 import TextImage from "../components/TextImage";
 import TrustedCompanies from "../components/TrustedCompany";
-import { HERO_SECTIONS, SYSTEM_CARD_DATA } from "../constants";
+import { AGRO_PRODUCTS, HERO_SECTIONS, SYSTEM_CARD_DATA } from "../constants";
 import {
   COMPANY_LOGOS_CAROUSEL,
   HOME_PLATFORM_CARDS,
@@ -24,14 +25,15 @@ const HomePage = () => {
     <>
       <HeroSection
         slides={HERO_SECTIONS.homeSection}
-        size={FONT.size.large}
+        size={FONT.size.xLarge}
         color={FONT.color.light}
       />
       <SystemCardSection
         title={SECTION_HEADERS.system.title}
         subTitle={SECTION_HEADERS.system.subTitle}
-        systemData ={SYSTEM_CARD_DATA}
+        systemData={SYSTEM_CARD_DATA}
       />
+      <AgroProductCarousel agroProducts={AGRO_PRODUCTS} />
       <TrustedCompanies
         companyLogos={COMPANY_LOGOS_CAROUSEL.companies}
         title={SECTION_HEADERS.join.title}

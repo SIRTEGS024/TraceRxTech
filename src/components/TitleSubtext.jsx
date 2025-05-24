@@ -7,17 +7,19 @@ const TitleSubtext = ({
 }) => {
   // Title styles
   const titleSizeMap = {
-    large: "text-2xl md:text-3xl lg:text-4xl",
-    medium: "text-xl md:text-2xl lg:text-3xl",
-    small: "text-base md:text-lg lg:text-xl",
-  };
+  xLarge: "text-4xl md:text-5xl lg:text-7xl", // extra large title
+  large: "text-2xl md:text-3xl lg:text-4xl",
+  medium: "text-xl md:text-2xl lg:text-3xl",
+  small: "text-base md:text-lg lg:text-xl",
+};
 
-  // Subtitle styles
-  const subTitleSizeMap = {
-    large: "text-sm md:text-base lg:text-lg",
-    medium: "text-xs md:text-sm lg:text-base",
-    small: "text-[11px] md:text-xs lg:text-sm",
-  };
+const subTitleSizeMap = {
+  xLarge: "text-lg md:text-xl lg:text-2xl", // matching slightly larger subtitle
+  large: "text-sm md:text-base lg:text-lg",
+  medium: "text-xs md:text-sm lg:text-base",
+  small: "text-[11px] md:text-xs lg:text-sm",
+};
+
 
   const titleTextColor = color === "white" ? "text-white" : "text-green-800";
   const subTitleTextColor = color === "white" ? "text-white" : "text-green-600";

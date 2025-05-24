@@ -1,5 +1,5 @@
-// import hero1 from "../assets/hero_images/tracex-home-hero.png";
-// import hero2 from "../assets/hero_images/hero-2.png";
+import hero1 from "../assets/hero_images/import.webp";
+import hero2 from "../assets/hero_images/export.webp";
 // import hero3 from "../assets/hero_images/DMRV-Hero.png";
 // import hero4 from "../assets/hero_images/Sustainability-Hero-Image.png";
 // import hero5 from "../assets/hero_images/hero5.png";
@@ -156,6 +156,11 @@ import gallery28 from "../assets/real/025A3586-3.jpg";
 import gallery29 from "../assets/real/025A4903.jpg";
 import gallery30 from "../assets/real/025A4891.jpg";
 import gallery31 from "../assets/real/025A5689.jpg";
+import gallery32 from "../assets/picked/_MG_4168.jpg";
+import gallery33 from "../assets/picked/WhatsApp Image 2025-05-21 at 12.02.42.jpeg";
+import rice from "../assets/maps/rice.png";
+import maize from "../assets/maps/maize.png";
+import yam from "../assets/maps/yam.png";
 
 export const NAV_LINKS = [
   {
@@ -214,25 +219,25 @@ export const HERO_SECTIONS = {
       heading: "Stakeholders/MDAs portal",
       subheading: "Click the button below to visit the portal",
       checklist: [],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "BOOK DEMO" },
-      image: { src: gallery24, alt: "hero1" }
+      image: { src: gallery32, alt: "hero1" }
     },
    {
       heading: "Exporters portal",
       subheading: "Click the button below to visit the portal",
       checklist: [],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "BOOK DEMO" },
-      image: { src: gallery31, alt: "hero1" }
+      image: { src: hero1, alt: "hero1" }
     },
     {
       heading: "Importers portal",
       subheading: "Click the button below to visit the portal",
       checklist: [],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "BOOK DEMO" },
-      image: { src: gallery13, alt: "hero1" }
+      image: { src: hero2, alt: "hero2" }
     },
   ],
   eudrSection: [
@@ -244,7 +249,7 @@ export const HERO_SECTIONS = {
         "Monitor and evaluate environmental and social risks across your supply chain.",
         "Regularly document risk assessments and detail mitigation strategies."
       ],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
       image: { src: gallery12, alt: "hero2" }
     },
@@ -256,7 +261,7 @@ export const HERO_SECTIONS = {
         // "Monitor and evaluate environmental and social risks across your supply chain.",
         // "Regularly document risk assessments and detail mitigation strategies."
       ],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
       image: { src: gallery22, alt: "hero2" }
     },
@@ -268,7 +273,7 @@ export const HERO_SECTIONS = {
         // "Monitor and evaluate environmental and social risks across your supply chain.",
         // "Regularly document risk assessments and detail mitigation strategies."
       ],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
       image: { src: gallery14, alt: "hero2" }
     },
@@ -282,7 +287,7 @@ export const HERO_SECTIONS = {
         // "Verified Data for Compliance",
         // "Cost effective Audit REady Reports"
       ],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery3, alt: "hero3" }
     },
@@ -294,7 +299,7 @@ export const HERO_SECTIONS = {
         // "Verified Data for Compliance",
         // "Cost effective Audit REady Reports"
       ],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery13, alt: "hero3" }
     },
@@ -306,7 +311,7 @@ export const HERO_SECTIONS = {
         // "Verified Data for Compliance",
         // "Cost effective Audit REady Reports"
       ],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery12, alt: "hero3" }
     },
@@ -320,7 +325,7 @@ export const HERO_SECTIONS = {
         // "Enhanced Environmental Stewardship",
         // "Commitment to Corporate Responsibility"
       ],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery24, alt: "hero4" }
     },
@@ -332,7 +337,7 @@ export const HERO_SECTIONS = {
         // "Enhanced Environmental Stewardship",
         // "Commitment to Corporate Responsibility"
       ],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery6, alt: "hero4" }
     },
@@ -344,7 +349,7 @@ export const HERO_SECTIONS = {
         // "Enhanced Environmental Stewardship",
         // "Commitment to Corporate Responsibility"
       ],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery27, alt: "hero4" }
     },
@@ -358,7 +363,7 @@ export const HERO_SECTIONS = {
         // "Enhanced Environmental Stewardship",
         // "Commitment to Corporate Responsibility"
       ],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery11, alt: "hero5" }
     },
@@ -370,7 +375,7 @@ export const HERO_SECTIONS = {
         // "Enhanced Environmental Stewardship",
         // "Commitment to Corporate Responsibility"
       ],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery22, alt: "hero5" }
     },
@@ -382,7 +387,7 @@ export const HERO_SECTIONS = {
         // "Enhanced Environmental Stewardship",
         // "Commitment to Corporate Responsibility"
       ],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery26, alt: "hero5" }
     },
@@ -396,7 +401,7 @@ export const HERO_SECTIONS = {
         // "Empower growers and strengthen partnerships",
         // "Promotes Climate Action"
       ],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery16, alt: "hero6" }
     },
@@ -408,7 +413,7 @@ export const HERO_SECTIONS = {
         // "Empower growers and strengthen partnerships",
         // "Promotes Climate Action"
       ],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery8, alt: "hero6" }
     },
@@ -420,7 +425,7 @@ export const HERO_SECTIONS = {
         // "Empower growers and strengthen partnerships",
         // "Promotes Climate Action"
       ],
-      primaryButton: { text: "GO TO PORTAL" },
+      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
       image: { src: gallery18, alt: "hero6" }
     },
@@ -1038,6 +1043,7 @@ export const INPUTS_CONFIG = {
 
 export const FONT = {
   size: {
+    xLarge: "xLarge",
     large: "large",
     medium: "medium",
     small: "small",
@@ -2401,5 +2407,30 @@ export const SYSTEM_CARD_DATA = [
     title: "Stakeholder/MDA",
     subtext: "Pre Shipment Inspection Agents, Relevant Regulatory Agencies, Shipping lines & Airlines and Nigeria Customs Service.",
     buttonText: "GO TO PORTAL",
+  },
+];
+
+export const DUMMY_MESSAGES = [
+  { sender: 'agent-1', text: 'Hi there! How can I help you today?', time: '2:48pm' },
+  { sender: 'client-1', text: 'I have a question about your platform.', time: '3:04pm' },
+  { sender: 'agent-2', text: 'Sure! Feel free to ask me anything.', time: '3:05pm' },
+  { sender: 'client-2', text: 'What’s the pricing structure?', time: '3:06pm' },
+];
+
+export const AGRO_PRODUCTS = [
+  {
+    name: "Rice",
+    states: ["Kebbi", "Ebonyi", "Niger", "Kano", "Taraba"],
+    image: rice
+  },
+  {
+    name: "Maize",
+    states: ["Kaduna", "Katsina", "Niger", "Oyo", "Plateau"],
+    image:maize
+  },
+  {
+    name: "Yam",
+    states: ["Benue", "Nasarawa", "Taraba", "Niger", "Ebonyi"],
+    image: yam
   },
 ];
