@@ -4,16 +4,11 @@ import hero2 from "../assets/hero_images/export.webp";
 // import hero4 from "../assets/hero_images/Sustainability-Hero-Image.png";
 // import hero5 from "../assets/hero_images/hero5.png";
 // import hero6 from "../assets/hero_images/hero6.png";
-import company1 from "../assets/company/aws-logo.png";
-import company2 from "../assets/company/BW-logo.png";
-import company3 from "../assets/company/Final-HA-logo-updated-21-dark.png";
-import company4 from "../assets/company/ilf-logo-1.png";
-import company5 from "../assets/company/Image-74@2x.png";
-import company6 from "../assets/company/industry-wired-logo.webp";
-import company7 from "../assets/company/nabventures-logo.jpg";
-import company8 from "../assets/company/newindian-logo.png";
-import company9 from "../assets/company/Pipal_logo_web-01-01-2-dark.png";
-import company10 from "../assets/company/social-alpha-logo.png";
+import company1 from "../assets/company/ogun.png";
+import company2 from "../assets/company/oyo.png";
+import company3 from "../assets/company/mini-env.png";
+import company4 from "../assets/company/trade.png";
+import company5 from "../assets/company/Logo.webp";
 import eudrImage from "../assets/impact-image.png";
 import trust1 from "../assets/trust_company/trust-1.png";
 import trust2 from "../assets/trust_company/trust-2.png";
@@ -224,7 +219,7 @@ export const HERO_SECTIONS = {
       image: { src: gallery32, alt: "hero1" }
     },
    {
-      heading: "Exporters portal",
+      heading: "Exporters Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
@@ -232,7 +227,7 @@ export const HERO_SECTIONS = {
       image: { src: hero1, alt: "hero1" }
     },
     {
-      heading: "Importers portal",
+      heading: "Importers Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
@@ -242,7 +237,7 @@ export const HERO_SECTIONS = {
   ],
   eudrSection: [
     {
-      heading: "Stakeholders/MDAs portal",
+      heading: "Stakeholders/MDAs Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         "Record and verify transparent data for EUDR compliance.",
@@ -251,10 +246,10 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
-      image: { src: gallery12, alt: "hero2" }
+      image: { src: gallery32, alt: "hero2" }
     },
     {
-      heading: "Exporters portal",
+      heading: "Exporters Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Record and verify transparent data for EUDR compliance.",
@@ -263,10 +258,10 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
-      image: { src: gallery22, alt: "hero2" }
+      image: { src: hero1, alt: "hero2" }
     },
      {
-      heading: "Importers portal",
+      heading: "Importers Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Record and verify transparent data for EUDR compliance.",
@@ -275,12 +270,12 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
-      image: { src: gallery14, alt: "hero2" }
+      image: { src: hero2, alt: "hero2" }
     },
   ],
   mrvSection: [
     {
-      heading: "Stakeholders/MDAs portal",
+      heading: "Stakeholders/MDAs Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Enhanced Data Accuracy",
@@ -289,10 +284,10 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery3, alt: "hero3" }
+      image: { src: gallery32, alt: "hero3" }
     },
    {
-      heading: "Exporters portal",
+      heading: "Exporters Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Enhanced Data Accuracy",
@@ -301,7 +296,7 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery13, alt: "hero3" }
+      image: { src: hero1, alt: "hero3" }
     },
     {
       heading: "Importers portal",
@@ -313,12 +308,12 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery12, alt: "hero3" }
+      image: { src: hero2, alt: "hero3" }
     },
   ],
   sustainabilitySection: [
     {
-      heading: "Stakeholders/MDAs portal",
+      heading: "Stakeholders/MDAs Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
@@ -327,10 +322,10 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery24, alt: "hero4" }
+      image: { src: gallery32, alt: "hero4" }
     },
     {
-      heading: "Exporters portal",
+      heading: "Exporters Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
@@ -339,10 +334,10 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery6, alt: "hero4" }
+      image: { src: hero1, alt: "hero4" }
     },
    {
-      heading: "Importers portal",
+      heading: "Importers Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
@@ -351,12 +346,12 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery27, alt: "hero4" }
+      image: { src: hero2, alt: "hero4" }
     },
   ],
   traceabilitySection: [
     {
-      heading: "Stakeholders/MDAs portal",
+      heading: "Stakeholders/MDAs Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
@@ -365,10 +360,10 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery11, alt: "hero5" }
+      image: { src: gallery32, alt: "hero5" }
     },
      {
-      heading: "Exporters portal",
+      heading: "Exporters Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
@@ -377,10 +372,10 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery22, alt: "hero5" }
+      image: { src: hero1, alt: "hero5" }
     },
      {
-      heading: "Importers portal",
+      heading: "Importers Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
@@ -389,12 +384,12 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery26, alt: "hero5" }
+      image: { src: hero2, alt: "hero5" }
     },
   ],
   managementSection: [
     {
-      heading: "Stakeholders/MDAs portal",
+      heading: "Stakeholders/MDAs Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Boost yields and minimize wastes",
@@ -403,10 +398,10 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery16, alt: "hero6" }
+      image: { src: gallery32, alt: "hero6" }
     },
     {
-      heading: "Exporters portal",
+      heading: "Exporters Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Boost yields and minimize wastes",
@@ -415,10 +410,10 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery8, alt: "hero6" }
+      image: { src: hero1, alt: "hero6" }
     },
      {
-      heading: "Importers portal",
+      heading: "Importers Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Boost yields and minimize wastes",
@@ -427,7 +422,7 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery18, alt: "hero6" }
+      image: { src: hero2, alt: "hero6" }
     },
   ]
 };
@@ -435,8 +430,7 @@ export const HERO_SECTIONS = {
 
 export const COMPANY_LOGOS_CAROUSEL = {
   companies: [
-    company1, company2, company3, company4, company5,
-    company6, company7, company8, company9, company10
+    company1, company2, company3, company4, company5, company1, company2, company3, company4,
   ],
 };
 
@@ -751,21 +745,21 @@ export const COMPANY_LOGOS = {
     { id: 3, src: company3, alt: "HA" },
     { id: 4, src: company4, alt: "ILF" },
     { id: 5, src: company5, alt: "Image 74" },
-    { id: 6, src: company6, alt: "Industry Wired" },
+    { id: 5, src: company1, alt: "Image 74" },
   ],
   homeSectionSupportedBy: [
-    { id: 1, src: company7, alt: "AWS" },
-    { id: 2, src: company8, alt: "BW" },
-    { id: 3, src: company9, alt: "HA" },
-    { id: 4, src: company10, alt: "ILF" },
+    { id: 2, src: company5, alt: "BW" },
+    { id: 3, src: company4, alt: "HA" },
+    { id: 4, src: company3, alt: "ILF" },
     { id: 5, src: company1, alt: "Image 74" },
     { id: 6, src: company2, alt: "Industry Wired" },
+    { id: 5, src: company1, alt: "Image 74" },
   ]
 };
 
 export const SECTION_HEADERS = {
   join: {
-    title: "Join the Companies that Trust us",
+    title: "Join the Agencies that Trust us",
     subTitle: ""
   },
   join2: {
@@ -2391,20 +2385,20 @@ export const MISSION_VISSION = [
 
 export const SYSTEM_CARD_DATA = [
   {
-    image: gallery1,
-    title: "Applicant",
+    image: hero1,
+    title: "Importer Portal",
     subtext: "Click here to Register on the portal with your Tax Identification Number (TIN) from FIRS or your Bank Verification Number (BVN). Once concluded, you can fill out your Form A, NCX or NXP.",
     buttonText: "GO TO PORTAL",
   },
   {
-    image: gallery12,
-    title: "Authorised Dealer Bank (ADB)",
+    image: hero2,
+    title: "Exporter Portal",
     subtext: "Authorised Dealers review submissions of exporters and validate trade forms.",
     buttonText: "GO TO PORTAL",
   },
   {
     image: gallery22,
-    title: "Stakeholder/MDA",
+    title: "Stakeholder/MDAs Portal",
     subtext: "Pre Shipment Inspection Agents, Relevant Regulatory Agencies, Shipping lines & Airlines and Nigeria Customs Service.",
     buttonText: "GO TO PORTAL",
   },

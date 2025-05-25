@@ -48,13 +48,13 @@ const ImageRowCarousel = ({ companyLogos }) => {
         style={{ willChange: "transform" }} // Optimize performance
       >
         {companyLogos.map((logo, index) => (
-          <div key={index} className="flex-shrink-0 w-[150px]">
+          <div key={index} className="flex-shrink-0 w-[150px] mx-auto">
             {" "}
             {/* Fixed width container */}
             <img
               src={logo}
               alt={`Company ${index + 1}`}
-              className="h-16 w-full object-contain hover:scale-105 transition-transform"
+              className="h-40 w-full object-contain hover:scale-105 transition-transform"
             />
           </div>
         ))}

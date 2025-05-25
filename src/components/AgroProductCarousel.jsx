@@ -27,7 +27,7 @@ const AgroProductCarousel = ({ agroProducts }) => {
   };
 
   return (
-    <section className="py-20 px-6 bg-gradient-to-b from-green-50 to-white">
+   <section className="pt-16  px-6 bg-gradient-to-b from-green-50 to-white">
       <div className="max-w-7xl mx-auto">
         {/* Title */}
         <div className="text-center mb-14">
@@ -36,7 +36,7 @@ const AgroProductCarousel = ({ agroProducts }) => {
         </div>
 
         {/* Carousel */}
-        <div className="relative min-h-[500px] md:min-h-[600px] transition-opacity duration-700">
+        <div className="relative  transition-opacity duration-700">
           <div className={`transition-opacity duration-700 ease-in-out ${fade ? "opacity-100" : "opacity-0"}`}>
             <AgroProductCard {...agroProducts[currentIndex]} />
           </div>

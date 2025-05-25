@@ -26,7 +26,7 @@ const SustainabilityPage = () => {
     <>
       <HeroSection
         slides={HERO_SECTIONS.sustainabilitySection}
-        size={FONT.size.large}
+        size={FONT.size.xLarge}
         color={FONT.color.light}
       />
       <TrustedCompanies

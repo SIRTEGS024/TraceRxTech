@@ -26,7 +26,7 @@ const ManagementPage = () => {
     <>
       <HeroSection
         slides={HERO_SECTIONS.managementSection}
-        size={FONT.size.large}
+        size={FONT.size.xLarge}
         color={FONT.color.light}
       />
       <TrustedCompanies

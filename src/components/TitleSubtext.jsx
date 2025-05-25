@@ -26,9 +26,9 @@ const subTitleSizeMap = {
   const underlineColor = color === "white" ? "bg-white" : "bg-green-700";
 
   return (
-    <div className="text-center mb-12"> {/* Reduced bottom margin */}
+    <div className="text-center mb-6"> {/* Reduced bottom margin */}
       {/* Title Section */}
-      <div className="text-center mb-8"> {/* Reduced bottom margin */}
+      <div className="text-center mb-4"> {/* Reduced bottom margin */}
         <h2
           className={`font-semibold ${titleSizeMap[size]} ${titleTextColor} mb-3 break-words max-w-4xl mx-auto`} // Changed to font-bold
         >

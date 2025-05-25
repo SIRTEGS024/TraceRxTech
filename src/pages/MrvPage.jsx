@@ -26,7 +26,7 @@ const MrvPage = () => {
     <>
       <HeroSection
         slides={HERO_SECTIONS.mrvSection}
-        size={FONT.size.large}
+        size={FONT.size.xLarge}
         color={FONT.color.light}
       />
       <TrustedCompanies

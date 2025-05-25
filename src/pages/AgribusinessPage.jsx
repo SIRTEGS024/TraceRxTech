@@ -21,7 +21,7 @@ const AgribusinessPage = () => {
       <TextImage
         {...TEXT_IMAGE.agribusinessSection}
         light
-        size={FONT.size.large}
+        size={FONT.size.xLarge}
       />
       <TrustedCompanies
         companyLogos={COMPANY_LOGOS_CAROUSEL.companies}
