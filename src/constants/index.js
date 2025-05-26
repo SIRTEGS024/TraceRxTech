@@ -211,7 +211,7 @@ export const NAV_LINKS = [
 export const HERO_SECTIONS = {
   homeSection: [
     {
-      heading: "Stakeholders/MDAs portal",
+      heading: "Stakeholder/MDA Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
@@ -219,7 +219,7 @@ export const HERO_SECTIONS = {
       image: { src: gallery32, alt: "hero1" }
     },
    {
-      heading: "Exporters Portal",
+      heading: "Exporter Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
@@ -227,7 +227,7 @@ export const HERO_SECTIONS = {
       image: { src: hero1, alt: "hero1" }
     },
     {
-      heading: "Importers Portal",
+      heading: "Importer Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [],
       primaryButton: { text: "GO TO PORTAL", url:"/signup" },
@@ -237,7 +237,7 @@ export const HERO_SECTIONS = {
   ],
   eudrSection: [
     {
-      heading: "Stakeholders/MDAs Portal",
+      heading: "Stakeholder/MDA Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         "Record and verify transparent data for EUDR compliance.",
@@ -249,7 +249,7 @@ export const HERO_SECTIONS = {
       image: { src: gallery32, alt: "hero2" }
     },
     {
-      heading: "Exporters Portal",
+      heading: "Exporter Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Record and verify transparent data for EUDR compliance.",
@@ -261,7 +261,7 @@ export const HERO_SECTIONS = {
       image: { src: hero1, alt: "hero2" }
     },
      {
-      heading: "Importers Portal",
+      heading: "Importer Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Record and verify transparent data for EUDR compliance.",
@@ -275,7 +275,7 @@ export const HERO_SECTIONS = {
   ],
   mrvSection: [
     {
-      heading: "Stakeholders/MDAs Portal",
+      heading: "Stakeholder/MDA Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Enhanced Data Accuracy",
@@ -287,7 +287,7 @@ export const HERO_SECTIONS = {
       image: { src: gallery32, alt: "hero3" }
     },
    {
-      heading: "Exporters Portal",
+      heading: "Exporter Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Enhanced Data Accuracy",
@@ -299,7 +299,7 @@ export const HERO_SECTIONS = {
       image: { src: hero1, alt: "hero3" }
     },
     {
-      heading: "Importers portal",
+      heading: "Importer portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Enhanced Data Accuracy",
@@ -313,7 +313,7 @@ export const HERO_SECTIONS = {
   ],
   sustainabilitySection: [
     {
-      heading: "Stakeholders/MDAs Portal",
+      heading: "Stakeholder/MDA Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
@@ -325,7 +325,7 @@ export const HERO_SECTIONS = {
       image: { src: gallery32, alt: "hero4" }
     },
     {
-      heading: "Exporters Portal",
+      heading: "Exporter Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
@@ -337,7 +337,7 @@ export const HERO_SECTIONS = {
       image: { src: hero1, alt: "hero4" }
     },
    {
-      heading: "Importers Portal",
+      heading: "Importer Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
@@ -351,7 +351,7 @@ export const HERO_SECTIONS = {
   ],
   traceabilitySection: [
     {
-      heading: "Stakeholders/MDAs Portal",
+      heading: "Stakeholder/MDA Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
@@ -363,7 +363,7 @@ export const HERO_SECTIONS = {
       image: { src: gallery32, alt: "hero5" }
     },
      {
-      heading: "Exporters Portal",
+      heading: "Exporter Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
@@ -375,7 +375,7 @@ export const HERO_SECTIONS = {
       image: { src: hero1, alt: "hero5" }
     },
      {
-      heading: "Importers Portal",
+      heading: "Importer Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
@@ -389,7 +389,7 @@ export const HERO_SECTIONS = {
   ],
   managementSection: [
     {
-      heading: "Stakeholders/MDAs Portal",
+      heading: "Stakeholder/MDA Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Boost yields and minimize wastes",
@@ -401,7 +401,7 @@ export const HERO_SECTIONS = {
       image: { src: gallery32, alt: "hero6" }
     },
     {
-      heading: "Exporters Portal",
+      heading: "Exporter Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Boost yields and minimize wastes",
@@ -413,7 +413,7 @@ export const HERO_SECTIONS = {
       image: { src: hero1, alt: "hero6" }
     },
      {
-      heading: "Importers Portal",
+      heading: "Importer Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
         // "Boost yields and minimize wastes",
@@ -892,7 +892,7 @@ export const SECTION_HEADERS = {
   },
   system:{
     title:"Welcome to the Trade Monitoring System (TRMS)",
-    subTitle:"Trade facilitation tool for access to trade forms (Forms NXP, NCX, A) and data exchange between stakeholders in the trade chain. Visit any of the Portals below to Get Started!"
+    subTitle:"Trade facilitation tool for access to trade forms (Forms NXP, NCX, A) and data exchange between stakeholder in the trade chain. Visit any of the Portals below to Get Started!"
   }
 };
 
@@ -1773,7 +1773,7 @@ export const GRADIENT_CARDS_DATA = {
   traceability: [
     {
       title: "First Mile Farm Traceability",
-      text: "Trace the journey of agricultural products from planting to the point they leave the farm, providing valuable insights for stakeholders and build trust in the authenticity and responsible sourcing of farm products."
+      text: "Trace the journey of agricultural products from planting to the point they leave the farm, providing valuable insights for stakeholder and build trust in the authenticity and responsible sourcing of farm products."
     },
     {
       title: "Process & Manufacturing",
@@ -1851,7 +1851,7 @@ export const TAILORED_CARDS_DATA = {
     },
     {
       heading: "Achieve Precision in Carbon Measurement, Reporting, and Verification",
-      subtext: "The Digital MRV Platform provides a robust solution for accurate and transparent MRV. Simplify the process of documenting and verifying carbon reductions with real-time data and advanced analytics, ensuring compliance and building trust with stakeholders.",
+      subtext: "The Digital MRV Platform provides a robust solution for accurate and transparent MRV. Simplify the process of documenting and verifying carbon reductions with real-time data and advanced analytics, ensuring compliance and building trust with stakeholder.",
       tailoredFor: ["Carbon Project Developers", "Validation & Verification Bodies", "Sustainability Heads"],
       buttonText: "Explore our Traceability Platform",
     },
@@ -1969,7 +1969,7 @@ export const CHOOSE_SECTION = {
     {
       logo: choose4,
       title: "Increased Transparency",
-      subtext: "Provide clear, trustworthy reports and data to stakeholders, enhancing credibility and compliance."
+      subtext: "Provide clear, trustworthy reports and data to stakeholder, enhancing credibility and compliance."
     }
   ],
   processSection: [
@@ -2398,7 +2398,7 @@ export const SYSTEM_CARD_DATA = [
   },
   {
     image: gallery22,
-    title: "Stakeholder/MDAs Portal",
+    title: "Stakeholder/MDA Portal",
     subtext: "Pre Shipment Inspection Agents, Relevant Regulatory Agencies, Shipping lines & Airlines and Nigeria Customs Service.",
     buttonText: "GO TO PORTAL",
   },
