@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import AgroProductCard from "./AgroProductCard";
+import TitleSubtext from "./TitleSubtext";
 
 const AgroProductCarousel = ({ agroProducts }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -8,13 +9,15 @@ const AgroProductCarousel = ({ agroProducts }) => {
   const nextSlide = () => {
     setFade(false);
     setTimeout(() => {
-      setCurrentIndex((prev) => (prev === agroProducts.length - 1 ? 0 : prev + 1));
+      setCurrentIndex((prev) =>
+        prev === agroProducts.length - 1 ? 0 : prev + 1
+      );
       setFade(true);
-    }, 700); // slower fade out (was 300)
+    }, 700);
   };
 
   useEffect(() => {
-    const interval = setInterval(nextSlide, 5000); // Slide changes every 5 seconds
+    const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
   }, [currentIndex]);
 
@@ -27,17 +30,22 @@ const AgroProductCarousel = ({ agroProducts }) => {
   };
 
   return (
-   <section className="pt-16  px-6 bg-gradient-to-b from-green-50 to-white">
+    <section className="pt-16 px-6 bg-gradient-to-b from-green-50 to-white">
       <div className="max-w-7xl mx-auto">
-        {/* Title */}
-        <div className="text-center mb-14">
-          <h2 className="text-4xl font-bold text-green-900 mb-2">Agro Products</h2>
-          <div className="w-16 h-1 bg-green-600 mx-auto rounded"></div>
-        </div>
+        <TitleSubtext
+          title="Commodities and Products Regulated under the EU Deforestation-Free Regulation"
+          subTitle="The EUDR targets seven key commodities and a wide range of derived products to ensure they are deforestation-free. Below is a detailed breakdown of these commodities and their derivatives, as defined in Annex I of Regulation (EU) 2023/1115."
+          size="large"
+          underline="default"
+        />
 
         {/* Carousel */}
-        <div className="relative  transition-opacity duration-700">
-          <div className={`transition-opacity duration-700 ease-in-out ${fade ? "opacity-100" : "opacity-0"}`}>
+        <div className="relative transition-opacity duration-700">
+          <div
+            className={`transition-opacity duration-700 ease-in-out ${
+              fade ? "opacity-100" : "opacity-0"
+            }`}
+          >
             <AgroProductCard {...agroProducts[currentIndex]} />
           </div>
 

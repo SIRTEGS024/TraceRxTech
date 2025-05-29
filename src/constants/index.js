@@ -1,9 +1,5 @@
-import hero1 from "../assets/hero_images/import.webp";
-import hero2 from "../assets/hero_images/export.webp";
-// import hero3 from "../assets/hero_images/DMRV-Hero.png";
-// import hero4 from "../assets/hero_images/Sustainability-Hero-Image.png";
-// import hero5 from "../assets/hero_images/hero5.png";
-// import hero6 from "../assets/hero_images/hero6.png";
+import hero1 from "../assets/hero_images/import2.jpeg";
+import hero2 from "../assets/hero_images/export2.jpeg";
 import company1 from "../assets/company/ogun.png";
 import company2 from "../assets/company/oyo.png";
 import company3 from "../assets/company/mini-env.png";
@@ -13,30 +9,6 @@ import eudrImage from "../assets/impact-image.png";
 import trust1 from "../assets/trust_company/trust-1.png";
 import trust2 from "../assets/trust_company/trust-2.png";
 import trust3 from "../assets/trust_company/trust-3.svg";
-// import homeCarouselImg1 from "../assets/trust_carousel/coffee.png";
-// import homeCarouselImg2 from "../assets/trust_carousel/rice.png";
-// import homeCarouselImg3 from "../assets/trust_carousel/tobacco.png";
-// import eudrCarouselImg1 from "../assets/trust_carousel/eudr-single.jpg";
-// import mrvCarouselImg1 from "../assets/trust_carousel/vnv_cs.jpg";
-// import mrvCarouselImg2 from "../assets/trust_carousel/CASESTUDY2_IMAGE.png";
-// import sustainabilityCarouselImg1 from "../assets/trust_carousel/sustainability1.jpg";
-// import sustainabilityCarouselImg2 from "../assets/trust_carousel/sustainability2.jpg";
-// import traceabilityCarouselImg1 from "../assets/trust_carousel/traceability1.png";
-// import traceabilityCarouselImg2 from "../assets/trust_carousel/traceability2.jpg";
-// import managementCarouselImg1 from "../assets/trust_carousel/management1.png";
-// import managementCarouselImg2 from "../assets/trust_carousel/management2.jpg";
-// import agribusinessCarouselImg1 from "../assets/trust_carousel/agribusiness1.jpg";
-// import carbonCarouselImg1 from "../assets/trust_carousel/agribusiness1.jpg";
-// import carbonCarouselImg2 from "../assets/trust_carousel/agribusiness1.jpg";
-// import processCarouselImg1 from "../assets/trust_carousel/agribusiness1.jpg";
-// import processCarouselImg2 from "../assets/trust_carousel/sustainability1.jpg";
-// import foundationCarouselImg1 from "../assets/trust_carousel/agribusiness1.jpg";
-// import foundationCarouselImg2 from "../assets/trust_carousel/agribusiness1.jpg";
-// import deforestationImg from '../assets/dark_blue/eu-deforestation.png';
-// import guideImg from '../assets/dark_blue/Guide-to-Voluntary.png';
-// import sustainImg from '../assets/dark_blue/sustainable-future.png';
-// import traceImg from '../assets/dark_blue/book-cover-2.png';
-// import guideManagImg from '../assets/dark_blue/Guide-to-Farm.png';
 import agribusiness from '../assets/dark_blue/Agri-Business.png';
 import carbon from '../assets/dark_blue/carbon.png';
 import process from '../assets/dark_blue/process.png';
@@ -48,18 +20,6 @@ import auditLogo1 from "../assets/audit_logo/audit-1.png";
 import auditLogo2 from "../assets/audit_logo/audit-2.png";
 import auditLogo3 from "../assets/audit_logo/audit-3.png";
 import { FaEnvelope } from "react-icons/fa";
-// import eudr1 from "../assets/energy/eudr1.png";
-// import eudr2 from "../assets/energy/eudr2.png";
-// import eudr3 from "../assets/energy/eudr3.png";
-// import mrv1 from "../assets/energy/mrv1.png";
-// import mrv2 from "../assets/energy/mrv2.png";
-// import mrv3 from "../assets/energy/mrv3.png";
-// import sustainability1 from "../assets/energy/sustainability1.png";
-// import sustainability2 from "../assets/energy/sustainability2.png";
-// import traceability1 from "../assets/energy/traceability1.png";
-// import traceability2 from "../assets/energy/traceability2.png";
-// import management1 from "../assets/energy/management1.png";
-// import management2 from "../assets/energy/management2.png";
 import beef from "../assets/eudr_comp/beef.png";
 import cocoa from "../assets/eudr_comp/cocoa.png";
 import coffee from "../assets/eudr_comp/coffee.png";
@@ -116,46 +76,101 @@ import choose1 from "../assets/choose_images/agribusiness1.svg";
 import choose2 from "../assets/choose_images/agribusiness2.png";
 import choose3 from "../assets/choose_images/agribusiness3.svg";
 import choose4 from "../assets/choose_images/agribusiness4.png";
-// import login1 from "../assets/login_back/image1.jpg";
-// import login2 from "../assets/login_back/image2.jpg";
-// import login3 from "../assets/login_back/image3.jpg";
-// import signup1 from "../assets/signup_back/image1.jpg";
-// import signup2 from "../assets/signup_back/image2.jpg";
-// import signup3 from "../assets/login_back/image3.jpg";
-import gallery1 from "../assets/real/025A3308.jpg";
-import gallery2 from "../assets/real/025A3325.jpg";
-import gallery3 from "../assets/real/025A3428.jpg";
-import gallery4 from "../assets/real/025A3603-3.jpg";
-import gallery6 from "../assets/real/_MG_4164.jpg";
-import gallery7 from "../assets/real/025A3407.jpg";
-import gallery8 from "../assets/real/025A3442.jpg";
-import gallery9 from "../assets/real/025A3597-3.jpg";
-import gallery10 from "../assets/real/_MG_4192.jpg";
-import gallery11 from "../assets/real/_MG_4142.jpg";
-import gallery12 from "../assets/real/025A3422.jpg";
-import gallery13 from "../assets/real/025A3463.jpg";
-import gallery14 from "../assets/real/025A5235.jpg";
-import gallery15 from "../assets/real/025A5573.jpg";
-import gallery16 from "../assets/real/025A3355.jpg";
-import gallery18 from "../assets/real/025A5617.jpg";
-import gallery19 from "../assets/real/025A3631-3.jpg";
-import gallery20 from "../assets/real/025A3603-3.jpg";
-import gallery21 from "../assets/real/025A3639-3.jpg";
-import gallery22 from "../assets/real/025A3301.jpg";
-import gallery23 from "../assets/real/_MG_4168.jpg";
-import gallery24 from "../assets/real/_MG_4130.jpg";
-import gallery25 from "../assets/real/_MG_4187.jpg";
-import gallery26 from "../assets/real/025A5702.jpg";
-import gallery27 from "../assets/real/025A3446.jpg";
-import gallery28 from "../assets/real/025A3586-3.jpg";
-import gallery29 from "../assets/real/025A4903.jpg";
-import gallery30 from "../assets/real/025A4891.jpg";
-import gallery31 from "../assets/real/025A5689.jpg";
-import gallery32 from "../assets/picked/_MG_4168.jpg";
-import gallery33 from "../assets/picked/WhatsApp Image 2025-05-21 at 12.02.42.jpeg";
-import rice from "../assets/maps/rice.png";
-import maize from "../assets/maps/maize.png";
-import yam from "../assets/maps/yam.png";
+import gallery1 from "../assets/real/025A3301.jpg";
+import gallery2 from "../assets/real/025A3308.jpg";
+import gallery3 from "../assets/real/025A3310.jpg";
+import gallery4 from "../assets/real/025A3325.jpg";
+import gallery5 from "../assets/real/025A3355.jpg";
+import gallery6 from "../assets/real/025A3407.jpg";
+import gallery7 from "../assets/real/025A3410.jpg";
+import gallery8 from "../assets/real/025A3421.jpg";
+import gallery9 from "../assets/real/025A3422.jpg";
+import gallery10 from "../assets/real/025A3428.jpg";
+import gallery11 from "../assets/real/025A3435.jpg";
+import gallery12 from "../assets/real/025A3442.jpg";
+import gallery13 from "../assets/real/025A3446.jpg";
+import gallery14 from "../assets/real/025A3455.jpg";
+import gallery15 from "../assets/real/025A3456.jpg";
+import gallery16 from "../assets/real/025A3463.jpg";
+import gallery17 from "../assets/real/025A3473.jpg";
+import gallery18 from "../assets/real/025A3478.jpg";
+import gallery19 from "../assets/real/025A3554.jpg";
+import gallery20 from "../assets/real/025A3556.jpg";
+import gallery21 from "../assets/real/025A3564.jpg";
+import gallery22 from "../assets/real/025A3583-3.jpg";
+import gallery23 from "../assets/real/025A3586-3.jpg";
+import gallery24 from "../assets/real/025A3597-3.jpg";
+import gallery25 from "../assets/real/025A3603-3.jpg";
+import gallery26 from "../assets/real/025A3608-3.jpg";
+import gallery27 from "../assets/real/025A3616-3.jpg";
+import gallery28 from "../assets/real/025A3622-3.jpg";
+import gallery29 from "../assets/real/025A3625-3.jpg";
+import gallery30 from "../assets/real/025A3631-3.jpg";
+import gallery31 from "../assets/real/025A3639-3.jpg";
+import gallery32 from "../assets/real/025A3664-3.jpg";
+import gallery33 from "../assets/real/025A4872.jpg";
+import gallery34 from "../assets/real/025A4876.jpg";
+import gallery35 from "../assets/real/025A4891.jpg";
+import gallery36 from "../assets/real/025A4903.jpg";
+import gallery37 from "../assets/real/025A5076.jpg";
+import gallery38 from "../assets/real/025A5173.jpg";
+import gallery39 from "../assets/real/025A5207.jpg";
+import gallery40 from "../assets/real/025A5235.jpg";
+import gallery41 from "../assets/real/025A5245.jpg";
+import gallery42 from "../assets/real/025A5247.jpg";
+import gallery43 from "../assets/real/025A5266.jpg";
+import gallery44 from "../assets/real/025A5438.jpg";
+import gallery45 from "../assets/real/025A5450.jpg";
+import gallery46 from "../assets/real/025A5557.jpg";
+import gallery47 from "../assets/real/025A5561.jpg";
+import gallery48 from "../assets/real/025A5562.jpg";
+import gallery49 from "../assets/real/025A5567.jpg";
+import gallery50 from "../assets/real/025A5569.jpg";
+import gallery51 from "../assets/real/025A5571.jpg";
+import gallery52 from "../assets/real/025A5572.jpg";
+import gallery53 from "../assets/real/025A5573.jpg";
+import gallery54 from "../assets/real/025A5580.jpg";
+import gallery55 from "../assets/real/025A5587.jpg";
+import gallery56 from "../assets/real/025A5587.jpg";
+import gallery57 from "../assets/real/025A5604.jpg";
+import gallery58 from "../assets/real/025A5605.jpg";
+import gallery59 from "../assets/real/025A5617.jpg";
+import gallery60 from "../assets/real/025A5619.jpg";
+import gallery61 from "../assets/real/025A5625.jpg";
+import gallery62 from "../assets/real/025A5630.jpg";
+import gallery63 from "../assets/real/025A5639.jpg";
+import gallery64 from "../assets/real/025A5667.jpg";
+import gallery65 from "../assets/real/025A5676.jpg";
+import gallery66 from "../assets/real/025A5688.jpg";
+import gallery67 from "../assets/real/025A5689.jpg";
+import gallery68 from "../assets/real/025A5694.jpg";
+import gallery69 from "../assets/real/025A5701.jpg";
+import gallery70 from "../assets/real/025A5702.jpg";
+import gallery71 from "../assets/real/_MG_4130.jpg";
+import gallery72 from "../assets/real/_MG_4134.jpg";
+import gallery73 from "../assets/real/_MG_4136.jpg";
+import gallery74 from "../assets/real/_MG_4142.jpg";
+import gallery75 from "../assets/real/_MG_4164.jpg";
+import gallery76 from "../assets/real/_MG_4168.jpg";
+import gallery77 from "../assets/real/_MG_4187.jpg";
+import gallery78 from "../assets/real/_MG_4192.jpg";
+import gallery79 from "../assets/real/whats1.jpeg";
+import gallery80 from "../assets/real/whats2.jpeg";
+import gallery81 from "../assets/real/whats3.jpeg";
+import gallery82 from "../assets/real/whats4.jpeg";
+import gallery83 from "../assets/real/whats5.jpeg";
+import gallery84 from "../assets/real/whats6.jpeg";
+import gallery85 from "../assets/real/whats7.jpeg";
+import gallery86 from "../assets/real/whats8.jpeg";
+import gallery87 from "../assets/real/whats9.jpeg";
+import gallery88 from "../assets/real/whats10.jpeg";
+import charcoal from "../assets/maps/charcoal.png";
+import cocoaa from "../assets/maps/cocoa.png"
+import cow from "../assets/maps/cow.png";
+import rubberr from "../assets/maps/rubber.png"
+import soya from "../assets/maps/soya.png";
+import woodd from "../assets/maps/wood.png";
+import coffeee from "../assets/maps/coffee.png";
 
 export const NAV_LINKS = [
   {
@@ -186,10 +201,6 @@ export const NAV_LINKS = [
     subLinks: [
       { name: "Blog", url: "/blog" },
       { name: "Media", url: "/media" },
-      // { name: "Ebooks", url: "/ebooks" },
-      // { name: "Glossary", url: "/glossary" },
-      // { name: "Webinars", url: "/webinars" },
-      // { name: "Whitepapers", url: "/whitepapers" }
     ]
   },
   {
@@ -214,25 +225,25 @@ export const HERO_SECTIONS = {
       heading: "Stakeholder/MDA Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "BOOK DEMO" },
-      image: { src: gallery32, alt: "hero1" }
+      image: { src: gallery1, alt: "hero1" }
     },
-   {
+    {
       heading: "Exporter Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "BOOK DEMO" },
-      image: { src: hero1, alt: "hero1" }
+      image: { src: gallery87, alt: "hero1" }
     },
     {
       heading: "Importer Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "BOOK DEMO" },
-      image: { src: hero2, alt: "hero2" }
+      image: { src: gallery86, alt: "hero2" }
     },
   ],
   eudrSection: [
@@ -240,13 +251,13 @@ export const HERO_SECTIONS = {
       heading: "Stakeholder/MDA Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
-        "Record and verify transparent data for EUDR compliance.",
-        "Monitor and evaluate environmental and social risks across your supply chain.",
-        "Regularly document risk assessments and detail mitigation strategies."
+        // "Record and verify transparent data for EUDR compliance.",
+        // "Monitor and evaluate environmental and social risks across your supply chain.",
+        // "Regularly document risk assessments and detail mitigation strategies."
       ],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
-      image: { src: gallery32, alt: "hero2" }
+      image: { src: gallery1, alt: "hero2" }
     },
     {
       heading: "Exporter Portal",
@@ -256,11 +267,11 @@ export const HERO_SECTIONS = {
         // "Monitor and evaluate environmental and social risks across your supply chain.",
         // "Regularly document risk assessments and detail mitigation strategies."
       ],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
-      image: { src: hero1, alt: "hero2" }
+      image: { src: gallery87, alt: "hero2" }
     },
-     {
+    {
       heading: "Importer Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
@@ -268,9 +279,9 @@ export const HERO_SECTIONS = {
         // "Monitor and evaluate environmental and social risks across your supply chain.",
         // "Regularly document risk assessments and detail mitigation strategies."
       ],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
-      image: { src: hero2, alt: "hero2" }
+      image: { src: gallery86, alt: "hero2" }
     },
   ],
   mrvSection: [
@@ -282,11 +293,11 @@ export const HERO_SECTIONS = {
         // "Verified Data for Compliance",
         // "Cost effective Audit REady Reports"
       ],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery32, alt: "hero3" }
+      image: { src: gallery1, alt: "hero3" }
     },
-   {
+    {
       heading: "Exporter Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
@@ -294,9 +305,9 @@ export const HERO_SECTIONS = {
         // "Verified Data for Compliance",
         // "Cost effective Audit REady Reports"
       ],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: hero1, alt: "hero3" }
+      image: { src: gallery87, alt: "hero3" }
     },
     {
       heading: "Importer portal",
@@ -306,9 +317,9 @@ export const HERO_SECTIONS = {
         // "Verified Data for Compliance",
         // "Cost effective Audit REady Reports"
       ],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: hero2, alt: "hero3" }
+      image: { src: gallery86, alt: "hero3" }
     },
   ],
   sustainabilitySection: [
@@ -320,9 +331,9 @@ export const HERO_SECTIONS = {
         // "Enhanced Environmental Stewardship",
         // "Commitment to Corporate Responsibility"
       ],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery32, alt: "hero4" }
+      image: { src: gallery1, alt: "hero4" }
     },
     {
       heading: "Exporter Portal",
@@ -332,11 +343,11 @@ export const HERO_SECTIONS = {
         // "Enhanced Environmental Stewardship",
         // "Commitment to Corporate Responsibility"
       ],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: hero1, alt: "hero4" }
+      image: { src: gallery87, alt: "hero4" }
     },
-   {
+    {
       heading: "Importer Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
@@ -344,9 +355,9 @@ export const HERO_SECTIONS = {
         // "Enhanced Environmental Stewardship",
         // "Commitment to Corporate Responsibility"
       ],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: hero2, alt: "hero4" }
+      image: { src: gallery86, alt: "hero4" }
     },
   ],
   traceabilitySection: [
@@ -358,11 +369,11 @@ export const HERO_SECTIONS = {
         // "Enhanced Environmental Stewardship",
         // "Commitment to Corporate Responsibility"
       ],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery32, alt: "hero5" }
+      image: { src: gallery1, alt: "hero5" }
     },
-     {
+    {
       heading: "Exporter Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
@@ -370,11 +381,11 @@ export const HERO_SECTIONS = {
         // "Enhanced Environmental Stewardship",
         // "Commitment to Corporate Responsibility"
       ],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: hero1, alt: "hero5" }
+      image: { src: gallery87, alt: "hero5" }
     },
-     {
+    {
       heading: "Importer Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
@@ -382,9 +393,9 @@ export const HERO_SECTIONS = {
         // "Enhanced Environmental Stewardship",
         // "Commitment to Corporate Responsibility"
       ],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: hero2, alt: "hero5" }
+      image: { src: gallery86, alt: "hero5" }
     },
   ],
   managementSection: [
@@ -396,9 +407,9 @@ export const HERO_SECTIONS = {
         // "Empower growers and strengthen partnerships",
         // "Promotes Climate Action"
       ],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery32, alt: "hero6" }
+      image: { src: gallery1, alt: "hero6" }
     },
     {
       heading: "Exporter Portal",
@@ -408,11 +419,11 @@ export const HERO_SECTIONS = {
         // "Empower growers and strengthen partnerships",
         // "Promotes Climate Action"
       ],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: hero1, alt: "hero6" }
+      image: { src: gallery87, alt: "hero6" }
     },
-     {
+    {
       heading: "Importer Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [
@@ -420,9 +431,9 @@ export const HERO_SECTIONS = {
         // "Empower growers and strengthen partnerships",
         // "Promotes Climate Action"
       ],
-      primaryButton: { text: "GO TO PORTAL", url:"/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: hero2, alt: "hero6" }
+      image: { src: gallery86, alt: "hero6" }
     },
   ]
 };
@@ -745,7 +756,7 @@ export const COMPANY_LOGOS = {
     { id: 3, src: company3, alt: "HA" },
     { id: 4, src: company4, alt: "ILF" },
     { id: 5, src: company5, alt: "Image 74" },
-    { id: 5, src: company1, alt: "Image 74" },
+    { id: 6, src: company1, alt: "Image 74" },
   ],
   homeSectionSupportedBy: [
     { id: 2, src: company5, alt: "BW" },
@@ -753,7 +764,7 @@ export const COMPANY_LOGOS = {
     { id: 4, src: company3, alt: "ILF" },
     { id: 5, src: company1, alt: "Image 74" },
     { id: 6, src: company2, alt: "Industry Wired" },
-    { id: 5, src: company1, alt: "Image 74" },
+    { id: 7, src: company1, alt: "Image 74" },
   ]
 };
 
@@ -890,9 +901,9 @@ export const SECTION_HEADERS = {
     title: "Empower your Advisory services and Drive Efficiency",
     subTitle: "Consultants often face several challenges when providing expert advice and solutions. TraceX offers a suite of platforms tailored to address these challenges"
   },
-  system:{
-    title:"Welcome to the Trade Monitoring System (TRMS)",
-    subTitle:"Trade facilitation tool for access to trade forms (Forms NXP, NCX, A) and data exchange between stakeholder in the trade chain. Visit any of the Portals below to Get Started!"
+  system: {
+    title: "Welcome to the Trade Monitoring System (TRMS)",
+    subTitle: "Trade facilitation tool for access to trade forms (Forms NXP, NCX, A) and data exchange between stakeholder in the trade chain. Visit any of the Portals below to Get Started!"
   }
 };
 
@@ -2074,7 +2085,7 @@ export const BLOG_DATA = [
   {
     id: 1,
     image:
-      "https://cdn-front.freepik.com/images/ai/image-generator/gallery/resource-tti-13.webp",
+     gallery25,
     title: "Urban Gardening Mastery",
     excerpt:
       "Transform your small spaces into lush green oases with our expert tips.",
@@ -2083,7 +2094,7 @@ export const BLOG_DATA = [
   {
     id: 2,
     image:
-      "https://cdn-front.freepik.com/images/ai/image-generator/gallery/resource-tti-13.webp",
+     gallery42,
     title: "Seasonal Harvest Recipes",
     excerpt: "Delicious meals using fresh produce from your local market.",
     date: "May 6, 2024",
@@ -2091,7 +2102,7 @@ export const BLOG_DATA = [
   {
     id: 3,
     image:
-      "https://cdn-front.freepik.com/images/ai/image-generator/gallery/resource-tti-13.webp",
+     gallery31,
     title: "Seasonal Harvest Recipes",
     excerpt: "Delicious meals using fresh produce from your local market.",
     date: "May 6, 2024",
@@ -2099,7 +2110,7 @@ export const BLOG_DATA = [
   {
     id: 4,
     image:
-      "https://cdn-front.freepik.com/images/ai/image-generator/gallery/resource-tti-13.webp",
+     gallery28,
     title: "Seasonal Harvest Recipes",
     excerpt: "Delicious meals using fresh produce from your local market.",
     date: "May 6, 2024",
@@ -2107,7 +2118,7 @@ export const BLOG_DATA = [
   {
     id: 5,
     image:
-      "https://cdn-front.freepik.com/images/ai/image-generator/gallery/resource-tti-13.webp",
+     gallery50,
     title: "Seasonal Harvest Recipes",
     excerpt: "Delicious meals using fresh produce from your local market.",
     date: "May 6, 2024",
@@ -2141,7 +2152,7 @@ export const MEDIA_DATA = [
     title: "Nigeria risks EU ban on export of over 8 commodities from Dec. 31, 2025",
     summary:
       "Nigeria risks EU ban on export of over 8 commodities from Dec. 31, 2025",
-    image: gallery24,
+    image: gallery87,
     source: "Facebook/AIT",
     date: "March 5, 2025",
     link: "https://www.facebook.com/share/v/18iA1ZGE2A/",
@@ -2151,7 +2162,7 @@ export const MEDIA_DATA = [
     title: "Partnership with Nigerian Universities Announced",
     summary:
       "TraceRxTech teams up with local institutions to foster innovation and research.",
-    image: "https://cdn-front.freepik.com/images/ai/image-generator/gallery/resource-tti-13.webp",
+    image: gallery19,
     source: "Nigeria Today",
     date: "February 10, 2025",
     link: "https://example.com/article4",
@@ -2161,7 +2172,7 @@ export const MEDIA_DATA = [
     title: "TraceRxTech CEO Talks Sustainability at Global Forum",
     summary:
       "Keynote address focuses on the future of digital agriculture and global sustainability.",
-    image: "https://cdn-front.freepik.com/images/ai/image-generator/gallery/resource-tti-13.webp",
+    image: gallery27,
     source: "Global Ag Forum",
     date: "January 25, 2025",
     link: "https://example.com/article5",
@@ -2191,37 +2202,37 @@ export const GALLERY_IMAGES = [
   },
   {
     id: 5,
-    imageUrl: gallery14,
+    imageUrl: gallery5,
     alt: "Plantation overview",
   },
   {
     id: 6,
-    imageUrl: gallery12,
+    imageUrl: gallery6,
     alt: "Harvest season",
   },
   {
     id: 7,
-    imageUrl: gallery20,
+    imageUrl: gallery7,
     alt: "Company meeting",
   },
   {
     id: 8,
-    imageUrl: gallery16,
+    imageUrl: gallery8,
     alt: "Innovation in agri-tech",
   },
   {
     id: 9,
-    imageUrl: gallery18,
+    imageUrl: gallery9,
     alt: "image",
   },
   {
     id: 10,
-    imageUrl: gallery19,
+    imageUrl: gallery10,
     alt: "image",
   },
   {
     id: 11,
-    imageUrl: gallery9,
+    imageUrl: gallery11,
     alt: "image",
   },
   {
@@ -2231,64 +2242,404 @@ export const GALLERY_IMAGES = [
   },
   {
     id: 15,
-    imageUrl: gallery22,
+    imageUrl: gallery13,
     alt: "image",
   },
   {
     id: 16,
-    imageUrl: gallery23,
+    imageUrl: gallery14,
     alt: "image",
   },
   {
     id: 17,
-    imageUrl: gallery25,
+    imageUrl: gallery15,
     alt: "image",
   },
   {
     id: 18,
-    imageUrl: gallery28,
+    imageUrl: gallery16,
     alt: "image",
   },
   {
     id: 19,
-    imageUrl: gallery30,
+    imageUrl: gallery17,
     alt: "image",
   },
   {
     id: 14,
-    imageUrl: gallery22,
+    imageUrl: gallery18,
     alt: "image",
   },
   {
     id: 20,
-    imageUrl: gallery11,
+    imageUrl: gallery19,
     alt: "image",
   },
   {
     id: 21,
-    imageUrl: gallery29,
+    imageUrl: gallery20,
+    alt: "image",
+  },
+   {
+     id: 22,
+     imageUrl: gallery21,
+     alt: "image",
+   },
+   {
+     id: 23,
+     imageUrl: gallery22,
+     alt: "image",
+   },
+   {
+     id: 24,
+     imageUrl: gallery23,
+     alt: "image",
+   },
+   {
+     id: 25,
+     imageUrl: gallery24,
+     alt: "image",
+   },
+   {
+     id: 26,
+     imageUrl: gallery25,
+     alt: "image",
+   },
+   {
+     id: 27,
+     imageUrl: gallery26,
+     alt: "image",
+   },
+   {
+     id: 28,
+     imageUrl: gallery27,
+     alt: "image",
+   },
+   {
+     id: 29,
+     imageUrl: gallery28,
+     alt: "image",
+   },
+   {
+     id: 30,
+     imageUrl: gallery29,
+     alt: "image",
+   },
+   {
+     id: 31,
+     imageUrl: gallery30,
+     alt: "image",
+   },
+   {
+     id: 32,
+     imageUrl: gallery31,
+     alt: "image",
+   },
+   {
+     id: 33,
+     imageUrl: gallery32,
+     alt: "image",
+   },
+   {
+     id: 34,
+     imageUrl: gallery33,
+     alt: "image",
+   },
+   {
+     id: 35,
+     imageUrl: gallery34,
+     alt: "image",
+   },
+   {
+     id: 36,
+     imageUrl: gallery35,
+     alt: "image",
+   },
+   {
+     id: 37,
+     imageUrl: gallery36,
+     alt: "image",
+   },
+   {
+     id: 38,
+     imageUrl: gallery37,
+     alt: "image",
+   },
+   {
+     id: 39,
+     imageUrl: gallery38,
+     alt: "image",
+   },
+   {
+     id: 40,
+     imageUrl: gallery39,
+     alt: "image",
+   },
+   {
+     id: 41,
+     imageUrl: gallery40,
+     alt: "image",
+   },
+   {
+     id: 42,
+     imageUrl: gallery41,
+     alt: "image",
+   },
+   {
+     id: 43,
+     imageUrl: gallery42,
+     alt: "image",
+   },
+   {
+     id: 44,
+     imageUrl: gallery43,
+     alt: "image",
+   },
+   {
+     id: 45,
+     imageUrl: gallery44,
+     alt: "image",
+   },
+   {
+     id: 46,
+     imageUrl: gallery45,
+     alt: "image",
+   },
+   {
+     id: 47,
+     imageUrl: gallery46,
+     alt: "image",
+   },
+   {
+     id: 48,
+     imageUrl: gallery47,
+     alt: "image",
+   },
+   {
+     id: 49,
+     imageUrl: gallery48,
+     alt: "image",
+   },
+   {
+     id: 50,
+     imageUrl: gallery49,
+     alt: "image",
+   },
+  {
+    id: 51,
+    imageUrl: gallery50,
+    alt: "image",
+  },
+  {
+    id: 52,
+    imageUrl: gallery51,
+    alt: "image",
+  },
+  {
+    id: 53,
+    imageUrl: gallery52,
+    alt: "image",
+  },
+  {
+    id: 54,
+    imageUrl: gallery53,
+    alt: "image",
+  },
+  {
+    id: 55,
+    imageUrl: gallery54,
+    alt: "image",
+  },
+  {
+    id: 56,
+    imageUrl: gallery55,
+    alt: "image",
+  },
+  {
+    id: 57,
+    imageUrl: gallery56,
+    alt: "image",
+  },
+  {
+    id: 58,
+    imageUrl: gallery57,
+    alt: "image",
+  },
+  {
+    id: 59,
+    imageUrl: gallery58,
+    alt: "image",
+  },
+  {
+    id: 60,
+    imageUrl: gallery59,
+    alt: "image",
+  },
+  {
+    id: 61,
+    imageUrl: gallery60,
+    alt: "image",
+  },
+  {
+    id: 62,
+    imageUrl: gallery61,
+    alt: "image",
+  },
+  {
+    id: 63,
+    imageUrl: gallery62,
+    alt: "image",
+  },
+  {
+    id: 64,
+    imageUrl: gallery63,
+    alt: "image",
+  },
+  {
+    id: 65,
+    imageUrl: gallery64,
+    alt: "image",
+  },
+  {
+    id: 66,
+    imageUrl: gallery65,
+    alt: "image",
+  },
+  {
+    id: 67,
+    imageUrl: gallery66,
+    alt: "image",
+  },
+  {
+    id: 68,
+    imageUrl: gallery67,
+    alt: "image",
+  },
+  {
+    id: 69,
+    imageUrl: gallery68,
+    alt: "image",
+  },
+  {
+    id: 70,
+    imageUrl: gallery69,
+    alt: "image",
+  },
+  {
+    id: 71,
+    imageUrl: gallery70,
+    alt: "image",
+  },
+  {
+    id: 72,
+    imageUrl: gallery71,
+    alt: "image",
+  },
+  {
+    id: 73,
+    imageUrl: gallery72,
+    alt: "image",
+  },
+  {
+    id: 74,
+    imageUrl: gallery73,
+    alt: "image",
+  },
+  {
+    id: 75,
+    imageUrl: gallery74,
+    alt: "image",
+  },
+  {
+    id: 76,
+    imageUrl: gallery75,
+    alt: "image",
+  },
+  {
+    id: 77,
+    imageUrl: gallery76,
+    alt: "image",
+  },
+  {
+    id: 78,
+    imageUrl: gallery77,
+    alt: "image",
+  },
+  {
+    id: 79,
+    imageUrl: gallery78,
+    alt: "image",
+  },
+  {
+    id: 80,
+    imageUrl: gallery79,
+    alt: "image",
+  },
+  {
+    id: 81,
+    imageUrl: gallery80,
+    alt: "image",
+  },
+  {
+    id: 82,
+    imageUrl: gallery81,
+    alt: "image",
+  },
+  {
+    id: 83,
+    imageUrl: gallery82,
+    alt: "image",
+  },
+  {
+    id: 84,
+    imageUrl: gallery83,
+    alt: "image",
+  },
+  {
+    id: 85,
+    imageUrl: gallery84,
+    alt: "image",
+  },
+  {
+    id: 86,
+    imageUrl: gallery85,
+    alt: "image",
+  },
+  {
+    id: 87,
+    imageUrl: gallery86,
+    alt: "image",
+  },
+  {
+    id: 88,
+    imageUrl: gallery87,
+    alt: "image",
+  },
+   {
+    id: 89,
+    imageUrl: gallery45,
     alt: "image",
   },
 ];
 
 export const EXECUTIVES = [
   {
-    id: 1,
+    id: "index1",
     name: "Jane Doe",
     role: "Chief Executive Officer",
-    image: "https://img.freepik.com/free-photo/portrait-expressive-young-man-wearing-formal-suit_273609-6943.jpg?uid=R110150958&ga=GA1.1.659726106.1689687094&semt=ais_hybrid&w=740"
+    image: gallery85,
   },
   {
-    id: 2,
+    id: "index2",
     name: "John Smith",
     role: "Chief Technology Officer",
-    image: "https://img.freepik.com/free-photo/portrait-expressive-young-man-wearing-formal-suit_273609-6943.jpg?uid=R110150958&ga=GA1.1.659726106.1689687094&semt=ais_hybrid&w=740"
+    image: gallery85,
   },
   {
-    id: 3,
+    id: "index3",
     name: "Mary Johnson",
     role: "Chief Operating Officer",
-    image: "https://img.freepik.com/free-photo/portrait-expressive-young-man-wearing-formal-suit_273609-6943.jpg?uid=R110150958&ga=GA1.1.659726106.1689687094&semt=ais_hybrid&w=740"
+    image: gallery85,
   }
 ];
 
@@ -2327,17 +2678,17 @@ export const PARTNER_TYPES = [
 
 export const PARTNER_STEPS = [
   {
-    id: 1,
+    id: "submit",
     title: "Submit Application",
     description: "Fill out the online form to express your interest and share your company info.",
   },
   {
-    id: 2,
+    id: "review",
     title: "Get Reviewed",
     description: "Our team will review your submission and get in touch for a discovery call.",
   },
   {
-    id: 3,
+    id: "onboarding",
     title: "Start Onboarding",
     description: "Once approved, begin onboarding with documentation, tools, and support.",
   },
@@ -2411,20 +2762,48 @@ export const DUMMY_MESSAGES = [
   { sender: 'client-2', text: 'What’s the pricing structure?', time: '3:06pm' },
 ];
 
+
 export const AGRO_PRODUCTS = [
   {
-    name: "Rice",
-    states: ["Kebbi", "Ebonyi", "Niger", "Kano", "Taraba"],
-    image: rice
+    name: "Cocoa",
+    states: ["Ondo", "Cross River", "Osun", "Ekiti", "Ogun"],
+    image: cocoaa,
+    description: "Includes cocoa beans (HS 1801) and derivatives like shells (1802), paste (1803), butter/oil (1804), powder (1805), and chocolate (1806). All are covered under EUDR and must be deforestation-free and legally compliant."
   },
   {
-    name: "Maize",
-    states: ["Kaduna", "Katsina", "Niger", "Oyo", "Plateau"],
-    image:maize
+    name: "Charcoal",
+    states: ["Oyo", "Nasarawa", "Benue", "Kogi", "Edo"],
+    image: charcoal,
+    description: "Covers wood charcoal (HS 4402), a derivative under the 'Wood' category. Production must comply with EUDR requirements against deforestation and degradation."
   },
   {
-    name: "Yam",
-    states: ["Benue", "Nasarawa", "Taraba", "Niger", "Ebonyi"],
-    image: yam
+    name: "Coffee",
+    states: ["Taraba", "Cross River", "Plateau", "Nasarawa", "Ogun"],
+    image: coffeee,
+    description: "Regulated under HS 0901, covering roasted/unroasted coffee, husks, and substitutes. Producers must ensure traceability and compliance with deforestation-free and legal standards."
   },
+  {
+    name: "Beef (Cattle)",
+    states: ["Adamawa", "Taraba", "Kaduna", "Kano", "Borno"],
+    image: cow,
+    description: "Includes live cattle (HS 0102) and derivatives like meat (0201, 0202, 1602 50), hides (4101, 4104, 4107). All must meet EUDR deforestation-free and legal production requirements."
+  },
+  {
+    name: "Soy (Soya)",
+    states: ["Benue", "Nasarawa", "Kaduna", "Kano", "Taraba"],
+    image: soya,
+    description: "Covers soybeans (HS 1201) and derivatives like soy flour (1208 10), oil (1507), and oilcake residues (2304). EUDR requires production to be legal and deforestation-free."
+  },
+  {
+    name: "Rubber",
+    states: ["Edo", "Delta", "Ondo", "Cross River", "Akwa Ibom"],
+    image: rubberr,
+    description: "Includes natural rubber (HS 4001) and various derivatives (4005–4013, 4017). All are subject to EUDR, requiring sustainable sourcing and legal compliance."
+  },
+  {
+    name: "Wood",
+    states: ["Cross River", "Ondo", "Ekiti", "Edo", "Kogi"],
+    image: woodd,
+    description: "Covers fuel wood, rough wood, and derivatives (HS 4401–4421), including charcoal (4402), sawn wood (4407), plywood (4412), and articles of wood (4421). Must meet EUDR deforestation-free and legal sourcing standards."
+  }
 ];

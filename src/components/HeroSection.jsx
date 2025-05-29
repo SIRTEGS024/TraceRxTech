@@ -30,7 +30,7 @@ export default function HeroCarousel({ slides = [],size, color }) {
         {slides.map((item, index) => (
           <SwiperSlide key={index}>
             <div
-              className="w-full bg-cover bg-center bg-no-repeat relative min-h-[80vh]"
+              className="w-full bg-cover bg-top bg-no-repeat relative min-h-[80vh]"
               style={{
                 backgroundImage: `url(${item.image?.src})`,
               }}

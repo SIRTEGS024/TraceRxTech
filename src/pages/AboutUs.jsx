@@ -85,11 +85,11 @@ const AboutUs = () => {
       </motion.section>
 
       {/* Gallery */}
-      <motion.section
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.3 }}
+      <section
+        // variants={container}
+        // initial="hidden"
+        // whileInView="show"
+        // viewport={{ once: true, amount: 0.3 }}
         className="py-20 px-4"
       >
         <div className="max-w-7xl mx-auto">
@@ -102,16 +102,17 @@ const AboutUs = () => {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {GALLERY_IMAGES.map(({ id, imageUrl, alt }) => (
               <motion.img
-                key={id}
+                key={`gallery-${id}`}
                 variants={item}
                 src={imageUrl}
+                 loading="lazy"
                 alt={alt}
                 className="w-full h-40 sm:h-48 md:h-56 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300"
               />
             ))}
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Executives */}
       <motion.section
