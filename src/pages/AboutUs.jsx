@@ -97,7 +97,7 @@ const AboutUs = () => {
             variants={item}
             className="text-3xl text-green-800 font-bold mb-10 text-center"
           >
-            Life at TraceRxTech
+            Traceability, Sustainability, Legality and Due diligence.
           </motion.h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {GALLERY_IMAGES.map(({ id, imageUrl, alt }) => (
@@ -105,7 +105,7 @@ const AboutUs = () => {
                 key={`gallery-${id}`}
                 variants={item}
                 src={imageUrl}
-                 loading="lazy"
+                loading="lazy"
                 alt={alt}
                 className="w-full h-40 sm:h-48 md:h-56 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300"
               />
@@ -129,12 +129,17 @@ const AboutUs = () => {
           >
             Meet Our Executives
           </motion.h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          <div
+            className={`grid gap-8 ${EXECUTIVES.length === 2
+              ? "grid-cols-1 sm:grid-cols-2 justify-center"
+              : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
+              }`}
+          >
             {EXECUTIVES.map((exec) => (
               <motion.div
                 key={exec.id}
                 variants={item}
-                className="transition-transform duration-300 transform hover:scale-105 hover:shadow-lg rounded-xl bg-green-50 p-4"
+                className="transition-transform duration-300 transform hover:scale-105 hover:shadow-lg rounded-xl bg-green-50 p-6 min-h-[400px] max-w-sm mx-auto w-full"
               >
                 <ExecutiveCard {...exec} />
               </motion.div>

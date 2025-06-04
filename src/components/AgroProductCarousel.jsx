@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import AgroProductCard from "./AgroProductCard";
 import TitleSubtext from "./TitleSubtext";
 
-const AgroProductCarousel = ({ agroProducts }) => {
+const AgroProductCarousel = ({ agroProducts, title, subtitle }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [fade, setFade] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
 
   const nextSlide = () => {
     setFade(false);
@@ -17,9 +18,11 @@ const AgroProductCarousel = ({ agroProducts }) => {
   };
 
   useEffect(() => {
+    if (isHovered) return;
+
     const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
-  }, [currentIndex]);
+  }, [currentIndex, isHovered]);
 
   const handleDotClick = (idx) => {
     setFade(false);
@@ -33,14 +36,17 @@ const AgroProductCarousel = ({ agroProducts }) => {
     <section className="pt-16 px-6 bg-gradient-to-b from-green-50 to-white">
       <div className="max-w-7xl mx-auto">
         <TitleSubtext
-          title="Commodities and Products Regulated under the EU Deforestation-Free Regulation"
-          subTitle="The EUDR targets seven key commodities and a wide range of derived products to ensure they are deforestation-free. Below is a detailed breakdown of these commodities and their derivatives, as defined in Annex I of Regulation (EU) 2023/1115."
+          title={title}
+          subTitle={subtitle}
           size="large"
-          underline="default"
         />
 
         {/* Carousel */}
-        <div className="relative transition-opacity duration-700">
+        <div
+          className="relative transition-opacity duration-700"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           <div
             className={`transition-opacity duration-700 ease-in-out ${
               fade ? "opacity-100" : "opacity-0"

@@ -30,12 +30,12 @@ const EudrPage = () => {
         size={FONT.size.xLarge}
         color={FONT.color.light}
       />
-      <TrustedCompanies
+      {/* <TrustedCompanies
         companyLogos={COMPANY_LOGOS_CAROUSEL.companies}
         title={SECTION_HEADERS.join.title}
         size={FONT.size.medium}
         color={FONT.color.dark}
-      />
+      /> */}
       <ImageRowColumnCardSection
         title={SECTION_HEADERS.tailored.title}
         subTitle={SECTION_HEADERS.tailored.subTitle}

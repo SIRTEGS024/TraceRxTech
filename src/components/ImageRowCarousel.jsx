@@ -1,25 +1,44 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const ImageRowCarousel = ({ companyLogos }) => {
   const carouselRef = useRef(null);
+  const wrapperRef = useRef(null);
   const animationRef = useRef(null);
   const positionRef = useRef(0);
+  const [shouldScroll, setShouldScroll] = useState(false);
 
   useEffect(() => {
+    const checkShouldScroll = () => {
+      const wrapper = wrapperRef.current;
+      const carousel = carouselRef.current;
+      if (!wrapper || !carousel) return;
+      setShouldScroll(carousel.scrollWidth > wrapper.offsetWidth);
+    };
+
+    checkShouldScroll(); // Initial check
+
+    window.addEventListener("resize", checkShouldScroll);
+    return () => window.removeEventListener("resize", checkShouldScroll);
+  }, [companyLogos]);
+
+  useEffect(() => {
+    if (!shouldScroll) return;
+
     const carousel = carouselRef.current;
     if (!carousel) return;
 
-    const logoWidth = 150; // Adjust to match your logo width
-    const gap = 40; // gap-10 = 40px
+    const logoWidth = 150;
+    const gap = 40;
     const itemWidth = logoWidth + gap;
-    const scrollSpeed = 1; // Pixels per frame (adjust speed)
+    const scrollSpeed = 1;
 
     const animate = () => {
       positionRef.current += scrollSpeed;
 
-      // When first logo completely exits view
       if (positionRef.current >= itemWidth) {
         const firstChild = carousel.firstElementChild;
+        if (!firstChild) return;
+
         carousel.style.transition = "none";
         carousel.removeChild(firstChild);
         carousel.appendChild(firstChild);
@@ -35,28 +54,33 @@ const ImageRowCarousel = ({ companyLogos }) => {
 
     animationRef.current = requestAnimationFrame(animate);
 
-    return () => {
-      cancelAnimationFrame(animationRef.current);
-    };
-  }, []);
+    return () => cancelAnimationFrame(animationRef.current);
+  }, [shouldScroll]);
 
   return (
-    <div className="w-[90%] mx-auto overflow-hidden">
+    <div
+      ref={wrapperRef}
+      className="mx-auto overflow-hidden w-[90%]"
+    >
       <div
         ref={carouselRef}
-        className="flex items-center gap-10 py-5"
-        style={{ willChange: "transform" }} // Optimize performance
+        className="flex items-center gap-10"
+        style={{ willChange: "transform" }}
       >
         {companyLogos.map((logo, index) => (
-          <div key={index} className="flex-shrink-0 w-[150px] mx-auto">
-            {" "}
-            {/* Fixed width container */}
+          <a
+            key={index}
+            href={logo.url || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0 mx-auto w-[150px]"
+          >
             <img
-              src={logo}
+              src={logo.src}
               alt={`Company ${index + 1}`}
-              className="h-40 w-full object-contain hover:scale-105 transition-transform"
+              className="object-contain w-full h-36 hover:scale-105 transition-transform"
             />
-          </div>
+          </a>
         ))}
       </div>
     </div>

@@ -23,12 +23,12 @@ const CarbonPage = () => {
         light
         size={FONT.size.large}
       />
-      <TrustedCompanies
+      {/* <TrustedCompanies
         companyLogos={COMPANY_LOGOS_CAROUSEL.companies}
         title={SECTION_HEADERS.join2.title}
         size={FONT.size.medium}
         color={FONT.color.dark}
-      />
+      /> */}
       <TailoredCardSection
         tailoredCards={TAILORED_CARDS_DATA.carbonSection}
         title={SECTION_HEADERS.empowering2.title}

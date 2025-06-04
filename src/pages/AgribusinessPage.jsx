@@ -23,12 +23,12 @@ const AgribusinessPage = () => {
         light
         size={FONT.size.xLarge}
       />
-      <TrustedCompanies
+      {/* <TrustedCompanies
         companyLogos={COMPANY_LOGOS_CAROUSEL.companies}
         title={SECTION_HEADERS.join2.title}
         size={FONT.size.medium}
         color={FONT.color.dark}
-      />
+      /> */}
       <TailoredCardSection
         tailoredCards={TAILORED_CARDS_DATA.agribusinessSection}
         title={SECTION_HEADERS.empowering.title}

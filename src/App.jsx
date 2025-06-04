@@ -24,15 +24,16 @@ import ChatWidget from "./components/ChatWidget";
 
 export default function App() {
   const location = useLocation();
-  // Define routes where navbar/footer should be hidden
-  const hideNavFooter = ["/login", "/signup"].includes(location.pathname);
+
+  // Pages without Navbar, Footer, or Chat
+  const hideLayout = ["/login", "/signup"].includes(location.pathname);
 
   return (
     <div className="flex flex-col min-h-screen">
       <ScrollToTop />
-      {!hideNavFooter && <Navbar />}
+      {!hideLayout && <Navbar />}
 
-      <main className={`flex-grow ${!hideNavFooter ? "pt-20" : ""}`}>
+      <main className={`flex-grow ${!hideLayout ? "pt-20" : ""}`}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/eudr-compliance-platform" element={<EudrPage />} />
@@ -69,8 +70,8 @@ export default function App() {
         </Routes>
       </main>
 
-      {!hideNavFooter && <Footer />}
-      <ChatWidget />
+      {!hideLayout && <Footer />}
+      {!hideLayout && <ChatWidget />}
     </div>
   );
 }

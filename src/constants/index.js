@@ -1,10 +1,12 @@
 import hero1 from "../assets/hero_images/import2.jpeg";
 import hero2 from "../assets/hero_images/export2.jpeg";
-import company1 from "../assets/company/ogun.png";
-import company2 from "../assets/company/oyo.png";
-import company3 from "../assets/company/mini-env.png";
-import company4 from "../assets/company/trade.png";
-import company5 from "../assets/company/Logo.webp";
+import company1 from "../assets/company/Reg-mini-env.png";
+import company2 from "../assets/company/Reg-ogun.png";
+import company3 from "../assets/company/Reg-oyo.png";
+import company4 from "../assets/company/Reg-trade.png";
+import company5 from "../assets/company/Cert-scs.png";
+import company6 from "../assets/company/Cert-terea.png";
+import company7 from "../assets/company/Power-adroit.png";
 import eudrImage from "../assets/impact-image.png";
 import trust1 from "../assets/trust_company/trust-1.png";
 import trust2 from "../assets/trust_company/trust-2.png";
@@ -81,27 +83,27 @@ import gallery2 from "../assets/real/025A3308.jpg";
 import gallery3 from "../assets/real/025A3310.jpg";
 import gallery4 from "../assets/real/025A3325.jpg";
 import gallery5 from "../assets/real/025A3355.jpg";
-import gallery6 from "../assets/real/025A3407.jpg";
-import gallery7 from "../assets/real/025A3410.jpg";
+import gallery6 from "../assets/real/WhatsApp Image 2025-05-29 at 13.56.06 (1).jpeg";
+import gallery7 from "../assets/real/WhatsApp Image 2025-05-29 at 13.56.06.jpeg";
 import gallery8 from "../assets/real/025A3421.jpg";
 import gallery9 from "../assets/real/025A3422.jpg";
-import gallery10 from "../assets/real/025A3428.jpg";
+import gallery10 from "../assets/real/WhatsApp Image 2025-05-29 at 13.56.07 (1).jpeg";
 import gallery11 from "../assets/real/025A3435.jpg";
-import gallery12 from "../assets/real/025A3442.jpg";
-import gallery13 from "../assets/real/025A3446.jpg";
-import gallery14 from "../assets/real/025A3455.jpg";
-import gallery15 from "../assets/real/025A3456.jpg";
-import gallery16 from "../assets/real/025A3463.jpg";
-import gallery17 from "../assets/real/025A3473.jpg";
-import gallery18 from "../assets/real/025A3478.jpg";
-import gallery19 from "../assets/real/025A3554.jpg";
-import gallery20 from "../assets/real/025A3556.jpg";
+import gallery12 from "../assets/real/WhatsApp Image 2025-05-29 at 13.56.07.jpeg";
+import gallery13 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.23.jpeg";
+import gallery14 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.25.jpeg";
+import gallery15 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.26.jpeg";
+import gallery16 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.27.jpeg";
+import gallery17 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.28 (1).jpeg";
+import gallery18 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.28.jpeg";
+import gallery19 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.29.jpeg";
+import gallery20 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.30 (1).jpeg";
 import gallery21 from "../assets/real/025A3564.jpg";
-import gallery22 from "../assets/real/025A3583-3.jpg";
-import gallery23 from "../assets/real/025A3586-3.jpg";
-import gallery24 from "../assets/real/025A3597-3.jpg";
-import gallery25 from "../assets/real/025A3603-3.jpg";
-import gallery26 from "../assets/real/025A3608-3.jpg";
+import gallery22 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.30.jpeg";
+import gallery23 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.36.jpeg";
+import gallery24 from "../assets/real/WhatsApp Image 2025-05-30 at 19.39.32.jpeg";
+import gallery25 from "../assets/real/WhatsApp Image 2025-05-30 at 19.39.33 (1).jpeg";
+import gallery26 from "../assets/real/WhatsApp Image 2025-05-30 at 19.39.33 (2).jpeg";
 import gallery27 from "../assets/real/025A3616-3.jpg";
 import gallery28 from "../assets/real/025A3622-3.jpg";
 import gallery29 from "../assets/real/025A3625-3.jpg";
@@ -109,47 +111,47 @@ import gallery30 from "../assets/real/025A3631-3.jpg";
 import gallery31 from "../assets/real/025A3639-3.jpg";
 import gallery32 from "../assets/real/025A3664-3.jpg";
 import gallery33 from "../assets/real/025A4872.jpg";
-import gallery34 from "../assets/real/025A4876.jpg";
-import gallery35 from "../assets/real/025A4891.jpg";
+import gallery34 from "../assets/real/WhatsApp Image 2025-05-30 at 19.39.33.jpeg";
+import gallery35 from "../assets/real/WhatsApp Image 2025-05-30 at 19.39.35.jpeg";
 import gallery36 from "../assets/real/025A4903.jpg";
 import gallery37 from "../assets/real/025A5076.jpg";
-import gallery38 from "../assets/real/025A5173.jpg";
-import gallery39 from "../assets/real/025A5207.jpg";
-import gallery40 from "../assets/real/025A5235.jpg";
+import gallery38 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.20.jpeg";
+import gallery39 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.21.jpeg";
+import gallery40 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.22 (1).jpeg";
 import gallery41 from "../assets/real/025A5245.jpg";
 import gallery42 from "../assets/real/025A5247.jpg";
 import gallery43 from "../assets/real/025A5266.jpg";
 import gallery44 from "../assets/real/025A5438.jpg";
 import gallery45 from "../assets/real/025A5450.jpg";
 import gallery46 from "../assets/real/025A5557.jpg";
-import gallery47 from "../assets/real/025A5561.jpg";
+import gallery47 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.22.jpeg";
 import gallery48 from "../assets/real/025A5562.jpg";
-import gallery49 from "../assets/real/025A5567.jpg";
-import gallery50 from "../assets/real/025A5569.jpg";
+import gallery49 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.23 (1).jpeg";
+import gallery50 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.23.jpeg";
 import gallery51 from "../assets/real/025A5571.jpg";
-import gallery52 from "../assets/real/025A5572.jpg";
-import gallery53 from "../assets/real/025A5573.jpg";
-import gallery54 from "../assets/real/025A5580.jpg";
-import gallery55 from "../assets/real/025A5587.jpg";
-import gallery56 from "../assets/real/025A5587.jpg";
-import gallery57 from "../assets/real/025A5604.jpg";
-import gallery58 from "../assets/real/025A5605.jpg";
-import gallery59 from "../assets/real/025A5617.jpg";
-import gallery60 from "../assets/real/025A5619.jpg";
-import gallery61 from "../assets/real/025A5625.jpg";
-import gallery62 from "../assets/real/025A5630.jpg";
-import gallery63 from "../assets/real/025A5639.jpg";
+import gallery52 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.33.57 (1).jpeg";
+import gallery53 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.33.57.jpeg";
+import gallery54 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.33.58 (1).jpeg";
+import gallery55 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.33.58.jpeg";
+import gallery56 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.34.25 (1).jpeg";
+import gallery57 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.34.25.jpeg";
+import gallery58 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.34.26.jpeg";
+import gallery59 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.34.27.jpeg";
+import gallery60 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.34.28.jpeg";
+import gallery61 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.35.01 (1).jpeg";
+import gallery62 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.35.01.jpeg";
+import gallery63 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.35.02.jpeg";
 import gallery64 from "../assets/real/025A5667.jpg";
-import gallery65 from "../assets/real/025A5676.jpg";
-import gallery66 from "../assets/real/025A5688.jpg";
-import gallery67 from "../assets/real/025A5689.jpg";
+import gallery65 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.35.03.jpeg";
+import gallery66 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.35.04 (1).jpeg";
+import gallery67 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.35.04.jpeg";
 import gallery68 from "../assets/real/025A5694.jpg";
-import gallery69 from "../assets/real/025A5701.jpg";
-import gallery70 from "../assets/real/025A5702.jpg";
+import gallery69 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.36.26.jpeg";
+import gallery70 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.36.27 (1).jpeg";
 import gallery71 from "../assets/real/_MG_4130.jpg";
-import gallery72 from "../assets/real/_MG_4134.jpg";
+import gallery72 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.35.48.jpeg";
 import gallery73 from "../assets/real/_MG_4136.jpg";
-import gallery74 from "../assets/real/_MG_4142.jpg";
+import gallery74 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.36.01.jpeg";
 import gallery75 from "../assets/real/_MG_4164.jpg";
 import gallery76 from "../assets/real/_MG_4168.jpg";
 import gallery77 from "../assets/real/_MG_4187.jpg";
@@ -157,20 +159,19 @@ import gallery78 from "../assets/real/_MG_4192.jpg";
 import gallery79 from "../assets/real/whats1.jpeg";
 import gallery80 from "../assets/real/whats2.jpeg";
 import gallery81 from "../assets/real/whats3.jpeg";
-import gallery82 from "../assets/real/whats4.jpeg";
+import gallery82 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.31.21.jpeg";
 import gallery83 from "../assets/real/whats5.jpeg";
 import gallery84 from "../assets/real/whats6.jpeg";
 import gallery85 from "../assets/real/whats7.jpeg";
 import gallery86 from "../assets/real/whats8.jpeg";
 import gallery87 from "../assets/real/whats9.jpeg";
 import gallery88 from "../assets/real/whats10.jpeg";
-import charcoal from "../assets/maps/charcoal.png";
-import cocoaa from "../assets/maps/cocoa.png"
-import cow from "../assets/maps/cow.png";
-import rubberr from "../assets/maps/rubber.png"
-import soya from "../assets/maps/soya.png";
-import woodd from "../assets/maps/wood.png";
-import coffeee from "../assets/maps/coffee.png";
+import gallery89 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.36.27.jpeg";
+import gallery90 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.36.28.jpeg";
+import gallery91 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.36.29.jpeg";
+import gallery92 from "../assets/new-set/florence.jpeg";
+import map from "../assets/maps/map.png";
+
 
 export const NAV_LINKS = [
   {
@@ -181,7 +182,7 @@ export const NAV_LINKS = [
       { name: "Digital MRV Platform", url: "/digital-mrv-platform" },
       { name: "Sustainability Platform", url: "/sustainability-platform" },
       { name: "Food Traceability Platform", url: "/food-traceability-platform" },
-      { name: "Forest/Farm Management Platform", url: "/forest-farm-management-platform" }
+      { name: "Forest/Farm Management Platform", url: "/forest-farm-management-platform" },
     ]
   },
   {
@@ -196,11 +197,24 @@ export const NAV_LINKS = [
     ]
   },
   {
-    name: "Resources",
-    url: "/resources",
+    name: "Make a Payment",
+    url: "/payment",
     subLinks: [
-      { name: "Blog", url: "/blog" },
-      { name: "Media", url: "/media" },
+      { name: "Tree Planting", url: "#" },
+      { name: "Forest Management", url: "#" },
+      { name: "Forest/Plantation Establishment", url: "#" },
+      { name: "Consultancy", url: "#" },
+      { name: "Verification", url: "#" },
+      { name: "Risk Assessment", url: "#" },
+      { name: "Gaps-Assessment", url: "#" },
+      { name: "Audit", url: "#" },
+      { name: "Training/ Certification/ Seminar", url: "#" },
+      { name: "Management Plan", url: "#" },
+      { name: "Inventory", url: "#" },
+      { name: "Mapping", url: "#" },
+      { name: "Forest/ Plantation Establishment", url: "#" },
+      { name: "Complaints/Disputes", url: "#" },
+      { name: "IT Support", url: "#" }
     ]
   },
   {
@@ -208,7 +222,8 @@ export const NAV_LINKS = [
     url: "/company",
     subLinks: [
       { name: "About Us", url: "/about-us" },
-      { name: "Become a Partner", url: "partner" }
+      { name: "Blog", url: "/blog" },
+      { name: "Media", url: "/media" },
     ]
   },
   // {
@@ -222,12 +237,12 @@ export const NAV_LINKS = [
 export const HERO_SECTIONS = {
   homeSection: [
     {
-      heading: "Stakeholder/MDA Portal",
+      heading: "Certification/ Verification/ Audit/ MDA Portal ",
       subheading: "Click the button below to visit the portal",
       checklist: [],
       primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "BOOK DEMO" },
-      image: { src: gallery1, alt: "hero1" }
+      image: { src: gallery76, alt: "hero1" }
     },
     {
       heading: "Exporter Portal",
@@ -243,7 +258,15 @@ export const HERO_SECTIONS = {
       checklist: [],
       primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "BOOK DEMO" },
-      image: { src: gallery86, alt: "hero2" }
+      image: { src: gallery71, alt: "hero2" }
+    },
+    {
+      heading: "Freight Agent Portal",
+      subheading: "Click the button below to visit the portal",
+      checklist: [],
+      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+      // secondaryButton: { text: "BOOK DEMO" },
+      image: { src: gallery41, alt: "hero2" }
     },
   ],
   eudrSection: [
@@ -257,7 +280,7 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
-      image: { src: gallery1, alt: "hero2" }
+      image: { src: gallery76, alt: "hero2" }
     },
     {
       heading: "Exporter Portal",
@@ -281,7 +304,7 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
-      image: { src: gallery86, alt: "hero2" }
+      image: { src: gallery71, alt: "hero2" }
     },
   ],
   mrvSection: [
@@ -295,7 +318,7 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery1, alt: "hero3" }
+      image: { src: gallery76, alt: "hero3" }
     },
     {
       heading: "Exporter Portal",
@@ -319,7 +342,7 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery86, alt: "hero3" }
+      image: { src: gallery71, alt: "hero3" }
     },
   ],
   sustainabilitySection: [
@@ -333,7 +356,7 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery1, alt: "hero4" }
+      image: { src: gallery76, alt: "hero4" }
     },
     {
       heading: "Exporter Portal",
@@ -357,7 +380,7 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery86, alt: "hero4" }
+      image: { src: gallery71, alt: "hero4" }
     },
   ],
   traceabilitySection: [
@@ -371,7 +394,7 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery1, alt: "hero5" }
+      image: { src: gallery76, alt: "hero5" }
     },
     {
       heading: "Exporter Portal",
@@ -395,7 +418,7 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery86, alt: "hero5" }
+      image: { src: gallery71, alt: "hero5" }
     },
   ],
   managementSection: [
@@ -409,7 +432,7 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery1, alt: "hero6" }
+      image: { src: gallery76, alt: "hero6" }
     },
     {
       heading: "Exporter Portal",
@@ -433,17 +456,49 @@ export const HERO_SECTIONS = {
       ],
       primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery86, alt: "hero6" }
+      image: { src: gallery71, alt: "hero6" }
     },
   ]
 };
 
 
 export const COMPANY_LOGOS_CAROUSEL = {
-  companies: [
-    company1, company2, company3, company4, company5, company1, company2, company3, company4,
+  regCompanies: [
+    {
+      src: company2,
+      url: "https://company1.com"
+    },
+    {
+      src: company1,
+      url: "https://company2.com"
+    },
+    {
+      src: company3,
+      url: "https://company3.com"
+    },
+    {
+      src: company4,
+      url: "https://company4.com"
+    },
   ],
+  euCompanies: [
+    {
+      src: company5,
+      url: "https://company1.com"
+    },
+    {
+      src: company6,
+      url: "https://company2.com"
+    },
+  ],
+  poweredCompanies: [
+    {
+      src: company7,
+      url: "https://company1.com"
+    },
+  ]
 };
+
 
 export const HOME_PLATFORM_CARDS = [
   {
@@ -464,17 +519,194 @@ export const HOME_PLATFORM_CARDS = [
   }
 ];
 
+export const REGULATIONS = [
+  {
+    "id": "eudr",
+    "title": "EU Deforestation-Free Regulation (EUDR)",
+    "description": `The EU Deforestation-Free Regulation (EUDR) covers seven key commodities and a wide range of their derived products. The core idea is to ensure that products placed on the EU market or exported from it have not caused deforestation or forest degradation after December 31, 2020.
+
+    Here's a detailed list of the commodities you mentioned and their derivatives regulated under the EUDR, based on Annex I of the Regulation (EU) 2023/1115:
+    
+    1. Cocoa
+    
+    Commodity: Cocoa beans, whole or broken, raw or roasted (HS Code 1801)
+    Derivatives:
+    Cocoa shells, husks, skins and other cocoa waste (HS Code 1802)
+    Cocoa paste, whether or not defatted (HS Code 1803)
+    Cocoa butter, fat and oil (HS Code 1804)
+    Cocoa powder, not containing added sugar or other sweetening matter (HS Code 1805)
+    Chocolate and other food preparations containing cocoa (HS Code 1806)
+    2. Charcoal
+    
+    Commodity: Wood charcoal (including shell or nut charcoal), whether or not agglomerated (HS Code 4402)
+    Note: Charcoal is primarily covered under the "Wood" category as a direct derivative.
+    3. Coffee
+    
+    Commodity: Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion (HS Code 0901)
+    Derivatives: The regulation specifically mentions coffee husks and skins, and coffee substitutes containing coffee in any proportion, indicating that processed coffee products are in scope.
+    4. Beef (Cattle)
+    
+    Commodity: Live bovine animals (HS Code 0102)
+    Derivatives:
+    Meat of bovine animals, fresh or chilled (HS Code 0201)
+    Meat of bovine animals, frozen (HS Code 0202)
+    Other prepared or preserved meat, meat offal, blood, of cattle (ex HS Code 1602 50)
+    Raw hides and skins of cattle (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split (ex HS Code 4101)
+    Tanned or crust hides and skins of cattle, without hair on, whether or not split, but not further prepared (ex HS Code 4104)
+    Leather of cattle, further prepared after tanning or crusting, including parchment-dressed leather, without hair on, whether or not split, other than leather of heading 4114 (ex HS Code 4107)
+    5. Soy (Soya)
+    
+    Commodity: Soya beans, whether or not broken (HS Code 1201)
+    Derivatives:
+    Soya bean flour and meal (HS Code 1208 10)
+    Soya-bean oil and its fractions, whether or not refined, but not chemically modified (HS Code 1507)
+    Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of soya-bean oil (HS Code 2304)
+    6. Rubber
+    
+    Commodity: Natural rubber, balata, gutta-percha, guayule, chicle and similar natural gums, in primary forms or in plates, sheets or strip (HS Code 4001)
+    Derivatives:
+    Compounded rubber, unvulcanised, in primary forms or in plates, sheets or strip (ex HS Code 4005)
+    Unvulcanised rubber in other forms (e.g. rods, tubes and profile shapes) and articles (e.g. discs and rings) (ex HS Code 4006)
+    Vulcanised rubber thread and cord (ex HS Code 4007)
+    Plates, sheets, strips, rods and profile shapes, of vulcanised rubber other than hard rubber (ex HS Code 4008)
+    Conveyer or transmission belts or belting, of vulcanised rubber (ex HS Code 4010)
+    New pneumatic tyres, of rubber (ex HS Code 4011)
+    Retreaded or used pneumatic tyres of rubber; solid or cushion tyres, tyre treads and tyre flaps, of rubber (ex HS Code 4012)
+    Inner tubes, of rubber (ex HS Code 4013)
+    Hard rubber (e.g. ebonite) in all forms including waste and scrap; articles of hard rubber (ex HS Code 4017)
+    7. Wood
+    
+    Commodity: Fuel wood, in logs, in billets, in twigs, in faggots or in similar forms; wood in chips or particles; sawdust and wood waste and scrap, whether or not agglomerated in logs, briquettes, pellets or similar forms (HS Code 4401)
+    Wood charcoal (including shell or nut charcoal), whether or not agglomerated (HS Code 4402) - This is explicitly listed under wood.
+    Wood in the rough, whether or not stripped of bark or sapwood, or roughly squared (HS Code 4403)
+    Derivatives:
+    Hoopwood; split poles; piles, pickets and stakes of wood, pointed but not sawn lengthwise; wooden sticks, roughly trimmed but not turned, bent or otherwise worked, suitable for the manufacture of walking sticks, umbrellas, tool handles or the like; chipwood and the like (HS Code 4404)
+    Wood wool; wood flour (HS Code 4405)
+    Railway or tramway sleepers (cross-ties) of wood (HS Code 4406)
+    Wood sawn or chipped lengthwise, sliced or peeled, whether or not planed, sanded or end-jointed, of a thickness exceeding 6 mm (HS Code 4407)
+    Sheets for veneering (including those obtained by slicing laminated wood), for plywood or for similar laminated wood and other wood, sawn lengthwise, sliced or peeled, whether or not planed, sanded, spliced or end-jointed, of a thickness not exceeding 6 mm (HS Code 4408)
+    Wood (including strips and friezes for parquet flooring, not assembled) continuously shaped (tongued, grooved, rebated, chamfered, V-jointed, beaded, moulded, rounded or the like) along any of its edges or faces, whether or not planed, sanded or end-jointed (HS Code 4409)
+    Particle board, oriented strand board (OSB) and similar board (for example, waferboard) of wood or other ligneous materials, whether or not agglomerated with resins or other organic binding substances (HS Code 4410)
+    Fibreboard of wood or other ligneous materials, whether or not bonded with resins or other organic substances (HS Code 4411)
+    Plywood, veneered panels and similar laminated wood (HS Code 4412)
+    Densified wood, in blocks, plates, strips or profile shapes (HS Code 4413)
+    Wooden frames for paintings, photographs, mirrors or similar objects (HS Code 4414)
+    Packing cases, boxes, crates, drums and similar packings, of wood; cable-drums of wood; pallets, box pallets and other load boards, of wood; pallet collars of wood (not including packing material used exclusively as packing material to support, protect or carry another product placed on the market) (HS Code 4415)
+    Casks, barrels, vats, tubs and other coopers' products and parts thereof, of wood, including staves (HS Code 4416)
+    Tools, tool bodies, tool handles, broom or brush bodies and handles, of wood; boot or shoe lasts and trees, of wood (HS Code 4417)
+    Builders' joinery and carpentry of wood, including cellular wood panels, assembled flooring panels, shingles and shakes (HS Code 4418)
+    Wood marquetry and inlaid wood; caskets and cases for jewellery or cutlery, and similar articles, of wood; statuettes and other ornaments, of wood; wooden articles of furniture not falling in Chapter 94 (HS Code 4420)
+    Other articles of wood (HS Code 4421)
+    Pulp and paper of Chapters 47 and 48 of the Combined Nomenclature, with the exception of bamboo-based and recovered (waste and scrap) products.
+    Printed books, newspapers, pictures and other products of the printing industry, manuscripts, typescripts and plans, of paper (ex Chapter 49)
+    Important Considerations for EUDR:
+    
+    HS Codes: The EUDR refers to products by their Combined Nomenclature (CN) codes, which are based on the Harmonized System (HS) codes. Companies need to check the specific HS codes of their products to determine if they are regulated.
+    "Deforestation-Free" Definition: Products must be produced on land that has not been subject to deforestation (conversion of forest to agricultural use) or forest degradation (conversion of primary forests or naturally regenerating forests into plantation forests or other wooded land) after December 31, 2020.
+    Legality: Products must also be produced in accordance with the relevant legislation of the country of production, including laws on land use rights, environmental protection, forest-related rules, and human rights.
+    Due Diligence: Companies (operators and large traders) are required to implement a robust due diligence system, including information gathering, risk assessment, and risk mitigation, and submit a due diligence statement for relevant products.`
+  },
+  {
+    "id": "ntls",
+    "title": "NTLS Deforestation-Free Regulation (EUDR)",
+    "description": `The EU Deforestation-Free Regulation (EUDR) covers seven key commodities and a wide range of their derived products. The core idea is to ensure that products placed on the EU market or exported from it have not caused deforestation or forest degradation after December 31, 2020.
+
+    Here's a detailed list of the commodities you mentioned and their derivatives regulated under the EUDR, based on Annex I of the Regulation (EU) 2023/1115:
+    
+    1. Cocoa
+    
+    Commodity: Cocoa beans, whole or broken, raw or roasted (HS Code 1801)
+    Derivatives:
+    Cocoa shells, husks, skins and other cocoa waste (HS Code 1802)
+    Cocoa paste, whether or not defatted (HS Code 1803)
+    Cocoa butter, fat and oil (HS Code 1804)
+    Cocoa powder, not containing added sugar or other sweetening matter (HS Code 1805)
+    Chocolate and other food preparations containing cocoa (HS Code 1806)
+    2. Charcoal
+    
+    Commodity: Wood charcoal (including shell or nut charcoal), whether or not agglomerated (HS Code 4402)
+    Note: Charcoal is primarily covered under the "Wood" category as a direct derivative.
+    3. Coffee
+    
+    Commodity: Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion (HS Code 0901)
+    Derivatives: The regulation specifically mentions coffee husks and skins, and coffee substitutes containing coffee in any proportion, indicating that processed coffee products are in scope.
+    4. Beef (Cattle)
+    
+    Commodity: Live bovine animals (HS Code 0102)
+    Derivatives:
+    Meat of bovine animals, fresh or chilled (HS Code 0201)
+    Meat of bovine animals, frozen (HS Code 0202)
+    Other prepared or preserved meat, meat offal, blood, of cattle (ex HS Code 1602 50)
+    Raw hides and skins of cattle (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split (ex HS Code 4101)
+    Tanned or crust hides and skins of cattle, without hair on, whether or not split, but not further prepared (ex HS Code 4104)
+    Leather of cattle, further prepared after tanning or crusting, including parchment-dressed leather, without hair on, whether or not split, other than leather of heading 4114 (ex HS Code 4107)
+    5. Soy (Soya)
+    
+    Commodity: Soya beans, whether or not broken (HS Code 1201)
+    Derivatives:
+    Soya bean flour and meal (HS Code 1208 10)
+    Soya-bean oil and its fractions, whether or not refined, but not chemically modified (HS Code 1507)
+    Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of soya-bean oil (HS Code 2304)
+    6. Rubber
+    
+    Commodity: Natural rubber, balata, gutta-percha, guayule, chicle and similar natural gums, in primary forms or in plates, sheets or strip (HS Code 4001)
+    Derivatives:
+    Compounded rubber, unvulcanised, in primary forms or in plates, sheets or strip (ex HS Code 4005)
+    Unvulcanised rubber in other forms (e.g. rods, tubes and profile shapes) and articles (e.g. discs and rings) (ex HS Code 4006)
+    Vulcanised rubber thread and cord (ex HS Code 4007)
+    Plates, sheets, strips, rods and profile shapes, of vulcanised rubber other than hard rubber (ex HS Code 4008)
+    Conveyer or transmission belts or belting, of vulcanised rubber (ex HS Code 4010)
+    New pneumatic tyres, of rubber (ex HS Code 4011)
+    Retreaded or used pneumatic tyres of rubber; solid or cushion tyres, tyre treads and tyre flaps, of rubber (ex HS Code 4012)
+    Inner tubes, of rubber (ex HS Code 4013)
+    Hard rubber (e.g. ebonite) in all forms including waste and scrap; articles of hard rubber (ex HS Code 4017)
+    7. Wood
+    
+    Commodity: Fuel wood, in logs, in billets, in twigs, in faggots or in similar forms; wood in chips or particles; sawdust and wood waste and scrap, whether or not agglomerated in logs, briquettes, pellets or similar forms (HS Code 4401)
+    Wood charcoal (including shell or nut charcoal), whether or not agglomerated (HS Code 4402) - This is explicitly listed under wood.
+    Wood in the rough, whether or not stripped of bark or sapwood, or roughly squared (HS Code 4403)
+    Derivatives:
+    Hoopwood; split poles; piles, pickets and stakes of wood, pointed but not sawn lengthwise; wooden sticks, roughly trimmed but not turned, bent or otherwise worked, suitable for the manufacture of walking sticks, umbrellas, tool handles or the like; chipwood and the like (HS Code 4404)
+    Wood wool; wood flour (HS Code 4405)
+    Railway or tramway sleepers (cross-ties) of wood (HS Code 4406)
+    Wood sawn or chipped lengthwise, sliced or peeled, whether or not planed, sanded or end-jointed, of a thickness exceeding 6 mm (HS Code 4407)
+    Sheets for veneering (including those obtained by slicing laminated wood), for plywood or for similar laminated wood and other wood, sawn lengthwise, sliced or peeled, whether or not planed, sanded, spliced or end-jointed, of a thickness not exceeding 6 mm (HS Code 4408)
+    Wood (including strips and friezes for parquet flooring, not assembled) continuously shaped (tongued, grooved, rebated, chamfered, V-jointed, beaded, moulded, rounded or the like) along any of its edges or faces, whether or not planed, sanded or end-jointed (HS Code 4409)
+    Particle board, oriented strand board (OSB) and similar board (for example, waferboard) of wood or other ligneous materials, whether or not agglomerated with resins or other organic binding substances (HS Code 4410)
+    Fibreboard of wood or other ligneous materials, whether or not bonded with resins or other organic substances (HS Code 4411)
+    Plywood, veneered panels and similar laminated wood (HS Code 4412)
+    Densified wood, in blocks, plates, strips or profile shapes (HS Code 4413)
+    Wooden frames for paintings, photographs, mirrors or similar objects (HS Code 4414)
+    Packing cases, boxes, crates, drums and similar packings, of wood; cable-drums of wood; pallets, box pallets and other load boards, of wood; pallet collars of wood (not including packing material used exclusively as packing material to support, protect or carry another product placed on the market) (HS Code 4415)
+    Casks, barrels, vats, tubs and other coopers' products and parts thereof, of wood, including staves (HS Code 4416)
+    Tools, tool bodies, tool handles, broom or brush bodies and handles, of wood; boot or shoe lasts and trees, of wood (HS Code 4417)
+    Builders' joinery and carpentry of wood, including cellular wood panels, assembled flooring panels, shingles and shakes (HS Code 4418)
+    Wood marquetry and inlaid wood; caskets and cases for jewellery or cutlery, and similar articles, of wood; statuettes and other ornaments, of wood; wooden articles of furniture not falling in Chapter 94 (HS Code 4420)
+    Other articles of wood (HS Code 4421)
+    Pulp and paper of Chapters 47 and 48 of the Combined Nomenclature, with the exception of bamboo-based and recovered (waste and scrap) products.
+    Printed books, newspapers, pictures and other products of the printing industry, manuscripts, typescripts and plans, of paper (ex Chapter 49)
+    Important Considerations for EUDR:
+    
+    HS Codes: The EUDR refers to products by their Combined Nomenclature (CN) codes, which are based on the Harmonized System (HS) codes. Companies need to check the specific HS codes of their products to determine if they are regulated.
+    "Deforestation-Free" Definition: Products must be produced on land that has not been subject to deforestation (conversion of forest to agricultural use) or forest degradation (conversion of primary forests or naturally regenerating forests into plantation forests or other wooded land) after December 31, 2020.
+    Legality: Products must also be produced in accordance with the relevant legislation of the country of production, including laws on land use rights, environmental protection, forest-related rules, and human rights.
+    Due Diligence: Companies (operators and large traders) are required to implement a robust due diligence system, including information gathering, risk assessment, and risk mitigation, and submit a due diligence statement for relevant products.`
+  },
+]
+
 
 export const CONTENT_SECTIONS = {
   homeSection: {
-    title: "Ready to ace EUDR regulations and elevate your sustainability efforts?",
-    description: "From ensuring deforestation-free practices to conducting due diligence and generating comprehensive reports, we empower your business to navigate EUDR regulations effortlessly.",
+    title: "Ready to ace NTLS and EUDR Requirements?",
+    description: "From ensuring deforestation-free practices to conducting due diligence and generating comprehensive reports, we empower your business to navigate EUDR and NTLS regulations effortlessly.",
     listTitle: "Best Suited for",
     items: [
-      "Agribusinesses",
-      "Processors",
+      "Exporters",
+      "Importers",
       "Operators & Traders",
-      "Consultants"
+      "Agents",
+      "Foresters",
+      "Farmers"
     ],
     buttonText: "Go To Portal",
     imageSrc: eudrImage,
@@ -755,11 +987,9 @@ export const COMPANY_LOGOS = {
     { id: 2, src: company2, alt: "BW" },
     { id: 3, src: company3, alt: "HA" },
     { id: 4, src: company4, alt: "ILF" },
-    { id: 5, src: company5, alt: "Image 74" },
     { id: 6, src: company1, alt: "Image 74" },
   ],
   homeSectionSupportedBy: [
-    { id: 2, src: company5, alt: "BW" },
     { id: 3, src: company4, alt: "HA" },
     { id: 4, src: company3, alt: "ILF" },
     { id: 5, src: company1, alt: "Image 74" },
@@ -770,7 +1000,7 @@ export const COMPANY_LOGOS = {
 
 export const SECTION_HEADERS = {
   join: {
-    title: "Join the Agencies that Trust us",
+    title: "Regulated By",
     subTitle: ""
   },
   join2: {
@@ -778,8 +1008,8 @@ export const SECTION_HEADERS = {
     subTitle: ""
   },
   drive: {
-    title: "Drive impact at scale",
-    subTitle: "A Platform Suite to enable Agribusinesses, Carbon Developers and Foundations accelerate their Sustainability Journeys."
+    title: "Regulations",
+    subTitle: ""
   },
   trust: {
     title: "Trust Their Words",
@@ -902,9 +1132,21 @@ export const SECTION_HEADERS = {
     subTitle: "Consultants often face several challenges when providing expert advice and solutions. TraceX offers a suite of platforms tailored to address these challenges"
   },
   system: {
-    title: "Welcome to the Trade Monitoring System (TRMS)",
-    subTitle: "Trade facilitation tool for access to trade forms (Forms NXP, NCX, A) and data exchange between stakeholder in the trade chain. Visit any of the Portals below to Get Started!"
-  }
+    title: "Welcome to the Trade Information System Traceability, Sustainability, Legality and Due diligence Portal.",
+    subTitle: "Trade facilitation tool for access to trade information by traceability, sustainability and due diligence compliance. visit any of the portals below to get started!"
+  },
+  regulations: {
+    title: "Commodities and Products Regulated under the EU Deforestation-Free Regulation",
+    subTitle: ""
+  },
+  eu: {
+    title: " EU-Partners",
+    subTitle: "Certification/Verification/Audit/GAP/Risk Assessment"
+  },
+  power: {
+    title: " Powered By",
+    subTitle: ""
+  },
 };
 
 
@@ -993,21 +1235,16 @@ export const FOOTER_LINKS = [
     heading: "Company",
     links: [
       { name: "About us", url: "/about-us" },
-      { name: "Partnership", url: "/partner" },
       { name: "Media", url: "/media" },
-      // { name: "Careers", url: "/careers" },
-      // { name: "Contact Us", url: "/contact-us" },
+     { name: "Blogs", url: "/blog" },
     ],
   },
   {
-    heading: "Resources",
+    heading: "Make a Payment",
     links: [
-      { name: "media", url: "/media" },
-      { name: "Blogs", url: "/blog" },
-      // { name: "Ebooks", url: "/ebooks" },
-      // { name: "Whitepapers", url: "/whitepapers" },
-      // { name: "Glossary", url: "/glossary" },
-      // { name: "Webinars", url: "/webinars" },
+      { name: "Forest/ Plantation Establishment", url: "#" },
+      { name: "Complaints/Disputes", url: "#" },
+      { name: "IT Support", url: "#" }
     ],
   },
   {
@@ -1016,7 +1253,6 @@ export const FOOTER_LINKS = [
       { name: "EUDR", url: "/eudr-compliance-platform" },
       { name: "DMRV", url: "/digital-mrv-platform" },
       { name: "Carbon Project Developer", url: "/carbon-project-developer" },
-      { name: "ESG for the Food and Agribusiness", url: "/agribusiness" },
     ],
   },
   // {
@@ -2053,31 +2289,31 @@ export const CHOOSE_SECTION = {
 
 export const LOGIN_BG_IMAGES = [
   {
-    src: gallery16,
+    src: gallery74,
     alt: "Login Background 1",
   },
   {
-    src: gallery18,
+    src: gallery12,
     alt: "Login Background 2",
   },
   {
-    src: gallery23,
-    alt: "Login Background 3",
+    src: gallery13,
+    alt: "Login Background 13",
   },
 ];
 
 export const SIGNUP_BG_IMAGES = [
   {
-    src: gallery22,
-    alt: "signup Background 1",
+    src: gallery60,
+    alt: "signup Background 17",
   },
   {
-    src: gallery8,
-    alt: "signup Background 2",
+    src: gallery6,
+    alt: "signup Background 19",
   },
   {
-    src: gallery10,
-    alt: "signup Background 3",
+    src: gallery89,
+    alt: "signup Background 21",
   },
 ];
 
@@ -2085,7 +2321,7 @@ export const BLOG_DATA = [
   {
     id: 1,
     image:
-     gallery25,
+      gallery25,
     title: "Urban Gardening Mastery",
     excerpt:
       "Transform your small spaces into lush green oases with our expert tips.",
@@ -2094,7 +2330,7 @@ export const BLOG_DATA = [
   {
     id: 2,
     image:
-     gallery42,
+      gallery42,
     title: "Seasonal Harvest Recipes",
     excerpt: "Delicious meals using fresh produce from your local market.",
     date: "May 6, 2024",
@@ -2102,7 +2338,7 @@ export const BLOG_DATA = [
   {
     id: 3,
     image:
-     gallery31,
+      gallery31,
     title: "Seasonal Harvest Recipes",
     excerpt: "Delicious meals using fresh produce from your local market.",
     date: "May 6, 2024",
@@ -2110,7 +2346,7 @@ export const BLOG_DATA = [
   {
     id: 4,
     image:
-     gallery28,
+      gallery28,
     title: "Seasonal Harvest Recipes",
     excerpt: "Delicious meals using fresh produce from your local market.",
     date: "May 6, 2024",
@@ -2118,7 +2354,7 @@ export const BLOG_DATA = [
   {
     id: 5,
     image:
-     gallery50,
+      gallery50,
     title: "Seasonal Harvest Recipes",
     excerpt: "Delicious meals using fresh produce from your local market.",
     date: "May 6, 2024",
@@ -2180,467 +2416,114 @@ export const MEDIA_DATA = [
 ];
 
 export const GALLERY_IMAGES = [
-  {
-    id: 1,
-    imageUrl: gallery1,
-    alt: "Farmers working in the field",
-  },
-  {
-    id: 2,
-    imageUrl: gallery2,
-    alt: "Agricultural technology",
-  },
-  {
-    id: 3,
-    imageUrl: gallery3,
-    alt: "Greenhouse environment",
-  },
-  {
-    id: 4,
-    imageUrl: gallery4,
-    alt: "Team collaboration",
-  },
-  {
-    id: 5,
-    imageUrl: gallery5,
-    alt: "Plantation overview",
-  },
-  {
-    id: 6,
-    imageUrl: gallery6,
-    alt: "Harvest season",
-  },
-  {
-    id: 7,
-    imageUrl: gallery7,
-    alt: "Company meeting",
-  },
-  {
-    id: 8,
-    imageUrl: gallery8,
-    alt: "Innovation in agri-tech",
-  },
-  {
-    id: 9,
-    imageUrl: gallery9,
-    alt: "image",
-  },
-  {
-    id: 10,
-    imageUrl: gallery10,
-    alt: "image",
-  },
-  {
-    id: 11,
-    imageUrl: gallery11,
-    alt: "image",
-  },
-  {
-    id: 13,
-    imageUrl: gallery12,
-    alt: "image",
-  },
-  {
-    id: 15,
-    imageUrl: gallery13,
-    alt: "image",
-  },
-  {
-    id: 16,
-    imageUrl: gallery14,
-    alt: "image",
-  },
-  {
-    id: 17,
-    imageUrl: gallery15,
-    alt: "image",
-  },
-  {
-    id: 18,
-    imageUrl: gallery16,
-    alt: "image",
-  },
-  {
-    id: 19,
-    imageUrl: gallery17,
-    alt: "image",
-  },
-  {
-    id: 14,
-    imageUrl: gallery18,
-    alt: "image",
-  },
-  {
-    id: 20,
-    imageUrl: gallery19,
-    alt: "image",
-  },
-  {
-    id: 21,
-    imageUrl: gallery20,
-    alt: "image",
-  },
-   {
-     id: 22,
-     imageUrl: gallery21,
-     alt: "image",
-   },
-   {
-     id: 23,
-     imageUrl: gallery22,
-     alt: "image",
-   },
-   {
-     id: 24,
-     imageUrl: gallery23,
-     alt: "image",
-   },
-   {
-     id: 25,
-     imageUrl: gallery24,
-     alt: "image",
-   },
-   {
-     id: 26,
-     imageUrl: gallery25,
-     alt: "image",
-   },
-   {
-     id: 27,
-     imageUrl: gallery26,
-     alt: "image",
-   },
-   {
-     id: 28,
-     imageUrl: gallery27,
-     alt: "image",
-   },
-   {
-     id: 29,
-     imageUrl: gallery28,
-     alt: "image",
-   },
-   {
-     id: 30,
-     imageUrl: gallery29,
-     alt: "image",
-   },
-   {
-     id: 31,
-     imageUrl: gallery30,
-     alt: "image",
-   },
-   {
-     id: 32,
-     imageUrl: gallery31,
-     alt: "image",
-   },
-   {
-     id: 33,
-     imageUrl: gallery32,
-     alt: "image",
-   },
-   {
-     id: 34,
-     imageUrl: gallery33,
-     alt: "image",
-   },
-   {
-     id: 35,
-     imageUrl: gallery34,
-     alt: "image",
-   },
-   {
-     id: 36,
-     imageUrl: gallery35,
-     alt: "image",
-   },
-   {
-     id: 37,
-     imageUrl: gallery36,
-     alt: "image",
-   },
-   {
-     id: 38,
-     imageUrl: gallery37,
-     alt: "image",
-   },
-   {
-     id: 39,
-     imageUrl: gallery38,
-     alt: "image",
-   },
-   {
-     id: 40,
-     imageUrl: gallery39,
-     alt: "image",
-   },
-   {
-     id: 41,
-     imageUrl: gallery40,
-     alt: "image",
-   },
-   {
-     id: 42,
-     imageUrl: gallery41,
-     alt: "image",
-   },
-   {
-     id: 43,
-     imageUrl: gallery42,
-     alt: "image",
-   },
-   {
-     id: 44,
-     imageUrl: gallery43,
-     alt: "image",
-   },
-   {
-     id: 45,
-     imageUrl: gallery44,
-     alt: "image",
-   },
-   {
-     id: 46,
-     imageUrl: gallery45,
-     alt: "image",
-   },
-   {
-     id: 47,
-     imageUrl: gallery46,
-     alt: "image",
-   },
-   {
-     id: 48,
-     imageUrl: gallery47,
-     alt: "image",
-   },
-   {
-     id: 49,
-     imageUrl: gallery48,
-     alt: "image",
-   },
-   {
-     id: 50,
-     imageUrl: gallery49,
-     alt: "image",
-   },
-  {
-    id: 51,
-    imageUrl: gallery50,
-    alt: "image",
-  },
-  {
-    id: 52,
-    imageUrl: gallery51,
-    alt: "image",
-  },
-  {
-    id: 53,
-    imageUrl: gallery52,
-    alt: "image",
-  },
-  {
-    id: 54,
-    imageUrl: gallery53,
-    alt: "image",
-  },
-  {
-    id: 55,
-    imageUrl: gallery54,
-    alt: "image",
-  },
-  {
-    id: 56,
-    imageUrl: gallery55,
-    alt: "image",
-  },
-  {
-    id: 57,
-    imageUrl: gallery56,
-    alt: "image",
-  },
-  {
-    id: 58,
-    imageUrl: gallery57,
-    alt: "image",
-  },
-  {
-    id: 59,
-    imageUrl: gallery58,
-    alt: "image",
-  },
-  {
-    id: 60,
-    imageUrl: gallery59,
-    alt: "image",
-  },
-  {
-    id: 61,
-    imageUrl: gallery60,
-    alt: "image",
-  },
-  {
-    id: 62,
-    imageUrl: gallery61,
-    alt: "image",
-  },
-  {
-    id: 63,
-    imageUrl: gallery62,
-    alt: "image",
-  },
-  {
-    id: 64,
-    imageUrl: gallery63,
-    alt: "image",
-  },
-  {
-    id: 65,
-    imageUrl: gallery64,
-    alt: "image",
-  },
-  {
-    id: 66,
-    imageUrl: gallery65,
-    alt: "image",
-  },
-  {
-    id: 67,
-    imageUrl: gallery66,
-    alt: "image",
-  },
-  {
-    id: 68,
-    imageUrl: gallery67,
-    alt: "image",
-  },
-  {
-    id: 69,
-    imageUrl: gallery68,
-    alt: "image",
-  },
-  {
-    id: 70,
-    imageUrl: gallery69,
-    alt: "image",
-  },
-  {
-    id: 71,
-    imageUrl: gallery70,
-    alt: "image",
-  },
-  {
-    id: 72,
-    imageUrl: gallery71,
-    alt: "image",
-  },
-  {
-    id: 73,
-    imageUrl: gallery72,
-    alt: "image",
-  },
-  {
-    id: 74,
-    imageUrl: gallery73,
-    alt: "image",
-  },
-  {
-    id: 75,
-    imageUrl: gallery74,
-    alt: "image",
-  },
-  {
-    id: 76,
-    imageUrl: gallery75,
-    alt: "image",
-  },
-  {
-    id: 77,
-    imageUrl: gallery76,
-    alt: "image",
-  },
-  {
-    id: 78,
-    imageUrl: gallery77,
-    alt: "image",
-  },
-  {
-    id: 79,
-    imageUrl: gallery78,
-    alt: "image",
-  },
-  {
-    id: 80,
-    imageUrl: gallery79,
-    alt: "image",
-  },
-  {
-    id: 81,
-    imageUrl: gallery80,
-    alt: "image",
-  },
-  {
-    id: 82,
-    imageUrl: gallery81,
-    alt: "image",
-  },
-  {
-    id: 83,
-    imageUrl: gallery82,
-    alt: "image",
-  },
-  {
-    id: 84,
-    imageUrl: gallery83,
-    alt: "image",
-  },
-  {
-    id: 85,
-    imageUrl: gallery84,
-    alt: "image",
-  },
-  {
-    id: 86,
-    imageUrl: gallery85,
-    alt: "image",
-  },
-  {
-    id: 87,
-    imageUrl: gallery86,
-    alt: "image",
-  },
-  {
-    id: 88,
-    imageUrl: gallery87,
-    alt: "image",
-  },
-   {
-    id: 89,
-    imageUrl: gallery45,
-    alt: "image",
-  },
+  { id: 1, imageUrl: gallery1, alt: "image" },
+  { id: 2, imageUrl: gallery2, alt: "image" },
+  { id: 3, imageUrl: gallery3, alt: "image" },
+  { id: 4, imageUrl: gallery4, alt: "image" },
+  { id: 5, imageUrl: gallery5, alt: "image" },
+  { id: 6, imageUrl: gallery6, alt: "image" },
+  { id: 7, imageUrl: gallery7, alt: "image" },
+  { id: 8, imageUrl: gallery8, alt: "image" },
+  { id: 9, imageUrl: gallery9, alt: "image" },
+  { id: 10, imageUrl: gallery10, alt: "image" },
+  { id: 11, imageUrl: gallery11, alt: "image" },
+  { id: 12, imageUrl: gallery12, alt: "image" },
+  { id: 13, imageUrl: gallery13, alt: "image" },
+  { id: 14, imageUrl: gallery14, alt: "image" },
+  { id: 15, imageUrl: gallery15, alt: "image" },
+  { id: 16, imageUrl: gallery16, alt: "image" },
+  { id: 17, imageUrl: gallery17, alt: "image" },
+  { id: 18, imageUrl: gallery18, alt: "image" },
+  { id: 19, imageUrl: gallery19, alt: "image" },
+  { id: 20, imageUrl: gallery20, alt: "image" },
+  { id: 21, imageUrl: gallery21, alt: "image" },
+  { id: 22, imageUrl: gallery22, alt: "image" },
+  { id: 23, imageUrl: gallery23, alt: "image" },
+  { id: 24, imageUrl: gallery24, alt: "image" },
+  { id: 25, imageUrl: gallery25, alt: "image" },
+  { id: 26, imageUrl: gallery26, alt: "image" },
+  { id: 27, imageUrl: gallery27, alt: "image" },
+  { id: 28, imageUrl: gallery28, alt: "image" },
+  { id: 29, imageUrl: gallery29, alt: "image" },
+  { id: 30, imageUrl: gallery30, alt: "image" },
+  { id: 31, imageUrl: gallery31, alt: "image" },
+  { id: 32, imageUrl: gallery32, alt: "image" },
+  { id: 33, imageUrl: gallery33, alt: "image" },
+  { id: 34, imageUrl: gallery34, alt: "image" },
+  { id: 35, imageUrl: gallery35, alt: "image" },
+  { id: 36, imageUrl: gallery36, alt: "image" },
+  { id: 37, imageUrl: gallery37, alt: "image" },
+  { id: 38, imageUrl: gallery38, alt: "image" },
+  { id: 39, imageUrl: gallery39, alt: "image" },
+  { id: 40, imageUrl: gallery40, alt: "image" },
+  { id: 41, imageUrl: gallery41, alt: "image" },
+  { id: 42, imageUrl: gallery42, alt: "image" },
+  { id: 43, imageUrl: gallery43, alt: "image" },
+  { id: 44, imageUrl: gallery44, alt: "image" },
+  { id: 45, imageUrl: gallery45, alt: "image" },
+  { id: 46, imageUrl: gallery46, alt: "image" },
+  { id: 47, imageUrl: gallery47, alt: "image" },
+  { id: 48, imageUrl: gallery48, alt: "image" },
+  { id: 49, imageUrl: gallery49, alt: "image" },
+  { id: 50, imageUrl: gallery50, alt: "image" },
+  { id: 51, imageUrl: gallery51, alt: "image" },
+  { id: 52, imageUrl: gallery52, alt: "image" },
+  { id: 53, imageUrl: gallery53, alt: "image" },
+  { id: 54, imageUrl: gallery54, alt: "image" },
+  { id: 55, imageUrl: gallery55, alt: "image" },
+  { id: 56, imageUrl: gallery56, alt: "image" },
+  { id: 57, imageUrl: gallery57, alt: "image" },
+  { id: 58, imageUrl: gallery58, alt: "image" },
+  { id: 59, imageUrl: gallery59, alt: "image" },
+  { id: 60, imageUrl: gallery60, alt: "image" },
+  { id: 61, imageUrl: gallery61, alt: "image" },
+  { id: 62, imageUrl: gallery62, alt: "image" },
+  { id: 63, imageUrl: gallery63, alt: "image" },
+  { id: 64, imageUrl: gallery64, alt: "image" },
+  { id: 65, imageUrl: gallery65, alt: "image" },
+  { id: 66, imageUrl: gallery66, alt: "image" },
+  { id: 67, imageUrl: gallery67, alt: "image" },
+  { id: 68, imageUrl: gallery68, alt: "image" },
+  { id: 69, imageUrl: gallery69, alt: "image" },
+  { id: 70, imageUrl: gallery70, alt: "image" },
+  { id: 71, imageUrl: gallery71, alt: "image" },
+  { id: 72, imageUrl: gallery72, alt: "image" },
+  { id: 73, imageUrl: gallery73, alt: "image" },
+  { id: 74, imageUrl: gallery74, alt: "image" },
+  { id: 75, imageUrl: gallery75, alt: "image" },
+  { id: 76, imageUrl: gallery76, alt: "image" },
+  { id: 77, imageUrl: gallery77, alt: "image" },
+  { id: 78, imageUrl: gallery78, alt: "image" },
+  { id: 79, imageUrl: gallery79, alt: "image" },
+  { id: 80, imageUrl: gallery80, alt: "image" },
+  { id: 81, imageUrl: gallery81, alt: "image" },
+  { id: 82, imageUrl: gallery82, alt: "image" },
+  { id: 83, imageUrl: gallery83, alt: "image" },
+  { id: 84, imageUrl: gallery84, alt: "image" },
+  { id: 85, imageUrl: gallery85, alt: "image" },
+  { id: 86, imageUrl: gallery86, alt: "image" },
+  { id: 87, imageUrl: gallery87, alt: "image" },
+  { id: 88, imageUrl: gallery88, alt: "image" },
+  { id: 89, imageUrl: gallery89, alt: "image" },
+  { id: 90, imageUrl: gallery90, alt: "image" },
+  { id: 91, imageUrl: gallery91, alt: "image" },
 ];
+
+
 
 export const EXECUTIVES = [
   {
     id: "index1",
-    name: "Jane Doe",
-    role: "Chief Executive Officer",
+    name: "Mr Adeshola Adebowale Idowu",
+    role: "Management",
     image: gallery85,
   },
   {
     id: "index2",
-    name: "John Smith",
-    role: "Chief Technology Officer",
-    image: gallery85,
+    name: "Mrs Florence Omolola Jones Idowu",
+    role: "Management",
+    image: gallery92,
   },
-  {
-    id: "index3",
-    name: "Mary Johnson",
-    role: "Chief Operating Officer",
-    image: gallery85,
-  }
 ];
 
 export const PARTNER_TYPES = [
@@ -2694,29 +2577,12 @@ export const PARTNER_STEPS = [
   },
 ];
 
-export const PARTNER_COMPANIES = [
-  {
-    id: 1,
-    name: "AgriCorp",
-    logo: company1,
-    address: "123 Green Valley, Lagos, Nigeria",
-    role: "Technology Partner",
-  },
-  {
-    id: 2,
-    name: "FarmLink",
-    logo: company2,
-    address: "Plot 9, Market Street, Accra, Ghana",
-    role: "Reseller Partner",
-  },
-  {
-    id: 3,
-    name: "GreenAdvisors",
-    logo: company3,
-    address: "45 AgTech Drive, Nairobi, Kenya",
-    role: "Consultation Partner",
-  },
-  // Add more
+export const CONTAINERS = [
+  { id: 1, containerNo: "1234" },
+  { id: 2, containerNo: "5678" },
+  { id: 3, containerNo: "6666" },
+  { id: 4, containerNo: "4321" },
+  { id: 5, containerNo: "9012" },
 ];
 
 export const MISSION_VISSION = [
@@ -2736,20 +2602,26 @@ export const MISSION_VISSION = [
 
 export const SYSTEM_CARD_DATA = [
   {
-    image: hero1,
+    image: gallery23,
     title: "Importer Portal",
     subtext: "Click here to Register on the portal with your Tax Identification Number (TIN) from FIRS or your Bank Verification Number (BVN). Once concluded, you can fill out your Form A, NCX or NXP.",
     buttonText: "GO TO PORTAL",
   },
   {
-    image: hero2,
+    image: gallery25,
     title: "Exporter Portal",
     subtext: "Authorised Dealers review submissions of exporters and validate trade forms.",
     buttonText: "GO TO PORTAL",
   },
   {
-    image: gallery22,
-    title: "Stakeholder/MDA Portal",
+    image: gallery4,
+    title: "Certification/Verification/Audit/MDA Portal",
+    subtext: "Pre Shipment Inspection Agents, Relevant Regulatory Agencies, Shipping lines & Airlines and Nigeria Customs Service.",
+    buttonText: "GO TO PORTAL",
+  },
+  {
+    image: gallery79,
+    title: "Freight Agent Portal",
     subtext: "Pre Shipment Inspection Agents, Relevant Regulatory Agencies, Shipping lines & Airlines and Nigeria Customs Service.",
     buttonText: "GO TO PORTAL",
   },
@@ -2766,44 +2638,96 @@ export const DUMMY_MESSAGES = [
 export const AGRO_PRODUCTS = [
   {
     name: "Cocoa",
-    states: ["Ondo", "Cross River", "Osun", "Ekiti", "Ogun"],
-    image: cocoaa,
-    description: "Includes cocoa beans (HS 1801) and derivatives like shells (1802), paste (1803), butter/oil (1804), powder (1805), and chocolate (1806). All are covered under EUDR and must be deforestation-free and legally compliant."
+    image: map,
+    hsLinks: [
+      { label: "Cocoa beans (HS Code 1801)", url: "#" },
+      { label: "Cocoa shells, husks, skins and other cocoa waste (HS Code 1802)", url: "#" },
+      { label: "Cocoa paste (HS Code 1803)", url: "#" },
+      { label: "Cocoa butter, fat and oil (HS Code 1804)", url: "#" },
+      { label: "Cocoa powder (HS Code 1805)", url: "#" },
+      { label: "Chocolate and other food preparations containing cocoa (HS Code 1806)", url: "#" }
+    ]
   },
   {
     name: "Charcoal",
-    states: ["Oyo", "Nasarawa", "Benue", "Kogi", "Edo"],
-    image: charcoal,
-    description: "Covers wood charcoal (HS 4402), a derivative under the 'Wood' category. Production must comply with EUDR requirements against deforestation and degradation."
+    image: map,
+    hsLinks: [
+      { label: "Wood charcoal (HS Code 4402)", url: "#" }
+    ]
   },
   {
     name: "Coffee",
-    states: ["Taraba", "Cross River", "Plateau", "Nasarawa", "Ogun"],
-    image: coffeee,
-    description: "Regulated under HS 0901, covering roasted/unroasted coffee, husks, and substitutes. Producers must ensure traceability and compliance with deforestation-free and legal standards."
+    image: map,
+    hsLinks: [
+      { label: "Coffee (roasted/unroasted, husks, substitutes) (HS Code 0901)", url: "#" }
+    ]
   },
   {
     name: "Beef (Cattle)",
-    states: ["Adamawa", "Taraba", "Kaduna", "Kano", "Borno"],
-    image: cow,
-    description: "Includes live cattle (HS 0102) and derivatives like meat (0201, 0202, 1602 50), hides (4101, 4104, 4107). All must meet EUDR deforestation-free and legal production requirements."
+    image: map,
+    hsLinks: [
+      { label: "Live bovine animals (HS Code 0102)", url: "#" },
+      { label: "Meat of bovine animals, fresh or chilled (HS Code 0201)", url: "#" },
+      { label: "Meat of bovine animals, frozen (HS Code 0202)", url: "#" },
+      { label: "Prepared or preserved meat, offal, blood (HS Code 1602 50)", url: "#" },
+      { label: "Raw hides and skins of cattle (HS Code 4101)", url: "#" },
+      { label: "Tanned or crust hides and skins (HS Code 4104)", url: "#" },
+      { label: "Leather of cattle (HS Code 4107)", url: "#" }
+    ]
   },
   {
     name: "Soy (Soya)",
-    states: ["Benue", "Nasarawa", "Kaduna", "Kano", "Taraba"],
-    image: soya,
-    description: "Covers soybeans (HS 1201) and derivatives like soy flour (1208 10), oil (1507), and oilcake residues (2304). EUDR requires production to be legal and deforestation-free."
+    image: map,
+    hsLinks: [
+      { label: "Soya beans (HS Code 1201)", url: "#" },
+      { label: "Soya bean flour and meal (HS Code 1208 10)", url: "#" },
+      { label: "Soya-bean oil (HS Code 1507)", url: "#" },
+      { label: "Oilcake and solid residues (HS Code 2304)", url: "#" }
+    ]
   },
   {
     name: "Rubber",
-    states: ["Edo", "Delta", "Ondo", "Cross River", "Akwa Ibom"],
-    image: rubberr,
-    description: "Includes natural rubber (HS 4001) and various derivatives (4005–4013, 4017). All are subject to EUDR, requiring sustainable sourcing and legal compliance."
+    image: map,
+    hsLinks: [
+      { label: "Natural rubber and similar gums (HS Code 4001)", url: "#" },
+      { label: "Compounded rubber, unvulcanised (HS Code 4005)", url: "#" },
+      { label: "Unvulcanised rubber in other forms (HS Code 4006)", url: "#" },
+      { label: "Vulcanised rubber thread and cord (HS Code 4007)", url: "#" },
+      { label: "Vulcanised rubber profiles (HS Code 4008)", url: "#" },
+      { label: "Conveyor or transmission belts (HS Code 4010)", url: "#" },
+      { label: "New pneumatic tyres (HS Code 4011)", url: "#" },
+      { label: "Retreaded or used pneumatic tyres (HS Code 4012)", url: "#" },
+      { label: "Inner tubes (HS Code 4013)", url: "#" },
+      { label: "Hard rubber articles (HS Code 4017)", url: "#" }
+    ]
   },
   {
     name: "Wood",
-    states: ["Cross River", "Ondo", "Ekiti", "Edo", "Kogi"],
-    image: woodd,
-    description: "Covers fuel wood, rough wood, and derivatives (HS 4401–4421), including charcoal (4402), sawn wood (4407), plywood (4412), and articles of wood (4421). Must meet EUDR deforestation-free and legal sourcing standards."
+    image: map,
+    hsLinks: [
+      { label: "Fuel wood, wood chips, sawdust (HS Code 4401)", url: "#" },
+      { label: "Wood charcoal (HS Code 4402)", url: "#" },
+      { label: "Wood in the rough (HS Code 4403)", url: "#" },
+      { label: "Hoopwood, chipwood, stakes (HS Code 4404)", url: "#" },
+      { label: "Wood wool, wood flour (HS Code 4405)", url: "#" },
+      { label: "Railway or tramway sleepers (HS Code 4406)", url: "#" },
+      { label: "Sawn or chipped wood >6mm (HS Code 4407)", url: "#" },
+      { label: "Veneer sheets, thin wood (HS Code 4408)", url: "#" },
+      { label: "Shaped wood (HS Code 4409)", url: "#" },
+      { label: "Particle board, OSB (HS Code 4410)", url: "#" },
+      { label: "Fibreboard (HS Code 4411)", url: "#" },
+      { label: "Plywood and laminated wood (HS Code 4412)", url: "#" },
+      { label: "Densified wood (HS Code 4413)", url: "#" },
+      { label: "Wooden frames (HS Code 4414)", url: "#" },
+      { label: "Wooden packaging (HS Code 4415)", url: "#" },
+      { label: "Coopers' products (HS Code 4416)", url: "#" },
+      { label: "Tool and broom handles (HS Code 4417)", url: "#" },
+      { label: "Joinery and carpentry (HS Code 4418)", url: "#" },
+      { label: "Marquetry, ornaments (HS Code 4420)", url: "#" },
+      { label: "Other wooden articles (HS Code 4421)", url: "#" },
+      { label: "Pulp and paper (excl. bamboo/recovered) (HS Code Chapters 47 & 48)", url: "#" },
+      { label: "Printed books, newspapers, etc. (HS Code Chapter 49)", url: "#" }
+    ]
   }
 ];
+

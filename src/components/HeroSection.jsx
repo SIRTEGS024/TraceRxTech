@@ -36,7 +36,7 @@ export default function HeroCarousel({ slides = [],size, color }) {
               }}
             >
               {/* Green transparent overlay over the section */}
-              <div className="absolute inset-0 bg-emerald-700/40 z-0" />
+              <div className="absolute inset-0 bg-emerald-700/50 z-0" />
 
               <div className="relative z-10 flex flex-col items-center text-center w-full max-w-7xl mx-auto px-4 py-24 text-white">
                 <motion.div

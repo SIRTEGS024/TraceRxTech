@@ -8,7 +8,7 @@ import {
   FaChevronUp,
   FaSearch,
 } from "react-icons/fa";
-import { MdEmail, MdPhone } from "react-icons/md";
+import { MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
 import logo from "../assets/TRACE_RX.jpg";
 import { NAV_LINKS } from "../constants";
 import ReusableInput from "./ReusableInput";
@@ -47,11 +47,10 @@ export default function Navbar() {
     <div className="w-full fixed left-0 bg-white shadow z-50">
       <div className="w-[84vw] mx-auto p-2">
         <div className="flex justify-between items-center">
-          <Link to="/">
+          <Link to="/" className="flex items-center gap-2">
             <img src={logo} alt="Logo" className="h-10" />
           </Link>
 
-          {/* Desktop: contact + search */}
           <div className="hidden md:flex items-center gap-4">
             <div className="flex items-center gap-2">
               <MdPhone size={18} />
@@ -64,7 +63,7 @@ export default function Navbar() {
             </a>
             <form onSubmit={handleSearch} className="max-w-xs">
               <ReusableInput
-                placeholder="Search by company..."
+                placeholder="Track by container/BL No."
                 icon={FaSearch}
                 variant="black"
                 value={searchTerm}
@@ -73,7 +72,6 @@ export default function Navbar() {
             </form>
           </div>
 
-          {/* Mobile: menu toggle */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden"
@@ -85,10 +83,9 @@ export default function Navbar() {
 
         <div className="h-px w-full mt-2 bg-emerald-200" />
 
-        {/* Mobile: always show search input */}
         <form onSubmit={handleSearch} className="md:hidden my-4">
           <ReusableInput
-            placeholder="Search by company..."
+            placeholder="Track by container/BL No."
             icon={FaSearch}
             variant="black"
             value={searchTerm}
@@ -97,11 +94,9 @@ export default function Navbar() {
         </form>
 
         <div
-          className={`w-full flex-col md:flex md:flex-row justify-between items-center p-1 ${
-            menuOpen ? "flex" : "hidden"
-          } md:flex`}
+          className={`w-full flex-col md:flex md:flex-row justify-between items-center p-1 ${menuOpen ? "flex" : "hidden"
+            } md:flex`}
         >
-          {/* Mobile: extra contact info */}
           {menuOpen && (
             <div className="md:hidden flex items-center gap-2 mb-4 w-full">
               <MdPhone size={18} />
@@ -111,7 +106,6 @@ export default function Navbar() {
             </div>
           )}
 
-          {/* Nav links */}
           <div className="flex flex-col md:flex-row gap-6 w-full md:w-auto">
             {NAV_LINKS.map((link) => (
               <div
@@ -142,18 +136,21 @@ export default function Navbar() {
                         </button>
                       </div>
                       <div
-                        className={`absolute left-0 top-full bg-white text-black shadow-lg w-56 transition-all duration-200 ${
-                          openDropdown === link.name ? "block" : "hidden"
-                        } z-50`}
+                        className={`absolute left-0 top-full bg-white text-black shadow-lg w-[400px] grid grid-cols-2 gap-2 p-2 transition-all duration-200 z-50 ${openDropdown === link.name ? "block" : "hidden"
+                          } max-h-80 overflow-y-auto rounded-md`}
                       >
-                        {link.subLinks.map((s) => (
-                          <Link
-                            key={s.name}
-                            to={s.url}
-                            className="block px-5 py-3 text-gray-700 hover:bg-black hover:text-white text-sm font-medium"
-                          >
-                            {s.name}
-                          </Link>
+                        {link.subLinks.map((s, index) => (
+                          <div key={s.name} className="w-full">
+                            <Link
+                              to={s.url}
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-emerald-600 hover:text-white rounded-md transition-colors"
+                            >
+                              {s.name}
+                            </Link>
+                            {index !== link.subLinks.length - 1 && (
+                              <hr className="border-t border-gray-200 my-1" />
+                            )}
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -177,11 +174,10 @@ export default function Navbar() {
                         )}
                       </button>
                       <div
-                        className={`pl-4 overflow-hidden transition-all duration-300 ease-in-out bg-white ${
-                          mobileOpenDropdown === link.name
-                            ? "max-h-96"
-                            : "max-h-0"
-                        }`}
+                        className={`pl-4 overflow-hidden transition-all duration-300 ease-in-out bg-white ${mobileOpenDropdown === link.name
+                          ? "max-h-96"
+                          : "max-h-0"
+                          }`}
                       >
                         {link.subLinks.map((s) => (
                           <Link
@@ -208,16 +204,44 @@ export default function Navbar() {
                 )}
               </div>
             ))}
+            
+            {/* Added Need Help? link */}
+            <Link
+              to="#"
+              onClick={handleMobileLinkClick}
+              className="text-gray-700 text-sm font-medium pb-1 relative group"
+            >
+              Need Help?
+              <div className="absolute left-0 bottom-0 w-full h-[2px] bg-emerald-500 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
+            </Link>
           </div>
 
-          {/* Sign In button */}
-          <Link
-            to="/login"
-            onClick={handleMobileLinkClick}
-            className="bg-emerald-600 text-white px-4 py-2 rounded-md font-medium hover:bg-emerald-700 mt-4 md:mt-0 w-full md:w-auto text-center"
-          >
-            SIGN IN
-          </Link>
+          <div className="flex items-center gap-4 mt-4 md:mt-0">
+            <Link
+              to="/partners"
+              onClick={handleMobileLinkClick}
+              className="flex items-center text-emerald-700 font-semibold text-sm md:text-base px-3 py-1 rounded-md transition-colors duration-200 hover:bg-emerald-100"
+            >
+              <MdLocationOn className="mr-1" size={20} />
+              Tracking
+            </Link>
+            
+            {/* Added BOOK DEMO button */}
+            <Link
+              to="#"
+              className="bg-emerald-600 text-white px-4 py-2 rounded-md font-medium hover:bg-emerald-700 w-full md:w-auto text-center"
+            >
+              BOOK DEMO
+            </Link>
+
+            <Link
+              to="/login"
+              onClick={handleMobileLinkClick}
+              className="bg-emerald-600 text-white px-4 py-2 rounded-md font-medium hover:bg-emerald-700 w-full md:w-auto text-center"
+            >
+              SIGN IN
+            </Link>
+          </div>
         </div>
       </div>
     </div>

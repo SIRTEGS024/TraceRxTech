@@ -44,7 +44,7 @@ const ContentWithImage = ({
         )}
       </div>
 
-      {/* Image - only renders if imageSrc is provided */}
+      {/* Image */}
       {imageSrc && (
         <div className="lg:w-1/2 mt-6 lg:mt-0">
           <img

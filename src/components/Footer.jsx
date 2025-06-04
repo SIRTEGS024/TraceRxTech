@@ -1,8 +1,7 @@
-import { FaLinkedin, FaFacebookF, FaTwitter, FaLeaf, FaArrowRight } from "react-icons/fa";
-import ReusableInput from "./ReusableInput";
+import { FaLinkedin, FaFacebookF, FaTwitter, FaLeaf } from "react-icons/fa";
 import { FOOTER_LINKS } from "../constants";
 import { AUDIT_LOGOS } from "../constants";
-import { INPUTS_CONFIG } from "../constants";
+import logo from "../assets/TRACE_RX.jpg";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -45,7 +44,7 @@ const Footer = () => {
                 <FaLeaf />
               </div>
               <p className="text-sm max-w-xs text-white/80">
-                Sustainability and Compliance Platform for Food and Agri supply chains
+               Traceability, Sustainability, Legality and Due diligence.
               </p>
             </div>
 
@@ -65,8 +64,7 @@ const Footer = () => {
 
             {/* Address */}
             <p className="text-sm text-white/70">
-              #251, 3rd Floor, G R Plaza, Kenchena Halli Road, Halagevaderahalli
-              Rajarajeshwari Nagar, Bengaluru, Karnataka 560098
+             Address
             </p>
 
             {/* Social and privacy */}
@@ -94,24 +92,14 @@ const Footer = () => {
           {/* Vertical divider */}
           <div className="hidden lg:block w-px bg-white/30 my-4 mx-4"></div>
 
-          {/* Right side - Newsletter */}
-          <div className="flex-1 space-y-6">
-            <h3 className="text-2xl font-bold text-white">
-              Subscribe to TraceRxTech Times
-            </h3>
-            <p className="text-sm text-white/80">Email</p>
-
-            {/* Input and icon wrapper */}
-            <div className="w-full max-w-sm space-y-2">
-              <ReusableInput
-                placeholder={INPUTS_CONFIG.email.placeholder}
-                icon={INPUTS_CONFIG.email.icon}
+          {/* Right side - Logo display */}
+          <div className="flex-1 flex items-center justify-center">
+            <div className="bg-white/10 p-6 rounded-xl flex items-center justify-center">
+              <img 
+                src={logo} 
+                alt="TraceRx Logo" 
+                className="h-20 object-contain transition-transform duration-300 hover:scale-105"
               />
-              <div className="flex justify-end">
-                <button className="text-white/90 hover:text-emerald-300 text-xl cursor-pointer">
-                  <FaArrowRight />
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -120,7 +108,7 @@ const Footer = () => {
       {/* Copyright */}
       <div className="border-t border-white/10 py-4">
         <p className="text-emerald-100 text-xs text-center">
-          Copyright © 2024 TraceRxTech Technologies Pvt Ltd
+          Copyright © 2025 TraceRxTech Ltd
         </p>
       </div>
     </footer>
