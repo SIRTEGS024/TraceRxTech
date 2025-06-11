@@ -97,7 +97,7 @@ const AboutUs = () => {
             variants={item}
             className="text-3xl text-green-800 font-bold mb-10 text-center"
           >
-            Traceability, Sustainability, Legality and Due diligence.
+            Traceability, Sustainability, Legality and Due Diligence.
           </motion.h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {GALLERY_IMAGES.map(({ id, imageUrl, alt }) => (

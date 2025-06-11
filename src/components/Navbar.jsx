@@ -63,7 +63,7 @@ export default function Navbar() {
             </a>
             <form onSubmit={handleSearch} className="max-w-xs">
               <ReusableInput
-                placeholder="Track by container/BL No."
+                placeholder="Track By Container/BL No."
                 icon={FaSearch}
                 variant="black"
                 value={searchTerm}
@@ -85,7 +85,7 @@ export default function Navbar() {
 
         <form onSubmit={handleSearch} className="md:hidden my-4">
           <ReusableInput
-            placeholder="Track by container/BL No."
+            placeholder="Track By Container/BL No."
             icon={FaSearch}
             variant="black"
             value={searchTerm}

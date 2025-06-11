@@ -1132,7 +1132,7 @@ export const SECTION_HEADERS = {
     subTitle: "Consultants often face several challenges when providing expert advice and solutions. TraceX offers a suite of platforms tailored to address these challenges"
   },
   system: {
-    title: "Welcome to the Trade Information System Traceability, Sustainability, Legality and Due diligence Portal.",
+    title: "Welcome to the Trade Information System Traceability, Sustainability, Legality and Due Diligence Portal.",
     subTitle: "Trade facilitation tool for access to trade information by traceability, sustainability and due diligence compliance. visit any of the portals below to get started!"
   },
   regulations: {
