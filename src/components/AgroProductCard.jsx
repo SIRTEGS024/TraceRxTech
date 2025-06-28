@@ -4,7 +4,7 @@ const AgroProductCard = ({ name, image, hsLinks }) => {
     <div className="flex flex-col md:flex-row items-center gap-10 bg-white shadow-xl rounded-2xl p-10 h-full">
       {/* Text Section */}
       <div className="flex-1 space-y-6">
-        <h3 className="text-green-700 font-semibold text-xl uppercase tracking-wide">Agro Product</h3>
+        <h3 className="text-green-700 font-semibold text-xl uppercase tracking-wide">Forest/ Agro Product</h3>
         <h2 className="text-5xl text-green-900 font-extrabold">{name}</h2>
 
         <div>

@@ -1,4 +1,3 @@
-// src/components/Navbar.jsx
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
@@ -7,6 +6,7 @@ import {
   FaChevronDown,
   FaChevronUp,
   FaSearch,
+  FaLeaf,
 } from "react-icons/fa";
 import { MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
 import logo from "../assets/TRACE_RX.jpg";
@@ -48,10 +48,14 @@ export default function Navbar() {
       <div className="w-[84vw] mx-auto p-2">
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="Logo" className="h-10" />
+            <img src={logo} alt="TraceRx Logo" className="h-10" />
+            <div className="hidden lg:flex items-center gap-2 text-sm text-gray-600">
+              <FaLeaf size={16} className="text-emerald-600" />
+              <span>Traceability, Sustainability, Legality, Due Diligence</span>
+            </div>
           </Link>
 
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-4">
             <div className="flex items-center gap-2">
               <MdPhone size={18} />
               <a href="tel:+919972524322" className="text-gray-700 font-medium">
@@ -63,7 +67,7 @@ export default function Navbar() {
             </a>
             <form onSubmit={handleSearch} className="max-w-xs">
               <ReusableInput
-                placeholder="Track By Container/BL No."
+                placeholder="Search"
                 icon={FaSearch}
                 variant="black"
                 value={searchTerm}
@@ -74,7 +78,7 @@ export default function Navbar() {
 
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden"
+            className="lg:hidden"
             aria-label="Toggle menu"
           >
             {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
@@ -83,9 +87,9 @@ export default function Navbar() {
 
         <div className="h-px w-full mt-2 bg-emerald-200" />
 
-        <form onSubmit={handleSearch} className="md:hidden my-4">
+        <form onSubmit={handleSearch} className="lg:hidden my-4">
           <ReusableInput
-            placeholder="Track By Container/BL No."
+            placeholder="Search"
             icon={FaSearch}
             variant="black"
             value={searchTerm}
@@ -94,50 +98,56 @@ export default function Navbar() {
         </form>
 
         <div
-          className={`w-full flex-col md:flex md:flex-row justify-between items-center p-1 ${menuOpen ? "flex" : "hidden"
-            } md:flex`}
+          className={`w-full flex-col lg:flex lg:flex-row justify-between items-center p-1 ${
+            menuOpen ? "flex" : "hidden"
+          } lg:flex`}
         >
           {menuOpen && (
-            <div className="md:hidden flex items-center gap-2 mb-4 w-full">
+            <div className="lg:hidden flex items-center gap-2 mb-4 w-full">
+              <FaLeaf size={16} className="text-emerald-600" />
+              <span className="text-sm text-gray-600">
+                Traceability, Sustainability, Legality, Due Diligence
+              </span>
+            </div>
+          )}
+
+          {menuOpen && (
+            <div className="lg:hidden flex items-center gap-2 mb-4 w-full">
               <MdPhone size={18} />
               <a href="tel:+919972524322" className="text-gray-700 font-medium">
-                +91 99725 24322
+                07012507260
               </a>
             </div>
           )}
 
-          <div className="flex flex-col md:flex-row gap-6 w-full md:w-auto">
+          <div className="flex flex-col lg:flex-row lg:items-center gap-6 w-full lg:w-auto">
             {NAV_LINKS.map((link) => (
               <div
                 key={link.name}
-                className="relative group w-full md:w-auto"
+                className="relative group w-full lg:w-auto"
                 onMouseLeave={() => setOpenDropdown(null)}
               >
                 {link.subLinks.length > 0 ? (
                   <>
                     {/* Desktop submenu */}
-                    <div className="hidden md:block">
-                      <div
-                        className="relative pb-1 group"
-                        onMouseEnter={() => setOpenDropdown(link.name)}
-                      >
+                    <div className="hidden lg:block">
+                      <div className="relative pb-2 group" onMouseEnter={() => setOpenDropdown(link.name)}>
                         <button
-                          className="flex items-center text-gray-700 text-sm font-medium"
+                          className="flex items-center text-gray-700 text-sm font-medium h-[28px] relative"
                           onClick={(e) => {
                             e.stopPropagation();
-                            setOpenDropdown(
-                              openDropdown === link.name ? null : link.name
-                            );
+                            setOpenDropdown(openDropdown === link.name ? null : link.name);
                           }}
                         >
                           {link.name}
                           <FaChevronDown className="ml-1 text-xs" />
-                          <div className="absolute left-0 bottom-0 w-full h-[2px] bg-emerald-500 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
+                          <div className="absolute left-0 bottom-[-4px] w-full h-[2px] bg-emerald-500 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
                         </button>
                       </div>
                       <div
-                        className={`absolute left-0 top-full bg-white text-black shadow-lg w-[400px] grid grid-cols-2 gap-2 p-2 transition-all duration-200 z-50 ${openDropdown === link.name ? "block" : "hidden"
-                          } max-h-80 overflow-y-auto rounded-md`}
+                        className={`absolute left-0 top-full bg-white text-black shadow-lg w-[400px] grid grid-cols-2 gap-2 p-2 transition-all duration-200 z-50 ${
+                          openDropdown === link.name ? "block" : "hidden"
+                        } max-h-80 overflow-y-auto rounded-md`}
                       >
                         {link.subLinks.map((s, index) => (
                           <div key={s.name} className="w-full">
@@ -156,7 +166,7 @@ export default function Navbar() {
                     </div>
 
                     {/* Mobile submenu */}
-                    <div className="md:hidden">
+                    <div className="lg:hidden">
                       <button
                         className="flex items-center justify-between w-full text-gray-700 text-sm font-medium"
                         onClick={(e) => {
@@ -174,10 +184,9 @@ export default function Navbar() {
                         )}
                       </button>
                       <div
-                        className={`pl-4 overflow-hidden transition-all duration-300 ease-in-out bg-white ${mobileOpenDropdown === link.name
-                          ? "max-h-96"
-                          : "max-h-0"
-                          }`}
+                        className={`pl-4 overflow-hidden transition-all duration-300 ease-in-out bg-white ${
+                          mobileOpenDropdown === link.name ? "max-h-96" : "max-h-0"
+                        }`}
                       >
                         {link.subLinks.map((s) => (
                           <Link
@@ -196,48 +205,37 @@ export default function Navbar() {
                   <Link
                     to={link.url}
                     onClick={handleMobileLinkClick}
-                    className="text-gray-700 text-sm font-medium pb-1 relative group"
+                    className="text-gray-700 text-sm font-medium pb-2 flex items-center relative group h-[28px]"
                   >
                     {link.name}
-                    <div className="absolute left-0 bottom-0 w-full h-[2px] bg-emerald-500 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
+                    <div className="absolute left-0 bottom-[-4px] w-full h-[2px] bg-emerald-500 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
                   </Link>
                 )}
               </div>
             ))}
-            
-            {/* Added Need Help? link */}
-            <Link
-              to="#"
-              onClick={handleMobileLinkClick}
-              className="text-gray-700 text-sm font-medium pb-1 relative group"
-            >
-              Need Help?
-              <div className="absolute left-0 bottom-0 w-full h-[2px] bg-emerald-500 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
-            </Link>
           </div>
 
-          <div className="flex items-center gap-4 mt-4 md:mt-0">
+          <div className="flex flex-col lg:flex-row items-center gap-4 mt-4 lg:mt-0 w-full lg:w-auto">
             <Link
               to="/partners"
               onClick={handleMobileLinkClick}
-              className="flex items-center text-emerald-700 font-semibold text-sm md:text-base px-3 py-1 rounded-md transition-colors duration-200 hover:bg-emerald-100"
+              className="flex items-center text-emerald-700 font-semibold text-sm lg:text-base px-3 py-1 rounded-md transition-colors duration-200 hover:bg-emerald-100 w-full lg:w-auto text-center"
             >
               <MdLocationOn className="mr-1" size={20} />
               Tracking
             </Link>
-            
-            {/* Added BOOK DEMO button */}
-            <Link
-              to="#"
-              className="bg-emerald-600 text-white px-4 py-2 rounded-md font-medium hover:bg-emerald-700 w-full md:w-auto text-center"
-            >
-              BOOK DEMO
-            </Link>
 
+            <Link
+              to="/pay-for-tree-planting"
+              onClick={handleMobileLinkClick}
+              className="bg-green-700 text-white px-4 py-2 rounded-md font-medium hover:bg-green-800 w-full lg:w-auto text-center"
+            >
+              PAY FOR TREE PLANTING
+            </Link>
             <Link
               to="/login"
               onClick={handleMobileLinkClick}
-              className="bg-emerald-600 text-white px-4 py-2 rounded-md font-medium hover:bg-emerald-700 w-full md:w-auto text-center"
+              className="bg-emerald-600 text-white px-4 py-2 rounded-md font-medium hover:bg-emerald-700 w-full lg:w-auto text-center"
             >
               SIGN IN
             </Link>

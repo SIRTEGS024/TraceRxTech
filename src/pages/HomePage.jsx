@@ -7,7 +7,7 @@ import SystemCardSection from "../components/SystemCardSection";
 import TestimonialCarousel from "../components/TestimonialCarousel";
 import TextImage from "../components/TextImage";
 import TrustedCompanies from "../components/TrustedCompany";
-import { AGRO_PRODUCTS, HERO_SECTIONS, REGULATIONS, SYSTEM_CARD_DATA } from "../constants";
+import { AGRO_PRODUCTS, HERO_SECTIONS, REGULATIONS_DATA, SYSTEM_CARD_DATA } from "../constants";
 import {
   COMPANY_LOGOS_CAROUSEL,
   HOME_PLATFORM_CARDS,
@@ -34,7 +34,7 @@ const HomePage = () => {
         systemData={SYSTEM_CARD_DATA}
       />
       <ImpactSection
-        regulations={REGULATIONS}
+        regulationsData={REGULATIONS_DATA}
         contentSection={CONTENT_SECTIONS}
         title={SECTION_HEADERS.drive.title}
         subTitle={SECTION_HEADERS.drive.subTitle}

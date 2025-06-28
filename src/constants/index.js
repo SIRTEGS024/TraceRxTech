@@ -1,5 +1,3 @@
-import hero1 from "../assets/hero_images/import2.jpeg";
-import hero2 from "../assets/hero_images/export2.jpeg";
 import company1 from "../assets/company/Reg-mini-env.png";
 import company2 from "../assets/company/Reg-ogun.png";
 import company3 from "../assets/company/Reg-oyo.png";
@@ -78,99 +76,161 @@ import choose1 from "../assets/choose_images/agribusiness1.svg";
 import choose2 from "../assets/choose_images/agribusiness2.png";
 import choose3 from "../assets/choose_images/agribusiness3.svg";
 import choose4 from "../assets/choose_images/agribusiness4.png";
-import gallery1 from "../assets/real/025A3301.jpg";
-import gallery2 from "../assets/real/025A3308.jpg";
-import gallery3 from "../assets/real/025A3310.jpg";
-import gallery4 from "../assets/real/025A3325.jpg";
-import gallery5 from "../assets/real/025A3355.jpg";
-import gallery6 from "../assets/real/WhatsApp Image 2025-05-29 at 13.56.06 (1).jpeg";
-import gallery7 from "../assets/real/WhatsApp Image 2025-05-29 at 13.56.06.jpeg";
-import gallery8 from "../assets/real/025A3421.jpg";
-import gallery9 from "../assets/real/025A3422.jpg";
-import gallery10 from "../assets/real/WhatsApp Image 2025-05-29 at 13.56.07 (1).jpeg";
-import gallery11 from "../assets/real/025A3435.jpg";
-import gallery12 from "../assets/real/WhatsApp Image 2025-05-29 at 13.56.07.jpeg";
-import gallery13 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.23.jpeg";
-import gallery14 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.25.jpeg";
-import gallery15 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.26.jpeg";
-import gallery16 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.27.jpeg";
-import gallery17 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.28 (1).jpeg";
-import gallery18 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.28.jpeg";
-import gallery19 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.29.jpeg";
-import gallery20 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.30 (1).jpeg";
-import gallery21 from "../assets/real/025A3564.jpg";
-import gallery22 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.30.jpeg";
-import gallery23 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.36.jpeg";
-import gallery24 from "../assets/real/WhatsApp Image 2025-05-30 at 19.39.32.jpeg";
-import gallery25 from "../assets/real/WhatsApp Image 2025-05-30 at 19.39.33 (1).jpeg";
-import gallery26 from "../assets/real/WhatsApp Image 2025-05-30 at 19.39.33 (2).jpeg";
-import gallery27 from "../assets/real/025A3616-3.jpg";
-import gallery28 from "../assets/real/025A3622-3.jpg";
-import gallery29 from "../assets/real/025A3625-3.jpg";
-import gallery30 from "../assets/real/025A3631-3.jpg";
-import gallery31 from "../assets/real/025A3639-3.jpg";
-import gallery32 from "../assets/real/025A3664-3.jpg";
-import gallery33 from "../assets/real/025A4872.jpg";
-import gallery34 from "../assets/real/WhatsApp Image 2025-05-30 at 19.39.33.jpeg";
-import gallery35 from "../assets/real/WhatsApp Image 2025-05-30 at 19.39.35.jpeg";
-import gallery36 from "../assets/real/025A4903.jpg";
-import gallery37 from "../assets/real/025A5076.jpg";
-import gallery38 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.20.jpeg";
-import gallery39 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.21.jpeg";
-import gallery40 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.22 (1).jpeg";
-import gallery41 from "../assets/real/025A5245.jpg";
-import gallery42 from "../assets/real/025A5247.jpg";
-import gallery43 from "../assets/real/025A5266.jpg";
-import gallery44 from "../assets/real/025A5438.jpg";
-import gallery45 from "../assets/real/025A5450.jpg";
-import gallery46 from "../assets/real/025A5557.jpg";
-import gallery47 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.22.jpeg";
-import gallery48 from "../assets/real/025A5562.jpg";
-import gallery49 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.23 (1).jpeg";
-import gallery50 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.23.jpeg";
-import gallery51 from "../assets/real/025A5571.jpg";
-import gallery52 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.33.57 (1).jpeg";
-import gallery53 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.33.57.jpeg";
-import gallery54 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.33.58 (1).jpeg";
-import gallery55 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.33.58.jpeg";
-import gallery56 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.34.25 (1).jpeg";
-import gallery57 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.34.25.jpeg";
-import gallery58 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.34.26.jpeg";
-import gallery59 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.34.27.jpeg";
-import gallery60 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.34.28.jpeg";
-import gallery61 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.35.01 (1).jpeg";
-import gallery62 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.35.01.jpeg";
-import gallery63 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.35.02.jpeg";
-import gallery64 from "../assets/real/025A5667.jpg";
-import gallery65 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.35.03.jpeg";
-import gallery66 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.35.04 (1).jpeg";
-import gallery67 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.35.04.jpeg";
-import gallery68 from "../assets/real/025A5694.jpg";
-import gallery69 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.36.26.jpeg";
-import gallery70 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.36.27 (1).jpeg";
-import gallery71 from "../assets/real/_MG_4130.jpg";
-import gallery72 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.35.48.jpeg";
-import gallery73 from "../assets/real/_MG_4136.jpg";
-import gallery74 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.36.01.jpeg";
-import gallery75 from "../assets/real/_MG_4164.jpg";
-import gallery76 from "../assets/real/_MG_4168.jpg";
-import gallery77 from "../assets/real/_MG_4187.jpg";
-import gallery78 from "../assets/real/_MG_4192.jpg";
-import gallery79 from "../assets/real/whats1.jpeg";
-import gallery80 from "../assets/real/whats2.jpeg";
-import gallery81 from "../assets/real/whats3.jpeg";
-import gallery82 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.31.21.jpeg";
-import gallery83 from "../assets/real/whats5.jpeg";
-import gallery84 from "../assets/real/whats6.jpeg";
-import gallery85 from "../assets/real/whats7.jpeg";
-import gallery86 from "../assets/real/whats8.jpeg";
-import gallery87 from "../assets/real/whats9.jpeg";
-import gallery88 from "../assets/real/whats10.jpeg";
-import gallery89 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.36.27.jpeg";
-import gallery90 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.36.28.jpeg";
-import gallery91 from "../assets/new-set/WhatsApp Image 2025-06-03 at 14.36.29.jpeg";
-import gallery92 from "../assets/new-set/florence.jpeg";
-import map from "../assets/maps/map.png";
+import gallery1 from "../assets/real/WhatsApp Image 2025-05-29 at 13.56.06 (1).jpeg";
+import gallery2 from "../assets/real/WhatsApp Image 2025-05-29 at 13.56.06.jpeg";
+import gallery3 from "../assets/real/WhatsApp Image 2025-05-29 at 13.56.07 (1).jpeg";
+import gallery4 from "../assets/real/WhatsApp Image 2025-05-29 at 13.56.07.jpeg";
+import gallery5 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.23.jpeg";
+import gallery6 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.25.jpeg";
+import gallery7 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.26.jpeg";
+import gallery8 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.27.jpeg";
+import gallery9 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.28 (1).jpeg";
+import gallery10 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.28.jpeg";
+import gallery11 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.29.jpeg";
+import gallery12 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.30 (1).jpeg";
+import gallery13 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.30.jpeg";
+import gallery14 from "../assets/real/WhatsApp Image 2025-06-03 at 14.35.01 (1).jpeg";
+import gallery15 from "../assets/real/WhatsApp Image 2025-06-03 at 14.35.01.jpeg";
+import gallery16 from "../assets/real/WhatsApp Image 2025-06-03 at 14.35.02.jpeg";
+import gallery17 from "../assets/real/WhatsApp Image 2025-06-03 at 14.35.03.jpeg";
+import gallery18 from "../assets/real/WhatsApp Image 2025-06-03 at 14.35.04 (1).jpeg";
+import gallery19 from "../assets/real/WhatsApp Image 2025-06-03 at 14.35.04.jpeg";
+import gallery20 from "../assets/real/WhatsApp Image 2025-06-03 at 14.34.25 (1).jpeg";
+import gallery21 from "../assets/real/WhatsApp Image 2025-06-03 at 14.34.25.jpeg";
+import gallery22 from "../assets/real/WhatsApp Image 2025-06-03 at 14.34.26.jpeg";
+import gallery23 from "../assets/real/WhatsApp Image 2025-06-03 at 14.34.27.jpeg";
+import gallery24 from "../assets/real/WhatsApp Image 2025-06-03 at 14.34.28.jpeg";
+import gallery25 from "../assets/real/WhatsApp Image 2025-06-03 at 14.31.21.jpeg";
+import gallery26 from "../assets/real/WhatsApp Image 2025-06-03 at 14.33.57 (1).jpeg";
+import gallery27 from "../assets/real/WhatsApp Image 2025-06-03 at 14.33.57.jpeg";
+import gallery28 from "../assets/real/WhatsApp Image 2025-06-03 at 14.33.58 (1).jpeg";
+import gallery29 from "../assets/real/WhatsApp Image 2025-06-03 at 14.33.58.jpeg";
+import gallery30 from "../assets/real/WhatsApp Image 2025-06-03 at 14.35.48.jpeg";
+import gallery31 from "../assets/real/WhatsApp Image 2025-06-03 at 14.36.01.jpeg";
+import gallery32 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.26.jpeg";
+import gallery33 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.27.jpeg";
+import gallery34 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.28.jpeg";
+import gallery35 from "../assets/real/WhatsApp Image 2025-05-30 at 19.39.32.jpeg";
+import gallery36 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.30.jpeg";
+import gallery37 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.20.jpeg";
+import gallery38 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.22 (1).jpeg";
+import gallery39 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.31.jpeg";
+import gallery40 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.37.jpeg";
+import gallery41 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.34.jpeg";
+import gallery42 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.48.jpeg";
+import gallery43 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.21.jpeg";
+import gallery44 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.22.jpeg";
+import gallery45 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.32.jpeg";
+import gallery46 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.33.jpeg";
+import gallery47 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.34.jpeg";
+import gallery48 from "../assets/real/whats8.jpeg";
+import gallery49 from "../assets/real/whats9.jpeg";
+import gallery50 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.36.jpeg";
+import gallery51 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.37 (1).jpeg";
+import gallery52 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.40.jpeg";
+import gallery53 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.43.jpeg";
+import gallery54 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.45 (1).jpeg";
+import gallery55 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.45.jpeg";
+import gallery56 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.16.44.jpeg";
+import gallery57 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.16.47.jpeg";
+import gallery58 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.16.51.jpeg";
+import gallery59 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.16.52.jpeg";
+import gallery60 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.16.53.jpeg";
+import gallery61 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.16.54.jpeg";
+import gallery62 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.16.56.jpeg";
+import gallery63 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.16.58.jpeg";
+import gallery64 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.00.jpeg";
+import gallery65 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.01.jpeg";
+import gallery66 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.03.jpeg";
+import gallery67 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.04.jpeg";
+import gallery68 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.08.jpeg";
+import gallery69 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.14.jpeg";
+import gallery70 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.15.jpeg";
+import gallery71 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.17 (1).jpeg";
+import gallery72 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.17.jpeg";
+import gallery73 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.19.jpeg";
+import gallery74 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.21.jpeg";
+import gallery75 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.23.jpeg";
+import gallery76 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.24.jpeg";
+import gallery77 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.25.jpeg";
+import gallery78 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.28.jpeg";
+import gallery79 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.30.jpeg";
+import gallery80 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.31.jpeg";
+import gallery81 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.32.jpeg";
+import gallery82 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.34 (1).jpeg";
+import gallery83 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.35.jpeg";
+import gallery84 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.36.jpeg";
+import gallery85 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.37.jpeg";
+import gallery86 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.38.jpeg";
+import gallery87 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.39.jpeg";
+import gallery88 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.40.jpeg";
+import gallery89 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.41.jpeg";
+import gallery90 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.42.jpeg";
+import gallery91 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.42 (1).jpeg";
+import gallery92 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.46.jpeg";
+import gallery93 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.57.jpeg";
+import gallery94 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.25.jpeg";
+import gallery95 from "../assets/real/025A5562.jpg";
+import gallery96 from "../assets/real/025A5571.jpg";
+import gallery97 from "../assets/real/025A5667.jpg";
+import gallery98 from "../assets/real/025A5694.jpg";
+import gallery99 from "../assets/real/whats5.jpeg";
+import gallery100 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.15.35.jpeg";
+import gallery101 from "../assets/real/WhatsApp Image 2025-05-30 at 19.38.36.jpeg";
+import gallery102 from "../assets/real/WhatsApp Image 2025-05-30 at 19.39.33 (1).jpeg";
+import gallery103 from "../assets/real/WhatsApp Image 2025-05-30 at 19.39.33 (2).jpeg";
+import gallery104 from "../assets/real/WhatsApp Image 2025-05-30 at 19.39.33.jpeg";
+import gallery105 from "../assets/real/WhatsApp Image 2025-05-30 at 19.39.35.jpeg";
+import gallery106 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.21.jpeg";
+import gallery107 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.23 (1).jpeg";
+import gallery108 from "../assets/real/WhatsApp Image 2025-05-30 at 19.40.23.jpeg";
+import gallery109 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.49.jpeg";
+import gallery110 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.50.jpeg";
+import gallery111 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.51.jpeg";
+import gallery112 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.52.jpeg";
+import gallery113 from "../assets/real/025A3325.jpg";
+import gallery114 from "../assets/real/025A3435.jpg";
+import gallery115 from "../assets/real/025A3622-3.jpg";
+import gallery116 from "../assets/real/025A3625-3.jpg";
+import gallery117 from "../assets/real/025A3631-3.jpg";
+import gallery118 from "../assets/real/025A3639-3.jpg";
+import gallery119 from "../assets/real/025A3664-3.jpg";
+import gallery120 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.55.jpeg";
+import gallery121 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.56.jpeg";
+import gallery122 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.58.jpeg";
+import gallery123 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.17.59.jpeg";
+import gallery124 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.18.01 (1).jpeg";
+import gallery125 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.18.01 (2).jpeg";
+import gallery126 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.18.01.jpeg";
+import gallery127 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.18.02.jpeg";
+import gallery128 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.18.03 (1).jpeg";
+import gallery129 from "../assets/new-set/WhatsApp Image 2025-06-19 at 15.18.03.jpeg";
+import gallery130 from "../assets/real/025A3421.jpg";
+import gallery131 from "../assets/real/025A3422.jpg";
+import gallery132 from "../assets/real/025A4872.jpg";
+import gallery133 from "../assets/real/025A4903.jpg";
+import gallery134 from "../assets/real/025A5076.jpg";
+import gallery135 from "../assets/real/025A5245.jpg";
+import gallery136 from "../assets/real/025A5247.jpg";
+import gallery137 from "../assets/real/025A5266.jpg";
+import gallery138 from "../assets/real/025A5438.jpg";
+import gallery139 from "../assets/real/025A5450.jpg";
+import gallery140 from "../assets/real/025A5557.jpg";
+import gallery141 from "../assets/real/_MG_4130.jpg";
+import gallery142 from "../assets/real/_MG_4136.jpg";
+import gallery143 from "../assets/real/_MG_4164.jpg";
+import gallery144 from "../assets/real/_MG_4168.jpg";
+import gallery145 from "../assets/real/_MG_4192.jpg";
+import gallery146 from "../assets/real/whats7.jpeg";
+import gallery147 from "../assets/real/WhatsApp Image 2025-06-03 at 14.36.26.jpeg";
+import gallery148 from "../assets/real/WhatsApp Image 2025-06-03 at 14.36.27 (1).jpeg";
+import gallery149 from "../assets/real/WhatsApp Image 2025-06-03 at 14.36.27.jpeg";
+import gallery150 from "../assets/real/WhatsApp Image 2025-06-03 at 14.36.28.jpeg";
+import gallery151 from "../assets/real/WhatsApp Image 2025-06-03 at 14.36.29.jpeg";
+import reg1 from "../assets/reg-img/ChatGPT Image Jun 28, 2025, 01_01_09 AM.png";
+import reg2 from "../assets/reg-img/ChatGPT Image Jun 28, 2025, 12_55_51 AM.png";
+import reg3 from "../assets/reg-img/ChatGPT Image Jun 28, 2025, 12_56_21 AM.png";
+import florence from "../assets/real/florence.jpeg";
 
 
 export const NAV_LINKS = [
@@ -178,22 +238,21 @@ export const NAV_LINKS = [
     name: "Platforms",
     url: "/platforms",
     subLinks: [
-      { name: "EUDR Compliance Platform", url: "/eudr-compliance-platform" },
-      { name: "Digital MRV Platform", url: "/digital-mrv-platform" },
-      { name: "Sustainability Platform", url: "/sustainability-platform" },
-      { name: "Food Traceability Platform", url: "/food-traceability-platform" },
-      { name: "Forest/Farm Management Platform", url: "/forest-farm-management-platform" },
+      { name: "Exporter", url: "#" },
+      { name: "Freight Agent", url: "#" },
+      { name: "MDA/ Certification/ Verification/ Audit", url: "#" },
+      { name: "Importer", url: "#" },
     ]
   },
   {
-    name: "Industries",
+    name: "B2B Platform",
     url: "/industries",
     subLinks: [
-      { name: "Agribusiness", url: "/agribusiness" },
-      { name: "Carbon Project Developer", url: "/carbon-project-developer" },
-      { name: "Processor", url: "/processor" },
-      { name: "Foundations", url: "/foundations" },
-      { name: "Consultants", url: "/consultants" }
+      // { name: "Agribusiness", url: "/agribusiness" },
+      // { name: "Carbon Project Developer", url: "/carbon-project-developer" },
+      // { name: "Processor", url: "/processor" },
+      // { name: "Foundations", url: "/foundations" },
+      // { name: "Consultants", url: "/consultants" }
     ]
   },
   {
@@ -226,39 +285,27 @@ export const NAV_LINKS = [
       { name: "Media", url: "/media" },
     ]
   },
-  // {
-  //   name: "Customer Stories",
-  //   url: "/customer-stories",
-  //   subLinks: []
-  // }
+  {
+    name: "Need Help?",
+    url: "/customer-stories",
+    subLinks: []
+  }
 ];
 
 
 export const HERO_SECTIONS = {
   homeSection: [
     {
-      heading: "Certification/ Verification/ Audit/ MDA Portal ",
-      subheading: "Click the button below to visit the portal",
-      checklist: [],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "BOOK DEMO" },
-      image: { src: gallery76, alt: "hero1" }
-    },
-    {
       heading: "Exporter Portal",
       subheading: "Click the button below to visit the portal",
-      checklist: [],
+      checklist: [
+        // "Record and verify transparent data for EUDR compliance.",
+        // "Monitor and evaluate environmental and social risks across your supply chain.",
+        // "Regularly document risk assessments and detail mitigation strategies."
+      ],
       primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "BOOK DEMO" },
-      image: { src: gallery87, alt: "hero1" }
-    },
-    {
-      heading: "Importer Portal",
-      subheading: "Click the button below to visit the portal",
-      checklist: [],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "BOOK DEMO" },
-      image: { src: gallery71, alt: "hero2" }
+      // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
+      image: { src: gallery49, alt: "hero2" }
     },
     {
       heading: "Freight Agent Portal",
@@ -266,199 +313,203 @@ export const HERO_SECTIONS = {
       checklist: [],
       primaryButton: { text: "GO TO PORTAL", url: "/signup" },
       // secondaryButton: { text: "BOOK DEMO" },
-      image: { src: gallery41, alt: "hero2" }
-    },
-  ],
-  eudrSection: [
-    {
-      heading: "Stakeholder/MDA Portal",
-      subheading: "Click the button below to visit the portal",
-      checklist: [
-        // "Record and verify transparent data for EUDR compliance.",
-        // "Monitor and evaluate environmental and social risks across your supply chain.",
-        // "Regularly document risk assessments and detail mitigation strategies."
-      ],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
-      image: { src: gallery76, alt: "hero2" }
+      image: { src: gallery135, alt: "hero2" }
     },
     {
-      heading: "Exporter Portal",
+      heading: "MDA/ Certification/ Verification/ Audit Portal ",
       subheading: "Click the button below to visit the portal",
-      checklist: [
-        // "Record and verify transparent data for EUDR compliance.",
-        // "Monitor and evaluate environmental and social risks across your supply chain.",
-        // "Regularly document risk assessments and detail mitigation strategies."
-      ],
+      checklist: [],
       primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
-      image: { src: gallery87, alt: "hero2" }
+      // secondaryButton: { text: "BOOK DEMO" },
+      image: { src: gallery136, alt: "hero1" }
     },
     {
       heading: "Importer Portal",
       subheading: "Click the button below to visit the portal",
-      checklist: [
-        // "Record and verify transparent data for EUDR compliance.",
-        // "Monitor and evaluate environmental and social risks across your supply chain.",
-        // "Regularly document risk assessments and detail mitigation strategies."
-      ],
+      checklist: [],
       primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
-      image: { src: gallery71, alt: "hero2" }
-    },
+      // secondaryButton: { text: "BOOK DEMO" },
+      image: { src: gallery141, alt: "hero2" }
+    }
   ],
-  mrvSection: [
-    {
-      heading: "Stakeholder/MDA Portal",
-      subheading: "Click the button below to visit the portal",
-      checklist: [
-        // "Enhanced Data Accuracy",
-        // "Verified Data for Compliance",
-        // "Cost effective Audit REady Reports"
-      ],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery76, alt: "hero3" }
-    },
-    {
-      heading: "Exporter Portal",
-      subheading: "Click the button below to visit the portal",
-      checklist: [
-        // "Enhanced Data Accuracy",
-        // "Verified Data for Compliance",
-        // "Cost effective Audit REady Reports"
-      ],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery87, alt: "hero3" }
-    },
-    {
-      heading: "Importer portal",
-      subheading: "Click the button below to visit the portal",
-      checklist: [
-        // "Enhanced Data Accuracy",
-        // "Verified Data for Compliance",
-        // "Cost effective Audit REady Reports"
-      ],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery71, alt: "hero3" }
-    },
-  ],
-  sustainabilitySection: [
-    {
-      heading: "Stakeholder/MDA Portal",
-      subheading: "Click the button below to visit the portal",
-      checklist: [
-        // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
-        // "Enhanced Environmental Stewardship",
-        // "Commitment to Corporate Responsibility"
-      ],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery76, alt: "hero4" }
-    },
-    {
-      heading: "Exporter Portal",
-      subheading: "Click the button below to visit the portal",
-      checklist: [
-        // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
-        // "Enhanced Environmental Stewardship",
-        // "Commitment to Corporate Responsibility"
-      ],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery87, alt: "hero4" }
-    },
-    {
-      heading: "Importer Portal",
-      subheading: "Click the button below to visit the portal",
-      checklist: [
-        // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
-        // "Enhanced Environmental Stewardship",
-        // "Commitment to Corporate Responsibility"
-      ],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery71, alt: "hero4" }
-    },
-  ],
-  traceabilitySection: [
-    {
-      heading: "Stakeholder/MDA Portal",
-      subheading: "Click the button below to visit the portal",
-      checklist: [
-        // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
-        // "Enhanced Environmental Stewardship",
-        // "Commitment to Corporate Responsibility"
-      ],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery76, alt: "hero5" }
-    },
-    {
-      heading: "Exporter Portal",
-      subheading: "Click the button below to visit the portal",
-      checklist: [
-        // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
-        // "Enhanced Environmental Stewardship",
-        // "Commitment to Corporate Responsibility"
-      ],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery87, alt: "hero5" }
-    },
-    {
-      heading: "Importer Portal",
-      subheading: "Click the button below to visit the portal",
-      checklist: [
-        // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
-        // "Enhanced Environmental Stewardship",
-        // "Commitment to Corporate Responsibility"
-      ],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery71, alt: "hero5" }
-    },
-  ],
-  managementSection: [
-    {
-      heading: "Stakeholder/MDA Portal",
-      subheading: "Click the button below to visit the portal",
-      checklist: [
-        // "Boost yields and minimize wastes",
-        // "Empower growers and strengthen partnerships",
-        // "Promotes Climate Action"
-      ],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery76, alt: "hero6" }
-    },
-    {
-      heading: "Exporter Portal",
-      subheading: "Click the button below to visit the portal",
-      checklist: [
-        // "Boost yields and minimize wastes",
-        // "Empower growers and strengthen partnerships",
-        // "Promotes Climate Action"
-      ],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery87, alt: "hero6" }
-    },
-    {
-      heading: "Importer Portal",
-      subheading: "Click the button below to visit the portal",
-      checklist: [
-        // "Boost yields and minimize wastes",
-        // "Empower growers and strengthen partnerships",
-        // "Promotes Climate Action"
-      ],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
-      // secondaryButton: { text: "Explore platform features" },
-      image: { src: gallery71, alt: "hero6" }
-    },
-  ]
+  // eudrSection: [
+  //   {
+  //     heading: "Stakeholder/MDA Portal",
+  //     subheading: "Click the button below to visit the portal",
+  //     checklist: [
+  //       // "Record and verify transparent data for EUDR compliance.",
+  //       // "Monitor and evaluate environmental and social risks across your supply chain.",
+  //       // "Regularly document risk assessments and detail mitigation strategies."
+  //     ],
+  //     primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+  //     // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
+  //     image: { src: gallery76, alt: "hero2" }
+  //   },
+  //   {
+  //     heading: "Importer Portal",
+  //     subheading: "Click the button below to visit the portal",
+  //     checklist: [
+  //       // "Record and verify transparent data for EUDR compliance.",
+  //       // "Monitor and evaluate environmental and social risks across your supply chain.",
+  //       // "Regularly document risk assessments and detail mitigation strategies."
+  //     ],
+  //     primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+  //     // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
+  //     image: { src: gallery71, alt: "hero2" }
+  //   },
+  // ],
+  // mrvSection: [
+  //   {
+  //     heading: "Stakeholder/MDA Portal",
+  //     subheading: "Click the button below to visit the portal",
+  //     checklist: [
+  //       // "Enhanced Data Accuracy",
+  //       // "Verified Data for Compliance",
+  //       // "Cost effective Audit REady Reports"
+  //     ],
+  //     primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+  //     // secondaryButton: { text: "Explore platform features" },
+  //     image: { src: gallery76, alt: "hero3" }
+  //   },
+  //   {
+  //     heading: "Exporter Portal",
+  //     subheading: "Click the button below to visit the portal",
+  //     checklist: [
+  //       // "Enhanced Data Accuracy",
+  //       // "Verified Data for Compliance",
+  //       // "Cost effective Audit REady Reports"
+  //     ],
+  //     primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+  //     // secondaryButton: { text: "Explore platform features" },
+  //     image: { src: gallery87, alt: "hero3" }
+  //   },
+  //   {
+  //     heading: "Importer portal",
+  //     subheading: "Click the button below to visit the portal",
+  //     checklist: [
+  //       // "Enhanced Data Accuracy",
+  //       // "Verified Data for Compliance",
+  //       // "Cost effective Audit REady Reports"
+  //     ],
+  //     primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+  //     // secondaryButton: { text: "Explore platform features" },
+  //     image: { src: gallery71, alt: "hero3" }
+  //   },
+  // ],
+  // sustainabilitySection: [
+  //   {
+  //     heading: "Stakeholder/MDA Portal",
+  //     subheading: "Click the button below to visit the portal",
+  //     checklist: [
+  //       // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+  //       // "Enhanced Environmental Stewardship",
+  //       // "Commitment to Corporate Responsibility"
+  //     ],
+  //     primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+  //     // secondaryButton: { text: "Explore platform features" },
+  //     image: { src: gallery76, alt: "hero4" }
+  //   },
+  //   {
+  //     heading: "Exporter Portal",
+  //     subheading: "Click the button below to visit the portal",
+  //     checklist: [
+  //       // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+  //       // "Enhanced Environmental Stewardship",
+  //       // "Commitment to Corporate Responsibility"
+  //     ],
+  //     primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+  //     // secondaryButton: { text: "Explore platform features" },
+  //     image: { src: gallery87, alt: "hero4" }
+  //   },
+  //   {
+  //     heading: "Importer Portal",
+  //     subheading: "Click the button below to visit the portal",
+  //     checklist: [
+  //       // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+  //       // "Enhanced Environmental Stewardship",
+  //       // "Commitment to Corporate Responsibility"
+  //     ],
+  //     primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+  //     // secondaryButton: { text: "Explore platform features" },
+  //     image: { src: gallery71, alt: "hero4" }
+  //   },
+  // ],
+  // traceabilitySection: [
+  //   {
+  //     heading: "Stakeholder/MDA Portal",
+  //     subheading: "Click the button below to visit the portal",
+  //     checklist: [
+  //       // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+  //       // "Enhanced Environmental Stewardship",
+  //       // "Commitment to Corporate Responsibility"
+  //     ],
+  //     primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+  //     // secondaryButton: { text: "Explore platform features" },
+  //     image: { src: gallery76, alt: "hero5" }
+  //   },
+  //   {
+  //     heading: "Exporter Portal",
+  //     subheading: "Click the button below to visit the portal",
+  //     checklist: [
+  //       // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+  //       // "Enhanced Environmental Stewardship",
+  //       // "Commitment to Corporate Responsibility"
+  //     ],
+  //     primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+  //     // secondaryButton: { text: "Explore platform features" },
+  //     image: { src: gallery87, alt: "hero5" }
+  //   },
+  //   {
+  //     heading: "Importer Portal",
+  //     subheading: "Click the button below to visit the portal",
+  //     checklist: [
+  //       // "Transparent Monitoring, Tracking, and Reporting of ESG Metrics",
+  //       // "Enhanced Environmental Stewardship",
+  //       // "Commitment to Corporate Responsibility"
+  //     ],
+  //     primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+  //     // secondaryButton: { text: "Explore platform features" },
+  //     image: { src: gallery71, alt: "hero5" }
+  //   },
+  // ],
+  // managementSection: [
+  //   {
+  //     heading: "Stakeholder/MDA Portal",
+  //     subheading: "Click the button below to visit the portal",
+  //     checklist: [
+  //       // "Boost yields and minimize wastes",
+  //       // "Empower growers and strengthen partnerships",
+  //       // "Promotes Climate Action"
+  //     ],
+  //     primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+  //     // secondaryButton: { text: "Explore platform features" },
+  //     image: { src: gallery76, alt: "hero6" }
+  //   },
+  //   {
+  //     heading: "Exporter Portal",
+  //     subheading: "Click the button below to visit the portal",
+  //     checklist: [
+  //       // "Boost yields and minimize wastes",
+  //       // "Empower growers and strengthen partnerships",
+  //       // "Promotes Climate Action"
+  //     ],
+  //     primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+  //     // secondaryButton: { text: "Explore platform features" },
+  //     image: { src: gallery87, alt: "hero6" }
+  //   },
+  //   {
+  //     heading: "Importer Portal",
+  //     subheading: "Click the button below to visit the portal",
+  //     checklist: [
+  //       // "Boost yields and minimize wastes",
+  //       // "Empower growers and strengthen partnerships",
+  //       // "Promotes Climate Action"
+  //     ],
+  //     primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+  //     // secondaryButton: { text: "Explore platform features" },
+  //     image: { src: gallery71, alt: "hero6" }
+  //   },
+  // ]
 };
 
 
@@ -466,35 +517,35 @@ export const COMPANY_LOGOS_CAROUSEL = {
   regCompanies: [
     {
       src: company2,
-      url: "https://company1.com"
+      url: "https://ogunstate.gov.ng/"
     },
     {
       src: company1,
-      url: "https://company2.com"
+      url: "https://environment.gov.ng/"
     },
     {
       src: company3,
-      url: "https://company3.com"
+      url: "https://environment.oyostate.gov.ng/"
     },
     {
       src: company4,
-      url: "https://company4.com"
+      url: "http://nid.fmiti.gov.ng/"
     },
   ],
   euCompanies: [
     {
       src: company5,
-      url: "https://company1.com"
+      url: "https://www.scsglobalservices.com/"
     },
     {
       src: company6,
-      url: "https://company2.com"
+      url: "https://terea.net/"
     },
   ],
   poweredCompanies: [
     {
       src: company7,
-      url: "https://company1.com"
+      url: "https://acedu.camp/"
     },
   ]
 };
@@ -697,8 +748,8 @@ export const REGULATIONS = [
 
 export const CONTENT_SECTIONS = {
   homeSection: {
-    title: "Ready to ace NTLS and EUDR Requirements?",
-    description: "From ensuring deforestation-free practices to conducting due diligence and generating comprehensive reports, we empower your business to navigate EUDR and NTLS regulations effortlessly.",
+    title: "Ready to ace NTLS and EUDR Requirements?- Ready to ace NFP, NTLS, Wood and Charcoal Export Guidelines, EUDR and other regulatory Requirements?",
+    description: "From safeguarding the environment, reducing global GHG emissions linked to resource extraction and processing, ensuring deforestation-free practices, sustainability, traceability, to conducting due diligence and generating comprehensive reports, we empower your business to navigate NPF,NTLS, Wood and Charcoal Export Guidelines, EUDR and other regulatory Requirements regulations effortlessly.",
     listTitle: "Best Suited for",
     items: [
       "Exporters",
@@ -706,7 +757,8 @@ export const CONTENT_SECTIONS = {
       "Operators & Traders",
       "Agents",
       "Foresters",
-      "Farmers"
+      "Farmers",
+      " MDAs/ Certification/ Verification/ Audit"
     ],
     buttonText: "Go To Portal",
     imageSrc: eudrImage,
@@ -1132,8 +1184,8 @@ export const SECTION_HEADERS = {
     subTitle: "Consultants often face several challenges when providing expert advice and solutions. TraceX offers a suite of platforms tailored to address these challenges"
   },
   system: {
-    title: "Welcome to the Trade Information System Traceability, Sustainability, Legality and Due Diligence Portal.",
-    subTitle: "Trade facilitation tool for access to trade information by traceability, sustainability and due diligence compliance. visit any of the portals below to get started!"
+    title: "Welcome to the Trade Information System Portal. Traceability, Sustainability, Legality and Due Diligence.",
+    subTitle: "Blockchain tool for  traceability, sustainability and due diligence compliance for environmental protection. Visit any of the portals below to get started!"
   },
   regulations: {
     title: "Commodities and Products Regulated under the EU Deforestation-Free Regulation",
@@ -1236,23 +1288,26 @@ export const FOOTER_LINKS = [
     links: [
       { name: "About us", url: "/about-us" },
       { name: "Media", url: "/media" },
-     { name: "Blogs", url: "/blog" },
+      { name: "Blogs", url: "/blog" },
     ],
   },
   {
     heading: "Make a Payment",
     links: [
-      { name: "Forest/ Plantation Establishment", url: "#" },
-      { name: "Complaints/Disputes", url: "#" },
+       { name: "Tree Planting", url: "#" },
+      { name: "Forest Management", url: "#" },
+      { name: "Consultancy", url: "#" },
+      { name: "Verification", url: "#" },
       { name: "IT Support", url: "#" }
     ],
   },
   {
     heading: "Quick Links",
     links: [
-      { name: "EUDR", url: "/eudr-compliance-platform" },
-      { name: "DMRV", url: "/digital-mrv-platform" },
-      { name: "Carbon Project Developer", url: "/carbon-project-developer" },
+       { name: "Exporter", url: "#" },
+      { name: "Freight Agent", url: "#" },
+      { name: "MDA/ Certification/ Verification/ Audit", url: "#" },
+      { name: "Importer", url: "#" },
     ],
   },
   // {
@@ -2289,30 +2344,30 @@ export const CHOOSE_SECTION = {
 
 export const LOGIN_BG_IMAGES = [
   {
-    src: gallery74,
+    src: gallery16,
     alt: "Login Background 1",
   },
   {
-    src: gallery12,
+    src: gallery34,
     alt: "Login Background 2",
   },
   {
-    src: gallery13,
+    src: gallery27,
     alt: "Login Background 13",
   },
 ];
 
 export const SIGNUP_BG_IMAGES = [
   {
-    src: gallery60,
+    src: gallery1,
     alt: "signup Background 17",
   },
   {
-    src: gallery6,
+    src: gallery23,
     alt: "signup Background 19",
   },
   {
-    src: gallery89,
+    src: gallery29,
     alt: "signup Background 21",
   },
 ];
@@ -2507,6 +2562,70 @@ export const GALLERY_IMAGES = [
   { id: 89, imageUrl: gallery89, alt: "image" },
   { id: 90, imageUrl: gallery90, alt: "image" },
   { id: 91, imageUrl: gallery91, alt: "image" },
+  { id: 92, imageUrl: gallery92, alt: "image" },
+  { id: 93, imageUrl: gallery93, alt: "image" },
+  { id: 94, imageUrl: gallery94, alt: "image" },
+  { id: 95, imageUrl: gallery95, alt: "image" },
+  { id: 96, imageUrl: gallery96, alt: "image" },
+  { id: 97, imageUrl: gallery97, alt: "image" },
+  { id: 98, imageUrl: gallery98, alt: "image" },
+  { id: 99, imageUrl: gallery99, alt: "image" },
+  { id: 100, imageUrl: gallery100, alt: "image" },
+  { id: 101, imageUrl: gallery101, alt: "image" },
+  { id: 102, imageUrl: gallery102, alt: "image" },
+  { id: 103, imageUrl: gallery103, alt: "image" },
+  { id: 104, imageUrl: gallery104, alt: "image" },
+  { id: 105, imageUrl: gallery105, alt: "image" },
+  { id: 106, imageUrl: gallery106, alt: "image" },
+  { id: 107, imageUrl: gallery107, alt: "image" },
+  { id: 108, imageUrl: gallery108, alt: "image" },
+  { id: 109, imageUrl: gallery109, alt: "image" },
+  { id: 110, imageUrl: gallery110, alt: "image" },
+  { id: 111, imageUrl: gallery111, alt: "image" },
+  { id: 112, imageUrl: gallery112, alt: "image" },
+  { id: 113, imageUrl: gallery113, alt: "image" },
+  { id: 114, imageUrl: gallery114, alt: "image" },
+  { id: 115, imageUrl: gallery115, alt: "image" },
+  { id: 116, imageUrl: gallery116, alt: "image" },
+  { id: 117, imageUrl: gallery117, alt: "image" },
+  { id: 118, imageUrl: gallery118, alt: "image" },
+  { id: 119, imageUrl: gallery119, alt: "image" },
+  { id: 120, imageUrl: gallery120, alt: "image" },
+  { id: 121, imageUrl: gallery121, alt: "image" },
+  { id: 122, imageUrl: gallery122, alt: "image" },
+  { id: 123, imageUrl: gallery123, alt: "image" },
+  { id: 124, imageUrl: gallery124, alt: "image" },
+  { id: 125, imageUrl: gallery125, alt: "image" },
+  { id: 126, imageUrl: gallery126, alt: "image" },
+  { id: 127, imageUrl: gallery127, alt: "image" },
+  { id: 128, imageUrl: gallery128, alt: "image" },
+  { id: 129, imageUrl: gallery129, alt: "image" },
+  { id: 130, imageUrl: gallery130, alt: "image" },
+  { id: 131, imageUrl: gallery131, alt: "image" },
+  { id: 132, imageUrl: gallery132, alt: "image" },
+  { id: 133, imageUrl: gallery133, alt: "image" },
+  { id: 134, imageUrl: gallery134, alt: "image" },
+  { id: 135, imageUrl: gallery135, alt: "image" },
+  { id: 136, imageUrl: gallery136, alt: "image" },
+  { id: 137, imageUrl: gallery137, alt: "image" },
+  { id: 138, imageUrl: gallery138, alt: "image" },
+  { id: 139, imageUrl: gallery139, alt: "image" },
+  { id: 140, imageUrl: gallery140, alt: "image" },
+  { id: 141, imageUrl: gallery141, alt: "image" },
+  { id: 142, imageUrl: gallery142, alt: "image" },
+  { id: 143, imageUrl: gallery143, alt: "image" },
+  { id: 144, imageUrl: gallery144, alt: "image" },
+  { id: 145, imageUrl: gallery145, alt: "image" },
+  { id: 146, imageUrl: gallery146, alt: "image" },
+  { id: 147, imageUrl: gallery147, alt: "image" },
+  { id: 148, imageUrl: gallery148, alt: "image" },
+  { id: 149, imageUrl: gallery149, alt: "image" },
+  { id: 150, imageUrl: gallery150, alt: "image" },
+  { id: 151, imageUrl: gallery151, alt: "image" },
+  // { id: 152, imageUrl: gallery152, alt: "image" },
+  // { id: 153, imageUrl: gallery153, alt: "image" },
+  // { id: 154, imageUrl: gallery154, alt: "image" },
+  // { id: 155, imageUrl: gallery155, alt: "image" },
 ];
 
 
@@ -2516,13 +2635,13 @@ export const EXECUTIVES = [
     id: "index1",
     name: "Mr Adeshola Adebowale Idowu",
     role: "Management",
-    image: gallery85,
+    image: gallery146,
   },
   {
     id: "index2",
     name: "Mrs Florence Omolola Jones Idowu",
     role: "Management",
-    image: gallery92,
+    image: florence,
   },
 ];
 
@@ -2602,27 +2721,27 @@ export const MISSION_VISSION = [
 
 export const SYSTEM_CARD_DATA = [
   {
-    image: gallery23,
-    title: "Importer Portal",
-    subtext: "Click here to Register on the portal with your Tax Identification Number (TIN) from FIRS or your Bank Verification Number (BVN). Once concluded, you can fill out your Form A, NCX or NXP.",
+    image: gallery25,
+    title: "Exporter Portal",
+    subtext: "Click here to Register on the portal with your CAC document, Tax Identification Number (TIN) from FIRS and NXP etc. Once concluded, you can fill  out your legal acquisition documents, coordinates etc.",
     buttonText: "GO TO PORTAL",
   },
   {
-    image: gallery25,
-    title: "Exporter Portal",
-    subtext: "Authorised Dealers review submissions of exporters and validate trade forms.",
+    image: gallery27,
+    title: "Freight Agent Portal",
+    subtext: "Click here to Register on the portal with your registration documents and Exporter/Importer authorization Port documentation: Pre Shipment Inspection, Nigerian Customs Service, Relevant Regulatory Agencies Joint examination, Shipping lines & Airlines, others.",
     buttonText: "GO TO PORTAL",
   },
   {
     image: gallery4,
-    title: "Certification/Verification/Audit/MDA Portal",
-    subtext: "Pre Shipment Inspection Agents, Relevant Regulatory Agencies, Shipping lines & Airlines and Nigeria Customs Service.",
+    title: "MDA/ Certification/ Verification/ Audit Portal",
+    subtext: "Click here to Register on the portal to ensure due diligence and compliance with standards, regulations and policy etc.",
     buttonText: "GO TO PORTAL",
   },
   {
-    image: gallery79,
-    title: "Freight Agent Portal",
-    subtext: "Pre Shipment Inspection Agents, Relevant Regulatory Agencies, Shipping lines & Airlines and Nigeria Customs Service.",
+    image: gallery23,
+    title: "Importer Portal",
+    subtext: "Click here to Register on the portal with your particulars, registration documents, import license, Tax Identification Number (TIN) etc.",
     buttonText: "GO TO PORTAL",
   },
 ];
@@ -2638,96 +2757,127 @@ export const DUMMY_MESSAGES = [
 export const AGRO_PRODUCTS = [
   {
     name: "Cocoa",
-    image: map,
+    image: gallery29,
     hsLinks: [
-      { label: "Cocoa beans (HS Code 1801)", url: "#" },
-      { label: "Cocoa shells, husks, skins and other cocoa waste (HS Code 1802)", url: "#" },
-      { label: "Cocoa paste (HS Code 1803)", url: "#" },
-      { label: "Cocoa butter, fat and oil (HS Code 1804)", url: "#" },
-      { label: "Cocoa powder (HS Code 1805)", url: "#" },
-      { label: "Chocolate and other food preparations containing cocoa (HS Code 1806)", url: "#" }
+      { label: "HS Code 1801 - Cocoa beans", url: "#" },
+      { label: "HS Code 1802 - Cocoa shells, husks, skins and other cocoa waste", url: "#" },
+      { label: "HS Code 1803 - Cocoa paste", url: "#" },
+      { label: "HS Code 1804 - Cocoa butter, fat and oil", url: "#" },
+      { label: "HS Code 1805 - Cocoa powder", url: "#" },
+      { label: "HS Code 1806 - Chocolate and other food preparations containing cocoa", url: "#" }
     ]
   },
   {
     name: "Charcoal",
-    image: map,
+    image: gallery34,
     hsLinks: [
-      { label: "Wood charcoal (HS Code 4402)", url: "#" }
+      { label: "HS Code 4402 - Wood charcoal", url: "#" }
     ]
   },
   {
     name: "Coffee",
-    image: map,
+    image: gallery27,
     hsLinks: [
-      { label: "Coffee (roasted/unroasted, husks, substitutes) (HS Code 0901)", url: "#" }
+      { label: "HS Code 0901 - Coffee (roasted/unroasted, husks, substitutes)", url: "#" }
     ]
   },
   {
     name: "Beef (Cattle)",
-    image: map,
+    image: gallery25,
     hsLinks: [
-      { label: "Live bovine animals (HS Code 0102)", url: "#" },
-      { label: "Meat of bovine animals, fresh or chilled (HS Code 0201)", url: "#" },
-      { label: "Meat of bovine animals, frozen (HS Code 0202)", url: "#" },
-      { label: "Prepared or preserved meat, offal, blood (HS Code 1602 50)", url: "#" },
-      { label: "Raw hides and skins of cattle (HS Code 4101)", url: "#" },
-      { label: "Tanned or crust hides and skins (HS Code 4104)", url: "#" },
-      { label: "Leather of cattle (HS Code 4107)", url: "#" }
+      { label: "HS Code 0102 - Live bovine animals", url: "#" },
+      { label: "HS Code 0201 - Meat of bovine animals, fresh or chilled", url: "#" },
+      { label: "HS Code 0202 - Meat of bovine animals, frozen", url: "#" },
+      { label: "HS Code 1602 50 - Prepared or preserved meat, offal, blood", url: "#" },
+      { label: "HS Code 4101 - Raw hides and skins of cattle", url: "#" },
+      { label: "HS Code 4104 - Tanned or crust hides and skins", url: "#" },
+      { label: "HS Code 4107 - Leather of cattle", url: "#" }
     ]
   },
   {
-    name: "Soy (Soya)",
-    image: map,
+    name: "Oil Palm",
+    image: gallery23,
     hsLinks: [
-      { label: "Soya beans (HS Code 1201)", url: "#" },
-      { label: "Soya bean flour and meal (HS Code 1208 10)", url: "#" },
-      { label: "Soya-bean oil (HS Code 1507)", url: "#" },
-      { label: "Oilcake and solid residues (HS Code 2304)", url: "#" }
+      { label: "HS Code 1207 - Oil palm seeds", url: "#" },
+      { label: "HS Code 1511 - Palm oil and its fractions", url: "#" },
+      { label: "HS Code 1513 - Palm kernel oil and its fractions", url: "#" },
+      { label: "HS Code 2306 - Oil-cake and other solid residues from palm oil extraction", url: "#" },
+      { label: "HS Code 3823 - Fatty acids and derivatives from palm oil", url: "#" }
     ]
   },
   {
     name: "Rubber",
-    image: map,
+    image: gallery150,
     hsLinks: [
-      { label: "Natural rubber and similar gums (HS Code 4001)", url: "#" },
-      { label: "Compounded rubber, unvulcanised (HS Code 4005)", url: "#" },
-      { label: "Unvulcanised rubber in other forms (HS Code 4006)", url: "#" },
-      { label: "Vulcanised rubber thread and cord (HS Code 4007)", url: "#" },
-      { label: "Vulcanised rubber profiles (HS Code 4008)", url: "#" },
-      { label: "Conveyor or transmission belts (HS Code 4010)", url: "#" },
-      { label: "New pneumatic tyres (HS Code 4011)", url: "#" },
-      { label: "Retreaded or used pneumatic tyres (HS Code 4012)", url: "#" },
-      { label: "Inner tubes (HS Code 4013)", url: "#" },
-      { label: "Hard rubber articles (HS Code 4017)", url: "#" }
+      { label: "HS Code 4001 - Natural rubber and similar gums", url: "#" },
+      { label: "HS Code 4005 - Compounded rubber, unvulcanised", url: "#" },
+      { label: "HS Code 4006 - Unvulcanised rubber in other forms", url: "#" },
+      { label: "HS Code 4007 - Vulcanised rubber thread and cord", url: "#" },
+      { label: "HS Code 4008 - Vulcanised rubber profiles", url: "#" },
+      { label: "HS Code 4010 - Conveyor or transmission belts", url: "#" },
+      { label: "HS Code 4011 - New pneumatic tyres", url: "#" },
+      { label: "HS Code 4012 - Retreaded or used pneumatic tyres", url: "#" },
+      { label: "HS Code 4013 - Inner tubes", url: "#" },
+      { label: "HS Code 4017 - Hard rubber articles", url: "#" }
     ]
   },
   {
     name: "Wood",
-    image: map,
+    image: gallery18,
     hsLinks: [
-      { label: "Fuel wood, wood chips, sawdust (HS Code 4401)", url: "#" },
-      { label: "Wood charcoal (HS Code 4402)", url: "#" },
-      { label: "Wood in the rough (HS Code 4403)", url: "#" },
-      { label: "Hoopwood, chipwood, stakes (HS Code 4404)", url: "#" },
-      { label: "Wood wool, wood flour (HS Code 4405)", url: "#" },
-      { label: "Railway or tramway sleepers (HS Code 4406)", url: "#" },
-      { label: "Sawn or chipped wood >6mm (HS Code 4407)", url: "#" },
-      { label: "Veneer sheets, thin wood (HS Code 4408)", url: "#" },
-      { label: "Shaped wood (HS Code 4409)", url: "#" },
-      { label: "Particle board, OSB (HS Code 4410)", url: "#" },
-      { label: "Fibreboard (HS Code 4411)", url: "#" },
-      { label: "Plywood and laminated wood (HS Code 4412)", url: "#" },
-      { label: "Densified wood (HS Code 4413)", url: "#" },
-      { label: "Wooden frames (HS Code 4414)", url: "#" },
-      { label: "Wooden packaging (HS Code 4415)", url: "#" },
-      { label: "Coopers' products (HS Code 4416)", url: "#" },
-      { label: "Tool and broom handles (HS Code 4417)", url: "#" },
-      { label: "Joinery and carpentry (HS Code 4418)", url: "#" },
-      { label: "Marquetry, ornaments (HS Code 4420)", url: "#" },
-      { label: "Other wooden articles (HS Code 4421)", url: "#" },
-      { label: "Pulp and paper (excl. bamboo/recovered) (HS Code Chapters 47 & 48)", url: "#" },
-      { label: "Printed books, newspapers, etc. (HS Code Chapter 49)", url: "#" }
+      { label: "HS Code 4401 - Fuel wood, wood chips, sawdust", url: "#" },
+      { label: "HS Code 4402 - Wood charcoal", url: "#" },
+      { label: "HS Code 4403 - Wood in the rough", url: "#" },
+      { label: "HS Code 4404 - Hoopwood, chipwood, stakes", url: "#" },
+      { label: "HS Code 4405 - Wood wool, wood flour", url: "#" },
+      { label: "HS Code 4406 - Railway or tramway sleepers", url: "#" },
+      { label: "HS Code 4407 - Sawn or chipped wood >6mm", url: "#" },
+      { label: "HS Code 4408 - Veneer sheets, thin wood", url: "#" },
+      { label: "HS Code 4409 - Shaped wood", url: "#" },
+      { label: "HS Code 4410 - Particle board, OSB", url: "#" },
+      // { label: "HS Code 4411 - Fibreboard", url: "#" },
+      // { label: "HS Code 4412 - Plywood and laminated wood", url: "#" },
+      // { label: "HS Code 4413 - Densified wood", url: "#" },
+      // { label: "HS Code 4414 - Wooden frames", url: "#" },
+      // { label: "HS Code 4415 - Wooden packaging", url: "#" },
+      // { label: "HS Code 4416 - Coopers' products", url: "#" },
+      // { label: "HS Code 4417 - Tool and broom handles", url: "#" },
+      // { label: "HS Code 4418 - Joinery and carpentry", url: "#" },
+      // { label: "HS Code 4420 - Marquetry, ornaments", url: "#" },
+      // { label: "HS Code 4421 - Other wooden articles", url: "#" },
+      // { label: "HS Code Chapters 47 & 48 - Pulp and paper (excl. bamboo/recovered)", url: "#" },
+      // { label: "HS Code Chapter 49 - Printed books, newspapers, etc.", url: "#" }
     ]
   }
+];
+
+
+export const REGULATIONS_DATA = [
+  {
+    id: "reg1",
+    title: "Regulation 1",
+    coverImage: reg1,
+  },
+  {
+    id: "reg2",
+    title: "Regulation 2",
+    coverImage: reg2,
+  },
+  {
+    id: "reg3",
+    title: "Regulation 3",
+    coverImage: reg3,
+  },
+];
+
+export const PRIVACY_SECTION = [
+  { id: "introduction", title: "Introduction" },
+  { id: "specific-privacy-statement", title: "Information Contained in a Specific Privacy Statement" },
+  { id: "services", title: "Services" },
+  { id: "analytics", title: "TraceRxTech Analytics" },
+  { id: "ip-device", title: "IP Address and Device ID" },
+  { id: "cookies-third-parties", title: "Cookies and Third Parties" },
+  { id: "safeguarding", title: "Safeguarding Information" },
+  { id: "rights", title: "Your Rights as a Data Subject" },
 ];
 

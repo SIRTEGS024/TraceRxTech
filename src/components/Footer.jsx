@@ -44,7 +44,7 @@ const Footer = () => {
                 <FaLeaf />
               </div>
               <p className="text-sm max-w-xs text-white/80">
-               Traceability, Sustainability, Legality and Due diligence.
+                Traceability, Sustainability, Legality and Due diligence.
               </p>
             </div>
 
@@ -64,7 +64,7 @@ const Footer = () => {
 
             {/* Address */}
             <p className="text-sm text-white/70">
-             Address
+              Address
             </p>
 
             {/* Social and privacy */}
@@ -80,12 +80,12 @@ const Footer = () => {
                   <FaTwitter />
                 </a>
               </div>
-              <a
-                href="#"
+              <Link
+                to="/privacy-policy"
                 className="underline text-sm text-white/80 hover:text-emerald-300"
               >
                 Privacy Policy
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -95,9 +95,9 @@ const Footer = () => {
           {/* Right side - Logo display */}
           <div className="flex-1 flex items-center justify-center">
             <div className="bg-white/10 p-6 rounded-xl flex items-center justify-center">
-              <img 
-                src={logo} 
-                alt="TraceRx Logo" 
+              <img
+                src={logo}
+                alt="TraceRx Logo"
                 className="h-20 object-contain transition-transform duration-300 hover:scale-105"
               />
             </div>

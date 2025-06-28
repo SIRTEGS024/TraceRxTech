@@ -1,15 +1,16 @@
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import EudrPage from "./pages/EudrPage";
-import MrvPage from "./pages/MrvPage";
-import SustainabilityPage from "./pages/SustainabilityPage";
-import TraceabilityPage from "./pages/TraceabilityPage";
-import ManagementPage from "./pages/managementPage";
-import AgribusinessPage from "./pages/AgribusinessPage";
-import CarbonPage from "./pages/CarbonPage";
-import ProcessPage from "./pages/ProcessPage";
-import FoundationPage from "./pages/FoundationPage";
-import ConsultantPage from "./pages/Consultants";
+// import EudrPage from "./pages/EudrPage";
+// import MrvPage from "./pages/MrvPage";
+// import SustainabilityPage from "./pages/SustainabilityPage";
+// import TraceabilityPage from "./pages/TraceabilityPage";
+// import ManagementPage from "./pages/managementPage";
+// import AgribusinessPage from "./pages/AgribusinessPage";
+// import CarbonPage from "./pages/CarbonPage";
+// import ProcessPage from "./pages/ProcessPage";
+// import FoundationPage from "./pages/FoundationPage";
+// import ConsultantPage from "./pages/Consultants";
+// import BecomePartner from "./pages/BecomePartner";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import Navbar from "./components/Navbar";
@@ -18,9 +19,9 @@ import BlogPage from "./pages/BlogPage";
 import ScrollToTop from "./components/ScrollToTop";
 import MediaPage from "./pages/MediaPage";
 import AboutUs from "./pages/AboutUs";
-import BecomePartner from "./pages/BecomePartner";
 import PartnerDirectory from "./pages/PartnerDirectory";
 import ChatWidget from "./components/ChatWidget";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 export default function App() {
   const location = useLocation();
@@ -36,7 +37,7 @@ export default function App() {
       <main className={`flex-grow ${!hideLayout ? "pt-20" : ""}`}>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/eudr-compliance-platform" element={<EudrPage />} />
+          {/* <Route path="/eudr-compliance-platform" element={<EudrPage />} />
           <Route path="/digital-mrv-platform" element={<MrvPage />} />
           <Route
             path="/sustainability-platform"
@@ -54,12 +55,13 @@ export default function App() {
           <Route path="/carbon-project-developer" element={<CarbonPage />} />
           <Route path="/processor" element={<ProcessPage />} />
           <Route path="/foundations" element={<FoundationPage />} />
-          <Route path="/consultants" element={<ConsultantPage />} />
+          <Route path="/consultants" element={<ConsultantPage />} /> */}
+          {/* <Route path="/partner" element={<BecomePartner />} /> */}
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/media" element={<MediaPage />} />
           <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/partner" element={<BecomePartner />} />
           <Route path="/partners" element={<PartnerDirectory />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy/>} />
 
           {/* Auth routes */}
           <Route path="/signup" element={<SignupPage />} />
