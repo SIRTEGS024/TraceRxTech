@@ -227,9 +227,10 @@ import gallery148 from "../assets/real2/WhatsApp Image 2025-06-03 at 14.36.27 (1
 import gallery149 from "../assets/real2/WhatsApp Image 2025-06-03 at 14.36.27.jpeg";
 import gallery150 from "../assets/real2/WhatsApp Image 2025-06-03 at 14.36.28.jpeg";
 import gallery151 from "../assets/real2/WhatsApp Image 2025-06-03 at 14.36.29.jpeg";
-import reg1 from "../assets/reg-img2/ChatGPT Image Jun 28, 2025, 01_01_09 AM.png";
-import reg2 from "../assets/reg-img2/ChatGPT Image Jun 28, 2025, 12_55_51 AM.png";
-import reg3 from "../assets/reg-img2/ChatGPT Image Jun 28, 2025, 12_56_21 AM.png";
+import gallery152 from "../assets/real2/Soy-Benefits.jpg";
+import reg1 from "../assets/reg-img/ChatGPT Image Jun 28, 2025, 01_01_09 AM.png";
+import reg2 from "../assets/reg-img/ChatGPT Image Jun 28, 2025, 12_55_51 AM.png";
+import reg3 from "../assets/reg-img/ChatGPT Image Jun 28, 2025, 12_56_21 AM.png";
 import florence from "../assets/real2/florence.jpeg";
 
 
@@ -1294,7 +1295,7 @@ export const FOOTER_LINKS = [
   {
     heading: "Make a Payment",
     links: [
-       { name: "Tree Planting", url: "#" },
+      { name: "Tree Planting", url: "#" },
       { name: "Forest Management", url: "#" },
       { name: "Consultancy", url: "#" },
       { name: "Verification", url: "#" },
@@ -1304,7 +1305,7 @@ export const FOOTER_LINKS = [
   {
     heading: "Quick Links",
     links: [
-       { name: "Exporter", url: "#" },
+      { name: "Exporter", url: "#" },
       { name: "Freight Agent", url: "#" },
       { name: "MDA/ Certification/ Verification/ Audit", url: "#" },
       { name: "Importer", url: "#" },
@@ -2792,6 +2793,16 @@ export const AGRO_PRODUCTS = [
       { label: "HS Code 4101 - Raw hides and skins of cattle", url: "#" },
       { label: "HS Code 4104 - Tanned or crust hides and skins", url: "#" },
       { label: "HS Code 4107 - Leather of cattle", url: "#" }
+    ]
+  },
+  {
+    name: "Soy (Soya)",
+    image: gallery152,
+    hsLinks: [
+      { label: "HS Code 1201 - Soya beans", url: "#" },
+      { label: "HS Code 1208 10 - Soya bean flour and meal", url: "#" },
+      { label: "HS Code 1507 - Soya-bean oil", url: "#" },
+      { label: "HS Code 2304 - Oilcake and solid residues", url: "#" }
     ]
   },
   {
