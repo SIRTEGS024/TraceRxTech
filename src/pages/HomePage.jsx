@@ -3,6 +3,7 @@ import BlueSection from "../components/BlueSection";
 import Featured from "../components/Featured";
 import HeroSection from "../components/HeroSection";
 import ImpactSection from "../components/ImpactSection";
+import MapComponent from "../components/MapComponent";
 import SystemCardSection from "../components/SystemCardSection";
 import TestimonialCarousel from "../components/TestimonialCarousel";
 import TextImage from "../components/TextImage";
@@ -33,6 +34,7 @@ const HomePage = () => {
         subTitle={SECTION_HEADERS.system.subTitle}
         systemData={SYSTEM_CARD_DATA}
       />
+      <MapComponent/>
       <ImpactSection
         regulationsData={REGULATIONS_DATA}
         contentSection={CONTENT_SECTIONS}
