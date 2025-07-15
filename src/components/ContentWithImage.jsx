@@ -1,4 +1,5 @@
 import { FiArrowRight } from "react-icons/fi";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
 const ContentWithImage = ({
   title,
@@ -37,10 +38,13 @@ const ContentWithImage = ({
         )}
 
         {buttonText && (
-          <button className="bg-green-700 text-white px-6 py-3 rounded-md font-medium hover:bg-green-800 transition-colors duration-200 flex items-center gap-2">
+          <Link
+            to="/login" // Link to /login
+            className="bg-green-700 text-white px-6 py-3 rounded-md font-medium hover:bg-green-800 transition-colors duration-200 flex items-center justify-center gap-2"
+          >
             {buttonText}
             <FiArrowRight className="text-white" />
-          </button>
+          </Link>
         )}
       </div>
 

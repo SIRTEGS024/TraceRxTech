@@ -73,12 +73,12 @@ const ImageRowCarousel = ({ companyLogos }) => {
             href={logo.url || "#"}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-shrink-0 mx-auto w-[150px]"
+            className="flex-shrink-0 mx-auto w-[150px] h-[150px]" // Fixed container size
           >
             <img
               src={logo.src}
               alt={`Company ${index + 1}`}
-              className="object-contain w-full h-36 hover:scale-105 transition-transform"
+              className="object-contain w-[150px] h-[150px] hover:scale-105 transition-transform" // Fixed image size
             />
           </a>
         ))}

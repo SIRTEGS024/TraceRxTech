@@ -8,10 +8,11 @@ import {
   FaSearch,
   FaLeaf,
 } from "react-icons/fa";
-import { MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
+import { MdEmail, MdLocationOn } from "react-icons/md";
 import logo from "../assets/TRACE_RX.jpg";
 import { NAV_LINKS } from "../constants";
 import ReusableInput from "./ReusableInput";
+import finance from "../assets/company/finance-logo.png";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -47,21 +48,18 @@ export default function Navbar() {
     <div className="w-full fixed left-0 bg-white shadow z-50">
       <div className="w-[84vw] mx-auto p-2">
         <div className="flex justify-between items-center">
-          <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="TraceRx Logo" className="h-10" />
-            <div className="hidden lg:flex items-center gap-2 text-sm text-gray-600">
-              <FaLeaf size={16} className="text-emerald-600" />
-              <span>Traceability, Sustainability, Legality, Due Diligence</span>
-            </div>
-          </Link>
+          <div className="flex items-center gap-4">
+            <img src={finance} alt="Ministry of Finance Logo" className="h-9" />
+            <Link to="/" className="flex items-center gap-2">
+              <img src={logo} alt="TraceRx Logo" className="h-10" />
+              <div className="hidden lg:flex items-center gap-2 text-sm text-gray-600">
+                <FaLeaf size={16} className="text-emerald-600" />
+                <span>Traceability, Sustainability, Legality, Due Diligence</span>
+              </div>
+            </Link>
+          </div>
 
           <div className="hidden lg:flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <MdPhone size={18} />
-              <a href="tel:+919972524322" className="text-gray-700 font-medium">
-                07012507260
-              </a>
-            </div>
             <a href="mailto:contact@example.com">
               <MdEmail size={18} className="text-gray-700" />
             </a>
@@ -111,15 +109,6 @@ export default function Navbar() {
             </div>
           )}
 
-          {menuOpen && (
-            <div className="lg:hidden flex items-center gap-2 mb-4 w-full">
-              <MdPhone size={18} />
-              <a href="tel:+919972524322" className="text-gray-700 font-medium">
-                07012507260
-              </a>
-            </div>
-          )}
-
           <div className="flex flex-col lg:flex-row lg:items-center gap-6 w-full lg:w-auto">
             {NAV_LINKS.map((link) => (
               <div
@@ -145,9 +134,9 @@ export default function Navbar() {
                         </button>
                       </div>
                       <div
-                        className={`absolute left-0 top-full bg-white text-black shadow-lg w-[400px] grid grid-cols-2 gap-2 p-2 transition-all duration-200 z-50 ${
+                        className={`absolute left-0 top-full bg-white text-black shadow-lg w-[600px] grid grid-cols-3 gap-2 p-2 transition-all duration-200 z-50 ${
                           openDropdown === link.name ? "block" : "hidden"
-                        } max-h-80 overflow-y-auto rounded-md`}
+                        } rounded-md`}
                       >
                         {link.subLinks.map((s, index) => (
                           <div key={s.name} className="w-full">

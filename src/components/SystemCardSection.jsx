@@ -23,6 +23,7 @@ const SystemCardSection = ({ title, subTitle, systemData }) => {
               title={system.title}
               subtext={system.subtext}
               buttonText={system.buttonText}
+              url={system.url}
             />
             {/* Arrow after each card, hidden for the last card */}
             {index < systemData.length - 1 && (

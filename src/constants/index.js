@@ -5,7 +5,8 @@ import company4 from "../assets/company/Reg-trade.png";
 import company5 from "../assets/company/Cert-scs.png";
 import company6 from "../assets/company/Cert-terea.png";
 import company7 from "../assets/company/Power-adroit.png";
-import eudrImage from "../assets/impact-image.png";
+import company8 from "../assets/company/UI.jpeg";
+import eudrImage from "../assets/final_table_adjusted.jpg";
 import trust1 from "../assets/trust_company/trust-1.png";
 import trust2 from "../assets/trust_company/trust-2.png";
 import trust3 from "../assets/trust_company/trust-3.svg";
@@ -228,10 +229,10 @@ import gallery149 from "../assets/real2/WhatsApp Image 2025-06-03 at 14.36.27.jp
 import gallery150 from "../assets/real2/WhatsApp Image 2025-06-03 at 14.36.28.jpeg";
 import gallery151 from "../assets/real2/WhatsApp Image 2025-06-03 at 14.36.29.jpeg";
 import gallery152 from "../assets/real2/Soy-Benefits.jpg";
-import reg1 from "../assets/reg-img/ChatGPT Image Jun 28, 2025, 01_01_09 AM.png";
-import reg2 from "../assets/reg-img/ChatGPT Image Jun 28, 2025, 12_55_51 AM.png";
-import reg3 from "../assets/reg-img/ChatGPT Image Jun 28, 2025, 12_56_21 AM.png";
-import florence from "../assets/real2/florence.jpeg";
+import reg1 from "../assets/reg-img/eudr-regulations.svg";
+import reg2 from "../assets/reg-img/finance-logo.png";
+
+
 
 
 export const NAV_LINKS = [
@@ -273,8 +274,6 @@ export const NAV_LINKS = [
       { name: "Inventory", url: "#" },
       { name: "Mapping", url: "#" },
       { name: "Forest/ Plantation Establishment", url: "#" },
-      { name: "Complaints/Disputes", url: "#" },
-      { name: "IT Support", url: "#" }
     ]
   },
   {
@@ -289,7 +288,10 @@ export const NAV_LINKS = [
   {
     name: "Need Help?",
     url: "/customer-stories",
-    subLinks: []
+    subLinks: [
+      { name: "Complaints/Disputes", url: "#" },
+      { name: "IT Support", url: "#" }
+    ]
   }
 ];
 
@@ -304,7 +306,7 @@ export const HERO_SECTIONS = {
         // "Monitor and evaluate environmental and social risks across your supply chain.",
         // "Regularly document risk assessments and detail mitigation strategies."
       ],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/login" },
       // secondaryButton: { text: "Check your EUDR Compliance Readiness" },
       image: { src: gallery49, alt: "hero2" }
     },
@@ -312,7 +314,7 @@ export const HERO_SECTIONS = {
       heading: "Freight Agent Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/login" },
       // secondaryButton: { text: "BOOK DEMO" },
       image: { src: gallery135, alt: "hero2" }
     },
@@ -320,7 +322,7 @@ export const HERO_SECTIONS = {
       heading: "MDA/ Certification/ Verification/ Audit Portal ",
       subheading: "Click the button below to visit the portal",
       checklist: [],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/login" },
       // secondaryButton: { text: "BOOK DEMO" },
       image: { src: gallery136, alt: "hero1" }
     },
@@ -328,7 +330,7 @@ export const HERO_SECTIONS = {
       heading: "Importer Portal",
       subheading: "Click the button below to visit the portal",
       checklist: [],
-      primaryButton: { text: "GO TO PORTAL", url: "/signup" },
+      primaryButton: { text: "GO TO PORTAL", url: "/login" },
       // secondaryButton: { text: "BOOK DEMO" },
       image: { src: gallery141, alt: "hero2" }
     }
@@ -531,6 +533,10 @@ export const COMPANY_LOGOS_CAROUSEL = {
     {
       src: company4,
       url: "http://nid.fmiti.gov.ng/"
+    },
+    {
+      src: company8,
+      url: "https://ui.edu.ng/"
     },
   ],
   euCompanies: [
@@ -749,8 +755,8 @@ export const REGULATIONS = [
 
 export const CONTENT_SECTIONS = {
   homeSection: {
-    title: "Ready to ace NTLS and EUDR Requirements?- Ready to ace NFP, NTLS, Wood and Charcoal Export Guidelines, EUDR and other regulatory Requirements?",
-    description: "From safeguarding the environment, reducing global GHG emissions linked to resource extraction and processing, ensuring deforestation-free practices, sustainability, traceability, to conducting due diligence and generating comprehensive reports, we empower your business to navigate NPF,NTLS, Wood and Charcoal Export Guidelines, EUDR and other regulatory Requirements regulations effortlessly.",
+    title: "Ready to ace Imports and Export Guidelines, EUDR and other regulatory Requirements?",
+    description: "From safeguarding the environment, reducing global GHG emissions linked to resource extraction and processing, ensuring deforestation-free practices, sustainability, traceability, to conducting due diligence and generating comprehensive reports, we empower your business to navigate Import and Export Guidelines, EUDR and other regulatory Requirements regulations effortlessly.",
     listTitle: "Best Suited for",
     items: [
       "Exporters",
@@ -776,8 +782,8 @@ export const TEXT_IMAGE_CAROUSEL = {
       logo: trust1,
       image: gallery1,
       subtitle: "Tobacco Giant's Success Story",
-      title: "Drive Sustainable Procurement at Scale with TraceRxTech",
-      quote: "I appreciate how TraceRxTech tackles the entire challenge of sustainable tobacco production...",
+      title: "Drive Sustainable Procurement at Scale with TraceRX",
+      quote: "I appreciate how TraceRX tackles the entire challenge of sustainable tobacco production...",
       attribution: "- Ajay Chaudhary, Head of Digital Transformation at VST"
     },
     {
@@ -785,8 +791,8 @@ export const TEXT_IMAGE_CAROUSEL = {
       logo: trust2,
       image: gallery2,
       subtitle: "AgriTech Transformation",
-      title: "Seamless Supply Chain with TraceRxTech",
-      quote: "With TraceRxTech, we digitalized every farmer interaction, streamlined our sourcing, and improved transparency...",
+      title: "Seamless Supply Chain with TraceRX",
+      quote: "With TraceRX, we digitalized every farmer interaction, streamlined our sourcing, and improved transparency...",
       attribution: "- Priya Mehta, Agri Sourcing Lead at AgroIndia"
     },
     {
@@ -794,8 +800,8 @@ export const TEXT_IMAGE_CAROUSEL = {
       logo: trust3,
       image: gallery6,
       subtitle: "Digital Agriculture Impact",
-      title: "From Field to Data: TraceRxTech Leads the Way",
-      quote: "TraceRxTech enabled us to build a strong digital footprint across our farming operations...",
+      title: "From Field to Data: TraceRX Leads the Way",
+      quote: "TraceRX enabled us to build a strong digital footprint across our farming operations...",
       attribution: "- Karan Singh, Sustainability Manager at GreenHarvest"
     }
   ],
@@ -805,7 +811,7 @@ export const TEXT_IMAGE_CAROUSEL = {
       logo: "",
       image: gallery7,
       subtitle: "",
-      title: "How TraceRxTech enabled EUDR compliance",
+      title: "How TraceRX enabled EUDR compliance",
       quote: "A Nigerian company enhanced data accuracy, improved operational efficiency, achieved supply chain traceability and thereby ensured compliance leveraging the EUDR compliance software.",
       attribution: ""
     },
@@ -816,8 +822,8 @@ export const TEXT_IMAGE_CAROUSEL = {
       logo: "",
       image: gallery11,
       subtitle: "",
-      title: "How TraceRxTech enabled VNV to implement Carbon Reduction initiatives",
-      quote: "VNV adopted TraceRxTech’s Digital MRV Platform to streamline monitoring of sustainable practices, guarantee data accuracy, and empower them to implement carbon reduction initiatives.",
+      title: "How TraceRX enabled VNV to implement Carbon Reduction initiatives",
+      quote: "VNV adopted TraceRX’s Digital MRV Platform to streamline monitoring of sustainable practices, guarantee data accuracy, and empower them to implement carbon reduction initiatives.",
       attribution: ""
     },
     {
@@ -826,7 +832,7 @@ export const TEXT_IMAGE_CAROUSEL = {
       image: gallery13,
       subtitle: "",
       title: "Enabling The Sustainability Foundation to supercharge their tree planting initiative",
-      quote: "The Sustainability Foundation leverages TraceRxTech’s DMRV platform to supercharge their tree planting efforts. This powerful combination boosts operational efficiency, fosters transparency with partners, and empowers data-driven decisions.",
+      quote: "The Sustainability Foundation leverages TraceRX’s DMRV platform to supercharge their tree planting efforts. This powerful combination boosts operational efficiency, fosters transparency with partners, and empowers data-driven decisions.",
       attribution: ""
     },
   ],
@@ -836,8 +842,8 @@ export const TEXT_IMAGE_CAROUSEL = {
       logo: "",
       image: gallery7,
       subtitle: "",
-      title: "From Paddy to Plate: How TraceRxTech Cultivated a Sustainable Rice Revolution",
-      quote: "Through TraceRxTech solutions, an agribusiness exporter revolutionized sustainable rice cultivation, implementing precision farming techniques, optimizing resource utilization, and ensuring traceability across the supply chain, driving both environmental stewardship and market competitiveness.",
+      title: "From Paddy to Plate: How TraceRX Cultivated a Sustainable Rice Revolution",
+      quote: "Through TraceRX solutions, an agribusiness exporter revolutionized sustainable rice cultivation, implementing precision farming techniques, optimizing resource utilization, and ensuring traceability across the supply chain, driving both environmental stewardship and market competitiveness.",
       attribution: ""
     },
     {
@@ -845,8 +851,8 @@ export const TEXT_IMAGE_CAROUSEL = {
       logo: "",
       image: gallery24,
       subtitle: "",
-      title: "How TraceRxTech Empowered Sustainable Land Restoration",
-      quote: "By harnessing TraceRxTech solutions, a leading sustainability certification organization streamlined land restoration projects, ensuring efficient resource allocation, transparent progress tracking, and effective stakeholder engagement, fostering a greener and more sustainable future.",
+      title: "How TraceRX Empowered Sustainable Land Restoration",
+      quote: "By harnessing TraceRX solutions, a leading sustainability certification organization streamlined land restoration projects, ensuring efficient resource allocation, transparent progress tracking, and effective stakeholder engagement, fostering a greener and more sustainable future.",
       attribution: ""
     },
   ],
@@ -857,7 +863,7 @@ export const TEXT_IMAGE_CAROUSEL = {
       image: gallery13,
       subtitle: "",
       title: "Organic India",
-      quote: "Organic India leveraged TraceRxTech’s traceability solutions to deliver healthy organic products to consumers",
+      quote: "Organic India leveraged TraceRX’s traceability solutions to deliver healthy organic products to consumers",
       attribution: ""
     },
     {
@@ -866,7 +872,7 @@ export const TEXT_IMAGE_CAROUSEL = {
       image: gallery15,
       subtitle: "",
       title: "Svojas Farms",
-      quote: "Svojas was able to establish itself as a reliable food brand by offering consumers a transparent view of its product journey through QR codes with TraceRxTech’s traceability solutions",
+      quote: "Svojas was able to establish itself as a reliable food brand by offering consumers a transparent view of its product journey through QR codes with TraceRX’s traceability solutions",
       attribution: ""
     },
   ],
@@ -876,8 +882,8 @@ export const TEXT_IMAGE_CAROUSEL = {
       logo: "",
       image: gallery9,
       subtitle: "",
-      title: "Enabling effective addressing of sustainability & procurement challenges through TraceRxTech's Forest/Farm Management Solutions",
-      quote: "VST effectively addressed challenges in sustainability and procurement by leveraging TraceRxTech forest/farm management solutions. Moreover, they optimized procurement workflows, ensuring efficient sourcing, accurate grading of tobacco leaves, and seamless coordination with farmers and buying points.",
+      title: "Enabling effective addressing of sustainability & procurement challenges through TraceRX's Forest/Farm Management Solutions",
+      quote: "VST effectively addressed challenges in sustainability and procurement by leveraging TraceRX forest/farm management solutions. Moreover, they optimized procurement workflows, ensuring efficient sourcing, accurate grading of tobacco leaves, and seamless coordination with farmers and buying points.",
       attribution: ""
     },
     {
@@ -886,7 +892,7 @@ export const TEXT_IMAGE_CAROUSEL = {
       image: gallery19,
       subtitle: "",
       title: "Tackling challenges in ethical sourcing, and harvest production planning",
-      quote: "Nesso effectively tackled challenges in ethical sourcing, aggregation of flower agents, and harvest production planning and procurement by implementing TraceRxTech Forest/Farm Management Solutions",
+      quote: "Nesso effectively tackled challenges in ethical sourcing, aggregation of flower agents, and harvest production planning and procurement by implementing TraceRX Forest/Farm Management Solutions",
       attribution: ""
     },
   ],
@@ -1053,7 +1059,7 @@ export const COMPANY_LOGOS = {
 
 export const SECTION_HEADERS = {
   join: {
-    title: "Regulated By",
+    title: "Our Partners",
     subTitle: ""
   },
   join2: {
@@ -1158,14 +1164,14 @@ export const SECTION_HEADERS = {
   },
   empowering: {
     title: "Empowering Agribusiness for a Sustainable Future",
-    subTitle: "Agribusinesses today face unprecedented pressures to operate sustainably while meeting growing consumer demands. TraceRxTech offers a suite of platforms tailored to address these challenges"
+    subTitle: "Agribusinesses today face unprecedented pressures to operate sustainably while meeting growing consumer demands. TraceRX offers a suite of platforms tailored to address these challenges"
   },
   empowering2: {
     title: "Empowering Agribusiness for a Sustainable Future",
-    subTitle: "Agribusinesses today face unprecedented pressures to operate sustainably while meeting growing consumer demands. TraceRxTech offers a suite of platforms tailored to address these challenges"
+    subTitle: "Agribusinesses today face unprecedented pressures to operate sustainably while meeting growing consumer demands. TraceRX offers a suite of platforms tailored to address these challenges"
   },
   choose: {
-    title: "Why choose TraceRxTech?",
+    title: "Why choose TraceRX?",
     subTitle: ""
   },
   Transformative: {
@@ -1205,81 +1211,81 @@ export const SECTION_HEADERS = {
 
 export const BLUE_SECTION = {
   homeSection: {
-    "title": "Start using TraceRxTech",
+    "title": "Start using TraceRX",
     "subtitle": "Transparency, Trust and Success for your Climate Journey.",
     "buttonText": "GO TO PORTAL",
     "imageSrc": startX,
-    "imageAlt": "TraceRxTech Demo"
+    "imageAlt": "TraceRX Demo"
   },
   eudrSection: {
-    "title": "Start using TraceRxTech",
+    "title": "Start using TraceRX",
     "subtitle": "Transparency, Trust and Success for your Climate Journey.",
     "buttonText": "GO TO PORTAL",
     "imageSrc": startX,
-    "imageAlt": "TraceRxTech Demo"
+    "imageAlt": "TraceRX Demo"
   },
   mrvSection: {
-    "title": "Start using TraceRxTech",
+    "title": "Start using TraceRX",
     "subtitle": "Transparency, Trust and Success for your Climate Journey.",
     "buttonText": "GO TO PORTAL",
     "imageSrc": startX,
-    "imageAlt": "TraceRxTech Demo"
+    "imageAlt": "TraceRX Demo"
   },
   sustainabilitySection: {
-    "title": "Start using TraceRxTech",
+    "title": "Start using TraceRX",
     "subtitle": "Transparency, Trust and Success for your Climate Journey.",
     "buttonText": "GO TO PORTAL",
     "imageSrc": startX,
-    "imageAlt": "TraceRxTech Demo"
+    "imageAlt": "TraceRX Demo"
   },
   traceabilitySection: {
-    "title": "Start using TraceRxTech",
+    "title": "Start using TraceRX",
     "subtitle": "Transparency, Trust and Success for your Climate Journey.",
     "buttonText": "GO TO PORTAL",
     "imageSrc": startX,
-    "imageAlt": "TraceRxTech Demo"
+    "imageAlt": "TraceRX Demo"
   },
   managementSection: {
-    "title": "Start using TraceRxTech",
+    "title": "Start using TraceRX",
     "subtitle": "Transparency, Trust and Success for your Climate Journey.",
     "buttonText": "GO TO PORTAL",
     "imageSrc": startX,
-    "imageAlt": "TraceRxTech Demo"
+    "imageAlt": "TraceRX Demo"
   },
   agribusinessSection: {
-    "title": "Start using TraceRxTech",
+    "title": "Start using TraceRX",
     "subtitle": "Transparency, Trust and Success for your Climate Journey.",
     "buttonText": "GO TO PORTAL",
     "imageSrc": startX,
-    "imageAlt": "TraceRxTech Demo"
+    "imageAlt": "TraceRX Demo"
   },
   carbonSection: {
-    "title": "Partner with TraceRxTech for Advanced Carbon Management Solutions",
+    "title": "Partner with TraceRX for Advanced Carbon Management Solutions",
     "subtitle": "Elevate your carbon projects with our innovative platforms and ensure the highest standards of accuracy, sustainability, and compliance.",
     "buttonText": "Get a free trial",
     "imageSrc": startX,
-    "imageAlt": "TraceRxTech Demo"
+    "imageAlt": "TraceRX Demo"
   },
   processSection: {
     "title": "Transform Your Food Processing Operations Today",
     "subtitle": "Empower your processing operations with our innovative platforms and lead the industry in quality, sustainability, and compliance.",
     "buttonText": "GO TO PORTAL",
     "imageSrc": startX,
-    "imageAlt": "TraceRxTech Demo"
+    "imageAlt": "TraceRX Demo"
   },
   foundationSection: {
     "title": "Transform Your Sustainability Initiatives Today",
     "subtitle": "Empower your foundation’s mission with our innovative platforms and drive meaningful impact in the communities you serve.",
     "buttonText": "Get a free trial",
     "imageSrc": startX,
-    "imageAlt": "TraceRxTech Demo"
+    "imageAlt": "TraceRX Demo"
   },
   consultantSection: {
     "title": "Transform Your Consulting Services Today",
     "subtitle": "Elevate your consulting services with our advanced platforms and deliver unparalleled value to your clients.",
     "buttonText": "Book a free trial",
     "imageSrc": startX,
-    "imageAlt": "TraceRxTech Demo"
+    "imageAlt": "TraceRX Demo"
   }
 }
 
@@ -2453,7 +2459,7 @@ export const MEDIA_DATA = [
     id: 4,
     title: "Partnership with Nigerian Universities Announced",
     summary:
-      "TraceRxTech teams up with local institutions to foster innovation and research.",
+      "TraceRX teams up with local institutions to foster innovation and research.",
     image: gallery19,
     source: "Nigeria Today",
     date: "February 10, 2025",
@@ -2461,7 +2467,7 @@ export const MEDIA_DATA = [
   },
   {
     id: 5,
-    title: "TraceRxTech CEO Talks Sustainability at Global Forum",
+    title: "TraceRX CEO Talks Sustainability at Global Forum",
     summary:
       "Keynote address focuses on the future of digital agriculture and global sustainability.",
     image: gallery27,
@@ -2585,10 +2591,10 @@ export const GALLERY_IMAGES = [
   { id: 111, imageUrl: gallery111, alt: "image" },
   { id: 112, imageUrl: gallery112, alt: "image" },
   { id: 113, imageUrl: gallery113, alt: "image" },
-  { id: 114, imageUrl: gallery114, alt: "image" },
+  // { id: 114, imageUrl: gallery114, alt: "image" },
   { id: 115, imageUrl: gallery115, alt: "image" },
   { id: 116, imageUrl: gallery116, alt: "image" },
-  { id: 117, imageUrl: gallery117, alt: "image" },
+  // { id: 117, imageUrl: gallery117, alt: "image" },
   { id: 118, imageUrl: gallery118, alt: "image" },
   { id: 119, imageUrl: gallery119, alt: "image" },
   { id: 120, imageUrl: gallery120, alt: "image" },
@@ -2599,8 +2605,8 @@ export const GALLERY_IMAGES = [
   { id: 125, imageUrl: gallery125, alt: "image" },
   { id: 126, imageUrl: gallery126, alt: "image" },
   { id: 127, imageUrl: gallery127, alt: "image" },
-  { id: 128, imageUrl: gallery128, alt: "image" },
-  { id: 129, imageUrl: gallery129, alt: "image" },
+  // { id: 128, imageUrl: gallery128, alt: "image" },
+  // { id: 129, imageUrl: gallery129, alt: "image" },
   { id: 130, imageUrl: gallery130, alt: "image" },
   { id: 131, imageUrl: gallery131, alt: "image" },
   { id: 132, imageUrl: gallery132, alt: "image" },
@@ -2631,20 +2637,20 @@ export const GALLERY_IMAGES = [
 
 
 
-export const EXECUTIVES = [
-  {
-    id: "index1",
-    name: "Mr Adeshola Adebowale Idowu",
-    role: "Management",
-    image: gallery146,
-  },
-  {
-    id: "index2",
-    name: "Mrs Florence Omolola Jones Idowu",
-    role: "Management",
-    image: florence,
-  },
-];
+// export const EXECUTIVES = [
+//   {
+//     id: "index1",
+//     name: "Mr Adeshola Adebowale Idowu",
+//     role: "Management",
+//     image: gallery146,
+//   },
+//   {
+//     id: "index2",
+//     name: "Mrs Florence Omolola Jones Idowu",
+//     role: "Management",
+//     image: florence,
+//   },
+// ];
 
 export const PARTNER_TYPES = [
   {
@@ -2707,10 +2713,6 @@ export const CONTAINERS = [
 
 export const MISSION_VISSION = [
   {
-    title: "The Problem",
-    text: "Many African farmers lack access to modern technologies and scalable platforms to improve their agricultural productivity and sustainability.",
-  },
-  {
     title: "Our Mission",
     text: "To revolutionize agriculture by providing innovative, data-driven tools and platforms that empower farmers and agri-businesses.",
   },
@@ -2726,24 +2728,28 @@ export const SYSTEM_CARD_DATA = [
     title: "Exporter Portal",
     subtext: "Click here to Register on the portal with your CAC document, Tax Identification Number (TIN) from FIRS and NXP etc. Once concluded, you can fill  out your legal acquisition documents, coordinates etc.",
     buttonText: "GO TO PORTAL",
+    url: "/login", // Added url property
   },
   {
     image: gallery27,
     title: "Freight Agent Portal",
     subtext: "Click here to Register on the portal with your registration documents and Exporter/Importer authorization Port documentation: Pre Shipment Inspection, Nigerian Customs Service, Relevant Regulatory Agencies Joint examination, Shipping lines & Airlines, others.",
     buttonText: "GO TO PORTAL",
+    url: "/login", // Added url property
   },
   {
     image: gallery4,
     title: "MDA/ Certification/ Verification/ Audit Portal",
     subtext: "Click here to Register on the portal to ensure due diligence and compliance with standards, regulations and policy etc.",
     buttonText: "GO TO PORTAL",
+    url: "/login", // Added url property
   },
   {
     image: gallery23,
     title: "Importer Portal",
     subtext: "Click here to Register on the portal with your particulars, registration documents, import license, Tax Identification Number (TIN) etc.",
     buttonText: "GO TO PORTAL",
+    url: "/login", // Added url property
   },
 ];
 
@@ -2868,16 +2874,13 @@ export const REGULATIONS_DATA = [
     id: "reg1",
     title: "Regulation 1",
     coverImage: reg1,
+    url:"https://environment.ec.europa.eu/topics/forests/deforestation/regulation-deforestation-free-products_en",
   },
   {
     id: "reg2",
     title: "Regulation 2",
     coverImage: reg2,
-  },
-  {
-    id: "reg3",
-    title: "Regulation 3",
-    coverImage: reg3,
+    url:"https://www.brtnews.ng/wp-content/uploads/2017/11/FEDERAL-MINISTRY-OF-FINANCE-REVISED-GUIDELINES-ON-EXPORTGUIDELINES-NON-OIL.pdf",
   },
 ];
 
@@ -2885,7 +2888,7 @@ export const PRIVACY_SECTION = [
   { id: "introduction", title: "Introduction" },
   { id: "specific-privacy-statement", title: "Information Contained in a Specific Privacy Statement" },
   { id: "services", title: "Services" },
-  { id: "analytics", title: "TraceRxTech Analytics" },
+  { id: "analytics", title: "TraceRX Analytics" },
   { id: "ip-device", title: "IP Address and Device ID" },
   { id: "cookies-third-parties", title: "Cookies and Third Parties" },
   { id: "safeguarding", title: "Safeguarding Information" },

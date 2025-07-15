@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import ExecutiveCard from "../components/ExecutiveCard";
+import { FaLeaf } from "react-icons/fa";
 import StatCounter from "../components/StatCounter";
-import { EXECUTIVES, GALLERY_IMAGES, MISSION_VISSION } from "../constants";
+import { GALLERY_IMAGES, MISSION_VISSION } from "../constants";
 
 // Animation variants
 const container = {
@@ -34,11 +34,12 @@ const AboutUs = () => {
         className="text-center px-4 mb-16"
       >
         <motion.h1 variants={item} className="text-4xl md:text-5xl font-bold text-green-800 mb-4">
-          About TraceRxTech
+          About TraceRX
         </motion.h1>
-        <motion.p variants={item} className="text-lg text-gray-600 max-w-3xl mx-auto">
-          Empowering agricultural growth through technology and innovation.
-        </motion.p>
+        <motion.div variants={item} className="flex justify-center items-center gap-2 text-base text-gray-600">
+          <FaLeaf size={16} className="text-emerald-600" />
+          <span>Traceability, Sustainability, Legality, Due Diligence</span>
+        </motion.div>
       </motion.section>
 
       {/* Stats */}
@@ -49,15 +50,9 @@ const AboutUs = () => {
         viewport={{ once: true, amount: 0.3 }}
         className="px-4 mb-20 max-w-6xl mx-auto"
       >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 gap-10">
           <motion.div variants={item}>
-            <StatCounter end={150} label="Clients" />
-          </motion.div>
-          <motion.div variants={item}>
-            <StatCounter end={2000} label="Farmers Empowered" />
-          </motion.div>
-          <motion.div variants={item}>
-            <StatCounter end={75} label="Employees" />
+            <StatCounter end={654900} label="Trees Planted" prefix="+" suffix="+" />
           </motion.div>
         </div>
       </motion.section>
@@ -86,10 +81,6 @@ const AboutUs = () => {
 
       {/* Gallery */}
       <section
-        // variants={container}
-        // initial="hidden"
-        // whileInView="show"
-        // viewport={{ once: true, amount: 0.3 }}
         className="py-20 px-4"
       >
         <div className="max-w-7xl mx-auto">
@@ -106,47 +97,13 @@ const AboutUs = () => {
                 variants={item}
                 src={imageUrl}
                 loading="lazy"
-                alt={alt}
+                alt={alt || "Gallery image"}
                 className="w-full h-40 sm:h-48 md:h-56 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300"
               />
             ))}
           </div>
         </div>
       </section>
-
-      {/* Executives */}
-      <motion.section
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.3 }}
-        className="bg-white py-20 px-4"
-      >
-        <div className="max-w-7xl mx-auto">
-          <motion.h2
-            variants={item}
-            className="text-3xl text-green-800 font-bold mb-12 text-center"
-          >
-            Meet Our Executives
-          </motion.h2>
-          <div
-            className={`grid gap-8 ${EXECUTIVES.length === 2
-              ? "grid-cols-1 sm:grid-cols-2 justify-center"
-              : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
-              }`}
-          >
-            {EXECUTIVES.map((exec) => (
-              <motion.div
-                key={exec.id}
-                variants={item}
-                className="transition-transform duration-300 transform hover:scale-105 hover:shadow-lg rounded-xl bg-green-50 p-6 min-h-[400px] max-w-sm mx-auto w-full"
-              >
-                <ExecutiveCard {...exec} />
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
     </main>
   );
 };

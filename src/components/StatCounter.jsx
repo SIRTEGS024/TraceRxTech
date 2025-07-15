@@ -1,7 +1,6 @@
-// components/StatCounter.jsx
 import { useEffect, useState } from "react";
 
-const StatCounter = ({ end, label }) => {
+const StatCounter = ({ end, label, prefix = "" }) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -24,7 +23,7 @@ const StatCounter = ({ end, label }) => {
 
   return (
     <div className="text-center">
-      <h3 className="text-4xl text-green-700 font-bold">{count}</h3>
+      <h3 className="text-4xl text-green-700 font-bold">{count.toLocaleString()}{prefix}</h3>
       <p className="text-gray-600 mt-2">{label}</p>
     </div>
   );

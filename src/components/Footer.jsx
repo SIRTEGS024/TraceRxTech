@@ -64,7 +64,7 @@ const Footer = () => {
 
             {/* Address */}
             <p className="text-sm text-white/70">
-              Address
+             56 Captain Davies Road, Ayobo. Lagos Nigeria
             </p>
 
             {/* Social and privacy */}
