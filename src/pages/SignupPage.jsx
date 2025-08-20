@@ -52,9 +52,9 @@ function SignupPage() {
         </h2>
 
         <form onSubmit={handleSignup} className="space-y-5">
-          <ReusableInput id="username" placeholder="Username" icon={FaUser} variant="black" />
           <ReusableInput id="email" placeholder="Email Address" icon={FaEnvelope} variant="black" />
           <ReusableInput id="password" placeholder="Password" icon={FaLock} variant="black" />
+          <ReusableInput id="confirmPassword" placeholder="Confirm Password" icon={FaLock} variant="black" />
 
           {/* Terms & Conditions checkbox */}
           <div className="flex items-start gap-2 text-green-100 text-sm">

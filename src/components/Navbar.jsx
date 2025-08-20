@@ -215,7 +215,7 @@ export default function Navbar() {
             </Link>
 
             <Link
-              to="/pay-for-tree-planting"
+              to="/login"
               onClick={handleMobileLinkClick}
               className="bg-green-700 text-white px-4 py-2 rounded-md font-medium hover:bg-green-800 w-full lg:w-auto text-center"
             >
