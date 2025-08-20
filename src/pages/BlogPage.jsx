@@ -27,7 +27,7 @@ const BlogPage = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="text-4xl md:text-5xl font-bold text-white mb-6"
           >
-            TraceRxTech Blog
+            TraceRx Blog
           </motion.h1>
           <div className="max-w-2xl mx-auto">
             <ReusableInput

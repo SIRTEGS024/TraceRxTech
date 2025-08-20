@@ -15,7 +15,7 @@ const ChatWidget = () => {
       {isOpen ? (
         <div className="w-80 h-96 bg-white border border-green-600 rounded-lg shadow-lg flex flex-col">
           <div className="bg-green-600 text-white px-4 py-2 flex justify-between items-center rounded-t-lg">
-            <span className="font-semibold">Agent TraceRxTech</span>
+            <span className="font-semibold">Agent TraceRx</span>
             <button onClick={toggleOpen}><FiMinus /></button>
           </div>
 
@@ -45,7 +45,7 @@ const ChatWidget = () => {
           onClick={toggleOpen}
           className="flex items-center gap-2 px-4 py-2 bg-white border border-green-600 text-green-700 rounded-full shadow-md hover:bg-green-600 hover:text-white transition"
         >
-          <FiMessageCircle size={20} /> Ask TraceRxTech
+          <FiMessageCircle size={20} /> Ask TraceRx
         </button>
       )}
     </div>

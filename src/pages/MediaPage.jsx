@@ -19,7 +19,7 @@ const MediaPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            TraceRxTech In the Media
+            TraceRx In the Media
           </motion.h1>
           <motion.p
             className="text-gray-600 max-w-2xl mx-auto text-lg"
@@ -28,7 +28,7 @@ const MediaPage = () => {
             transition={{ delay: 0.4, duration: 0.6 }}
           >
             Stay updated with the latest news, features, and press releases
-            about TraceRxTech’s impact in the agri-tech and sustainability space.
+            about TraceRx’s impact in the agri-tech and sustainability space.
           </motion.p>
         </motion.div>
 

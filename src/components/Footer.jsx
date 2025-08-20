@@ -108,7 +108,7 @@ const Footer = () => {
       {/* Copyright */}
       <div className="border-t border-white/10 py-4">
         <p className="text-emerald-100 text-xs text-center">
-          Copyright © 2025 TraceRxTech Ltd
+          Copyright © 2025 TraceRx Ltd
         </p>
       </div>
     </footer>
