@@ -49,7 +49,7 @@ export default function Navbar() {
       <div className="w-[84vw] mx-auto p-2">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <img src={finance} alt="Ministry of Finance Logo" className="h-9" />
+            {/* <img src={finance} alt="Ministry of Finance Logo" className="h-9" /> */}
             <Link to="/" className="flex items-center gap-2">
               <img src={logo} alt="TraceRx Logo" className="h-10" />
               <div className="hidden lg:flex items-center gap-2 text-sm text-gray-600">

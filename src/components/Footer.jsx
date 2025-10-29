@@ -48,7 +48,7 @@ const Footer = () => {
               </p>
             </div>
 
-            {/* Brand logos with background
+            {/* Brand logos with background */}
             <div className="bg-white/10 p-4 rounded-lg w-fit">
               <div className="flex gap-6 items-center">
                 {AUDIT_LOGOS.map((logo, index) => (
@@ -60,7 +60,7 @@ const Footer = () => {
                   />
                 ))}
               </div>
-            </div> */}
+            </div>
 
             {/* Address */}
             <p className="text-sm text-white/70">

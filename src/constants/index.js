@@ -1332,9 +1332,9 @@ export const FOOTER_LINKS = [
 
 
 export const AUDIT_LOGOS = [
-  { src: auditLogo1, alt: "Brand Partner 1" },
-  { src: auditLogo2, alt: "Brand Partner 2" },
-  { src: auditLogo3, alt: "Brand Partner 3" },
+  { src: reg1, alt: "Brand Partner 1" },
+  { src: reg2, alt: "Brand Partner 2" },
+  // { src: auditLogo3, alt: "Brand Partner 3" },
 ];
 
 export const INPUTS_CONFIG = {

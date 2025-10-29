@@ -35,14 +35,14 @@ const HomePage = () => {
         systemData={SYSTEM_CARD_DATA}
       />
       <MapComponent/>
-      <ImpactSection
+      {/* <ImpactSection
         regulationsData={REGULATIONS_DATA}
         contentSection={CONTENT_SECTIONS}
         title={SECTION_HEADERS.drive.title}
         subTitle={SECTION_HEADERS.drive.subTitle}
         size={FONT.size.medium}
         color={FONT.color.dark}
-      />
+      /> */}
       <AgroProductCarousel title={SECTION_HEADERS.regulations.title} subTitle={SECTION_HEADERS.regulations.subTitle} agroProducts={AGRO_PRODUCTS} />
       <TrustedCompanies
         companyLogos={COMPANY_LOGOS_CAROUSEL.regCompanies}
