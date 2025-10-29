@@ -49,14 +49,14 @@ const Footer = () => {
             </div>
 
             {/* Brand logos with background */}
-            <div className="bg-white/10 p-4 rounded-lg w-fit">
-              <div className="flex gap-6 items-center">
+            <div className="bg-white/10 p-3 sm:p-4 rounded-lg">
+              <div className="flex gap-3 sm:gap-4 md:gap-6 items-center justify-center lg:justify-start">
                 {AUDIT_LOGOS.map((logo, index) => (
                   <img
                     key={index}
                     src={logo.src}
                     alt={logo.alt}
-                    className="h-12 object-contain opacity-80 hover:opacity-100 transition-opacity"
+                    className="h-8 sm:h-10 md:h-12 object-contain opacity-80 hover:opacity-100 transition-opacity"
                   />
                 ))}
               </div>
@@ -64,7 +64,7 @@ const Footer = () => {
 
             {/* Address */}
             <p className="text-sm text-white/70">
-             56 Captain Davies Road, Ayobo. Lagos Nigeria
+              56 Captain Davies Road, Ayobo. Lagos Nigeria
             </p>
 
             {/* Social and privacy */}
