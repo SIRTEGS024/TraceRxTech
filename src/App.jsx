@@ -1,16 +1,6 @@
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-// import EudrPage from "./pages/EudrPage";
-// import MrvPage from "./pages/MrvPage";
-// import SustainabilityPage from "./pages/SustainabilityPage";
-// import TraceabilityPage from "./pages/TraceabilityPage";
-// import ManagementPage from "./pages/managementPage";
-// import AgribusinessPage from "./pages/AgribusinessPage";
-// import CarbonPage from "./pages/CarbonPage";
-// import ProcessPage from "./pages/ProcessPage";
-// import FoundationPage from "./pages/FoundationPage";
-// import ConsultantPage from "./pages/Consultants";
-// import BecomePartner from "./pages/BecomePartner";
+// import other pages...
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import Navbar from "./components/Navbar";
@@ -22,12 +12,13 @@ import AboutUs from "./pages/AboutUs";
 import PartnerDirectory from "./pages/PartnerDirectory";
 import ChatWidget from "./components/ChatWidget";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Dashboard from "./pages/Dashboard"; // Import your Dashboard component
 
 export default function App() {
   const location = useLocation();
 
   // Pages without Navbar, Footer, or Chat
-  const hideLayout = ["/login", "/signup"].includes(location.pathname);
+  const hideLayout = ["/login", "/signup", "/dashboard"].includes(location.pathname);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -37,26 +28,6 @@ export default function App() {
       <main className={`flex-grow ${!hideLayout ? "pt-20" : ""}`}>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          {/* <Route path="/eudr-compliance-platform" element={<EudrPage />} />
-          <Route path="/digital-mrv-platform" element={<MrvPage />} />
-          <Route
-            path="/sustainability-platform"
-            element={<SustainabilityPage />}
-          />
-          <Route
-            path="/food-traceability-platform"
-            element={<TraceabilityPage />}
-          />
-          <Route
-            path="/forest-farm-management-platform"
-            element={<ManagementPage />}
-          />
-          <Route path="/agribusiness" element={<AgribusinessPage />} />
-          <Route path="/carbon-project-developer" element={<CarbonPage />} />
-          <Route path="/processor" element={<ProcessPage />} />
-          <Route path="/foundations" element={<FoundationPage />} />
-          <Route path="/consultants" element={<ConsultantPage />} /> */}
-          {/* <Route path="/partner" element={<BecomePartner />} /> */}
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/media" element={<MediaPage />} />
           <Route path="/about-us" element={<AboutUs />} />
@@ -66,6 +37,9 @@ export default function App() {
           {/* Auth routes */}
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
+          
+          {/* Dashboard route */}
+          <Route path="/dashboard" element={<Dashboard />} />
 
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/" replace />} />

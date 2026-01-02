@@ -10,13 +10,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@arcgis/core": "^4.34.8",
     "@react-google-maps/api": "^2.20.7",
+    "esri-loader": "^3.7.0",
     "framer-motion": "^12.6.3",
+    "leaflet": "^1.9.4",
     "lucide-react": "^0.488.0",
     "react": "^19.0.0",
+    "react-arcgis": "^3.3.3",
     "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.6.0",
     "react-icons": "^5.5.0",
+    "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.5.0",
+    "react-toastify": "^11.0.5",
+    "react-webcam": "^7.2.0",
     "swiper": "^11.2.6"
   },
   "devDependencies": {

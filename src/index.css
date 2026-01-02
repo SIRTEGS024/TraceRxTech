@@ -1,3 +1,4 @@
+@import "https://js.arcgis.com/4.29/@arcgis/core/assets/esri/themes/light/main.css";
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 @tailwind base;
 @tailwind components;
