@@ -37,6 +37,7 @@ const Dashboard = () => {
   const [showRegulations, setShowRegulations] = useState(false);
   const [showTargetedRegulations, setShowTargetedRegulations] = useState(false);
   const [hasVisitedTab, setHasVisitedTab] = useState({});
+  const [isMapsAvailable, setIsMapsAvailable] = useState(false); // ADD THIS LINE
   const navbarRef = useRef(null);
 
   // Detect screen size and handle sidebar state
@@ -81,6 +82,39 @@ const Dashboard = () => {
       const height = navbarRef.current.offsetHeight;
       setNavbarHeight(height);
     }
+  }, []);
+
+    // Check if Google Maps is available
+  useEffect(() => {
+    const checkGoogleMaps = () => {
+      const isAvailable = !!(window.google && window.google.maps);
+      setIsMapsAvailable(isAvailable);
+      
+      if (!isAvailable) {
+        console.warn('Google Maps is not available. Some features may be limited.');
+      }
+      return isAvailable;
+    };
+
+    // Initial check
+    checkGoogleMaps();
+
+    // Set up interval to check (in case it loads later)
+    const intervalId = setInterval(() => {
+      if (checkGoogleMaps()) {
+        clearInterval(intervalId);
+      }
+    }, 500);
+
+    // Clear interval after 5 seconds
+    const timeoutId = setTimeout(() => {
+      clearInterval(intervalId);
+    }, 5000);
+
+    return () => {
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   // Handle tab change
@@ -133,6 +167,12 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
+       {!isMapsAvailable && (
+        <div className="fixed top-20 right-4 z-50 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-3 rounded shadow-lg max-w-xs">
+          <p className="text-sm font-medium">Maps Loading...</p>
+          <p className="text-xs">Some features may take a moment to load</p>
+        </div>
+      )}
       {/* Fixed Navbar with ref for height measurement */}
       <div ref={navbarRef} className="fixed top-0 left-0 right-0 z-50">
         <DashboardNavbar />
