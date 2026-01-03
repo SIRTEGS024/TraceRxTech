@@ -700,7 +700,7 @@ const ProductSelection = ({ selectedProducts = [], onProductsChange, disabled = 
   );
 };
 
-// UPDATED Plot Management Component with improved area switching
+// UPDATED Plot Management Component with improved text handling
 const PlotManager = ({ plots = [], onPlotsChange, selectedPlotId, onPlotSelect, disabled = false }) => {
   const [newPlotName, setNewPlotName] = useState('');
   const [editingPlotId, setEditingPlotId] = useState(null);
@@ -709,6 +709,7 @@ const PlotManager = ({ plots = [], onPlotsChange, selectedPlotId, onPlotSelect, 
     isOpen: false,
     coordinates: []
   });
+  const [expandedPlots, setExpandedPlots] = useState(new Set());
 
   const handleAddPlot = () => {
     if (newPlotName.trim()) {
@@ -725,11 +726,9 @@ const PlotManager = ({ plots = [], onPlotsChange, selectedPlotId, onPlotSelect, 
       };
       
       onPlotsChange([...plots, newPlot]);
-      // Automatically select the newly created plot
       onPlotSelect(newPlot.id);
       setNewPlotName('');
     } else {
-      // If no name provided, still create a plot with default name
       const plotNumber = plots.length + 1;
       const newPlot = {
         id: Date.now(),
@@ -740,7 +739,6 @@ const PlotManager = ({ plots = [], onPlotsChange, selectedPlotId, onPlotSelect, 
       };
       
       onPlotsChange([...plots, newPlot]);
-      // Automatically select the newly created plot
       onPlotSelect(newPlot.id);
     }
   };
@@ -759,7 +757,6 @@ const PlotManager = ({ plots = [], onPlotsChange, selectedPlotId, onPlotSelect, 
     const updatedPlots = plots.filter(plot => plot.id !== plotId);
     onPlotsChange(updatedPlots);
     
-    // If we deleted the selected plot, select another one if available
     if (plotId === selectedPlotId) {
       if (updatedPlots.length > 0) {
         onPlotSelect(updatedPlots[0].id);
@@ -767,10 +764,34 @@ const PlotManager = ({ plots = [], onPlotsChange, selectedPlotId, onPlotSelect, 
         onPlotSelect(null);
       }
     }
+    
+    // Remove from expanded set if present
+    if (expandedPlots.has(plotId)) {
+      const newExpanded = new Set(expandedPlots);
+      newExpanded.delete(plotId);
+      setExpandedPlots(newExpanded);
+    }
   };
 
   const handleSelectPlot = (plotId) => {
     onPlotSelect(plotId);
+  };
+
+  const togglePlotExpansion = (plotId, e) => {
+    e.stopPropagation();
+    const newExpanded = new Set(expandedPlots);
+    if (newExpanded.has(plotId)) {
+      newExpanded.delete(plotId);
+    } else {
+      newExpanded.add(plotId);
+    }
+    setExpandedPlots(newExpanded);
+  };
+
+  const truncateText = (text, maxLength = 30) => {
+    if (!text) return '';
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
   };
 
   const totalHectares = plots.reduce((total, plot) => total + (plot.hectares || 0), 0);
@@ -838,115 +859,145 @@ const PlotManager = ({ plots = [], onPlotsChange, selectedPlotId, onPlotSelect, 
       {plots.length > 0 && (
         <div className="space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {plots.map(plot => (
-              <div
-                key={plot.id}
-                className={`bg-white rounded-lg border p-4 ${showAllPlots ? 'block' : 'hidden'} ${
-                  selectedPlotId === plot.id ? 'border-green-500 border-2' : 'border-gray-200'
-                }`}
-                onClick={() => handleSelectPlot(plot.id)}
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    {editingPlotId === plot.id ? (
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="text"
-                          defaultValue={plot.name}
-                          onBlur={(e) => handleRenamePlot(plot.id, e.target.value)}
-                          onKeyPress={(e) => e.key === 'Enter' && handleRenamePlot(plot.id, e.target.value)}
-                          className="px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none"
-                          autoFocus
-                        />
-                        <button
-                          onClick={() => handleRenamePlot(plot.id, plot.name)}
-                          className="text-green-600 hover:text-green-800"
-                        >
-                          <CheckCircle className="w-4 h-4" />
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-2">
-                        <h5 className={`font-medium ${selectedPlotId === plot.id ? 'text-green-700' : 'text-gray-900'}`}>
-                          {plot.name}
-                          {selectedPlotId === plot.id && (
-                            <span className="ml-2 text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">
-                              Selected
-                            </span>
-                          )}
-                        </h5>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setEditingPlotId(plot.id);
-                          }}
-                          className="text-gray-400 hover:text-gray-600"
-                          title="Rename plot"
-                        >
-                          <Edit className="w-3 h-3" />
-                        </button>
-                      </div>
-                    )}
-                    {plot.locationName && (
-                      <p className="text-xs text-gray-500 mt-1 truncate">{plot.locationName}</p>
-                    )}
-                  </div>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeletePlot(plot.id);
-                    }}
-                    className="text-red-500 hover:text-red-700 transition-colors"
-                    title="Delete plot"
-                    disabled={disabled}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-                
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Coordinates:</span>
-                    <span className="font-medium text-gray-900">
-                      {plot.coordinates?.length || 0} points
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Area:</span>
-                    <span className="font-medium text-green-700">
-                      {plot.hectares?.toFixed(2) || 0} hectares
-                    </span>
-                  </div>
-                </div>
-
-                {plot.coordinates?.length > 0 && (
-                  <div className="mt-3 pt-3 border-t border-gray-200">
-                    <div className="text-xs text-gray-500 mb-1">Coordinates Preview:</div>
-                    <div className="text-xs font-mono text-gray-600 max-h-20 overflow-y-auto">
-                      {plot.coordinates.slice(0, 3).map((coord, idx) => (
-                        <div key={idx}>
-                          Point {idx + 1}: {coord.lat.toFixed(5)}, {coord.lng.toFixed(5)}
+            {plots.map(plot => {
+              const isExpanded = expandedPlots.has(plot.id);
+              const displayLocationName = isExpanded 
+                ? plot.locationName 
+                : truncateText(plot.locationName, 25);
+              
+              return (
+                <div
+                  key={plot.id}
+                  className={`bg-white rounded-lg border p-4 transition-all duration-200 ${
+                    showAllPlots ? 'block' : 'hidden'
+                  } ${
+                    selectedPlotId === plot.id 
+                      ? 'border-green-500 border-2 shadow-sm' 
+                      : 'border-gray-200 hover:border-green-300 hover:shadow-sm'
+                  }`}
+                  onClick={() => handleSelectPlot(plot.id)}
+                >
+                  <div className="flex items-start justify-between mb-3 min-h-[3rem]">
+                    <div className="flex-1 min-w-0">
+                      {editingPlotId === plot.id ? (
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="text"
+                            defaultValue={plot.name}
+                            onBlur={(e) => handleRenamePlot(plot.id, e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && handleRenamePlot(plot.id, e.target.value)}
+                            className="px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none w-full"
+                            autoFocus
+                          />
+                          <button
+                            onClick={() => handleRenamePlot(plot.id, plot.name)}
+                            className="text-green-600 hover:text-green-800 shrink-0"
+                          >
+                            <CheckCircle className="w-4 h-4" />
+                          </button>
                         </div>
-                      ))}
-                      {plot.coordinates.length > 3 && (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setCoordinatesModal({
-                              isOpen: true,
-                              coordinates: plot.coordinates
-                            });
-                          }}
-                          className="text-blue-600 hover:text-blue-800 text-xs mt-1 font-medium"
-                        >
-                          View all {plot.coordinates.length} coordinates →
-                        </button>
+                      ) : (
+                        <div className="flex items-start gap-2">
+                          <div className="min-w-0">
+                            <h5 className={`font-medium truncate ${
+                              selectedPlotId === plot.id ? 'text-green-700' : 'text-gray-900'
+                            }`}>
+                              {plot.name}
+                            </h5>
+                            {selectedPlotId === plot.id && (
+                              <span className="inline-block text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full mt-1">
+                                Selected
+                              </span>
+                            )}
+                            {plot.locationName && (
+                              <div className="mt-1">
+                                <p className="text-xs text-gray-500 flex items-start">
+                                  <MapPin className="w-3 h-3 mr-1 mt-0.5 shrink-0" />
+                                  <span className={`${isExpanded ? '' : 'truncate'} break-words`}>
+                                    {displayLocationName}
+                                  </span>
+                                  {plot.locationName && plot.locationName.length > 25 && (
+                                    <button
+                                      onClick={(e) => togglePlotExpansion(plot.id, e)}
+                                      className="text-blue-600 hover:text-blue-800 text-xs ml-1 shrink-0"
+                                    >
+                                      {isExpanded ? 'Show less' : '...more'}
+                                    </button>
+                                  )}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEditingPlotId(plot.id);
+                            }}
+                            className="text-gray-400 hover:text-gray-600 shrink-0 mt-0.5"
+                            title="Rename plot"
+                          >
+                            <Edit className="w-3 h-3" />
+                          </button>
+                        </div>
                       )}
                     </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeletePlot(plot.id);
+                      }}
+                      className="text-red-500 hover:text-red-700 transition-colors shrink-0 ml-2"
+                      title="Delete plot"
+                      disabled={disabled}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
-                )}
-              </div>
-            ))}
+                  
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Coordinates:</span>
+                      <span className="font-medium text-gray-900">
+                        {plot.coordinates?.length || 0} points
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Area:</span>
+                      <span className="font-medium text-green-700">
+                        {plot.hectares?.toFixed(2) || 0} hectares
+                      </span>
+                    </div>
+                  </div>
+
+                  {plot.coordinates?.length > 0 && (
+                    <div className="mt-3 pt-3 border-t border-gray-200">
+                      <div className="text-xs text-gray-500 mb-1">Coordinates Preview:</div>
+                      <div className="text-xs font-mono text-gray-600 max-h-20 overflow-y-auto">
+                        {plot.coordinates.slice(0, 3).map((coord, idx) => (
+                          <div key={idx} className="truncate">
+                            Point {idx + 1}: {coord.lat.toFixed(5)}, {coord.lng.toFixed(5)}
+                          </div>
+                        ))}
+                        {plot.coordinates.length > 3 && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCoordinatesModal({
+                                isOpen: true,
+                                coordinates: plot.coordinates
+                              });
+                            }}
+                            className="text-blue-600 hover:text-blue-800 text-xs mt-1 font-medium"
+                          >
+                            View all {plot.coordinates.length} coordinates →
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           {/* Total area summary */}
