@@ -1,4 +1,4 @@
-// Updated Dashboard.jsx
+// src/pages/Dashboard.jsx
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from 'framer-motion';
 import CompanyDetails from "../components/CompanyDetails";
@@ -29,7 +29,7 @@ const tabToArticleMap = {
 const tabsWithRegulations = ['subject-matter', 'eudr-definitions', 'information-requirements', 'new-shipment'];
 
 // Main Dashboard Component
-const Dashboard = () => {
+const Dashboard = ({ isMapsLoaded }) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -37,7 +37,7 @@ const Dashboard = () => {
   const [showRegulations, setShowRegulations] = useState(false);
   const [showTargetedRegulations, setShowTargetedRegulations] = useState(false);
   const [hasVisitedTab, setHasVisitedTab] = useState({});
-  const [isMapsAvailable, setIsMapsAvailable] = useState(false); // ADD THIS LINE
+  const [mapsReady, setMapsReady] = useState(false);
   const navbarRef = useRef(null);
 
   // Detect screen size and handle sidebar state
@@ -84,38 +84,41 @@ const Dashboard = () => {
     }
   }, []);
 
-    // Check if Google Maps is available
+  // Check if Google Maps is ready to use
   useEffect(() => {
-    const checkGoogleMaps = () => {
-      const isAvailable = !!(window.google && window.google.maps);
-      setIsMapsAvailable(isAvailable);
-      
-      if (!isAvailable) {
-        console.warn('Google Maps is not available. Some features may be limited.');
-      }
-      return isAvailable;
-    };
+    if (isMapsLoaded) {
+      const checkMaps = () => {
+        if (window.google && window.google.maps) {
+          console.log('Google Maps verified as ready');
+          setMapsReady(true);
+          return true;
+        }
+        return false;
+      };
 
-    // Initial check
-    checkGoogleMaps();
+      // Check immediately
+      if (checkMaps()) return;
 
-    // Set up interval to check (in case it loads later)
-    const intervalId = setInterval(() => {
-      if (checkGoogleMaps()) {
+      // Poll until maps are available
+      const intervalId = setInterval(() => {
+        if (checkMaps()) {
+          clearInterval(intervalId);
+        }
+      }, 100);
+
+      // Timeout after 3 seconds
+      const timeoutId = setTimeout(() => {
         clearInterval(intervalId);
-      }
-    }, 500);
+        console.warn('Google Maps not available after timeout');
+        setMapsReady(true); // Set to true anyway to render dashboard
+      }, 3000);
 
-    // Clear interval after 5 seconds
-    const timeoutId = setTimeout(() => {
-      clearInterval(intervalId);
-    }, 5000);
-
-    return () => {
-      clearInterval(intervalId);
-      clearTimeout(timeoutId);
-    };
-  }, []);
+      return () => {
+        clearInterval(intervalId);
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [isMapsLoaded]);
 
   // Handle tab change
   const handleTabChange = (tabId) => {
@@ -138,6 +141,15 @@ const Dashboard = () => {
     }
   };
 
+  // Add a loading placeholder component for map-dependent components
+  const MapLoadingPlaceholder = () => (
+    <div className="flex flex-col items-center justify-center p-8 bg-white/50 rounded-xl min-h-[400px]">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mb-4"></div>
+      <p className="text-gray-600">Loading map component...</p>
+      <p className="text-sm text-gray-500 mt-2">Please wait while we initialize the map</p>
+    </div>
+  );
+
   const renderContent = () => {
     switch (activeTab) {
       case 'overview':
@@ -151,13 +163,15 @@ const Dashboard = () => {
       case 'information-requirements':
         return <InformationRequirements />;
       case 'new-shipment':
-        return <NewShipmentOrigin />;
+        // This component uses Google Maps
+        return mapsReady ? <NewShipmentOrigin /> : <MapLoadingPlaceholder />;
       case 'shipments':
         return <Shipments />;
       case 'reports':
         return <Reports />;
       case 'gps-camera':
-        return <GPSCamera />;
+        // This component uses Google Maps
+        return mapsReady ? <GPSCamera /> : <MapLoadingPlaceholder />;
       case 'supply-chain':
         return <SupplyChain />;
       default:
@@ -165,14 +179,29 @@ const Dashboard = () => {
     }
   };
 
+  // If maps aren't loaded at all, show a full-screen loading
+  if (!isMapsLoaded) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading dashboard...</p>
+          <p className="text-sm text-gray-500 mt-2">Setting up your workspace</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
-       {!isMapsAvailable && (
-        <div className="fixed top-20 right-4 z-50 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-3 rounded shadow-lg max-w-xs">
-          <p className="text-sm font-medium">Maps Loading...</p>
-          <p className="text-xs">Some features may take a moment to load</p>
+      {/* Warning for slow map loading */}
+      {isMapsLoaded && !mapsReady && (
+        <div className="fixed top-20 right-4 z-50 bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-3 rounded shadow-lg max-w-xs">
+          <p className="text-sm font-medium">Initializing Maps...</p>
+          <p className="text-xs">Map features will be available shortly</p>
         </div>
       )}
+
       {/* Fixed Navbar with ref for height measurement */}
       <div ref={navbarRef} className="fixed top-0 left-0 right-0 z-50">
         <DashboardNavbar />
