@@ -1,6 +1,5 @@
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-// import other pages...
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import Navbar from "./components/Navbar";
@@ -12,7 +11,8 @@ import AboutUs from "./pages/AboutUs";
 import PartnerDirectory from "./pages/PartnerDirectory";
 import ChatWidget from "./components/ChatWidget";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
-import Dashboard from "./pages/Dashboard"; // Import your Dashboard component
+import Dashboard from "./pages/Dashboard";
+import GoogleMapsProvider from "./components/GoogleMapsProvider"; // Import the provider
 
 export default function App() {
   const location = useLocation();
@@ -38,8 +38,15 @@ export default function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
           
-          {/* Dashboard route */}
-          <Route path="/dashboard" element={<Dashboard />} />
+          {/* Dashboard route - WRAPPED with GoogleMapsProvider */}
+          <Route 
+            path="/dashboard/*" 
+            element={
+              <GoogleMapsProvider>
+                <Dashboard />
+              </GoogleMapsProvider>
+            } 
+          />
 
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/" replace />} />

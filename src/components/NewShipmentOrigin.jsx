@@ -34,26 +34,26 @@ import {
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
-// Google Maps imports
-import { GoogleMap, useJsApiLoader, Polygon, Marker, DrawingManager } from '@react-google-maps/api';
+// UPDATED: Use the correct imports for Google Maps with provider pattern
+import { GoogleMap, Polygon, Marker, DrawingManager } from '@react-google-maps/api';
 
 // Helper function to calculate polygon area
 const calculatePolygonArea = (coordinates) => {
   if (!coordinates || coordinates.length < 3) return 0;
-  
+
   const earthRadius = 6378137; // Earth's radius in meters
-  
+
   let area = 0;
   const coords = [...coordinates, coordinates[0]]; // Close the polygon
-  
+
   for (let i = 0; i < coords.length - 1; i++) {
     const p1 = coords[i];
     const p2 = coords[i + 1];
-    
-    area += (p2.lng - p1.lng) * Math.PI / 180 * 
-            Math.cos((p1.lat + p2.lat) * Math.PI / 360) ** 2;
+
+    area += (p2.lng - p1.lng) * Math.PI / 180 *
+      Math.cos((p1.lat + p2.lat) * Math.PI / 360) ** 2;
   }
-  
+
   area = Math.abs(area * earthRadius ** 2 / 2);
   return parseFloat((area / 10000).toFixed(2)); // Convert to hectares
 };
@@ -61,15 +61,15 @@ const calculatePolygonArea = (coordinates) => {
 // Helper function to get center of polygon
 const getPolygonCenter = (coordinates) => {
   if (!coordinates || coordinates.length === 0) return null;
-  
+
   let latSum = 0;
   let lngSum = 0;
-  
+
   coordinates.forEach(coord => {
     latSum += coord.lat;
     lngSum += coord.lng;
   });
-  
+
   return {
     lat: latSum / coordinates.length,
     lng: lngSum / coordinates.length
@@ -346,10 +346,10 @@ const mockForests = Array.from({ length: 30 }, (_, i) => {
     const countries = ["Peru", "Colombia", "Malaysia", "Papua New Guinea", "Cameroon", "Gabon", "Vietnam", "Laos", "Myanmar", "Thailand"];
     const regions = ["South America", "Central Africa", "Southeast Asia", "Oceania", "West Africa"];
     const areaSizes = ["1.2M hectares", "800K hectares", "2.5M hectares", "1.8M hectares", "3.2M hectares"];
-    
+
     const baseLat = -5 + (i * 0.5);
     const baseLng = -60 + (i * 2);
-    
+
     const forest = {
       id: i + 1,
       name: `Forest Reserve ${i + 1} - ${countries[i % countries.length]}`,
@@ -555,10 +555,10 @@ const PaymentInformation = ({ totalKg, onPaymentComplete }) => {
     }
 
     setIsProcessing(true);
-    
+
     // Simulate payment processing
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
+
     setIsProcessing(false);
     onPaymentComplete();
     toast.success(`Payment of $${paymentAmount} processed successfully!`);
@@ -585,7 +585,7 @@ const PaymentInformation = ({ totalKg, onPaymentComplete }) => {
                 <p className="text-lg font-semibold text-green-600">$100 / 20,000 kg</p>
               </div>
             </div>
-            
+
             <div className="border-t pt-3">
               <div className="flex items-center justify-between">
                 <p className="text-lg font-bold text-gray-800">Total Amount Due</p>
@@ -609,11 +609,10 @@ const PaymentInformation = ({ totalKg, onPaymentComplete }) => {
               <button
                 type="button"
                 onClick={() => setPaymentMethod('card')}
-                className={`p-4 border rounded-lg flex flex-col items-center justify-center ${
-                  paymentMethod === 'card' 
-                    ? 'border-green-500 bg-green-50' 
+                className={`p-4 border rounded-lg flex flex-col items-center justify-center ${paymentMethod === 'card'
+                    ? 'border-green-500 bg-green-50'
                     : 'border-gray-200 hover:border-green-300'
-                }`}
+                  }`}
               >
                 <CreditCard className="w-8 h-8 text-gray-600 mb-2" />
                 <span className="text-sm font-medium">Credit Card</span>
@@ -621,11 +620,10 @@ const PaymentInformation = ({ totalKg, onPaymentComplete }) => {
               <button
                 type="button"
                 onClick={() => setPaymentMethod('bank')}
-                className={`p-4 border rounded-lg flex flex-col items-center justify-center ${
-                  paymentMethod === 'bank' 
-                    ? 'border-green-500 bg-green-50' 
+                className={`p-4 border rounded-lg flex flex-col items-center justify-center ${paymentMethod === 'bank'
+                    ? 'border-green-500 bg-green-50'
                     : 'border-gray-200 hover:border-green-300'
-                }`}
+                  }`}
               >
                 <Building className="w-8 h-8 text-gray-600 mb-2" />
                 <span className="text-sm font-medium">Bank Transfer</span>
@@ -754,9 +752,16 @@ const EnhancedForestPlotSelection = ({
   const [tempPlot, setTempPlot] = useState(null);
   const [showCoordinates, setShowCoordinates] = useState({});
 
-  // Plot colors for visualization
+  // Plot colors for visualization - pre-defined areas use red, green, blue
   const plotColors = [
-    '#22c55e', '#3b82f6', '#ef4444', '#f59e0b', '#8b5cf6', '#ec4899', '#10b981', '#f97316',
+    '#22c55e', // green
+    '#3b82f6', // blue
+    '#ef4444', // red
+    '#f59e0b', // yellow (for custom plots)
+    '#8b5cf6', // purple
+    '#ec4899', // pink
+    '#10b981', // emerald
+    '#f97316', // orange
   ];
 
   // Get all plots including newly created ones
@@ -987,7 +992,7 @@ const EnhancedForestPlotSelection = ({
 
             {/* New Plot Name Input */}
             {tempPlot && (
-              <div className="space-y-3 mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="space-y-3 mt-3 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Name for new harvest area
@@ -1047,9 +1052,9 @@ const EnhancedForestPlotSelection = ({
                   options={{
                     drawingControl: false,
                     polygonOptions: {
-                      fillColor: '#FF0000',
+                      fillColor: '#f59e0b', // Yellow for custom plots
                       fillOpacity: 0.4,
-                      strokeColor: '#FF0000',
+                      strokeColor: '#f59e0b',
                       strokeWeight: 2,
                       editable: false,
                       draggable: false,
@@ -1062,7 +1067,8 @@ const EnhancedForestPlotSelection = ({
               {allPlots.map((plot, index) => {
                 if (!plot.coordinates || plot.coordinates.length < 3) return null;
                 
-                const color = plot.isCustom ? '#FF0000' : plotColors[index % plotColors.length];
+                // Use yellow for custom plots, otherwise use pre-defined colors based on index
+                const color = plot.isCustom ? '#f59e0b' : plotColors[index % plotColors.length];
                 const centerPoint = getPolygonCenter(plot.coordinates);
                 const isSelected = selectedPlots.includes(plot.id);
                 
@@ -1082,7 +1088,7 @@ const EnhancedForestPlotSelection = ({
                       onClick={() => handlePlotToggle(plot.id)}
                     />
                     
-                    {/* Label for selected plots */}
+                    {/* Label for selected plots - FIXED: Always use the plot color, not green for selected */}
                     {centerPoint && (
                       <Marker
                         position={centerPoint}
@@ -1094,7 +1100,7 @@ const EnhancedForestPlotSelection = ({
                         }}
                         icon={{
                           path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
-                          fillColor: isSelected ? '#22c55e' : color,
+                          fillColor: color, // ALWAYS use the plot color (yellow for custom plots)
                           fillOpacity: 1,
                           strokeColor: '#FFFFFF',
                           strokeWeight: 2,
@@ -1112,9 +1118,9 @@ const EnhancedForestPlotSelection = ({
                 <Polygon
                   paths={tempPlot.coordinates}
                   options={{
-                    fillColor: '#FF0000',
+                    fillColor: '#f59e0b', // Yellow for custom plots
                     fillOpacity: 0.4,
-                    strokeColor: '#FF0000',
+                    strokeColor: '#f59e0b',
                     strokeWeight: 3,
                     strokeOpacity: 0.8,
                     clickable: false,
@@ -1132,26 +1138,16 @@ const EnhancedForestPlotSelection = ({
                   </p>
                 </div>
               )}
-            </GoogleMap>
-            
-            {/* Map Legend */}
-            <div className="absolute bottom-4 right-4 z-10 bg-white bg-opacity-90 rounded-lg shadow-lg p-3">
-              <div className="text-sm font-medium text-gray-700 mb-2">Legend</div>
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-green-500 border-2 border-black"></div>
-                  <span className="text-xs text-gray-600">Selected plot</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-blue-500 border border-white"></div>
-                  <span className="text-xs text-gray-600">Pre-defined plot</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-red-500 border border-white"></div>
-                  <span className="text-xs text-gray-600">Custom plot</span>
+
+              {/* Simple dark transparent box with just forest name (top-left) */}
+              <div className="absolute top-4 left-4 z-10">
+                <div className="bg-black bg-opacity-70 rounded-lg shadow-lg p-3">
+                  <div className="text-white font-medium">
+                    {forest.name}
+                  </div>
                 </div>
               </div>
-            </div>
+            </GoogleMap>
           </div>
           
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
@@ -1161,7 +1157,8 @@ const EnhancedForestPlotSelection = ({
                 <h5 className="text-sm font-medium text-blue-800 mb-1">Map Instructions</h5>
                 <ul className="text-sm text-blue-700 space-y-1">
                   <li>• <strong>Select existing plots:</strong> Click on any colored polygon to select/deselect</li>
-                  <li>• <strong>Draw new areas:</strong> Use "Draw New Harvest Area" button to create custom polygons</li>
+                  <li>• <strong>Pre-defined plots:</strong> Red, Green, and Blue areas are pre-defined harvest zones</li>
+                  <li>• <strong>Draw new areas:</strong> Use "Draw New Harvest Area" button to create custom polygons (yellow)</li>
                   <li>• <strong>Save new plots:</strong> Name and save newly drawn areas for this shipment</li>
                   <li>• <strong>Multiple selection:</strong> You can select multiple plots from different areas</li>
                   <li>• <strong>Area calculation:</strong> Total harvest area updates automatically</li>
@@ -1173,6 +1170,13 @@ const EnhancedForestPlotSelection = ({
       ) : (
         /* List View with Coordinates and Delete Button */
         <div className="space-y-4">
+          {/* Simple forest name display for list view */}
+          <div className="bg-black bg-opacity-70 border border-gray-700 rounded-lg p-4">
+            <div className="text-white font-medium">
+              {forest.name}
+            </div>
+          </div>
+
           {/* Pre-plotted Areas */}
           <div className="space-y-3">
             <h5 className="font-medium text-gray-700 flex items-center gap-2">
@@ -1183,7 +1187,8 @@ const EnhancedForestPlotSelection = ({
               {allPlots.length > 0 ? (
                 allPlots.map((plot, index) => {
                   const isSelected = selectedPlots.includes(plot.id);
-                  const color = plot.isCustom ? '#FF0000' : plotColors[index % plotColors.length];
+                  // Use yellow for custom plots, otherwise use pre-defined colors based on index
+                  const color = plot.isCustom ? '#f59e0b' : plotColors[index % plotColors.length];
                   const showCoords = showCoordinates[plot.id];
                   
                   return (
@@ -1203,9 +1208,13 @@ const EnhancedForestPlotSelection = ({
                               style={{ backgroundColor: color }}
                             ></div>
                             <h5 className="font-medium text-gray-800">{plot.name}</h5>
-                            {plot.isCustom && (
-                              <span className="ml-2 text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded-full">
+                            {plot.isCustom ? (
+                              <span className="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full">
                                 Custom
+                              </span>
+                            ) : (
+                              <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
+                                Pre-defined
                               </span>
                             )}
                             {isSelected && (
@@ -1316,7 +1325,7 @@ const EnhancedForestPlotSelection = ({
       {/* Instructions */}
       <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
         <p className="text-sm text-gray-700">
-          <span className="font-medium">Instructions:</span> Select existing pre-defined harvest areas or draw new custom polygons to specify exactly where products for this shipment were harvested from within {forest.name}. Click "Show Coords" to view exact coordinates of each area.
+          <span className="font-medium">Instructions:</span> Select existing pre-defined harvest areas or draw new custom polygons to specify exactly where products for this shipment were harvested from within {forest.name}. <strong>Pre-defined areas</strong> are shown in red, green, and blue. <strong>Custom areas</strong> are drawn in yellow. Click "Show Coords" to view exact coordinates of each area.
         </p>
       </div>
     </div>
@@ -1749,9 +1758,9 @@ const DocumentSection = ({
 };
 
 // Forest-specific Product Information Component
-const ForestProductInformation = ({ 
-  forest, 
-  selectedHS, 
+const ForestProductInformation = ({
+  forest,
+  selectedHS,
   onHSSelect,
   formData,
   onChange,
@@ -1761,7 +1770,7 @@ const ForestProductInformation = ({
 
   const handleHSSelect = (product) => {
     const exists = selectedHS.find(p => p.code === product.code);
-    
+
     if (exists) {
       onHSSelect(forest.id, selectedHS.filter(p => p.code !== product.code));
     } else {
@@ -1771,8 +1780,8 @@ const ForestProductInformation = ({
 
   const handleQuantityChange = (e) => {
     const value = parseFloat(e.target.value) || 0;
-    onChange({ 
-      ...formData, 
+    onChange({
+      ...formData,
       forestQuantities: {
         ...formData.forestQuantities,
         [forest.id]: value
@@ -1916,9 +1925,9 @@ const ForestProductInformation = ({
 };
 
 // Product Information Component (Combined for all forests)
-const ProductInformation = ({ 
-  formData, 
-  onChange, 
+const ProductInformation = ({
+  formData,
+  onChange,
   selectedForests,
   forestHSSelections = {},
   onForestHSSelect
@@ -1937,16 +1946,16 @@ const ProductInformation = ({
 
   // Get all selected HS codes across all forests
   const allSelectedHS = Object.values(forestHSSelections).flat();
-  
+
   // Generate combined HS codes string
   const hsCodes = [...new Set(allSelectedHS.map(p => p.code))].join(', ');
-  
+
   // Generate product names string
   const productNames = [...new Set(allSelectedHS.map(p => p.name))].join(', ');
-  
+
   // Generate species info for wood products
   const woodProducts = allSelectedHS.filter(p => p.commodity === "Wood");
-  const speciesInfo = woodProducts.length > 0 
+  const speciesInfo = woodProducts.length > 0
     ? woodProducts.map(p => `${p.name} (HS: ${p.code})`).join('; ')
     : '';
 
@@ -2014,7 +2023,7 @@ const ProductInformation = ({
       {/* Summary Section */}
       <div className="bg-green-50 border border-green-200 rounded-lg p-6">
         <h3 className="text-lg font-semibold text-green-800 mb-4">Shipment Summary</h3>
-        
+
         {/* Selected HS Codes Summary */}
         {allSelectedHS.length > 0 && (
           <div className="mb-4">
@@ -2059,7 +2068,7 @@ const ProductInformation = ({
                 {Object.entries(formData.forestQuantities || {}).map(([forestId, quantity]) => {
                   const forest = mockForests.find(f => f.id === parseInt(forestId));
                   if (!forest || !quantity) return null;
-                  
+
                   return (
                     <div key={forestId} className="flex items-center justify-between text-sm">
                       <span className="text-gray-600 truncate">{forest.name.split(' - ')[0]}</span>
@@ -2218,9 +2227,8 @@ const ShippingInfoForm = ({ formData, onChange, selectedForests, onForestToggle 
                       return (
                         <div
                           key={forest.id}
-                          className={`p-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer flex items-center justify-between ${
-                            isSelected ? 'bg-green-50' : ''
-                          }`}
+                          className={`p-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer flex items-center justify-between ${isSelected ? 'bg-green-50' : ''
+                            }`}
                           onClick={(e) => {
                             e.stopPropagation();
                             onForestToggle(forest.id);
@@ -2237,9 +2245,8 @@ const ShippingInfoForm = ({ formData, onChange, selectedForests, onForestToggle 
                               <span>{forest.area}</span>
                             </div>
                           </div>
-                          <div className={`w-5 h-5 rounded-full border flex items-center justify-center ml-2 flex-shrink-0 ${
-                            isSelected ? 'bg-green-500 border-green-500' : 'border-gray-300'
-                          }`}>
+                          <div className={`w-5 h-5 rounded-full border flex items-center justify-center ml-2 flex-shrink-0 ${isSelected ? 'bg-green-500 border-green-500' : 'border-gray-300'
+                            }`}>
                             {isSelected && <CheckCircle size={12} className="text-white" />}
                           </div>
                         </div>
@@ -2371,6 +2378,36 @@ const ShippingInfoForm = ({ formData, onChange, selectedForests, onForestToggle 
   );
 };
 
+// Create a custom hook to check if Google Maps is loaded
+const useGoogleMapsStatus = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const checkGoogleMaps = () => {
+      if (window.google && window.google.maps) {
+        setIsLoaded(true);
+        return true;
+      }
+      return false;
+    };
+
+    // Check immediately
+    if (checkGoogleMaps()) return;
+
+    // If not loaded, check periodically
+    const interval = setInterval(() => {
+      if (checkGoogleMaps()) {
+        clearInterval(interval);
+      }
+    }, 100);
+
+    // Cleanup
+    return () => clearInterval(interval);
+  }, []);
+
+  return isLoaded;
+};
+
 // Main Component
 const NewShipmentOrigin = () => {
   const [selectedForests, setSelectedForests] = useState([]);
@@ -2400,11 +2437,8 @@ const NewShipmentOrigin = () => {
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [forestHSSelections, setForestHSSelections] = useState({});
 
-  // Load Google Maps
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_MAPS_API_KEY',
-    libraries: ['places', 'drawing'],
-  });
+  // Use custom hook to check if Google Maps is loaded (via the provider)
+  const isLoaded = useGoogleMapsStatus();
 
   const sectionConfig = {
     a: {
@@ -2447,25 +2481,25 @@ const NewShipmentOrigin = () => {
         const newData = { ...shipmentData };
         delete newData[forestId];
         setShipmentData(newData);
-        
+
         setSelectedForestPlots(prevPlots => {
           const newPlots = { ...prevPlots };
           delete newPlots[forestId];
           return newPlots;
         });
-        
+
         setNewlyCreatedPlots(prevPlots => {
           const newPlots = { ...prevPlots };
           delete newPlots[forestId];
           return newPlots;
         });
-        
+
         setForestHSSelections(prev => {
           const newSelections = { ...prev };
           delete newSelections[forestId];
           return newSelections;
         });
-        
+
         // Remove forest quantity
         const newQuantities = { ...shippingInfo.forestQuantities };
         delete newQuantities[forestId];
@@ -2473,7 +2507,7 @@ const NewShipmentOrigin = () => {
           ...prev,
           forestQuantities: newQuantities
         }));
-        
+
         return prev.filter(id => id !== forestId);
       } else {
         return [...prev, forestId];
@@ -2539,7 +2573,7 @@ const NewShipmentOrigin = () => {
       const newPlots = currentPlots.includes(plotId)
         ? currentPlots.filter(id => id !== plotId)
         : [...currentPlots, plotId];
-      
+
       return {
         ...prev,
         [forestId]: newPlots
@@ -2552,7 +2586,7 @@ const NewShipmentOrigin = () => {
       ...prev,
       [forestId]: [...(prev[forestId] || []), newPlot]
     }));
-    
+
     // Auto-select the new plot
     handlePlotToggle(forestId, newPlot.id);
   };
@@ -2563,13 +2597,13 @@ const NewShipmentOrigin = () => {
       ...prev,
       [forestId]: (prev[forestId] || []).filter(plot => plot.id !== plotId)
     }));
-    
+
     // Remove from selected plots if selected
     setSelectedForestPlots(prev => ({
       ...prev,
       [forestId]: (prev[forestId] || []).filter(id => id !== plotId)
     }));
-    
+
     toast.success('Harvest zone deleted successfully!');
   };
 
@@ -2584,14 +2618,14 @@ const NewShipmentOrigin = () => {
     const forest = mockForests.find(f => f.id === forestId);
     const existingPlots = forest?.plots || [];
     const newPlots = newlyCreatedPlots[forestId] || [];
-    
+
     return [...existingPlots, ...newPlots];
   };
 
   const getForestHarvestArea = (forestId) => {
     const allPlots = getForestPlots(forestId);
     const selectedPlotIds = selectedForestPlots[forestId] || [];
-    
+
     return allPlots
       .filter(plot => selectedPlotIds.includes(plot.id))
       .reduce((total, plot) => total + (plot.hectares || 0), 0);
@@ -2652,7 +2686,7 @@ const NewShipmentOrigin = () => {
         toast.error(`Please select at least one HS code for ${forest?.name}`);
         return false;
       }
-      
+
       // Check if quantity is provided for each forest
       if (!shippingInfo.forestQuantities?.[forestId] || shippingInfo.forestQuantities[forestId] <= 0) {
         const forest = mockForests.find(f => f.id === forestId);
@@ -2674,7 +2708,7 @@ const NewShipmentOrigin = () => {
       setStep(1);
       return;
     }
-    
+
     if (!validateProductInfo()) {
       setStep(2);
       return;
@@ -2689,7 +2723,7 @@ const NewShipmentOrigin = () => {
     // Check payment if not already completed
     const totalKg = containers.reduce((sum, container) => sum + (container.kilograms || 0), 0);
     const paymentAmount = calculatePayment(totalKg);
-    
+
     if (paymentAmount > 0 && !paymentCompleted) {
       // Show payment step
       setStep(6);
@@ -2709,7 +2743,7 @@ const NewShipmentOrigin = () => {
     );
 
     const plotsInfo = {};
-    
+
     selectedForests.forEach(forestId => {
       const plotIds = selectedForestPlots[forestId] || [];
       if (plotIds.length > 0) {
@@ -2828,7 +2862,7 @@ const NewShipmentOrigin = () => {
       // Check if payment is needed
       const totalKg = containers.reduce((sum, container) => sum + (container.kilograms || 0), 0);
       const paymentAmount = calculatePayment(totalKg);
-      
+
       if (paymentAmount > 0) {
         setStep(6); // Go to payment step
       } else {
@@ -2936,8 +2970,8 @@ const NewShipmentOrigin = () => {
             </div>
 
             <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-6">
-              <ShippingInfoForm 
-                formData={shippingInfo} 
+              <ShippingInfoForm
+                formData={shippingInfo}
                 onChange={setShippingInfo}
                 selectedForests={selectedForests}
                 onForestToggle={toggleForest}
@@ -2989,8 +3023,8 @@ const NewShipmentOrigin = () => {
             </div>
 
             <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-6">
-              <ProductInformation 
-                formData={shippingInfo} 
+              <ProductInformation
+                formData={shippingInfo}
                 onChange={setShippingInfo}
                 selectedForests={selectedForests}
                 forestHSSelections={forestHSSelections}
@@ -3305,7 +3339,7 @@ const NewShipmentOrigin = () => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Payment Summary */}
               {totalKg > 0 && (
                 <div className="mt-4 pt-4 border-t border-green-200">
@@ -3368,7 +3402,7 @@ const NewShipmentOrigin = () => {
             </div>
 
             <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-6">
-              <PaymentInformation 
+              <PaymentInformation
                 totalKg={totalKg}
                 onPaymentComplete={handlePaymentComplete}
               />

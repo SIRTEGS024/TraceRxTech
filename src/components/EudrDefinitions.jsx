@@ -24,8 +24,39 @@ import {
   EyeOff
 } from 'lucide-react';
 
-// Google Maps imports
-import { GoogleMap, useJsApiLoader, Autocomplete, Polygon, DrawingManager, Marker } from '@react-google-maps/api';
+// Google Maps imports - REMOVED useJsApiLoader
+import { GoogleMap, Autocomplete, Polygon, DrawingManager, Marker } from '@react-google-maps/api';
+
+// Custom hook to check if Google Maps is loaded
+const useGoogleMapsLoaded = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    // Check if Google Maps is available
+    const checkGoogleMaps = () => {
+      if (window.google && window.google.maps) {
+        setIsLoaded(true);
+        return true;
+      }
+      return false;
+    };
+
+    // Initial check
+    if (checkGoogleMaps()) return;
+
+    // If not loaded, check periodically
+    const interval = setInterval(() => {
+      if (checkGoogleMaps()) {
+        clearInterval(interval);
+      }
+    }, 100);
+
+    // Clean up interval on unmount
+    return () => clearInterval(interval);
+  }, []);
+
+  return isLoaded;
+};
 
 // Company's selected EUDR products (assumed to be pre-selected by the company)
 const companySelectedProducts = {
@@ -1135,7 +1166,7 @@ const EnhancedCoordinateInput = ({
   );
 };
 
-// Enhanced Map Component with Multiple Polygons
+// Enhanced Map Component with Multiple Polygons - UPDATED
 const EnhancedPolygonMapComponent = ({ 
   plots = [], 
   onPlotsChange, 
@@ -1144,6 +1175,28 @@ const EnhancedPolygonMapComponent = ({
   selectedPlotId,
   onPlotSelect 
 }) => {
+  // ADD THIS LOADING CHECK AT THE BEGINNING OF THE COMPONENT
+  if (!isLoaded) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Layers className="w-5 h-5 text-green-600" />
+            <h4 className="font-medium text-gray-700">Plot Boundary Map</h4>
+          </div>
+        </div>
+        <div className="relative h-[500px] rounded-lg overflow-hidden border border-gray-300">
+          <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
+            <div className="text-center">
+              <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading Google Maps...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const [map, setMap] = useState(null);
   const [drawingManager, setDrawingManager] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -1656,11 +1709,8 @@ const EnhancedPolygonMapComponent = ({
 };
 
 const EUDRDefinitions = () => {
-  // Google Maps loader
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_MAPS_API_KEY',
-    libraries: ['places', 'drawing'],
-  });
+  // USE THE CUSTOM HOOK INSTEAD OF useJsApiLoader
+  const isLoaded = useGoogleMapsLoaded();
 
   const [selectedForest, setSelectedForest] = useState(null);
   const [documents, setDocuments] = useState([]);
