@@ -236,7 +236,7 @@ const SupplyChain = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-6"
+      className="p-6 relative" // Added relative positioning
     >
       <h1 className="text-2xl lg:text-3xl font-bold text-green-800 mb-4 lg:mb-6">Supply Chain Management</h1>
 
@@ -295,12 +295,13 @@ const SupplyChain = () => {
             {/* Map Visualization */}
             <div className="mt-8">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Supply Chain Map</h3>
-              <div className="h-[500px] rounded-lg overflow-hidden border border-gray-200">
+              <div className="h-[500px] rounded-lg overflow-hidden border border-gray-200 relative z-0"> {/* Added z-0 */}
                 <MapContainer
                   center={[mapCenter.lat, mapCenter.lng]}
                   zoom={mapZoom}
                   style={{ height: '100%', width: '100%' }}
                   scrollWheelZoom={true}
+                  className="leaflet-container" // Added class for styling
                 >
                   <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

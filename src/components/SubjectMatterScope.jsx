@@ -583,8 +583,6 @@ const SubjectMatterScope = () => {
                     required
                   />
                 </div>
-
-                {/* Removed Select Exporter field */}
               </div>
 
               <div>
@@ -733,26 +731,25 @@ const SubjectMatterScope = () => {
                     )}
                   </div>
                 </div>
-
-                {/* Removed Selected Exporter section from preview */}
               </div>
             </div>
           </div>
 
-          <div className="flex justify-end gap-4 mt-8">
+          <div className="flex flex-col sm:flex-row justify-end gap-4 mt-8">
             <button
               onClick={() => setShowPreview(false)}
-              className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 w-full sm:w-auto order-2 sm:order-1"
             >
               Back to Edit
             </button>
             <button
               onClick={handleSubmit}
               disabled={!signatureData.signeeName || !signatureData.signeeFunction || !signatureData.signature}
-              className={`px-6 py-2 rounded-lg flex items-center gap-2 ${!signatureData.signeeName || !signatureData.signeeFunction || !signatureData.signature
+              className={`px-6 py-2 rounded-lg flex items-center justify-center gap-2 w-full sm:w-auto order-1 sm:order-2 ${
+                !signatureData.signeeName || !signatureData.signeeFunction || !signatureData.signature
                   ? 'bg-gray-300 cursor-not-allowed'
                   : 'bg-green-600 hover:bg-green-700 text-white'
-                }`}
+              }`}
             >
               <FileText size={20} />
               Final Submit & Download PDF
@@ -783,10 +780,11 @@ const SubjectMatterScope = () => {
         <div className="flex items-center justify-between mb-8">
           {[1, 2, 3].map((step) => (
             <div key={step} className="flex items-center">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= step
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                currentStep >= step
                   ? 'bg-green-600 text-white'
                   : 'bg-gray-200 text-gray-600'
-                }`}>
+              }`}>
                 {step}
               </div>
               <div className="ml-2 text-sm font-medium hidden sm:block">
@@ -802,23 +800,23 @@ const SubjectMatterScope = () => {
         {/* Step Content */}
         {renderStep()}
 
-        {/* Navigation Buttons */}
-        <div className="flex justify-between mt-8 pt-6 border-t">
+        {/* Navigation Buttons - Updated for mobile responsiveness */}
+        <div className="flex flex-col sm:flex-row justify-between gap-4 mt-8 pt-6 border-t">
           {currentStep > 1 && (
             <button
               onClick={() => setCurrentStep(currentStep - 1)}
-              className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2"
+              className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 w-full sm:w-auto order-2 sm:order-1"
             >
               <ChevronLeft size={20} />
               Previous
             </button>
           )}
 
-          <div className="ml-auto">
+          <div className={`${currentStep > 1 ? 'w-full sm:w-auto order-1 sm:order-2' : 'w-full'}`}>
             {currentStep < 3 ? (
               <button
                 onClick={() => setCurrentStep(currentStep + 1)}
-                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center justify-center gap-2 w-full"
               >
                 Next
                 <ChevronRight size={20} />
@@ -827,10 +825,11 @@ const SubjectMatterScope = () => {
               <button
                 onClick={() => setShowPreview(true)}
                 disabled={!signatureData.signeeName || !signatureData.signeeFunction || !signatureData.signature}
-                className={`px-6 py-2 rounded-lg flex items-center gap-2 ${!signatureData.signeeName || !signatureData.signeeFunction || !signatureData.signature
+                className={`px-6 py-2 rounded-lg flex items-center justify-center gap-2 w-full ${
+                  !signatureData.signeeName || !signatureData.signeeFunction || !signatureData.signature
                     ? 'bg-gray-300 cursor-not-allowed'
                     : 'bg-green-600 hover:bg-green-700 text-white'
-                  }`}
+                }`}
               >
                 <FileText size={20} />
                 Preview & Submit

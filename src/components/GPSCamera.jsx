@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Camera, X, Plus, Save, MapPin, Calendar, Maximize2, Tag, Building, Trees, Truck } from 'lucide-react';
+import { Camera, X, Plus, Save, MapPin, Calendar, Maximize2, Tag, Building, Trees, Truck, RotateCw } from 'lucide-react';
 import Webcam from 'react-webcam';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -35,10 +35,31 @@ const GPSCamera = () => {
   const [address, setAddress] = useState('');
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [expandedImage, setExpandedImage] = useState(null);
+  const [cameraFacingMode, setCameraFacingMode] = useState('environment');
+  const [isMobile, setIsMobile] = useState(false);
 
   // Refs
   const webcamRef = useRef(null);
   const containerRef = useRef(null);
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkIfMobile = () => {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+      const isMobileDevice = mobileRegex.test(userAgent);
+      const isSmallScreen = window.innerWidth <= 768;
+      
+      setIsMobile(isMobileDevice || isSmallScreen);
+    };
+
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkIfMobile);
+    };
+  }, []);
 
   // Reverse geocoding function to get address from coordinates
   const getAddressFromCoords = async (lat, lng) => {
@@ -119,6 +140,14 @@ const GPSCamera = () => {
     return () => clearInterval(timeInterval);
   }, []);
 
+  // Toggle between front and back camera
+  const toggleCameraFacingMode = () => {
+    setCameraFacingMode(prevMode => 
+      prevMode === 'environment' ? 'user' : 'environment'
+    );
+    toast.info(`Switched to ${cameraFacingMode === 'environment' ? 'front' : 'back'} camera`);
+  };
+
   // Capture image from webcam
   const captureImage = () => {
     if (webcamRef.current) {
@@ -145,7 +174,8 @@ const GPSCamera = () => {
           siteId: selectedSite,
           customName: customSiteName,
           category: selectedCategory
-        }
+        },
+        cameraMode: cameraFacingMode
       };
 
       setCapturedImages([...capturedImages, newImage]);
@@ -196,6 +226,13 @@ const GPSCamera = () => {
       minute: '2-digit',
       second: '2-digit'
     });
+  };
+
+  // Video constraints
+  const videoConstraints = {
+    facingMode: cameraFacingMode,
+    width: { ideal: 1280 },
+    height: { ideal: 720 }
   };
 
   return (
@@ -337,6 +374,21 @@ const GPSCamera = () => {
               </button>
             </div>
 
+            {/* Camera Controls Bar - Only show on mobile */}
+            {isCameraActive && isMobile && (
+              <div className="mb-4 flex justify-center">
+                <button
+                  onClick={toggleCameraFacingMode}
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors"
+                >
+                  <RotateCw size={18} />
+                  <span className="font-medium">
+                    Switch to {cameraFacingMode === 'environment' ? 'Front' : 'Back'} Camera
+                  </span>
+                </button>
+              </div>
+            )}
+
             {/* Live Camera Feed */}
             {isCameraActive && (
               <div className="mt-4">
@@ -373,15 +425,23 @@ const GPSCamera = () => {
                     ref={webcamRef}
                     audio={false}
                     screenshotFormat="image/png"
-                    videoConstraints={{
-                      facingMode: "environment",
-                      width: { ideal: 1280 },
-                      height: { ideal: 720 }
-                    }}
+                    videoConstraints={videoConstraints}
                     className="w-full h-auto"
+                    mirrored={cameraFacingMode === 'user'}
                   />
 
-                  <div className="absolute bottom-4 left-0 right-0 flex justify-center">
+                  <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4">
+                    {/* Camera flip button only on mobile */}
+                    {isMobile && (
+                      <button
+                        onClick={toggleCameraFacingMode}
+                        className="flex items-center gap-2 bg-white/90 hover:bg-white text-gray-800 px-4 py-2 rounded-full font-semibold shadow-lg transition-all hover:scale-105"
+                      >
+                        <RotateCw size={16} />
+                        {cameraFacingMode === 'environment' ? 'Front' : 'Back'}
+                      </button>
+                    )}
+                    
                     <button
                       onClick={captureImage}
                       className="flex items-center gap-2 bg-white/90 hover:bg-white text-gray-800 px-6 py-3 rounded-full font-semibold shadow-lg transition-all hover:scale-105"
@@ -461,6 +521,11 @@ const GPSCamera = () => {
                         {getCategoryIcon(image.category)}
                         <p className="truncate">{image.siteName}</p>
                       </div>
+                      {image.cameraMode === 'user' && (
+                        <div className="flex items-center gap-1 mt-0.5">
+                          <span className="bg-blue-500 px-1 rounded text-[10px]">Front Camera</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -512,6 +577,18 @@ const GPSCamera = () => {
                         </div>
                       </div>
                       <p><span className="text-gray-400">Captured:</span> {new Date(expandedImage.timestamp).toLocaleString()}</p>
+                      <div className="flex items-center gap-2">
+                        {expandedImage.cameraMode === 'user' && (
+                          <span className="bg-blue-500 px-2 py-1 rounded text-xs">
+                            Front Camera
+                          </span>
+                        )}
+                        {expandedImage.cameraMode === 'environment' && (
+                          <span className="bg-green-500 px-2 py-1 rounded text-xs">
+                            Back Camera
+                          </span>
+                        )}
+                      </div>
                       {expandedImage.tags.length > 0 && (
                         <div>
                           <p className="text-gray-400 mb-1">Tags:</p>

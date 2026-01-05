@@ -916,7 +916,7 @@ const EnhancedForestPlotSelection = ({
   return (
     <div className="space-y-4">
       {/* Plot Selection Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <Layers size={18} className="text-green-600" />
           <h4 className="font-medium text-gray-700">Harvest Plot Selection</h4>
@@ -938,7 +938,7 @@ const EnhancedForestPlotSelection = ({
 
       {/* Selected Area Summary */}
       <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <Package size={18} className="text-green-600" />
             <span className="font-medium text-green-800">
@@ -962,7 +962,7 @@ const EnhancedForestPlotSelection = ({
         <div className="space-y-4">
           {/* Drawing Controls */}
           <div className="bg-white rounded-lg border border-gray-200 p-4">
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
               <h5 className="font-medium text-gray-700">Plot Drawing Tools</h5>
               <div className="flex gap-2">
                 {!isDrawing ? (
@@ -997,7 +997,7 @@ const EnhancedForestPlotSelection = ({
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Name for new harvest area
                   </label>
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <input
                       type="text"
                       value={newPlotName}
@@ -1005,18 +1005,20 @@ const EnhancedForestPlotSelection = ({
                       placeholder={`Harvest Zone ${getNextHarvestZoneNumber()}`}
                       className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none"
                     />
-                    <button
-                      onClick={saveNewPlot}
-                      className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700"
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={removeTempPlot}
-                      className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
-                    >
-                      Cancel
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={saveNewPlot}
+                        className="flex-1 px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={removeTempPlot}
+                        className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </div>
                 </div>
                 <div className="text-sm text-gray-600">
@@ -1026,7 +1028,7 @@ const EnhancedForestPlotSelection = ({
             )}
           </div>
 
-          <div className="relative h-[500px] rounded-lg overflow-hidden border border-gray-300">
+          <div className="relative h-[300px] sm:h-[400px] md:h-[500px] rounded-lg overflow-hidden border border-gray-300">
             <GoogleMap
               mapContainerStyle={{ width: '100%', height: '100%' }}
               center={center}
@@ -1131,18 +1133,18 @@ const EnhancedForestPlotSelection = ({
 
               {/* Drawing Instructions Overlay */}
               {isDrawing && (
-                <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-90 px-4 py-2 rounded-lg shadow-lg z-10">
-                  <p className="text-sm text-gray-700 flex items-center gap-2">
-                    <Info size={14} />
+                <div className="absolute top-2 sm:top-4 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-90 px-3 sm:px-4 py-1 sm:py-2 rounded-lg shadow-lg z-10 max-w-[90%]">
+                  <p className="text-xs sm:text-sm text-gray-700 flex items-center gap-1 sm:gap-2">
+                    <Info size={12} className="hidden sm:block" />
                     Click on map to draw harvest area. Close polygon by clicking first point.
                   </p>
                 </div>
               )}
 
               {/* Simple dark transparent box with just forest name (top-left) */}
-              <div className="absolute top-4 left-4 z-10">
-                <div className="bg-black bg-opacity-70 rounded-lg shadow-lg p-3">
-                  <div className="text-white font-medium">
+              <div className="absolute top-2 sm:top-4 left-2 sm:left-4 z-10">
+                <div className="bg-black bg-opacity-70 rounded-lg shadow-lg p-2 sm:p-3 max-w-[200px]">
+                  <div className="text-white font-medium text-xs sm:text-sm truncate">
                     {forest.name}
                   </div>
                 </div>
@@ -1152,10 +1154,10 @@ const EnhancedForestPlotSelection = ({
           
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <div className="flex items-start gap-2">
-              <Info size={18} className="text-blue-600 mt-0.5" />
+              <Info size={18} className="text-blue-600 mt-0.5 flex-shrink-0" />
               <div>
                 <h5 className="text-sm font-medium text-blue-800 mb-1">Map Instructions</h5>
-                <ul className="text-sm text-blue-700 space-y-1">
+                <ul className="text-xs sm:text-sm text-blue-700 space-y-1">
                   <li>• <strong>Select existing plots:</strong> Click on any colored polygon to select/deselect</li>
                   <li>• <strong>Pre-defined plots:</strong> Red, Green, and Blue areas are pre-defined harvest zones</li>
                   <li>• <strong>Draw new areas:</strong> Use "Draw New Harvest Area" button to create custom polygons (yellow)</li>
@@ -1172,7 +1174,7 @@ const EnhancedForestPlotSelection = ({
         <div className="space-y-4">
           {/* Simple forest name display for list view */}
           <div className="bg-black bg-opacity-70 border border-gray-700 rounded-lg p-4">
-            <div className="text-white font-medium">
+            <div className="text-white font-medium text-sm sm:text-base">
               {forest.name}
             </div>
           </div>
@@ -1200,37 +1202,37 @@ const EnhancedForestPlotSelection = ({
                           : 'border-gray-200 hover:border-green-300'
                       }`}
                     >
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-wrap items-center gap-2 mb-1">
                             <div 
-                              className="w-3 h-3 rounded-full"
+                              className="w-3 h-3 rounded-full flex-shrink-0"
                               style={{ backgroundColor: color }}
                             ></div>
-                            <h5 className="font-medium text-gray-800">{plot.name}</h5>
+                            <h5 className="font-medium text-gray-800 truncate">{plot.name}</h5>
                             {plot.isCustom ? (
-                              <span className="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full">
+                              <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full flex-shrink-0">
                                 Custom
                               </span>
                             ) : (
-                              <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
+                              <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full flex-shrink-0">
                                 Pre-defined
                               </span>
                             )}
                             {isSelected && (
-                              <span className="ml-2 text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">
+                              <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full flex-shrink-0">
                                 Selected
                               </span>
                             )}
                           </div>
                           {plot.locationName && (
-                            <p className="text-xs text-gray-500">{plot.locationName}</p>
+                            <p className="text-xs text-gray-500 truncate">{plot.locationName}</p>
                           )}
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 self-start">
                           <button
                             onClick={() => toggleCoordinates(plot.id)}
-                            className="text-xs text-blue-600 hover:text-blue-800"
+                            className="text-xs text-blue-600 hover:text-blue-800 whitespace-nowrap"
                           >
                             {showCoords ? 'Hide Coords' : 'Show Coords'}
                           </button>
@@ -1243,7 +1245,7 @@ const EnhancedForestPlotSelection = ({
                               <Trash2 size={12} />
                             </button>
                           )}
-                          <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
+                          <div className={`w-5 h-5 rounded-full border flex items-center justify-center flex-shrink-0 ${
                             isSelected ? 'bg-green-500 border-green-500' : 'border-gray-300'
                           }`}>
                             {isSelected && <CheckCircle size={12} className="text-white" />}
@@ -1252,13 +1254,13 @@ const EnhancedForestPlotSelection = ({
                       </div>
                       
                       <div className="space-y-2 text-sm">
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-wrap items-center justify-between gap-1">
                           <span className="text-gray-600">Area:</span>
                           <span className="font-medium text-green-700">
                             {plot.hectares?.toFixed(2) || 0} hectares
                           </span>
                         </div>
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-wrap items-center justify-between gap-1">
                           <span className="text-gray-600">Coordinates:</span>
                           <span className="font-mono text-xs text-gray-500">
                             {plot.coordinates?.length || 0} points
@@ -1272,9 +1274,9 @@ const EnhancedForestPlotSelection = ({
                           <p className="text-xs font-medium text-gray-700 mb-2">Coordinates:</p>
                           <div className="space-y-1 max-h-32 overflow-y-auto">
                             {plot.coordinates.map((coord, idx) => (
-                              <div key={idx} className="flex items-center justify-between text-xs">
+                              <div key={idx} className="flex flex-wrap items-center justify-between text-xs gap-1">
                                 <span className="text-gray-600">Point {idx + 1}:</span>
-                                <span className="font-mono text-gray-800">
+                                <span className="font-mono text-gray-800 break-all">
                                   {coord.lat.toFixed(6)}, {coord.lng.toFixed(6)}
                                 </span>
                               </div>
@@ -1283,10 +1285,10 @@ const EnhancedForestPlotSelection = ({
                         </div>
                       )}
 
-                      <div className="mt-3 flex gap-2">
+                      <div className="mt-3">
                         <button
                           onClick={() => handlePlotToggle(plot.id)}
-                          className={`flex-1 text-sm py-2 rounded-lg transition-colors ${
+                          className={`w-full text-sm py-2 rounded-lg transition-colors ${
                             isSelected
                               ? 'text-white bg-green-600 hover:bg-green-700'
                               : 'text-green-600 border border-green-300 hover:bg-green-50'
@@ -1313,7 +1315,7 @@ const EnhancedForestPlotSelection = ({
           <div className="text-center">
             <button
               onClick={() => setShowMap(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-green-600 border border-green-300 rounded-lg hover:bg-green-50"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-green-600 border border-green-300 rounded-lg hover:bg-green-50 w-full sm:w-auto"
             >
               <Maximize2 size={14} />
               Open Map View to Draw New Areas
@@ -1399,7 +1401,7 @@ const ContainerManagement = ({ containers, onAddContainer, onUpdateContainer, on
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h3 className="text-lg font-semibold text-gray-800">Containers</h3>
           <p className="text-sm text-gray-600">
@@ -1408,7 +1410,7 @@ const ContainerManagement = ({ containers, onAddContainer, onUpdateContainer, on
         </div>
         <button
           onClick={() => setShowContainerForm(true)}
-          className="flex items-center gap-2 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          className="flex items-center gap-2 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 w-full sm:w-auto justify-center"
         >
           <Plus size={16} />
           Add Container
@@ -1420,19 +1422,19 @@ const ContainerManagement = ({ containers, onAddContainer, onUpdateContainer, on
         {containers.map((container, index) => (
           <div key={container.id} className="border border-gray-200 rounded-lg p-4">
             <div className="flex justify-between items-start mb-3">
-              <div>
+              <div className="min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <Container size={16} className="text-green-600" />
-                  <h4 className="font-medium text-gray-800">Container #{container.containerNumber}</h4>
+                  <Container size={16} className="text-green-600 flex-shrink-0" />
+                  <h4 className="font-medium text-gray-800 truncate">Container #{container.containerNumber}</h4>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Weight size={14} />
+                  <Weight size={14} className="flex-shrink-0" />
                   <span>{container.kilograms.toLocaleString()} kg</span>
                 </div>
               </div>
               <button
                 onClick={() => onRemoveContainer(container.id)}
-                className="text-red-500 hover:text-red-700"
+                className="text-red-500 hover:text-red-700 flex-shrink-0 ml-2"
               >
                 <Trash2 size={16} />
               </button>
@@ -1440,13 +1442,13 @@ const ContainerManagement = ({ containers, onAddContainer, onUpdateContainer, on
 
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-sm">
-                <FileText size={14} className="text-gray-500" />
+                <FileText size={14} className="text-gray-500 flex-shrink-0" />
                 <span className="truncate">{container.packingList?.name || 'Packing list'}</span>
               </div>
 
               {container.images?.length > 0 && (
                 <div className="text-sm text-gray-600 flex items-center gap-2">
-                  <ImageIcon size={14} />
+                  <ImageIcon size={14} className="flex-shrink-0" />
                   <span>{container.images.length} image(s)</span>
                 </div>
               )}
@@ -1466,10 +1468,10 @@ const ContainerManagement = ({ containers, onAddContainer, onUpdateContainer, on
       {totalKg > 0 && (
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
           <div className="flex items-center gap-2 mb-2">
-            <CreditCard size={18} className="text-yellow-600" />
+            <CreditCard size={18} className="text-yellow-600 flex-shrink-0" />
             <h4 className="font-medium text-yellow-800">Payment Preview</h4>
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <p className="text-sm text-yellow-700">
                 {totalKg.toLocaleString()} kg × $100 per 20,000kg
@@ -1606,16 +1608,16 @@ const ContainerManagement = ({ containers, onAddContainer, onUpdateContainer, on
               </div>
             </div>
 
-            <div className="flex justify-end gap-3 p-6 border-t">
+            <div className="flex flex-col sm:flex-row justify-end gap-3 p-6 border-t">
               <button
                 onClick={() => { setShowContainerForm(false); setEditingContainer(null); }}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 order-2 sm:order-1"
               >
                 Cancel
               </button>
               <button
                 onClick={handleAddContainer}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 order-1 sm:order-2"
               >
                 {editingContainer ? 'Update Container' : 'Add Container'}
               </button>
@@ -1655,8 +1657,8 @@ const DocumentSection = ({
           onClick={() => setIsExpanded(!isExpanded)}
           className="w-full p-3 bg-gray-50 hover:bg-gray-100 flex items-center justify-between text-left"
         >
-          <div className="flex items-center gap-3">
-            <span className="font-medium text-gray-800 text-sm">{title}</span>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 min-w-0">
+            <span className="font-medium text-gray-800 text-sm truncate">{title}</span>
             <span className={`px-2 py-1 text-xs rounded-full ${existingDocuments.length > 0
               ? 'bg-green-100 text-green-800'
               : 'bg-yellow-100 text-yellow-800'
@@ -1688,9 +1690,9 @@ const DocumentSection = ({
                           key={`existing-${doc.id}`}
                           className="flex items-center justify-between p-2 bg-gray-50 rounded border border-gray-200 text-sm"
                         >
-                          <div className="flex items-center gap-2 truncate">
+                          <div className="flex items-center gap-2 truncate min-w-0">
                             <FileText size={14} className="text-gray-500 flex-shrink-0" />
-                            <div className="truncate">
+                            <div className="truncate min-w-0">
                               <p className="font-medium text-gray-800 truncate">{doc.name}</p>
                               <p className="text-xs text-gray-500 truncate">{doc.description}</p>
                             </div>
@@ -1712,9 +1714,9 @@ const DocumentSection = ({
                           key={`new-${doc.id}`}
                           className="flex items-center justify-between p-2 bg-green-50 rounded border border-green-200 text-sm"
                         >
-                          <div className="flex items-center gap-2 truncate">
+                          <div className="flex items-center gap-2 truncate min-w-0">
                             <FileText size={14} className="text-green-600 flex-shrink-0" />
-                            <div className="truncate">
+                            <div className="truncate min-w-0">
                               <p className="font-medium text-gray-800 truncate">{doc.name}</p>
                               <p className="text-xs text-gray-500 truncate">{doc.description}</p>
                             </div>
@@ -1735,7 +1737,7 @@ const DocumentSection = ({
                 {/* Add Document Button */}
                 <button
                   onClick={() => setShowUploadModal(true)}
-                  className="flex items-center gap-2 px-3 py-1.5 text-sm text-green-600 border border-green-300 rounded-lg hover:bg-green-50"
+                  className="flex items-center gap-2 px-3 py-1.5 text-sm text-green-600 border border-green-300 rounded-lg hover:bg-green-50 w-full sm:w-auto justify-center"
                 >
                   <Plus size={14} />
                   Add Document
@@ -1792,8 +1794,8 @@ const ForestProductInformation = ({
   return (
     <div className="space-y-4">
       <div className="border border-gray-200 rounded-lg p-4">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-1">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-4">
+          <div className="flex-1 min-w-0">
             <h4 className="font-semibold text-gray-800 mb-1">
               {forest.name}
               {isPrimaryForest && (
@@ -1802,7 +1804,7 @@ const ForestProductInformation = ({
                 </span>
               )}
             </h4>
-            <p className="text-sm text-gray-600">{forest.country} • {forest.area}</p>
+            <p className="text-sm text-gray-600 truncate">{forest.country} • {forest.area}</p>
           </div>
         </div>
 
@@ -1820,8 +1822,8 @@ const ForestProductInformation = ({
                     onClick={() => setExpandedCommodity(expandedCommodity === commodity.commodity ? null : commodity.commodity)}
                     className="w-full p-3 bg-gray-50 hover:bg-gray-100 flex items-center justify-between text-left"
                   >
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-gray-800">{commodity.commodity}</span>
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-0">
+                      <span className="font-medium text-gray-800 truncate">{commodity.commodity}</span>
                       <span className="text-sm text-gray-500">
                         ({commodity.products.length} products available)
                       </span>
@@ -1846,15 +1848,15 @@ const ForestProductInformation = ({
                                 className={`border rounded-lg p-3 cursor-pointer transition-all ${isSelected ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-green-300'}`}
                                 onClick={() => handleHSSelect({ ...product, commodity: commodity.commodity, forestId: forest.id })}
                               >
-                                <div className="flex items-start justify-between">
-                                  <div>
+                                <div className="flex items-start justify-between gap-2">
+                                  <div className="min-w-0">
                                     <div className="flex items-center gap-2 mb-1">
-                                      <FileDigit size={14} className="text-gray-500" />
+                                      <FileDigit size={14} className="text-gray-500 flex-shrink-0" />
                                       <span className="font-medium text-gray-800">{product.code}</span>
                                     </div>
-                                    <p className="text-sm text-gray-600">{product.name}</p>
+                                    <p className="text-sm text-gray-600 truncate">{product.name}</p>
                                   </div>
-                                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${isSelected ? 'bg-green-500 border-green-500' : 'border-gray-300'}`}>
+                                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center flex-shrink-0 ${isSelected ? 'bg-green-500 border-green-500' : 'border-gray-300'}`}>
                                     {isSelected && <CheckCircle size={12} className="text-white" />}
                                   </div>
                                 </div>
@@ -1881,10 +1883,10 @@ const ForestProductInformation = ({
             <h5 className="font-medium text-green-800 mb-2">Selected HS Codes for this Forest:</h5>
             <div className="space-y-1">
               {selectedHS.map((product, index) => (
-                <div key={index} className="flex items-center justify-between text-sm">
-                  <div>
+                <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between text-sm gap-1">
+                  <div className="min-w-0">
                     <span className="font-medium">{product.code}</span>
-                    <span className="text-gray-600 ml-2">{product.name}</span>
+                    <span className="text-gray-600 ml-2 truncate">{product.name}</span>
                     <span className="ml-2 px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded">
                       {product.commodity}
                     </span>
@@ -1892,7 +1894,7 @@ const ForestProductInformation = ({
                   <button
                     type="button"
                     onClick={() => handleHSSelect(product)}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-red-500 hover:text-red-700 self-end sm:self-center"
                   >
                     <X size={14} />
                   </button>
@@ -2031,11 +2033,11 @@ const ProductInformation = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {allSelectedHS.map((product, index) => (
                 <div key={index} className="bg-white p-3 rounded-lg border border-green-200">
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
                     <span className="font-medium">{product.code}</span>
-                    <span className="text-sm text-gray-600">{product.name}</span>
+                    <span className="text-sm text-gray-600 truncate">{product.name}</span>
                   </div>
-                  <div className="flex items-center justify-between text-sm">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between text-sm gap-1">
                     <span className="text-gray-500">{product.commodity}</span>
                     <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">
                       {mockForests.find(f => f.id === product.forestId)?.name.split(' - ')[0]}
@@ -2070,7 +2072,7 @@ const ProductInformation = ({
                   if (!forest || !quantity) return null;
 
                   return (
-                    <div key={forestId} className="flex items-center justify-between text-sm">
+                    <div key={forestId} className="flex flex-col sm:flex-row sm:items-center justify-between text-sm gap-1">
                       <span className="text-gray-600 truncate">{forest.name.split(' - ')[0]}</span>
                       <span className="font-medium">{quantity.toLocaleString()} kg</span>
                     </div>
@@ -2091,7 +2093,7 @@ const ProductInformation = ({
                   <p className="text-lg font-semibold text-green-700">$100 / 20,000 kg</p>
                 </div>
                 <div className="border-t pt-3">
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <p className="text-lg font-bold text-green-800">Total Amount Due</p>
                     <div className="flex items-center gap-2">
                       <DollarSign className="w-6 h-6 text-green-600" />
@@ -2205,7 +2207,7 @@ const ShippingInfoForm = ({ formData, onChange, selectedForests, onForestToggle 
                     </span>
                   )}
                 </div>
-                <ChevronDown size={16} className="text-gray-500" />
+                <ChevronDown size={16} className="text-gray-500 flex-shrink-0" />
               </div>
 
               {/* Dropdown */}
@@ -2267,11 +2269,11 @@ const ShippingInfoForm = ({ formData, onChange, selectedForests, onForestToggle 
                         key={forestId}
                         className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full"
                       >
-                        {forest.name.split(' - ')[0]}
+                        <span className="truncate max-w-[100px]">{forest.name.split(' - ')[0]}</span>
                         <button
                           type="button"
                           onClick={() => onForestToggle(forestId)}
-                          className="text-green-600 hover:text-green-800"
+                          className="text-green-600 hover:text-green-800 flex-shrink-0"
                         >
                           <X size={10} />
                         </button>
@@ -2896,22 +2898,24 @@ const NewShipmentOrigin = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="p-6"
+        className="p-4 sm:p-6"
       >
-        <h1 className="text-2xl lg:text-3xl font-bold text-green-800 mb-6">New Shipment</h1>
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-800 mb-6">New Shipment</h1>
 
         {step > 0 && (
-          <div className="mb-8">
-            <div className="flex items-center">
+          <div className="mb-6 sm:mb-8 overflow-x-auto pb-2">
+            <div className="flex flex-wrap gap-2 sm:gap-0 sm:flex-nowrap min-w-max sm:min-w-0">
               {['Shipping Info', 'Product Info', 'Plot Selection', 'Containers', 'Documents', 'Payment'].map((label, index) => (
                 <div key={index} className="flex items-center">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= index + 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'}`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${step >= index + 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'}`}>
                     {index + 1}
                   </div>
-                  <span className={`ml-2 text-sm font-medium ${step >= index + 1 ? 'text-green-600' : 'text-gray-500'}`}>
+                  <span className={`ml-2 text-xs sm:text-sm font-medium ${step >= index + 1 ? 'text-green-600' : 'text-gray-500'}`}>
                     {label}
                   </span>
-                  {index < 5 && <div className={`w-12 h-1 mx-2 ${step > index + 1 ? 'bg-green-600' : 'bg-gray-200'}`} />}
+                  {index < 5 && (
+                    <div className={`hidden sm:block w-8 sm:w-12 h-1 mx-2 ${step > index + 1 ? 'bg-green-600' : 'bg-gray-200'}`} />
+                  )}
                 </div>
               ))}
             </div>
@@ -2924,13 +2928,13 @@ const NewShipmentOrigin = () => {
             animate={{ opacity: 1, scale: 1 }}
             className="flex flex-col items-center justify-center min-h-[400px]"
           >
-            <div className="bg-white rounded-xl p-8 shadow-lg border border-green-100 max-w-md w-full">
+            <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg border border-green-100 max-w-md w-full">
               <div className="text-center mb-6">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Package size={32} className="text-green-600" />
                 </div>
-                <h2 className="text-xl font-semibold text-gray-800 mb-2">Create New Shipment</h2>
-                <p className="text-gray-600">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">Create New Shipment</h2>
+                <p className="text-gray-600 text-sm sm:text-base">
                   Start a new shipment by entering shipping details, selecting forests, and managing containers and documents.
                 </p>
               </div>
@@ -2969,7 +2973,7 @@ const NewShipmentOrigin = () => {
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-6">
+            <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-green-100 mb-6">
               <ShippingInfoForm
                 formData={shippingInfo}
                 onChange={setShippingInfo}
@@ -2978,16 +2982,16 @@ const NewShipmentOrigin = () => {
               />
             </div>
 
-            <div className="mt-6 flex justify-between">
+            <div className="mt-6 flex flex-col sm:flex-row justify-between gap-3">
               <button
                 onClick={handleBack}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 order-2 sm:order-1"
               >
                 Cancel
               </button>
               <button
                 onClick={handleContinue}
-                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 order-1 sm:order-2"
               >
                 Continue to Product Information ({selectedForests.length} forests selected)
               </button>
@@ -3022,7 +3026,7 @@ const NewShipmentOrigin = () => {
               )}
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-6">
+            <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-green-100 mb-6">
               <ProductInformation
                 formData={shippingInfo}
                 onChange={setShippingInfo}
@@ -3032,16 +3036,16 @@ const NewShipmentOrigin = () => {
               />
             </div>
 
-            <div className="mt-6 flex justify-between">
+            <div className="mt-6 flex flex-col sm:flex-row justify-between gap-3">
               <button
                 onClick={handleBack}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 order-2 sm:order-1"
               >
                 Back
               </button>
               <button
                 onClick={handleContinue}
-                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 order-1 sm:order-2"
               >
                 Continue to Plot Selection
               </button>
@@ -3069,7 +3073,7 @@ const NewShipmentOrigin = () => {
                 Select harvest plots for each forest in this shipment.
               </p>
 
-              <div className="flex items-center gap-4 text-sm text-gray-700">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-gray-700">
                 <div>
                   <span className="font-medium">Forests:</span>
                   <span className="text-green-600 font-semibold ml-2">{selectedForests.length}</span>
@@ -3092,15 +3096,15 @@ const NewShipmentOrigin = () => {
 
               return (
                 <div key={forestId} className="mb-6">
-                  <div className="flex items-center gap-2 mb-4 p-3 bg-green-50 rounded-lg">
-                    <Trees size={18} className="text-green-600" />
-                    <div>
-                      <h3 className="font-semibold text-gray-800">{forest.name}</h3>
-                      <p className="text-sm text-gray-600">{forest.country} • {forest.area}</p>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-4 p-3 bg-green-50 rounded-lg">
+                    <Trees size={18} className="text-green-600 flex-shrink-0" />
+                    <div className="min-w-0">
+                      <h3 className="font-semibold text-gray-800 truncate">{forest.name}</h3>
+                      <p className="text-sm text-gray-600 truncate">{forest.country} • {forest.area}</p>
                     </div>
                   </div>
 
-                  <div className="mb-6 bg-white rounded-xl p-6 shadow-lg border border-blue-100">
+                  <div className="mb-6 bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-blue-100">
                     <EnhancedForestPlotSelection
                       forest={forest}
                       selectedPlots={selectedForestPlots[forestId] || []}
@@ -3113,10 +3117,10 @@ const NewShipmentOrigin = () => {
                   </div>
 
                   <div className="mt-4 bg-green-50 border border-green-200 rounded-lg p-4">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
-                        <Layers size={18} className="text-green-600" />
-                        <span className="font-medium text-green-800">Selected Harvest Area for {forest.name}:</span>
+                        <Layers size={18} className="text-green-600 flex-shrink-0" />
+                        <span className="font-medium text-green-800 truncate">Selected Harvest Area for {forest.name}:</span>
                       </div>
                       <div className="text-xl font-bold text-green-700">
                         {getForestHarvestArea(forestId).toFixed(2)} hectares
@@ -3130,18 +3134,18 @@ const NewShipmentOrigin = () => {
             {/* Total Harvest Area Summary */}
             {selectedForests.length > 0 && (
               <div className="mt-8 bg-green-50 border border-green-200 rounded-lg p-6">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <Layers size={24} className="text-green-600" />
-                    <div>
-                      <h3 className="text-lg font-semibold text-green-800">Total Harvest Area Summary</h3>
+                    <Layers size={24} className="text-green-600 flex-shrink-0" />
+                    <div className="min-w-0">
+                      <h3 className="text-lg font-semibold text-green-800 truncate">Total Harvest Area Summary</h3>
                       <p className="text-sm text-green-600">
                         Combined area from all selected plots across all forests
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-3xl font-bold text-green-700">
+                    <div className="text-2xl sm:text-3xl font-bold text-green-700">
                       {getTotalHarvestArea().toFixed(2)} hectares
                     </div>
                     <div className="text-sm text-green-600">
@@ -3152,16 +3156,16 @@ const NewShipmentOrigin = () => {
               </div>
             )}
 
-            <div className="mt-6 flex justify-between">
+            <div className="mt-6 flex flex-col sm:flex-row justify-between gap-3">
               <button
                 onClick={handleBack}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 order-2 sm:order-1"
               >
                 Back
               </button>
               <button
                 onClick={handleContinue}
-                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 order-1 sm:order-2"
               >
                 Continue to Containers
               </button>
@@ -3189,7 +3193,7 @@ const NewShipmentOrigin = () => {
                 Add containers for this shipment. For each container, you need to upload a packing list and specify the weight.
               </p>
 
-              <div className="flex items-center gap-4 text-sm text-gray-700">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-gray-700">
                 <div>
                   <span className="font-medium">Forests:</span>
                   <span className="text-green-600 font-semibold ml-2">{selectedForests.length}</span>
@@ -3209,7 +3213,7 @@ const NewShipmentOrigin = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-6">
+            <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-green-100 mb-6">
               <ContainerManagement
                 containers={containers}
                 onAddContainer={addContainer}
@@ -3218,17 +3222,17 @@ const NewShipmentOrigin = () => {
               />
             </div>
 
-            <div className="mt-6 flex justify-between">
+            <div className="mt-6 flex flex-col sm:flex-row justify-between gap-3">
               <button
                 onClick={handleBack}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 order-2 sm:order-1"
               >
                 Back
               </button>
               <button
                 onClick={handleContinue}
                 disabled={containers.length === 0}
-                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed order-1 sm:order-2"
               >
                 Continue to Documents ({containers.length} containers)
               </button>
@@ -3256,7 +3260,7 @@ const NewShipmentOrigin = () => {
                 Upload documents for each forest in this shipment.
               </p>
 
-              <div className="flex items-center gap-4 text-sm text-gray-700">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-gray-700">
                 <div>
                   <span className="font-medium">Forests:</span>
                   <span className="text-green-600 font-semibold ml-2">{selectedForests.length}</span>
@@ -3283,10 +3287,10 @@ const NewShipmentOrigin = () => {
 
               return (
                 <div key={forestId} className="mb-6">
-                  <div className="flex items-center gap-2 mb-4 p-3 bg-blue-50 rounded-lg">
-                    <Trees size={18} className="text-blue-600" />
-                    <div>
-                      <h3 className="font-semibold text-gray-800">{forest.name}</h3>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-4 p-3 bg-blue-50 rounded-lg">
+                    <Trees size={18} className="text-blue-600 flex-shrink-0" />
+                    <div className="min-w-0">
+                      <h3 className="font-semibold text-gray-800 truncate">{forest.name}</h3>
                       <p className="text-sm text-gray-600">
                         Harvest area: {getForestHarvestArea(forestId).toFixed(2)} hectares • {forest.country}
                       </p>
@@ -3320,10 +3324,10 @@ const NewShipmentOrigin = () => {
 
             {/* Total Summary */}
             <div className="mt-8 bg-green-50 border border-green-200 rounded-lg p-6">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <Layers size={24} className="text-green-600" />
-                  <div>
+                  <Layers size={24} className="text-green-600 flex-shrink-0" />
+                  <div className="min-w-0">
                     <h3 className="text-lg font-semibold text-green-800">Shipment Summary</h3>
                     <p className="text-sm text-green-600">
                       Complete overview of your shipment
@@ -3331,7 +3335,7 @@ const NewShipmentOrigin = () => {
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-3xl font-bold text-green-700">
+                  <div className="text-2xl sm:text-3xl font-bold text-green-700">
                     {getTotalHarvestArea().toFixed(2)} hectares
                   </div>
                   <div className="text-sm text-green-600">
@@ -3343,14 +3347,14 @@ const NewShipmentOrigin = () => {
               {/* Payment Summary */}
               {totalKg > 0 && (
                 <div className="mt-4 pt-4 border-t border-green-200">
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
                       <p className="text-sm text-green-700">Total Product Weight</p>
                       <p className="text-lg font-semibold text-green-800">{totalKg.toLocaleString()} kg</p>
                     </div>
                     <div className="text-right">
                       <p className="text-sm text-green-700">Payment Due</p>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 justify-end">
                         <DollarSign className="w-6 h-6 text-green-600" />
                         <p className="text-2xl font-bold text-green-600">${calculatePayment(totalKg)}</p>
                       </div>
@@ -3360,17 +3364,17 @@ const NewShipmentOrigin = () => {
               )}
             </div>
 
-            <div className="mt-8 flex justify-between">
+            <div className="mt-8 flex flex-col sm:flex-row justify-between gap-3">
               <button
                 onClick={handleBack}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 order-2 sm:order-1"
               >
                 Back
               </button>
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3 order-1 sm:order-2">
                 <button
                   onClick={handleContinue}
-                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
+                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2 justify-center"
                 >
                   <CreditCard size={18} />
                   Continue to Payment
@@ -3401,24 +3405,24 @@ const NewShipmentOrigin = () => {
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-6">
+            <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-green-100 mb-6">
               <PaymentInformation
                 totalKg={totalKg}
                 onPaymentComplete={handlePaymentComplete}
               />
             </div>
 
-            <div className="mt-6 flex justify-between">
+            <div className="mt-6 flex flex-col sm:flex-row justify-between gap-3">
               <button
                 onClick={handleBack}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 order-2 sm:order-1"
               >
                 Back
               </button>
               <button
                 onClick={handleCreateShipment}
                 disabled={isCreating}
-                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 justify-center order-1 sm:order-2"
               >
                 {isCreating ? (
                   <>

@@ -491,13 +491,13 @@ const DocumentDetailModal = ({ isOpen, onClose, shipment, selectedForest, select
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t bg-gray-50 flex justify-between">
+        <div className="p-4 border-t bg-gray-50 flex flex-col sm:flex-row justify-between gap-3">
           <div className="text-sm text-gray-600">
             Showing {documents.length} documents
           </div>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 w-full sm:w-auto"
           >
             Close
           </button>
@@ -712,7 +712,7 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
                   >
                     {/* Forest Header */}
                     <div className="bg-green-50 p-4 border-b">
-                      <div className="flex justify-between items-start">
+                      <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
                         <div>
                           <h4 className="font-semibold text-lg text-gray-800">{forest.name}</h4>
                           <div className="flex flex-wrap gap-3 text-sm text-gray-600 mt-1">
@@ -745,7 +745,7 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
                       <div className="space-y-3">
                         {forest.areas.map((area, areaIndex) => (
                           <div key={area.id} className="bg-gray-50 p-3 rounded-lg">
-                            <div className="flex justify-between items-start mb-2">
+                            <div className="flex flex-col sm:flex-row justify-between items-start gap-2 mb-2">
                               <div>
                                 <p className="font-medium text-gray-800">{area.name}</p>
                                 <p className="text-sm text-gray-600">{area.hectares} hectares</p>
@@ -757,7 +757,7 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
                             <p className="text-sm text-gray-600 mb-2">{area.description}</p>
                             <div className="text-xs text-gray-500">
                               <p className="font-medium mb-1">Coordinates:</p>
-                              <div className="grid grid-cols-2 gap-1">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
                                 {area.coordinates.slice(0, 4).map((coord, coordIndex) => (
                                   <div key={coordIndex} className="flex items-center gap-1">
                                     <span className="text-gray-400">●</span>
@@ -779,7 +779,7 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
                     {/* Documents by Section */}
                     <div className="p-4">
                       <h5 className="font-medium text-gray-700 mb-3">Compliance Documents</h5>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                         {Object.entries(sectionTitles).map(([sectionKey, sectionTitle]) => {
                           const documents = forest.documents[sectionKey] || [];
                           const docCount = documents.length;
@@ -818,7 +818,7 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
                       <div className="mt-4">
                         <button
                           onClick={() => handleViewDocuments(forest.id)}
-                          className="flex items-center gap-2 px-4 py-2 text-green-600 border border-green-300 rounded-lg hover:bg-green-50"
+                          className="flex items-center justify-center gap-2 px-4 py-2 text-green-600 border border-green-300 rounded-lg hover:bg-green-50 w-full sm:w-auto"
                         >
                           <Layers size={16} />
                           View All Documents ({Object.values(forest.documents).reduce((sum, docs) => sum + docs.length, 0)})
@@ -833,19 +833,19 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
           </div>
 
           {/* Footer */}
-          <div className="p-4 border-t bg-gray-50 flex justify-between">
+          <div className="p-4 border-t bg-gray-50 flex flex-col sm:flex-row gap-3 sm:justify-between">
             <button
               onClick={onClose}
-              className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 w-full sm:w-auto"
             >
               Close
             </button>
-            <div className="flex gap-2">
-              <button className="flex items-center gap-2 px-4 py-2 text-green-600 border border-green-300 rounded-lg hover:bg-green-50">
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+              <button className="flex items-center justify-center gap-2 px-4 py-2 text-green-600 border border-green-300 rounded-lg hover:bg-green-50 w-full sm:w-auto">
                 <Download size={16} />
                 Export All Documents
               </button>
-              <button className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+              <button className="flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 w-full sm:w-auto">
                 <ExternalLink size={16} />
                 Open in Compliance Portal
               </button>
@@ -899,7 +899,7 @@ const ShipmentCard = ({ shipment, isExpanded, onToggle, onViewDetails }) => {
       <div
         className={`p-4 ${isExpanded ? 'bg-gray-50' : 'bg-white'}`}
       >
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col sm:flex-row items-start justify-between gap-3">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
               <Package className="text-green-600" size={20} />
@@ -909,7 +909,7 @@ const ShipmentCard = ({ shipment, isExpanded, onToggle, onViewDetails }) => {
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-4 text-sm">
+            <div className="flex flex-wrap gap-3 text-sm">
               <div className="flex items-center gap-1">
                 <Calendar size={14} className="text-gray-400" />
                 <span className="text-gray-600">{formatDate(shipment.date)}</span>
@@ -929,18 +929,18 @@ const ShipmentCard = ({ shipment, isExpanded, onToggle, onViewDetails }) => {
             </div>
           </div>
 
-          <div className="flex flex-col items-end gap-2">
+          <div className="flex flex-col items-start sm:items-end gap-2 w-full sm:w-auto">
             <span className={`px-3 py-1 text-xs font-medium rounded-full border ${shipment.statusColor} flex items-center gap-1`}>
               {getStatusIcon(shipment.status)}
               {shipment.status}
             </span>
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full sm:w-auto">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   onViewDetails();
                 }}
-                className="flex items-center gap-1 px-3 py-1 text-sm text-green-600 border border-green-300 rounded-lg hover:bg-green-50"
+                className="flex items-center justify-center gap-1 px-3 py-1 text-sm text-green-600 border border-green-300 rounded-lg hover:bg-green-50 flex-1 sm:flex-none"
               >
                 <Eye size={14} />
                 Details
@@ -1003,13 +1003,13 @@ const ShipmentCard = ({ shipment, isExpanded, onToggle, onViewDetails }) => {
                 </div>
               </div>
 
-              <div className="flex justify-between items-center">
-                <div className="text-sm text-gray-600">
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
+                <div className="text-sm text-gray-600 text-center sm:text-left">
                   Total: ${formatNumber(shipment.totalCost)} • {formatNumber(shipment.totalKg)} kg • {shipment.totalDocuments} documents
                 </div>
                 <button
                   onClick={onViewDetails}
-                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                  className="flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 w-full sm:w-auto"
                 >
                   <Eye size={16} />
                   View Full Details
@@ -1092,7 +1092,7 @@ const Shipments = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="p-6"
+        className="p-4 sm:p-6"
       >
         <h1 className="text-2xl lg:text-3xl font-bold text-green-800 mb-6">Shipments Management</h1>
 
@@ -1220,11 +1220,11 @@ const Shipments = () => {
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="flex justify-between items-center mt-6 pt-6 border-t">
-                  <div className="text-sm text-gray-600">
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6 pt-6 border-t">
+                  <div className="text-sm text-gray-600 text-center sm:text-left">
                     Showing {startIndex + 1} to {Math.min(startIndex + itemsPerPage, filteredShipments.length)} of {filteredShipments.length} shipments
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 overflow-x-auto pb-2">
                     <button
                       onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                       disabled={currentPage === 1}

@@ -120,15 +120,15 @@ const Section1 = () => {
   };
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100">
-      <div className="flex justify-between items-center mb-6">
+    <div className="bg-white rounded-xl p-4 md:p-6 shadow-lg border border-green-100">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-3">
         <h2 className="text-xl font-bold text-green-800 flex items-center gap-2">
           <Building className="w-5 h-5" />
           1. Company Information
         </h2>
         <button
           onClick={() => isEditing ? handleSave() : setIsEditing(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors w-full md:w-auto"
         >
           {isEditing ? (
             <>
@@ -144,7 +144,7 @@ const Section1 = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         {/* Company Name */}
         <div>
           <label className="block text-sm font-medium text-green-600 uppercase tracking-wide mb-2">
@@ -158,7 +158,7 @@ const Section1 = () => {
               className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           ) : (
-            <div className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg">
+            <div className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg break-words">
               <p className="text-gray-800 font-medium">{companyInfo.companyName}</p>
             </div>
           )}
@@ -188,11 +188,11 @@ const Section1 = () => {
               </select>
             )
           ) : (
-            <div className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg flex items-center gap-2">
+            <div className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg flex items-center gap-2 break-words">
               <img
                 src={`https://flagcdn.com/w20/${companyInfo.countryCode}.png`}
                 alt={`${companyInfo.country} flag`}
-                className="w-5 h-5 rounded"
+                className="w-5 h-5 rounded flex-shrink-0"
               />
               <p className="text-gray-800 font-medium">{companyInfo.country}</p>
             </div>
@@ -212,7 +212,7 @@ const Section1 = () => {
               className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           ) : (
-            <div className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg">
+            <div className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg break-words">
               <p className="text-gray-800 whitespace-pre-line">{companyInfo.address}</p>
             </div>
           )}
@@ -231,7 +231,7 @@ const Section1 = () => {
               className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           ) : (
-            <div className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg">
+            <div className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg break-words">
               <p className="text-gray-800 font-medium">{companyInfo.registrationNumber}</p>
             </div>
           )}
@@ -250,7 +250,7 @@ const Section1 = () => {
               className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           ) : (
-            <div className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg">
+            <div className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg break-words">
               <p className="text-gray-800 font-medium">{companyInfo.taxId}</p>
             </div>
           )}
@@ -269,7 +269,7 @@ const Section1 = () => {
               className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           ) : (
-            <div className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg">
+            <div className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg break-words">
               <p className="text-gray-800 font-medium">{companyInfo.exportCertificate}</p>
             </div>
           )}
@@ -277,16 +277,16 @@ const Section1 = () => {
       </div>
 
       {isEditing && (
-        <div className="flex justify-end gap-3 mt-6 pt-6 border-t border-gray-200">
+        <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6 pt-6 border-t border-gray-200">
           <button
             onClick={() => setIsEditing(false)}
-            className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+            className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors w-full sm:w-auto"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors w-full sm:w-auto"
           >
             Save Changes
           </button>
@@ -336,11 +336,11 @@ const DocumentUpload = ({
 
   return (
     <div className="mb-6">
-      <div className="flex justify-between items-center mb-3">
-        <h3 className="font-semibold text-green-700">{title}</h3>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
+        <h3 className="font-semibold text-green-700 break-words">{title}</h3>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-1 text-sm text-green-600 hover:text-green-800"
+          className="flex items-center gap-1 text-sm text-green-600 hover:text-green-800 whitespace-nowrap"
         >
           <Plus className="w-4 h-4" />
           Add Document
@@ -357,13 +357,13 @@ const DocumentUpload = ({
           </div>
         ) : (
           documents.map(doc => (
-            <div key={doc.id} className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
-              <div className="flex items-center gap-3">
-                <FileText className={`w-5 h-5 ${getIconColor()}`} />
-                <div>
-                  <span className="font-medium text-gray-800">{doc.name}</span>
-                  <div className="flex items-center gap-3 text-xs text-gray-500 mt-1">
-                    <span>{doc.fileName}</span>
+            <div key={doc.id} className="flex items-center justify-between bg-gray-50 px-3 md:px-4 py-3 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+              <div className="flex items-center gap-3 min-w-0 flex-1">
+                <FileText className={`w-5 h-5 ${getIconColor()} flex-shrink-0`} />
+                <div className="min-w-0 flex-1">
+                  <span className="font-medium text-gray-800 break-words block">{doc.name}</span>
+                  <div className="flex flex-wrap items-center gap-1 text-xs text-gray-500 mt-1">
+                    <span className="truncate max-w-[150px] sm:max-w-none">{doc.fileName}</span>
                     <span>•</span>
                     <span>{doc.date}</span>
                     {doc.size && (
@@ -377,7 +377,7 @@ const DocumentUpload = ({
               </div>
               <button
                 onClick={() => onRemove(doc.id)}
-                className="text-gray-400 hover:text-red-500 transition-colors"
+                className="text-gray-400 hover:text-red-500 transition-colors flex-shrink-0 ml-2"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -388,10 +388,10 @@ const DocumentUpload = ({
 
       {/* Upload Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-md mx-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-4 md:p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold text-green-800">Upload {title}</h3>
+              <h3 className="text-lg font-bold text-green-800 break-words">Upload {title}</h3>
               <button onClick={() => setShowModal(false)}>
                 <X className="w-5 h-5" />
               </button>
@@ -415,7 +415,7 @@ const DocumentUpload = ({
                 <label className="block text-sm font-medium text-green-700 mb-1">
                   Upload File *
                 </label>
-                <div className="border-2 border-dashed border-green-200 rounded-lg p-6 text-center hover:border-green-300 transition-colors">
+                <div className="border-2 border-dashed border-green-200 rounded-lg p-4 md:p-6 text-center hover:border-green-300 transition-colors">
                   <Upload className="w-8 h-8 text-green-400 mx-auto mb-2" />
                   <input
                     type="file"
@@ -423,7 +423,7 @@ const DocumentUpload = ({
                     className="hidden"
                     id={`file-${type}`}
                   />
-                  <label htmlFor={`file-${type}`} className="cursor-pointer">
+                  <label htmlFor={`file-${type}`} className="cursor-pointer block">
                     <span className="text-green-600 font-medium">Click to upload</span>
                     <p className="text-sm text-gray-500 mt-1">or drag and drop</p>
                     <p className="text-xs text-gray-400 mt-1">PDF, JPG, PNG, DOC up to 10MB</p>
@@ -431,8 +431,8 @@ const DocumentUpload = ({
                   {file && (
                     <div className="mt-4 p-3 bg-green-50 rounded-lg">
                       <div className="flex items-center gap-2">
-                        <FileText className="w-4 h-4 text-green-600" />
-                        <span className="text-sm font-medium text-green-800">{file.name}</span>
+                        <FileText className="w-4 h-4 text-green-600 flex-shrink-0" />
+                        <span className="text-sm font-medium text-green-800 truncate">{file.name}</span>
                       </div>
                       <p className="text-xs text-gray-600 mt-1">
                         Size: {(file.size / 1024 / 1024).toFixed(2)} MB
@@ -442,7 +442,7 @@ const DocumentUpload = ({
                 </div>
               </div>
 
-              <div className="flex gap-2 pt-2">
+              <div className="flex flex-col sm:flex-row gap-2 pt-2">
                 <button
                   onClick={() => setShowModal(false)}
                   className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
@@ -481,13 +481,13 @@ const Section2 = ({ documents, setDocuments }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100">
+    <div className="bg-white rounded-xl p-4 md:p-6 shadow-lg border border-green-100">
       <h2 className="text-xl font-bold text-green-800 mb-6 flex items-center gap-2">
         <FileText className="w-5 h-5" />
         2. Document Upload
       </h2>
 
-      <div className="space-y-8">
+      <div className="space-y-6">
         <DocumentUpload
           title="Registration Documents"
           documents={registrationDocs}
@@ -516,29 +516,29 @@ const Section2 = ({ documents, setDocuments }) => {
   );
 };
 
-// Contact Person Card Component (Keep as is)
+// Contact Person Card Component (FIXED FOR RESPONSIVE)
 const ContactPersonCard = ({ contact, onView, onEdit, onDelete }) => {
   return (
     <div className="border border-green-200 rounded-lg p-4 bg-green-50/50 hover:bg-green-50 transition-colors">
-      <div className="flex justify-between items-start mb-3">
-        <div className="flex items-center gap-3">
-          <div className="bg-green-100 p-2 rounded-lg">
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-3 mb-3">
+        <div className="flex items-start gap-3 flex-1 min-w-0">
+          <div className="bg-green-100 p-2 rounded-lg flex-shrink-0">
             <User className="w-5 h-5 text-green-600" />
           </div>
-          <div>
-            <h4 className="font-bold text-green-800">{contact.name}</h4>
-            <p className="text-sm text-gray-600">{contact.email}</p>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
+          <div className="flex-1 min-w-0">
+            <h4 className="font-bold text-green-800 break-words">{contact.name}</h4>
+            <p className="text-sm text-gray-600 break-words mt-1">{contact.email}</p>
+            <div className="flex flex-wrap items-center gap-2 mt-2">
+              <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full whitespace-nowrap">
                 {contact.idCards.length} ID card(s)
               </span>
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-gray-500 whitespace-nowrap">
                 Added: {contact.addedDate}
               </span>
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 self-end sm:self-start mt-2 sm:mt-0">
           <button
             onClick={() => onView(contact.id)}
             className="p-1.5 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
@@ -566,7 +566,7 @@ const ContactPersonCard = ({ contact, onView, onEdit, onDelete }) => {
   );
 };
 
-// Contact Person Modal Component (Keep as is)
+// Contact Person Modal Component
 const ContactPersonModal = ({
   isOpen,
   onClose,
@@ -649,19 +649,19 @@ const ContactPersonModal = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
-        <div className="flex justify-between items-center p-6 border-b border-gray-200">
-          <h3 className="text-xl font-bold text-green-800">
+        <div className="flex justify-between items-center p-4 md:p-6 border-b border-gray-200">
+          <h3 className="text-xl font-bold text-green-800 break-words">
             {contact ? 'Edit Contact Person' : 'Add Contact Person'}
           </h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-gray-400 hover:text-gray-600 flex-shrink-0"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-4 md:p-6">
           <div className="space-y-6">
             {/* Contact Details Form */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -720,8 +720,8 @@ const ContactPersonModal = ({
 
             {/* ID Cards Upload Section */}
             <div className="border-t border-gray-200 pt-6">
-              <div className="flex justify-between items-center mb-4">
-                <h4 className="font-semibold text-green-700">ID Cards</h4>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+                <h4 className="font-semibold text-green-700 break-words">ID Cards</h4>
                 <div className="relative">
                   <input
                     type="file"
@@ -733,7 +733,7 @@ const ContactPersonModal = ({
                   />
                   <label
                     htmlFor="idCardUpload"
-                    className="flex items-center gap-1 text-sm text-green-600 hover:text-green-800 cursor-pointer bg-green-50 px-3 py-2 rounded-lg hover:bg-green-100 transition-colors"
+                    className="flex items-center gap-1 text-sm text-green-600 hover:text-green-800 cursor-pointer bg-green-50 px-3 py-2 rounded-lg hover:bg-green-100 transition-colors whitespace-nowrap"
                   >
                     <Upload className="w-4 h-4" />
                     Upload ID Cards
@@ -753,18 +753,18 @@ const ContactPersonModal = ({
                   idCards.map(card => (
                     <div
                       key={card.id}
-                      className="flex items-center justify-between bg-green-50 px-4 py-3 rounded-lg border border-green-200"
+                      className="flex items-center justify-between bg-green-50 px-3 md:px-4 py-3 rounded-lg border border-green-200"
                     >
-                      <div className="flex items-center gap-3">
-                        <FileText className="w-5 h-5 text-green-600" />
-                        <div>
-                          <p className="font-medium text-green-800">{card.name}</p>
+                      <div className="flex items-center gap-3 min-w-0 flex-1">
+                        <FileText className="w-5 h-5 text-green-600 flex-shrink-0" />
+                        <div className="min-w-0 flex-1">
+                          <p className="font-medium text-green-800 break-words">{card.name}</p>
                           <p className="text-xs text-gray-500">Uploaded: {card.date}</p>
                         </div>
                       </div>
                       <button
                         onClick={() => handleRemoveIdCard(card.id)}
-                        className="text-gray-400 hover:text-red-500 transition-colors"
+                        className="text-gray-400 hover:text-red-500 transition-colors flex-shrink-0 ml-2"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -776,8 +776,8 @@ const ContactPersonModal = ({
           </div>
         </div>
 
-        <div className="p-6 border-t border-gray-200">
-          <div className="flex gap-3">
+        <div className="p-4 md:p-6 border-t border-gray-200">
+          <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={onClose}
               className="flex-1 px-4 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
@@ -809,7 +809,7 @@ const ContactPersonModal = ({
   );
 };
 
-// Section 3: Contact Persons (Keep as is)
+// Section 3: Contact Persons
 const Section3 = ({ contacts, setContacts }) => {
   const [showModal, setShowModal] = useState(false);
   const [editingContact, setEditingContact] = useState(null);
@@ -849,7 +849,7 @@ const Section3 = ({ contacts, setContacts }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100">
+    <div className="bg-white rounded-xl p-4 md:p-6 shadow-lg border border-green-100">
       <h2 className="text-xl font-bold text-green-800 mb-6 flex items-center gap-2">
         <User className="w-5 h-5" />
         3. Contact Persons
@@ -862,7 +862,7 @@ const Section3 = ({ contacts, setContacts }) => {
             setEditingContact(null);
             setShowModal(true);
           }}
-          className="flex items-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors w-full sm:w-auto"
         >
           <Plus className="w-5 h-5" />
           Add Contact Person
@@ -905,27 +905,27 @@ const Section3 = ({ contacts, setContacts }) => {
       {viewingContact && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col">
-            <div className="flex justify-between items-center p-6 border-b border-gray-200 bg-green-50">
-              <div className="flex items-center gap-3">
-                <div className="bg-green-100 p-2 rounded-lg">
+            <div className="flex justify-between items-center p-4 md:p-6 border-b border-gray-200 bg-green-50">
+              <div className="flex items-center gap-3 min-w-0 flex-1">
+                <div className="bg-green-100 p-2 rounded-lg flex-shrink-0">
                   <User className="w-5 h-5 text-green-600" />
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold text-green-800">
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-xl font-bold text-green-800 break-words">
                     {viewingContact.name}
                   </h3>
-                  <p className="text-green-700">{viewingContact.email}</p>
+                  <p className="text-green-700 break-words mt-1">{viewingContact.email}</p>
                 </div>
               </div>
               <button
                 onClick={() => setViewingContact(null)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 flex-shrink-0 ml-2"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-6">
+            <div className="flex-1 overflow-y-auto p-4 md:p-6">
               <div className="space-y-6">
                 {/* Contact Details */}
                 <div>
@@ -935,13 +935,13 @@ const Section3 = ({ contacts, setContacts }) => {
                       <label className="block text-sm font-medium text-gray-600 mb-1">
                         Phone Number
                       </label>
-                      <p className="text-gray-800">{viewingContact.phone}</p>
+                      <p className="text-gray-800 break-words">{viewingContact.phone}</p>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-600 mb-1">
                         Address
                       </label>
-                      <p className="text-gray-800 whitespace-pre-line">{viewingContact.address}</p>
+                      <p className="text-gray-800 whitespace-pre-line break-words">{viewingContact.address}</p>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-600 mb-1">
@@ -961,12 +961,12 @@ const Section3 = ({ contacts, setContacts }) => {
                     {viewingContact.idCards.map((card, index) => (
                       <div
                         key={card.id || index}
-                        className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-lg border border-gray-200"
+                        className="flex items-center justify-between bg-gray-50 px-3 md:px-4 py-3 rounded-lg border border-gray-200"
                       >
-                        <div className="flex items-center gap-3">
-                          <FileText className="w-5 h-5 text-green-600" />
-                          <div>
-                            <p className="font-medium text-gray-800">{card.name}</p>
+                        <div className="flex items-center gap-3 min-w-0 flex-1">
+                          <FileText className="w-5 h-5 text-green-600 flex-shrink-0" />
+                          <div className="min-w-0 flex-1">
+                            <p className="font-medium text-gray-800 break-words">{card.name}</p>
                             <p className="text-xs text-gray-500">Uploaded: {card.date}</p>
                           </div>
                         </div>
@@ -975,7 +975,7 @@ const Section3 = ({ contacts, setContacts }) => {
                             // Simulate download
                             alert(`Downloading ${card.name}`);
                           }}
-                          className="text-green-600 hover:text-green-800"
+                          className="text-green-600 hover:text-green-800 flex-shrink-0 ml-2"
                         >
                           <Download className="w-4 h-4" />
                         </button>
@@ -986,7 +986,7 @@ const Section3 = ({ contacts, setContacts }) => {
               </div>
             </div>
 
-            <div className="p-6 border-t border-gray-200">
+            <div className="p-4 md:p-6 border-t border-gray-200">
               <button
                 onClick={() => setViewingContact(null)}
                 className="w-full px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
@@ -1001,30 +1001,31 @@ const Section3 = ({ contacts, setContacts }) => {
   );
 };
 
-// Staff Member Component (Keep as is)
+// Staff Member Component (FIXED FOR RESPONSIVE)
 const StaffMember = ({ staff, onEdit, onDelete }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
     <div className="border border-gray-200 rounded-lg p-3 mb-2">
       <div
-        className="flex justify-between items-center cursor-pointer"
+        className="flex flex-col sm:flex-row justify-between items-start gap-2 cursor-pointer"
         onClick={() => setExpanded(!expanded)}
       >
-        <div className="flex items-center gap-3">
-          <User className="w-4 h-4 text-gray-400" />
-          <div>
-            <h4 className="font-medium text-gray-800">{staff.name}</h4>
-            <p className="text-sm text-gray-500">{staff.jobTitle}</p>
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          <User className="w-4 h-4 text-gray-400 flex-shrink-0" />
+          <div className="flex-1 min-w-0">
+            <h4 className="font-medium text-gray-800 break-words">{staff.name}</h4>
+            <p className="text-sm text-gray-500 break-words mt-1">{staff.jobTitle}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 self-end sm:self-start mt-2 sm:mt-0">
           <button
             onClick={(e) => {
               e.stopPropagation();
               onEdit(staff.id);
             }}
-            className="text-blue-600 hover:text-blue-800"
+            className="text-blue-600 hover:text-blue-800 p-1"
+            title="Edit Staff"
           >
             <Edit className="w-4 h-4" />
           </button>
@@ -1033,7 +1034,8 @@ const StaffMember = ({ staff, onEdit, onDelete }) => {
               e.stopPropagation();
               onDelete(staff.id);
             }}
-            className="text-red-600 hover:text-red-800"
+            className="text-red-600 hover:text-red-800 p-1"
+            title="Delete Staff"
           >
             <Trash2 className="w-4 h-4" />
           </button>
@@ -1042,15 +1044,15 @@ const StaffMember = ({ staff, onEdit, onDelete }) => {
 
       {expanded && (
         <div className="mt-3 pt-3 border-t border-gray-100 space-y-2">
-          <div className="grid grid-cols-2 gap-2 text-sm">
-            <div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+            <div className="break-words">
               <span className="text-gray-500">Age:</span> {staff.age}
             </div>
-            <div>
+            <div className="break-words">
               <span className="text-gray-500">ID Card:</span>
               {staff.idCard ? '✅ Uploaded' : '❌ Not uploaded'}
             </div>
-            <div>
+            <div className="break-words">
               <span className="text-gray-500">Contract:</span>
               {staff.contract ? '✅ Uploaded' : '❌ Not uploaded'}
             </div>
@@ -1061,7 +1063,7 @@ const StaffMember = ({ staff, onEdit, onDelete }) => {
   );
 };
 
-// Add Staff Modal (Keep as is)
+// Add Staff Modal
 const AddStaffModal = ({ isOpen, onClose, onSave, editingStaff }) => {
   const [staff, setStaff] = useState(editingStaff || {
     name: '',
@@ -1083,10 +1085,10 @@ const AddStaffModal = ({ isOpen, onClose, onSave, editingStaff }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl p-4 md:p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-bold text-green-800">
+          <h3 className="text-lg font-bold text-green-800 break-words">
             {editingStaff ? 'Edit Staff' : 'Add Staff Member'}
           </h3>
           <button onClick={onClose}>
@@ -1145,7 +1147,7 @@ const AddStaffModal = ({ isOpen, onClose, onSave, editingStaff }) => {
                 className="w-full"
               />
               {staff.idCard && (
-                <p className="text-sm text-gray-700 mt-2">
+                <p className="text-sm text-gray-700 mt-2 break-words">
                   Selected: {staff.idCard.name}
                 </p>
               )}
@@ -1163,7 +1165,7 @@ const AddStaffModal = ({ isOpen, onClose, onSave, editingStaff }) => {
                 className="w-full"
               />
               {staff.contract && (
-                <p className="text-sm text-gray-700 mt-2">
+                <p className="text-sm text-gray-700 mt-2 break-words">
                   Selected: {staff.contract.name}
                 </p>
               )}
@@ -1171,7 +1173,7 @@ const AddStaffModal = ({ isOpen, onClose, onSave, editingStaff }) => {
           </div>
         </div>
 
-        <div className="flex gap-2 pt-6">
+        <div className="flex flex-col sm:flex-row gap-2 pt-6">
           <button
             onClick={onClose}
             className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
@@ -1191,7 +1193,7 @@ const AddStaffModal = ({ isOpen, onClose, onSave, editingStaff }) => {
   );
 };
 
-// Facility/Location Component (Keep as is)
+// Facility/Location Component (FIXED FOR RESPONSIVE)
 const FacilityLocation = ({
   facility,
   type,
@@ -1223,40 +1225,42 @@ const FacilityLocation = ({
 
   return (
     <div className="border border-green-200 rounded-lg p-4 mb-4 bg-green-50">
-      <div className="flex justify-between items-center mb-3">
-        <div>
-          <h4 className="font-bold text-green-800">{facility.name}</h4>
-          <p className="text-sm text-gray-600">{facility.address}</p>
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-3 mb-3">
+        <div className="flex-1 min-w-0">
+          <h4 className="font-bold text-green-800 break-words">{facility.name}</h4>
+          <p className="text-sm text-gray-600 break-words mt-1">{facility.address}</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 self-end sm:self-start mt-2 sm:mt-0">
           <button
             onClick={() => setExpanded(!expanded)}
-            className="text-green-600 hover:text-green-800"
+            className="text-green-600 hover:text-green-800 text-sm whitespace-nowrap px-2 py-1"
           >
             {expanded ? 'Hide' : 'Show'} Staff
           </button>
           <button
             onClick={() => onEditFacility(facility.id)}
-            className="text-blue-600 hover:text-blue-800"
+            className="text-blue-600 hover:text-blue-800 p-1"
+            title="Edit Facility"
           >
             <Edit className="w-4 h-4" />
           </button>
           <button
             onClick={() => onDeleteFacility(facility.id)}
-            className="text-red-600 hover:text-red-800"
+            className="text-red-600 hover:text-red-800 p-1"
+            title="Delete Facility"
           >
             <Trash2 className="w-4 h-4" />
           </button>
         </div>
       </div>
 
-      <div className="flex justify-between items-center mb-2">
-        <span className="text-xs font-medium text-green-700 bg-green-100 px-2 py-1 rounded">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+        <span className="text-xs font-medium text-green-700 bg-green-100 px-2 py-1 rounded whitespace-nowrap">
           {type} • {facility.staff.length} staff
         </span>
         <button
           onClick={() => setShowAddStaff(true)}
-          className="flex items-center gap-1 text-sm text-green-600 hover:text-green-800"
+          className="flex items-center gap-1 text-sm text-green-600 hover:text-green-800 whitespace-nowrap px-2 py-1"
         >
           <Plus className="w-4 h-4" />
           Add Staff
@@ -1291,7 +1295,7 @@ const FacilityLocation = ({
   );
 };
 
-// Section 4: Facilities & Staff (Keep as is)
+// Section 4: Facilities & Staff
 const Section4 = ({ facilities, setFacilities }) => {
   const [showAddFacility, setShowAddFacility] = useState(false);
   const [selectedType, setSelectedType] = useState('corporate');
@@ -1357,7 +1361,7 @@ const Section4 = ({ facilities, setFacilities }) => {
   const processingSites = facilities.filter(f => f.type === 'processing');
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100">
+    <div className="bg-white rounded-xl p-4 md:p-6 shadow-lg border border-green-100">
       <h2 className="text-xl font-bold text-green-800 mb-6 flex items-center gap-2">
         <Users className="w-5 h-5" />
         4. Facilities & Staff
@@ -1371,7 +1375,7 @@ const Section4 = ({ facilities, setFacilities }) => {
             setFacilityForm({ name: '', address: '' });
             setShowAddFacility(true);
           }}
-          className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 w-full sm:w-auto"
         >
           <Plus className="w-4 h-4" />
           Add New Facility
@@ -1470,10 +1474,10 @@ const Section4 = ({ facilities, setFacilities }) => {
 
       {/* Add/Edit Facility Modal */}
       {showAddFacility && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-md mx-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-4 md:p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold text-green-800">
+              <h3 className="text-lg font-bold text-green-800 break-words">
                 {editingFacility ? 'Edit Facility' : 'Add New Facility'}
               </h3>
               <button onClick={() => setShowAddFacility(false)}>
@@ -1523,7 +1527,7 @@ const Section4 = ({ facilities, setFacilities }) => {
                 />
               </div>
 
-              <div className="flex gap-2 pt-2">
+              <div className="flex flex-col sm:flex-row gap-2 pt-2">
                 <button
                   onClick={() => setShowAddFacility(false)}
                   className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
@@ -1573,40 +1577,40 @@ const CountryGroup = ({
         className="flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors"
         onClick={() => setExpanded(!expanded)}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 min-w-0 flex-1">
           <img
             src={`https://flagcdn.com/w20/${countryCode}.png`}
             alt={`${country} flag`}
-            className="w-5 h-5 rounded"
+            className="w-5 h-5 rounded flex-shrink-0"
           />
-          <div>
-            <h4 className="font-bold text-gray-800">{country}</h4>
-            <div className="flex items-center gap-4 text-sm text-gray-600">
-              <span className="flex items-center gap-1">
-                <ShieldCheck className="w-3 h-3 text-green-600" />
+          <div className="min-w-0 flex-1">
+            <h4 className="font-bold text-gray-800 break-words">{country}</h4>
+            <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 mt-1">
+              <span className="flex items-center gap-1 whitespace-nowrap">
+                <ShieldCheck className="w-3 h-3 text-green-600 flex-shrink-0" />
                 {companies.filter(c => c.verifications && c.verifications.length > 0).length} Verified
               </span>
-              <span className="flex items-center gap-1">
-                <Shield className="w-3 h-3 text-blue-600" />
+              <span className="flex items-center gap-1 whitespace-nowrap">
+                <Shield className="w-3 h-3 text-blue-600 flex-shrink-0" />
                 {companies.filter(c => c.isRegistered).length} Registered
               </span>
-              <span className="flex items-center gap-1">
-                <ShieldAlert className="w-3 h-3 text-yellow-600" />
+              <span className="flex items-center gap-1 whitespace-nowrap">
+                <ShieldAlert className="w-3 h-3 text-yellow-600 flex-shrink-0" />
                 {companies.filter(c => !c.isRegistered).length} Unregistered
               </span>
-              <span className="ml-2">
+              <span className="whitespace-nowrap">
                 Total: {companies.length}
               </span>
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-shrink-0">
           <button
             onClick={(e) => {
               e.stopPropagation();
               onAddCompanyToCountry(country, countryCode);
             }}
-            className="flex items-center gap-1 text-sm text-green-600 hover:text-green-800"
+            className="flex items-center gap-1 text-sm text-green-600 hover:text-green-800 whitespace-nowrap"
           >
             <Plus className="w-4 h-4" />
             Add
@@ -1632,39 +1636,39 @@ const CountryGroup = ({
                     : 'border-yellow-200 bg-yellow-50/50'
                   }`}
               >
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <h5 className="font-medium text-gray-800">{company.name}</h5>
-                      <div className="flex items-center gap-2">
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-2">
+                      <h5 className="font-medium text-gray-800 break-words">{company.name}</h5>
+                      <div className="flex flex-wrap gap-2">
                         {company.verifications && company.verifications.length > 0 && (
-                          <div className="flex items-center gap-1 bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
-                            <ShieldCheck className="w-3 h-3" />
+                          <div className="flex items-center gap-1 bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs whitespace-nowrap">
+                            <ShieldCheck className="w-3 h-3 flex-shrink-0" />
                             Verified ({company.verifications.length})
                           </div>
                         )}
                         {company.isRegistered && (
-                          <div className="flex items-center gap-1 bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
-                            <Shield className="w-3 h-3" />
+                          <div className="flex items-center gap-1 bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs whitespace-nowrap">
+                            <Shield className="w-3 h-3 flex-shrink-0" />
                             Registered
                           </div>
                         )}
                         {!company.isRegistered && (
-                          <div className="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">
-                            <ShieldAlert className="w-3 h-3" />
+                          <div className="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs whitespace-nowrap">
+                            <ShieldAlert className="w-3 h-3 flex-shrink-0" />
                             Unregistered
                           </div>
                         )}
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-4 text-sm text-gray-600">
-                      <span className="flex items-center gap-1">
-                        <Building className="w-3 h-3" />
+                    <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
+                      <span className="flex items-center gap-1 break-words">
+                        <Building className="w-3 h-3 flex-shrink-0" />
                         {company.registrationNumber || 'Not provided'}
                       </span>
-                      <span className="flex items-center gap-1">
-                        <User className="w-3 h-3" />
+                      <span className="flex items-center gap-1 whitespace-nowrap">
+                        <User className="w-3 h-3 flex-shrink-0" />
                         Added: {company.addedDate}
                       </span>
                     </div>
@@ -1676,11 +1680,11 @@ const CountryGroup = ({
                           {company.verifications.map((verification, idx) => (
                             <div
                               key={idx}
-                              className="flex items-center gap-1 bg-green-50 border border-green-200 px-2 py-1 rounded text-xs"
+                              className="flex items-center gap-1 bg-green-50 border border-green-200 px-2 py-1 rounded text-xs min-w-0"
                             >
-                              <ShieldCheck className="w-3 h-3 text-green-600" />
-                              <span className="text-green-700">Verified by {verification.verifier}</span>
-                              <span className="text-green-600 text-xs">({verification.date})</span>
+                              <ShieldCheck className="w-3 h-3 text-green-600 flex-shrink-0" />
+                              <span className="text-green-700 break-words">Verified by {verification.verifier}</span>
+                              <span className="text-green-600 text-xs whitespace-nowrap">({verification.date})</span>
                             </div>
                           ))}
                         </div>
@@ -1689,16 +1693,16 @@ const CountryGroup = ({
 
                     {!company.isRegistered && (
                       <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <AlertCircle className="w-4 h-4 text-yellow-600" />
-                            <span className="text-sm text-yellow-800 font-medium">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <AlertCircle className="w-4 h-4 text-yellow-600 flex-shrink-0" />
+                            <span className="text-sm text-yellow-800 font-medium break-words">
                               This company is not registered on the system
                             </span>
                           </div>
                           <button
                             onClick={() => onSendInvitation(company)}
-                            className="flex items-center gap-1 text-sm text-yellow-700 hover:text-yellow-900"
+                            className="flex items-center gap-1 text-sm text-yellow-700 hover:text-yellow-900 whitespace-nowrap flex-shrink-0 mt-2 sm:mt-0"
                           >
                             <Mail className="w-4 h-4" />
                             Send Invitation
@@ -1708,11 +1712,11 @@ const CountryGroup = ({
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2 ml-4">
+                  <div className="flex items-center gap-2 sm:ml-4 mt-3 sm:mt-0">
                     {(company.isRegistered || company.verifications?.length > 0) ? (
                       <button
                         onClick={() => onViewCompany(company)}
-                        className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition-colors"
+                        className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition-colors whitespace-nowrap"
                       >
                         <Eye className="w-4 h-4" />
                         View
@@ -1720,7 +1724,7 @@ const CountryGroup = ({
                     ) : null}
                     <button
                       onClick={() => onRemoveCompany(company.id)}
-                      className="text-red-600 hover:text-red-800 p-1.5 rounded-lg hover:bg-red-50 transition-colors"
+                      className="text-red-600 hover:text-red-800 p-1.5 rounded-lg hover:bg-red-50 transition-colors flex-shrink-0"
                       title="Remove Company"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -1784,20 +1788,20 @@ The Timber Export Platform Team`);
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
-        <div className="flex justify-between items-center p-6 border-b border-gray-200">
-          <div>
-            <h3 className="text-xl font-bold text-green-800">Send Invitation</h3>
-            <p className="text-gray-600 mt-1">Invite {company.name} to register on the platform</p>
+        <div className="flex justify-between items-center p-4 md:p-6 border-b border-gray-200">
+          <div className="min-w-0 flex-1">
+            <h3 className="text-xl font-bold text-green-800 break-words">Send Invitation</h3>
+            <p className="text-gray-600 mt-1 break-words">Invite {company.name} to register on the platform</p>
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-gray-400 hover:text-gray-600 flex-shrink-0 ml-2"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-4 md:p-6">
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-green-700 mb-1">
@@ -1826,16 +1830,16 @@ The Timber Export Platform Team`);
 
             <div className="bg-blue-50 border border-blue-100 rounded-lg p-4">
               <div className="flex items-start gap-2">
-                <div className="bg-blue-100 p-1 rounded">
+                <div className="bg-blue-100 p-1 rounded flex-shrink-0">
                   <AlertCircle className="w-4 h-4 text-blue-600" />
                 </div>
-                <div className="text-sm">
-                  <p className="text-blue-800 font-medium">About Invitations:</p>
+                <div className="min-w-0 flex-1">
+                  <p className="text-blue-800 font-medium break-words">About Invitations:</p>
                   <ul className="text-blue-700 mt-1 space-y-1 list-disc list-inside">
-                    <li>The company will receive an email with registration instructions</li>
-                    <li>Once registered, they'll appear as "Registered" in your list</li>
-                    <li>They can later apply for third-party verification</li>
-                    <li>Verified companies show verification badges</li>
+                    <li className="break-words">The company will receive an email with registration instructions</li>
+                    <li className="break-words">Once registered, they'll appear as "Registered" in your list</li>
+                    <li className="break-words">They can later apply for third-party verification</li>
+                    <li className="break-words">Verified companies show verification badges</li>
                   </ul>
                 </div>
               </div>
@@ -1843,8 +1847,8 @@ The Timber Export Platform Team`);
           </div>
         </div>
 
-        <div className="p-6 border-t border-gray-200">
-          <div className="flex gap-3">
+        <div className="p-4 md:p-6 border-t border-gray-200">
+          <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={onClose}
               className="flex-1 px-4 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
@@ -2039,13 +2043,13 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100">
+    <div className="bg-white rounded-xl p-4 md:p-6 shadow-lg border border-green-100">
       <h2 className="text-xl font-bold text-green-800 mb-6 flex items-center gap-2">
         <Users className="w-5 h-5" />
         5. Importer/Consignee Companies
       </h2>
 
-      <p className="text-gray-600 mb-6">
+      <p className="text-gray-600 mb-6 break-words">
         Manage importer/consignee companies you work with. Companies are categorized by registration status and third-party verification.
       </p>
 
@@ -2130,7 +2134,7 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
               setSelectedCountryCode('');
               setShowAddExporter(true);
             }}
-            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors w-full md:w-auto"
           >
             <Plus className="w-4 h-4" />
             Add Importer/Consignee
@@ -2144,7 +2148,7 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
           <div className="text-center py-12 border-2 border-dashed border-gray-300 rounded-xl">
             <Globe className="w-12 h-12 mx-auto mb-3 text-gray-300" />
             <p className="text-gray-500">No companies found</p>
-            <p className="text-sm text-gray-400 mt-2">
+            <p className="text-sm text-gray-400 mt-2 break-words">
               {searchQuery ? 'Try a different search term' : 'Click "Add Importer/Consignee" to start'}
             </p>
           </div>
@@ -2166,10 +2170,10 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
 
       {/* Add Exporter Modal - Simplified to only name and country */}
       {showAddExporter && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-md mx-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-4 md:p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold text-green-800">Add Importer/Consignee</h3>
+              <h3 className="text-lg font-bold text-green-800 break-words">Add Importer/Consignee</h3>
               <button onClick={() => setShowAddExporter(false)}>
                 <X className="w-5 h-5" />
               </button>
@@ -2210,13 +2214,13 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
 
               {selectedCountry && (
                 <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-lg">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 min-w-0 flex-1">
                     <img
                       src={`https://flagcdn.com/w20/${selectedCountryCode}.png`}
                       alt={`${selectedCountry} flag`}
-                      className="w-4 h-4 rounded"
+                      className="w-4 h-4 rounded flex-shrink-0"
                     />
-                    <span className="text-sm text-blue-800 font-medium">
+                    <span className="text-sm text-blue-800 font-medium break-words">
                       Adding to: {selectedCountry}
                     </span>
                   </div>
@@ -2225,7 +2229,7 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
                       setSelectedCountry('');
                       setSelectedCountryCode('');
                     }}
-                    className="ml-auto text-sm text-blue-600 hover:text-blue-800"
+                    className="ml-auto text-sm text-blue-600 hover:text-blue-800 whitespace-nowrap"
                   >
                     Change
                   </button>
@@ -2246,22 +2250,22 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
 
               <div className="bg-blue-50 border border-blue-100 rounded-lg p-4">
                 <div className="flex items-start gap-2">
-                  <div className="bg-blue-100 p-1 rounded">
+                  <div className="bg-blue-100 p-1 rounded flex-shrink-0">
                     <Info className="w-4 h-4 text-blue-600" />
                   </div>
-                  <div className="text-sm">
-                    <p className="text-blue-800 font-medium">How it works:</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-blue-800 font-medium break-words">How it works:</p>
                     <ul className="text-blue-700 mt-1 space-y-1 list-disc list-inside">
-                      <li>Enter company name and country</li>
-                      <li>System will check if company exists in our database</li>
-                      <li>If registered, details will be automatically populated</li>
-                      <li>If unregistered, you can invite them to join</li>
+                      <li className="break-words">Enter company name and country</li>
+                      <li className="break-words">System will check if company exists in our database</li>
+                      <li className="break-words">If registered, details will be automatically populated</li>
+                      <li className="break-words">If unregistered, you can invite them to join</li>
                     </ul>
                   </div>
                 </div>
               </div>
 
-              <div className="flex gap-2 pt-2">
+              <div className="flex flex-col sm:flex-row gap-2 pt-2">
                 <button
                   onClick={() => setShowAddExporter(false)}
                   className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
@@ -2315,28 +2319,28 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
       {viewingCompany && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
-            <div className="flex justify-between items-center p-6 border-b border-gray-200 bg-green-50">
-              <div className="flex items-center gap-3">
-                <div className="bg-green-100 p-2 rounded-lg">
+            <div className="flex justify-between items-center p-4 md:p-6 border-b border-gray-200 bg-green-50">
+              <div className="flex items-center gap-3 min-w-0 flex-1">
+                <div className="bg-green-100 p-2 rounded-lg flex-shrink-0">
                   <User className="w-5 h-5 text-green-600" />
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold text-green-800">
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-xl font-bold text-green-800 break-words">
                     {viewingCompany.name}
                   </h3>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2 mt-1">
                     {viewingCompany.verifications && viewingCompany.verifications.length > 0 ? (
-                      <span className="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                      <span className="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-800 rounded-full text-sm whitespace-nowrap">
                         <ShieldCheck className="w-3 h-3" />
                         Verified ({viewingCompany.verifications.length} verifications)
                       </span>
                     ) : (
-                      <span className="flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                      <span className="flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm whitespace-nowrap">
                         <Shield className="w-3 h-3" />
                         Registered
                       </span>
                     )}
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-gray-600 break-words">
                       {viewingCompany.country} • Registration: {viewingCompany.registrationNumber}
                     </span>
                   </div>
@@ -2344,13 +2348,13 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
               </div>
               <button
                 onClick={() => setViewingCompany(null)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 flex-shrink-0 ml-2"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-6">
+            <div className="flex-1 overflow-y-auto p-4 md:p-6">
               {/* Company Information */}
               <div className="mb-8">
                 <h4 className="text-lg font-bold text-green-800 mb-4 flex items-center gap-2">
@@ -2364,7 +2368,7 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
                         Company Name
                       </label>
                       <div className="px-4 py-3 bg-gray-50 rounded-lg">
-                        <p className="text-gray-800 font-medium">{viewingCompany.name}</p>
+                        <p className="text-gray-800 font-medium break-words">{viewingCompany.name}</p>
                       </div>
                     </div>
                     <div>
@@ -2375,9 +2379,9 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
                         <img
                           src={`https://flagcdn.com/w20/${viewingCompany.countryCode || 'us'}.png`}
                           alt={`${viewingCompany.country} flag`}
-                          className="w-5 h-5 rounded"
+                          className="w-5 h-5 rounded flex-shrink-0"
                         />
-                        <p className="text-gray-800 font-medium">{viewingCompany.country}</p>
+                        <p className="text-gray-800 font-medium break-words">{viewingCompany.country}</p>
                       </div>
                     </div>
                   </div>
@@ -2387,7 +2391,7 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
                         Registration Number
                       </label>
                       <div className="px-4 py-3 bg-gray-50 rounded-lg">
-                        <p className="text-gray-800 font-medium">{viewingCompany.registrationNumber}</p>
+                        <p className="text-gray-800 font-medium break-words">{viewingCompany.registrationNumber}</p>
                       </div>
                     </div>
                     <div>
@@ -2398,13 +2402,13 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
                         <p className="text-gray-800 font-medium flex items-center gap-2">
                           {viewingCompany.isRegistered ? (
                             <>
-                              <Shield className="w-4 h-4 text-blue-600" />
-                              Registered on Platform
+                              <Shield className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                              <span className="break-words">Registered on Platform</span>
                             </>
                           ) : (
                             <>
-                              <ShieldAlert className="w-4 h-4 text-yellow-600" />
-                              Not Registered
+                              <ShieldAlert className="w-4 h-4 text-yellow-600 flex-shrink-0" />
+                              <span className="break-words">Not Registered</span>
                             </>
                           )}
                         </p>
@@ -2416,7 +2420,7 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
                       Corporate Office Address
                     </label>
                     <div className="px-4 py-3 bg-gray-50 rounded-lg">
-                      <p className="text-gray-800 whitespace-pre-line">{viewingCompany.address}</p>
+                      <p className="text-gray-800 whitespace-pre-line break-words">{viewingCompany.address}</p>
                     </div>
                   </div>
                 </div>
@@ -2433,15 +2437,15 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
                     {viewingCompany.verifications.map((verification, idx) => (
                       <div key={idx} className="bg-green-50 border border-green-200 rounded-lg p-5">
                         <div className="flex items-center gap-3 mb-3">
-                          <div className="bg-green-100 p-2 rounded-lg">
+                          <div className="bg-green-100 p-2 rounded-lg flex-shrink-0">
                             <ShieldCheck className="w-5 h-5 text-green-600" />
                           </div>
-                          <div>
-                            <h5 className="font-bold text-green-800">{verification.verifier}</h5>
+                          <div className="min-w-0 flex-1">
+                            <h5 className="font-bold text-green-800 break-words">{verification.verifier}</h5>
                             <p className="text-sm text-green-700">Verified on: {verification.date}</p>
                           </div>
                         </div>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-600 break-words">
                           This verification indicates that {viewingCompany.name} has been vetted and approved by {verification.verifier} for compliance with industry standards and regulations.
                         </p>
                       </div>
@@ -2460,18 +2464,18 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {viewingCompany.documents.map((docGroup, index) => (
                       <div key={index} className="bg-gray-50 rounded-xl p-4">
-                        <h5 className="font-semibold text-green-700 mb-3">{docGroup.category}</h5>
+                        <h5 className="font-semibold text-green-700 mb-3 break-words">{docGroup.category}</h5>
                         <div className="space-y-2">
                           {docGroup.files.map((doc, docIndex) => (
                             <div
                               key={docIndex}
                               className="flex items-center justify-between bg-white px-3 py-2 rounded-lg border border-gray-200"
                             >
-                              <div className="flex items-center gap-2">
-                                <FileText className="w-4 h-4 text-green-600" />
-                                <span className="text-sm font-medium">{doc.name}</span>
+                              <div className="flex items-center gap-2 min-w-0 flex-1">
+                                <FileText className="w-4 h-4 text-green-600 flex-shrink-0" />
+                                <span className="text-sm font-medium break-words">{doc.name}</span>
                               </div>
-                              <span className="text-xs text-gray-500">{doc.date}</span>
+                              <span className="text-xs text-gray-500 whitespace-nowrap flex-shrink-0">{doc.date}</span>
                             </div>
                           ))}
                         </div>
@@ -2491,11 +2495,11 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
                   <div className="space-y-6">
                     {viewingCompany.facilities.map((facility) => (
                       <div key={facility.id} className="bg-gray-50 rounded-xl p-5 border border-gray-200">
-                        <div className="flex justify-between items-start mb-4">
-                          <div>
-                            <h5 className="font-bold text-green-800 text-lg">{facility.name}</h5>
-                            <p className="text-sm text-gray-600 mt-1">{facility.address}</p>
-                            <span className="inline-block mt-2 text-xs font-medium text-green-700 bg-green-100 px-3 py-1 rounded-full">
+                        <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-3">
+                          <div className="flex-1 min-w-0">
+                            <h5 className="font-bold text-green-800 text-lg break-words">{facility.name}</h5>
+                            <p className="text-sm text-gray-600 mt-1 break-words">{facility.address}</p>
+                            <span className="inline-block mt-2 text-xs font-medium text-green-700 bg-green-100 px-3 py-1 rounded-full whitespace-nowrap">
                               {facility.type === 'corporate' ? 'Corporate Facility' :
                                 facility.type === 'production' ? 'Production/Forest Site' :
                                   'Processing/Loading Site'} • {facility.staff?.length || 0} staff
@@ -2512,12 +2516,12 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
                                   key={staff.id}
                                   className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200"
                                 >
-                                  <div className="bg-blue-100 p-2 rounded-lg">
+                                  <div className="bg-blue-100 p-2 rounded-lg flex-shrink-0">
                                     <User className="w-4 h-4 text-blue-600" />
                                   </div>
-                                  <div className="flex-1">
-                                    <p className="font-medium text-gray-800">{staff.name}</p>
-                                    <p className="text-sm text-gray-600">{staff.jobTitle}</p>
+                                  <div className="min-w-0 flex-1">
+                                    <p className="font-medium text-gray-800 break-words">{staff.name}</p>
+                                    <p className="text-sm text-gray-600 break-words">{staff.jobTitle}</p>
                                     <p className="text-xs text-gray-500 mt-1">Age: {staff.age}</p>
                                   </div>
                                 </div>
@@ -2532,7 +2536,7 @@ const Section5 = ({ exporters, setExporters, allCompanies }) => {
               )}
             </div>
 
-            <div className="p-6 border-t border-gray-200">
+            <div className="p-4 md:p-6 border-t border-gray-200">
               <button
                 onClick={() => setViewingCompany(null)}
                 className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
@@ -2722,7 +2726,7 @@ const CompanyDetails = () => {
         pauseOnHover
         theme="light"
       />
-      <h1 className="text-2xl lg:text-3xl font-bold text-green-800 mb-4 lg:mb-6 pl-11 lg:pl-0">
+      <h1 className="text-2xl lg:text-3xl font-bold text-green-800 mb-4 lg:mb-6 pl-11 lg:pl-0 break-words">
         Company Details
       </h1>
 

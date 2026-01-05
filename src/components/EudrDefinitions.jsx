@@ -470,7 +470,7 @@ const UploadModal = ({ isOpen, onClose, categoryId, categoryTitle, onUpload, for
               </div>
             </div>
 
-            <div className="flex justify-end space-x-3 pt-4">
+            <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4">
               <button
                 onClick={onClose}
                 className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
@@ -553,7 +553,7 @@ const ProductSelection = ({ selectedProducts = [], onProductsChange, disabled = 
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <Package className="w-5 h-5 text-green-600" />
           <h4 className="font-medium text-gray-700">Select EUDR Products</h4>
@@ -561,7 +561,7 @@ const ProductSelection = ({ selectedProducts = [], onProductsChange, disabled = 
         <button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           disabled={disabled}
-          className={`flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
           <Plus className="w-4 h-4" />
           Add Product
@@ -668,7 +668,7 @@ const ProductSelection = ({ selectedProducts = [], onProductsChange, disabled = 
                     <button
                       onClick={() => handleRemoveProduct(product.id)}
                       disabled={disabled}
-                      className="text-red-500 hover:text-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="text-red-500 hover:text-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0 ml-2"
                       title="Remove product"
                     >
                       <X className="w-4 h-4" />
@@ -798,7 +798,7 @@ const PlotManager = ({ plots = [], onPlotsChange, selectedPlotId, onPlotSelect, 
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <Layers className="w-5 h-5 text-green-600" />
           <h4 className="font-medium text-gray-700">Plot Areas</h4>
@@ -806,10 +806,10 @@ const PlotManager = ({ plots = [], onPlotsChange, selectedPlotId, onPlotSelect, 
             {plots.length} plot{plots.length !== 1 ? 's' : ''}
           </span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <button
             onClick={() => setShowAllPlots(!showAllPlots)}
-            className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+            className={`flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
               showAllPlots 
                 ? 'bg-blue-100 text-blue-700 hover:bg-blue-200' 
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -821,7 +821,7 @@ const PlotManager = ({ plots = [], onPlotsChange, selectedPlotId, onPlotSelect, 
           <button
             onClick={handleAddPlot}
             disabled={disabled}
-            className={`flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             <Plus className="w-4 h-4" />
             Add Plot Area
@@ -835,7 +835,7 @@ const PlotManager = ({ plots = [], onPlotsChange, selectedPlotId, onPlotSelect, 
           <Plus className="w-4 h-4 text-green-600" />
           <h5 className="text-sm font-medium text-gray-700">Create New Plot Area</h5>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <input
             type="text"
             value={newPlotName}
@@ -1002,7 +1002,7 @@ const PlotManager = ({ plots = [], onPlotsChange, selectedPlotId, onPlotSelect, 
 
           {/* Total area summary */}
           <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-2">
                 <Maximize2 className="w-5 h-5 text-green-600" />
                 <span className="font-medium text-green-800">Total Forest Area</span>
@@ -1145,7 +1145,7 @@ const EnhancedCoordinateInput = ({
         </div>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row gap-2">
         <button
           onClick={handleAdd}
           disabled={!lat || !lng || disabled}
@@ -1236,7 +1236,7 @@ const EnhancedPolygonMapComponent = ({
             <h4 className="font-medium text-gray-700">Plot Boundary Map</h4>
           </div>
         </div>
-        <div className="relative h-[500px] rounded-lg overflow-hidden border border-gray-300">
+        <div className="relative h-[400px] md:h-[500px] rounded-lg overflow-hidden border border-gray-300">
           <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
             <div className="text-center">
               <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
@@ -1502,7 +1502,7 @@ const EnhancedPolygonMapComponent = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <Layers className="w-5 h-5 text-green-600" />
           <h4 className="font-medium text-gray-700">Plot Boundary Map</h4>
@@ -1512,12 +1512,12 @@ const EnhancedPolygonMapComponent = ({
             </span>
           )}
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           {!isDrawing && selectedPlotId && (
             <button
               onClick={startDrawing}
               disabled={disabled}
-              className={`flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <Plus className="w-4 h-4" />
               Draw Plot Boundary
@@ -1526,7 +1526,7 @@ const EnhancedPolygonMapComponent = ({
           {isDrawing && (
             <button
               onClick={cancelDrawing}
-              className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              className="flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
             >
               Cancel Drawing
             </button>
@@ -1534,7 +1534,7 @@ const EnhancedPolygonMapComponent = ({
           <button
             onClick={handleManualPlot}
             disabled={!selectedPlotId || disabled}
-            className={`flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors ${!selectedPlotId || disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors ${!selectedPlotId || disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             <CheckCircle className="w-4 h-4" />
             Plot from Coordinates
@@ -1583,7 +1583,7 @@ const EnhancedPolygonMapComponent = ({
         </p>
       </div>
 
-      <div className="relative h-[500px] rounded-lg overflow-hidden border border-gray-300">
+      <div className="relative h-[400px] md:h-[500px] rounded-lg overflow-hidden border border-gray-300">
         <GoogleMap
           mapContainerStyle={{ width: '100%', height: '100%' }}
           center={center}
@@ -1668,9 +1668,9 @@ const EnhancedPolygonMapComponent = ({
             );
           })}
 
-          {/* Search overlay */}
+          {/* Search overlay - CENTERED ON MOBILE */}
           {!disabled && (
-            <div className="absolute top-4 left-4 z-10">
+            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 sm:left-4 sm:transform-none z-10 w-[90%] sm:w-auto">
               <Autocomplete
                 onLoad={(autocomplete) => {
                   autocompleteRef.current = autocomplete;
@@ -1681,11 +1681,11 @@ const EnhancedPolygonMapComponent = ({
                   strictBounds: false,
                 }}
               >
-                <div className="flex items-center bg-white bg-opacity-90 rounded shadow-lg">
+                <div className="flex items-center bg-white bg-opacity-90 rounded shadow-lg w-full">
                   <input
                     type="text"
                     placeholder="Search location..."
-                    className="p-2 h-10 w-80 border-none rounded-l focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none"
+                    className="p-2 h-10 flex-1 sm:w-80 border-none rounded-l focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none"
                     style={{ outline: 'none' }}
                     onKeyPress={(e) => e.key === 'Enter' && handleSearchPlaceChanged()}
                   />
@@ -1701,14 +1701,14 @@ const EnhancedPolygonMapComponent = ({
             </div>
           )}
 
-          {/* Location Name Display */}
+          {/* Location Name Display - RESPONSIVE */}
           {displayLocationName && (
-            <div className="absolute top-4 right-4 z-10">
-              <div className="bg-white bg-opacity-90 px-4 py-2 rounded-lg shadow-lg max-w-xs">
+            <div className="absolute top-16 sm:top-4 right-4 z-10 w-[90%] sm:w-auto">
+              <div className="bg-white bg-opacity-90 px-4 py-2 rounded-lg shadow-lg max-w-xs sm:max-w-md">
                 <div className="flex items-start gap-2">
                   <MapPin className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-700 break-words">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-gray-700 break-words truncate sm:whitespace-normal">
                       {displayLocationName}
                     </p>
                   </div>
@@ -1719,8 +1719,8 @@ const EnhancedPolygonMapComponent = ({
 
           {/* Drawing Instructions */}
           {isDrawing && !disabled && (
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-90 px-4 py-2 rounded-lg shadow-lg">
-              <p className="text-sm text-gray-700">
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-90 px-4 py-2 rounded-lg shadow-lg w-[90%] sm:w-auto">
+              <p className="text-sm text-gray-700 text-center">
                 Click on the map to draw your plot boundary. Click the first point again to close the polygon.
               </p>
             </div>
@@ -1729,8 +1729,8 @@ const EnhancedPolygonMapComponent = ({
           {/* Disabled Overlay */}
           {disabled && (
             <div className="absolute inset-0 bg-gray-900/50 flex items-center justify-center z-10">
-              <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-                <Lock className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg text-center mx-4">
+                <Lock className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-700 font-medium">Select a forest area first</p>
                 <p className="text-gray-500 text-sm mt-1">You need to select a forest area before defining plot boundaries</p>
               </div>
@@ -2002,23 +2002,23 @@ const EUDRDefinitions = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-6 max-w-6xl mx-auto"
+      className="p-4 sm:p-6 max-w-6xl mx-auto"
     >
       {/* Title Section */}
-      <div className="mb-8">
-        <h1 className="text-2xl lg:text-3xl font-bold text-green-800 mb-2">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-800 mb-2">
           Article 2 (40) Compliance Documentation
         </h1>
-        <p className="text-gray-600 text-lg">
+        <p className="text-gray-600 text-sm sm:text-lg">
           Upload documents demonstrating compliance with relevant legislation of the country of production.
         </p>
       </div>
 
       {/* Forest Selection Section */}
-      <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-8">
+      <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-green-100 mb-6 sm:mb-8">
         <div className="flex items-center gap-2 mb-4">
-          <Trees className="w-6 h-6 text-green-600" />
-          <h2 className="text-xl font-semibold text-gray-800">
+          <Trees className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
             Select Forest Area
           </h2>
         </div>
@@ -2046,21 +2046,21 @@ const EUDRDefinitions = () => {
           {/* Dropdown Trigger */}
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="w-full flex items-center justify-between p-4 border-2 border-gray-200 rounded-lg hover:border-green-300 transition-colors bg-white text-left focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-full flex items-center justify-between p-3 sm:p-4 border-2 border-gray-200 rounded-lg hover:border-green-300 transition-colors bg-white text-left focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             <div className="flex items-center gap-3">
               {selectedForest ? (
                 <>
                   <div className="w-3 h-3 rounded-full bg-green-500"></div>
                   <div>
-                    <span className="font-medium text-gray-900">{selectedForest.name}</span>
-                    <span className="text-gray-500 text-sm ml-2">({selectedForest.country})</span>
+                    <span className="font-medium text-gray-900 text-sm sm:text-base">{selectedForest.name}</span>
+                    <span className="text-gray-500 text-xs sm:text-sm ml-2">({selectedForest.country})</span>
                   </div>
                 </>
               ) : (
                 <>
                   <div className="w-3 h-3 rounded-full bg-gray-300"></div>
-                  <span className="text-gray-500">Select a forest area...</span>
+                  <span className="text-gray-500 text-sm sm:text-base">Select a forest area...</span>
                 </>
               )}
             </div>
@@ -2104,8 +2104,8 @@ const EUDRDefinitions = () => {
                           }`}></div>
                       </div>
                       <div className="ml-3 text-left">
-                        <div className="font-medium text-gray-900">{forest.name}</div>
-                        <div className="text-sm text-gray-600 mt-1">
+                        <div className="font-medium text-gray-900 text-sm sm:text-base">{forest.name}</div>
+                        <div className="text-xs sm:text-sm text-gray-600 mt-1">
                           <span className="font-medium">{forest.country}</span>
                           <span className="mx-2">•</span>
                           <span>{forest.region}</span>
@@ -2150,7 +2150,7 @@ const EUDRDefinitions = () => {
             <div className="flex items-start gap-3">
               <MapPin className="w-5 h-5 text-green-600 mt-0.5" />
               <div className="flex-1">
-                <h3 className="font-semibold text-green-800 mb-2">
+                <h3 className="font-semibold text-green-800 text-sm sm:text-base mb-2">
                   {selectedForest.name}
                   {totalHectares > 0 && (
                     <span className="ml-2 text-green-600">
@@ -2158,7 +2158,7 @@ const EUDRDefinitions = () => {
                     </span>
                   )}
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm mb-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-sm mb-3">
                   <div className="bg-white p-3 rounded-lg border border-green-100">
                     <div className="text-gray-600 mb-1">Total Area</div>
                     <div className="font-medium text-green-700">
@@ -2217,7 +2217,7 @@ const EUDRDefinitions = () => {
 
       {/* Plot Management Section */}
       {selectedForest && (
-        <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-8">
+        <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-green-100 mb-6 sm:mb-8">
           <PlotManager
             plots={plots}
             onPlotsChange={handlePlotsChange}
@@ -2230,18 +2230,18 @@ const EUDRDefinitions = () => {
 
       {/* Plot Mapping Section */}
       {selectedForest && (
-        <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-8">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-green-100 mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <div className="flex items-center gap-2">
-              <Layers className="w-6 h-6 text-green-600" />
-              <h2 className="text-xl font-semibold text-gray-800">
+              <Layers className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
                 Define Plot Boundaries
               </h2>
             </div>
             <div className="flex gap-2">
               <button
                 onClick={() => setShowMap(!showMap)}
-                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors ${showMap
+                className={`flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors ${showMap
                     ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     : 'bg-green-600 text-white hover:bg-green-700'
                   }`}
@@ -2251,7 +2251,7 @@ const EUDRDefinitions = () => {
             </div>
           </div>
 
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 text-sm sm:text-base mb-6">
             Define the exact boundaries of your forest plots using coordinates or by drawing on the map.
             {selectedPlotId && (
               <span className="text-green-600 font-medium ml-2">
@@ -2283,7 +2283,7 @@ const EUDRDefinitions = () => {
 
       {/* EUDR Products Selection Section - MOVED AFTER PLOT BOUNDARIES */}
       {selectedForest && (
-        <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-8">
+        <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-green-100 mb-6 sm:mb-8">
           <ProductSelection
             selectedProducts={supportedProducts}
             onProductsChange={handleProductsChange}
@@ -2293,9 +2293,9 @@ const EUDRDefinitions = () => {
       )}
 
       {/* Progress Indicator */}
-      <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-800">
+      <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-green-100 mb-6 sm:mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-800">
             Upload Progress
           </h3>
           <span className="text-sm font-medium text-green-600">
@@ -2331,7 +2331,7 @@ const EUDRDefinitions = () => {
       </div>
 
       {/* Document Categories Section */}
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         {uploadProgress.map(category => (
           <motion.div
             key={category.id}
@@ -2339,18 +2339,18 @@ const EUDRDefinitions = () => {
             animate={{ opacity: 1, y: 0 }}
             className={`bg-white rounded-xl shadow-lg border overflow-hidden ${!selectedForest ? 'border-gray-200 opacity-75' : 'border-green-100'}`}
           >
-            <div className="p-6">
-              <div className="flex items-start justify-between mb-4">
+            <div className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold text-gray-800">
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-800">
                       {category.title}
                     </h3>
                     {category.completed && selectedForest && (
-                      <CheckCircle className="w-5 h-5 text-green-500" />
+                      <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
                     )}
                   </div>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-gray-600 text-xs sm:text-sm">
                     {category.description}
                   </p>
                 </div>
@@ -2358,7 +2358,7 @@ const EUDRDefinitions = () => {
                 <button
                   onClick={() => handleUploadButtonClick(category)}
                   disabled={!selectedForest}
-                  className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors ${selectedForest
+                  className={`flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors ${selectedForest
                       ? 'text-white bg-green-600 hover:bg-green-700'
                       : 'text-gray-500 bg-gray-100 cursor-not-allowed'
                     }`}
@@ -2397,7 +2397,7 @@ const EUDRDefinitions = () => {
               )}
 
               {/* Status Indicator */}
-              <div className="mt-4 text-sm">
+              <div className="mt-4 text-xs sm:text-sm">
                 {!selectedForest ? (
                   <span className="text-amber-600 font-medium flex items-center gap-1">
                     <Lock className="w-4 h-4" />
@@ -2425,20 +2425,20 @@ const EUDRDefinitions = () => {
 
       {/* Save All Button */}
       {selectedForest && (
-        <div className="mt-8 bg-white rounded-xl p-6 shadow-lg border border-green-100">
+        <div className="mt-6 sm:mt-8 bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-green-100">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-1">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-1">
                 Save Your Changes
               </h3>
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-600 text-xs sm:text-sm">
                 Save all your updates for {selectedForest.name} including {plots.length} plot{plots.length !== 1 ? 's' : ''} ({totalHectares.toFixed(2)} hectares), {supportedProducts.length} EUDR product{supportedProducts.length !== 1 ? 's' : ''}, and {documents.length} document{documents.length !== 1 ? 's' : ''}.
               </p>
             </div>
             <button
               onClick={handleSaveAll}
               disabled={isSaving}
-              className="flex items-center gap-2 px-6 py-3 text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center justify-center gap-2 px-6 py-3 text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSaving ? (
                 <>
