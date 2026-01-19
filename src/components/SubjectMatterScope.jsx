@@ -261,7 +261,7 @@ const SubjectMatterScope = () => {
     registration: "BUS-2024-TIM-001",
     taxId: "TIN-US-789012",
     exportCert: "US-EXPORT-2024-345678",
-    office: "123 Business District\nPortland, Oregon 97204\nUSA"
+    address: "123 Business District\nPortland, Oregon 97204\nUSA"
   };
 
   const filteredProducts = searchQuery
@@ -333,7 +333,8 @@ const SubjectMatterScope = () => {
       signeeName: signatureData.signeeName,
       signeeFunction: signatureData.signeeFunction,
       signature: signatureData.signature,
-      companyLogo: companyLogo
+      companyLogo: companyLogo,
+      companyAddress: companyDetails.address
     };
   };
 
@@ -341,6 +342,11 @@ const SubjectMatterScope = () => {
     setIsSubmitted(true);
     // In a real app, you would generate and download PDF here
     alert("Undertaking submitted successfully! PDF has been generated.");
+  };
+
+  const handleSave = () => {
+    // Handle save functionality here
+    alert("Draft saved successfully!");
   };
 
   const renderStep = () => {
@@ -428,8 +434,8 @@ const SubjectMatterScope = () => {
                   <div className="font-medium">{companyDetails.exportCert}</div>
                 </div>
                 <div className="bg-white p-4 rounded-lg border border-green-100 md:col-span-2">
-                  <div className="text-sm text-gray-500">Corporate Office</div>
-                  <div className="font-medium whitespace-pre-line">{companyDetails.office}</div>
+                  <div className="text-sm text-gray-500">Corporate Address</div>
+                  <div className="font-medium whitespace-pre-line">{companyDetails.address}</div>
                 </div>
               </div>
             </div>
@@ -677,6 +683,13 @@ const SubjectMatterScope = () => {
             </div>
 
             <div className="space-y-6">
+              <div className="mb-6">
+                <p className="font-bold text-lg mb-2">Company Address:</p>
+                <div className="whitespace-pre-line text-lg bg-gray-50 p-4 rounded-lg">
+                  {companyDetails.address}
+                </div>
+              </div>
+
               <p className="text-lg">
                 <span className="font-bold">{companyDetails.name}</span> shall make available to
                 the competent authorities upon request the information, documents and data collected
@@ -743,6 +756,12 @@ const SubjectMatterScope = () => {
               Back to Edit
             </button>
             <button
+              onClick={handleSave}
+              className="px-6 py-2 border border-green-600 text-green-600 rounded-lg hover:bg-green-50 w-full sm:w-auto"
+            >
+              Save
+            </button>
+            <button
               onClick={handleSubmit}
               disabled={!signatureData.signeeName || !signatureData.signeeFunction || !signatureData.signature}
               className={`px-6 py-2 rounded-lg flex items-center justify-center gap-2 w-full sm:w-auto order-1 sm:order-2 ${
@@ -752,7 +771,7 @@ const SubjectMatterScope = () => {
               }`}
             >
               <FileText size={20} />
-              Final Submit & Download PDF
+              Submit
             </button>
           </div>
         </div>
@@ -831,8 +850,7 @@ const SubjectMatterScope = () => {
                     : 'bg-green-600 hover:bg-green-700 text-white'
                 }`}
               >
-                <FileText size={20} />
-                Preview & Submit
+                Preview
               </button>
             )}
           </div>

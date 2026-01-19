@@ -385,16 +385,7 @@ function SignupPage() {
             <ReusableInput id="rcNumber" placeholder="RC No." icon={FaIdCard} variant="black" />
             <ReusableInput id="tinNumber" placeholder="TIN No." icon={FaReceipt} variant="black" />
 
-            {/* Additional fields based on role */}
-            {selectedRole === "importer" && (
-              <ReusableInput id="importerLicense" placeholder="Importer License Number" icon={FaBox} variant="black" />
-            )}
-            {selectedRole === "exporter" && (
-              <ReusableInput id="exporterLicense" placeholder="Exporter License Number" icon={FaShippingFast} variant="black" />
-            )}
-            {selectedRole === "freight_agent" && (
-              <ReusableInput id="freightLicense" placeholder="Freight Forwarder License" icon={FaTruck} variant="black" />
-            )}
+            {/* Only show Agency/Department ID for verifier/auditor/MDA role */}
             {selectedRole === "verifier_auditor_mda" && (
               <ReusableInput id="agencyId" placeholder="Agency/Department ID" icon={FaLandmark} variant="black" />
             )}

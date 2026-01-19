@@ -144,7 +144,7 @@ const Overview = () => {
               </div>
 
               <div>
-                <label className="text-xs font-medium text-green-600 uppercase tracking-wide">Export Certificate</label>
+                <label className="text-xs font-medium text-green-600 uppercase tracking-wide">Export License</label>
                 <p className="text-sm font-semibold text-gray-800 mt-0.5 truncate" title="EXP-CERT-2024-001">
                   EXP-CERT-2024-001
                 </p>

@@ -973,8 +973,7 @@ const InformationRequirements = () => {
                 Important Notice:
               </p>
               <p className="text-amber-700 text-sm">
-                All users/Exporters are to pay $5 per container or per 20 metric tons
-                for 2020 till date records of past shipment whether authenticated or not.
+                All users/Exporters are to pay $10 per container (20,000kg) for 2020 till date records of past shipment whether authenticated or not.
               </p>
             </div>
           </div>
@@ -1175,41 +1174,132 @@ const InformationRequirements = () => {
               />
             </div>
 
-            {/* 4. Quantity */}
+            {/* 4. Quantity & Payment - UPDATED */}
             <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 4. the quantity of the relevant products in Kilograms; net mass, volume, number of items
               </label>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              
+              <div className="space-y-4">
+                {/* Quantity Input */}
                 <div>
-                  <label className="block text-sm text-gray-600 mb-1">Net mass (Kilograms)</label>
-                  <input
-                    type="number"
-                    value={currentData.netMass || ''}
-                    onChange={(e) => handleInputChange('netMass', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    placeholder="e.g., 10000"
-                  />
+                  <label className="block text-sm text-gray-600 mb-1">Total Quantity (Kilograms)</label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      value={currentData.totalQuantity || ''}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        handleInputChange('totalQuantity', value);
+                        
+                        // Calculate payment when quantity changes
+                        if (value) {
+                          const quantity = parseFloat(value);
+                          if (!isNaN(quantity)) {
+                            const containers = Math.ceil(quantity / 20000); // 20,000kg per container
+                            const paymentAmount = containers * 10; // $10 per container
+                            handleInputChange('paymentAmount', paymentAmount);
+                            handleInputChange('containerCount', containers);
+                          } else {
+                            handleInputChange('paymentAmount', 0);
+                            handleInputChange('containerCount', 0);
+                          }
+                        } else {
+                          handleInputChange('paymentAmount', 0);
+                          handleInputChange('containerCount', 0);
+                        }
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 pr-24"
+                      placeholder="e.g., 10000"
+                      min="0"
+                    />
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                      <span className="text-gray-500">kg</span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Note: Payment is calculated at $10 per container (20,000kg)
+                  </p>
                 </div>
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">Volume (m³)</label>
-                  <input
-                    type="number"
-                    value={currentData.volume || ''}
-                    onChange={(e) => handleInputChange('volume', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    placeholder="e.g., 50"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">Number of items</label>
-                  <input
-                    type="number"
-                    value={currentData.numberOfItems || ''}
-                    onChange={(e) => handleInputChange('numberOfItems', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    placeholder="e.g., 1000"
-                  />
+
+                {/* Payment Display - Only show if quantity is entered */}
+                {(currentData.totalQuantity || 0) > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="bg-green-50 border border-green-200 rounded-lg p-4"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="text-sm font-semibold text-green-800">Payment Calculation for {selectedYear}</h4>
+                      <span className="text-sm font-medium text-green-700">
+                        ${currentData.paymentAmount || 0}
+                      </span>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                      <div className="bg-white p-3 rounded-lg border border-green-100">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-gray-600">Quantity:</span>
+                          <span className="font-medium">{currentData.totalQuantity} kg</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600">Containers (20,000kg each):</span>
+                          <span className="font-medium">{currentData.containerCount || Math.ceil(currentData.totalQuantity / 20000)}</span>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-green-100 p-3 rounded-lg border border-green-200">
+                        <div className="flex justify-between items-center">
+                          <span className="text-green-800">Payment Rate:</span>
+                          <span className="font-medium text-green-700">$10 per container</span>
+                        </div>
+                        <div className="flex justify-between items-center mt-1">
+                          <span className="text-green-800">Total Payment:</span>
+                          <span className="font-bold text-green-800 text-lg">${currentData.paymentAmount || 0}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Payment Information */}
+                    <div className="mt-4 pt-4 border-t border-green-200">
+                      <div className="flex items-start gap-2">
+                        <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5" />
+                        <div>
+                          <p className="text-sm font-medium text-amber-800 mb-1">Important Payment Information</p>
+                          <ul className="text-xs text-amber-700 space-y-1">
+                            <li>• Payment amount will be calculated for each year separately</li>
+                            <li>• 20,000kg = 1 container = $10 payment</li>
+                            <li>• Partial containers are counted as full containers</li>
+                            <li>• Payment is required for all years from 2020 to present</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Additional quantity information (optional) */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                  <div>
+                    <label className="block text-sm text-gray-600 mb-1">Volume (m³) - Optional</label>
+                    <input
+                      type="number"
+                      value={currentData.volume || ''}
+                      onChange={(e) => handleInputChange('volume', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      placeholder="e.g., 50"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-gray-600 mb-1">Number of items - Optional</label>
+                    <input
+                      type="number"
+                      value={currentData.numberOfItems || ''}
+                      onChange={(e) => handleInputChange('numberOfItems', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      placeholder="e.g., 1000"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -1442,6 +1532,125 @@ const InformationRequirements = () => {
                     </div>
                   ))}
                 </div>
+              </div>
+            </div>
+
+            {/* Total Payment Summary - Show only when a forest is selected */}
+            <div className="mt-8 bg-white rounded-xl p-6 shadow-lg border border-blue-100">
+              <div className="flex items-center gap-2 mb-4">
+                <Globe className="w-6 h-6 text-blue-600" />
+                <h3 className="text-xl font-semibold text-gray-800">
+                  Payment Summary (2020 - {selectedYear})
+                </h3>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead>
+                    <tr className="bg-gray-50">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Year</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity (kg)</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Containers</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payment Rate</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount Due</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {years
+                      .filter(year => year >= 2020 && year <= selectedYear)
+                      .map(year => {
+                        const yearData = formData[`${selectedForest.id}_${year}`] || {};
+                        const quantity = parseFloat(yearData.totalQuantity) || 0;
+                        const containers = Math.ceil(quantity / 20000);
+                        const payment = containers * 10;
+                        
+                        return (
+                          <tr key={year} className={year === selectedYear ? 'bg-green-50' : ''}>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {year} {year === selectedYear && <span className="ml-2 text-xs text-green-600">(Current)</span>}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
+                              {quantity.toLocaleString()} kg
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
+                              {containers}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
+                              $10 per container
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm font-semibold">
+                              ${payment}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    
+                    {/* Total Row */}
+                    <tr className="bg-blue-50 font-semibold">
+                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">Total</td>
+                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                        {years
+                          .filter(year => year >= 2020 && year <= selectedYear)
+                          .reduce((sum, year) => {
+                            const yearData = formData[`${selectedForest.id}_${year}`] || {};
+                            return sum + (parseFloat(yearData.totalQuantity) || 0);
+                          }, 0).toLocaleString()} kg
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                        {years
+                          .filter(year => year >= 2020 && year <= selectedYear)
+                          .reduce((sum, year) => {
+                            const yearData = formData[`${selectedForest.id}_${year}`] || {};
+                            const quantity = parseFloat(yearData.totalQuantity) || 0;
+                            return sum + Math.ceil(quantity / 20000);
+                          }, 0)}
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900"></td>
+                      <td className="px-4 py-3 whitespace-nowrap text-lg text-blue-800">
+                        $
+                        {years
+                          .filter(year => year >= 2020 && year <= selectedYear)
+                          .reduce((sum, year) => {
+                            const yearData = formData[`${selectedForest.id}_${year}`] || {};
+                            const quantity = parseFloat(yearData.totalQuantity) || 0;
+                            const containers = Math.ceil(quantity / 20000);
+                            return sum + (containers * 10);
+                          }, 0)}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Payment Button */}
+              <div className="mt-6 flex justify-end">
+                <button
+                  onClick={() => {
+                    // Calculate total payment
+                    const totalPayment = years
+                      .filter(year => year >= 2020 && year <= selectedYear)
+                      .reduce((sum, year) => {
+                        const yearData = formData[`${selectedForest.id}_${year}`] || {};
+                        const quantity = parseFloat(yearData.totalQuantity) || 0;
+                        const containers = Math.ceil(quantity / 20000);
+                        return sum + (containers * 10);
+                      }, 0);
+                    
+                    if (totalPayment > 0) {
+                      alert(`Total payment due: $${totalPayment}\n\nYou will be redirected to the payment gateway.`);
+                      // Here you would integrate with your payment gateway
+                      // For example: window.open('your-payment-gateway-url', '_blank');
+                    } else {
+                      alert('Please enter quantities for at least one year to make a payment.');
+                    }
+                  }}
+                  className="flex items-center gap-2 px-6 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors font-medium shadow-lg"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                  </svg>
+                  Proceed to Payment
+                </button>
               </div>
             </div>
 

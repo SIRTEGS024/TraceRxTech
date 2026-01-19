@@ -331,7 +331,6 @@ const generateMockShipments = () => {
       totalKg: totalKg,
       totalCost: totalCost,
       costPerUnit: "$100 per 20,000kg",
-      volume: `${(totalKg / 1000).toFixed(0)} tons`,
       createdBy: "Admin User",
       lastUpdated: new Date(date.getTime() + Math.random() * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
     });
@@ -618,10 +617,6 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
                   <div>
                     <p className="text-sm text-gray-600">Total Weight</p>
                     <p className="font-semibold text-gray-800">{formatNumber(shipment.totalKg)} kg</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Volume</p>
-                    <p className="font-semibold text-gray-800">{shipment.volume}</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Total Forests</p>
