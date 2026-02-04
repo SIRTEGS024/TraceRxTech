@@ -1,4 +1,5 @@
-// src/pages/Dashboard.jsx
+// Dashboard.js - UPDATED with correct access key mapping
+
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from 'framer-motion';
 import CompanyDetails from "../components/CompanyDetails";
@@ -16,6 +17,14 @@ import Regulations from "../components/Regulations";
 import RegulationsBadge from "../components/RegulationsBadge";
 import TargetedRegulations from "../components/TargetedRegulations";
 import DashboardNavbar from "../components/DashboardNavbar";
+import BioData from "../components/BioData";
+import AgentManagement from "../components/AgentManagement";
+import DueDiligence from "../components/DueDiligence";
+import RiskAssessment from "../components/RiskAssessment";
+import RiskMitigation from "../components/RiskMitigation";
+import AgentRequests from "../components/AgentRequests";
+import { useNavigate } from "react-router-dom";
+import { useUserStore } from "../store/useUserStore";
 
 // Map tabs to their corresponding article types
 const tabToArticleMap = {
@@ -37,8 +46,193 @@ const Dashboard = ({ isMapsLoaded }) => {
   const [showRegulations, setShowRegulations] = useState(false);
   const [showTargetedRegulations, setShowTargetedRegulations] = useState(false);
   const [hasVisitedTab, setHasVisitedTab] = useState({});
-  const [mapsReady, setMapsReady] = useState(false);
+  const [availableTabs, setAvailableTabs] = useState([]);
+  const [initialTabSet, setInitialTabSet] = useState(false);
   const navbarRef = useRef(null);
+  const navigate = useNavigate();
+  
+  const { user, logout, demoData } = useUserStore();
+
+  // Check if user is logged in
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
+
+  // Get available tabs with access information - SIMPLIFIED and CORRECT
+  const getAvailableTabs = () => {
+    const allTabs = {
+      // Common tabs
+      'overview': { id: 'overview', name: 'Overview', icon: 'FiHome', accessKey: 'overview' },
+      'bio-data': { id: 'bio-data', name: 'Bio Data', icon: 'FiUser', accessKey: 'overview' },
+      'company-details': { id: 'company-details', name: 'Company Details', icon: 'FiBuilding', accessKey: 'companyDetails' },
+      'subject-matter': { id: 'subject-matter', name: 'Subject matter & scope', icon: 'FiTarget', accessKey: 'subjectMatterScope' },
+      'shipments': { id: 'shipments', name: 'Shipments', icon: 'FiPackage', accessKey: 'shipments' },
+      'reports': { id: 'reports', name: 'Reports', icon: 'FiBarChart2', accessKey: 'reports' },
+      'gps-camera': { id: 'gps-camera', name: 'GPS Camera', icon: 'FiCamera', accessKey: 'gpsCamera' },
+      'supply-chain': { id: 'supply-chain', name: 'Supply Chain', icon: 'FiLink', accessKey: 'supplyChain' },
+      'agent-management': { id: 'agent-management', name: 'Agent Management', icon: 'FiUsers', accessKey: 'overview' },
+      
+      // Exporter-specific tabs
+      'eudr-definitions': { id: 'eudr-definitions', name: 'EUDR Definition of terms', icon: 'FiBook', accessKey: 'eudrDefinitions' },
+      'information-requirements': { id: 'information-requirements', name: 'Information requirements', icon: 'FiInfo', accessKey: 'informationRequirements' },
+      'new-shipment': { id: 'new-shipment', name: 'New Shipment Origin', icon: 'FiTruck', accessKey: 'newShipmentOrigin' },
+      
+      // Importer-specific tabs
+      'due-diligence': { id: 'due-diligence', name: 'Due Diligence', icon: 'FiShield', accessKey: 'dueDiligence' },
+      'risk-assessment': { id: 'risk-assessment', name: 'Risk Assessment', icon: 'FiAlertTriangle', accessKey: 'riskAssessment' },
+      'risk-mitigation': { id: 'risk-mitigation', name: 'Risk Mitigation', icon: 'FiTool', accessKey: 'riskMitigation' },
+      
+      // Agent-specific tab
+      'agent-requests': { id: 'agent-requests', name: 'Company Access', icon: 'FiSend', accessKey: 'overview' }
+    };
+
+    if (!user) return [];
+
+    const isLoggedInAsCompany = user.loggedInAs?.companyId;
+    const userRole = user.role;
+    const companyType = user.loggedInAs?.companyType;
+    const agentAccessTabs = user.loggedInAs?.accessTabs || {};
+    
+    console.log("DEBUG: User access tabs from company:", agentAccessTabs);
+    console.log("DEBUG: Is logged in as company?", isLoggedInAsCompany);
+    console.log("DEBUG: User role:", userRole);
+    console.log("DEBUG: Company type:", companyType);
+
+    // Determine which tabs are available based on user role and login status
+    let availableTabKeys = [];
+
+    if (isLoggedInAsCompany && companyType) {
+      // Agent logged in for a company
+      if (companyType === 'exporter') {
+        availableTabKeys = [
+          'overview',
+          'company-details',
+          'subject-matter',
+          'eudr-definitions',
+          'information-requirements',
+          'new-shipment',
+          'shipments',
+          'reports',
+          'gps-camera',
+          'supply-chain'
+        ];
+      } else if (companyType === 'importer') {
+        availableTabKeys = [
+          'overview',
+          'company-details',
+          'subject-matter',
+          'due-diligence',
+          'risk-assessment',
+          'risk-mitigation',
+          'shipments',
+          'reports',
+          'gps-camera',
+          'supply-chain'
+        ];
+      }
+      
+      // ALWAYS show bio-data and agent-requests for agents logged in for a company
+      availableTabKeys.push('bio-data', 'agent-requests');
+    } else {
+      // User logged in as themselves
+      if (userRole === 'exporter') {
+        availableTabKeys = [
+          'overview',
+          'company-details',
+          'subject-matter',
+          'eudr-definitions',
+          'information-requirements',
+          'new-shipment',
+          'shipments',
+          'reports',
+          'gps-camera',
+          'supply-chain',
+          'agent-management',
+        ];
+      } else if (userRole === 'importer') {
+        availableTabKeys = [
+          'overview',
+          'company-details',
+          'subject-matter',
+          'due-diligence',
+          'risk-assessment',
+          'risk-mitigation',
+          'shipments',
+          'reports',
+          'gps-camera',
+          'supply-chain',
+          'agent-management',
+        ];
+      } else if (userRole === 'verifier' || userRole === 'freight agent') {
+        // Agents only see bio-data and agent-requests when logged in as themselves
+        availableTabKeys = ['bio-data', 'agent-requests'];
+      }
+    }
+
+    console.log("DEBUG: Available tab keys before filtering:", availableTabKeys);
+
+    // Convert keys to tab objects with access information
+    const tabs = availableTabKeys
+      .filter(key => allTabs[key])
+      .map(key => {
+        const tab = { ...allTabs[key] };
+        
+        // Determine if tab has access
+        let hasAccess = true;
+        
+        // For agents logged in for a company, check access from company's accessTabs
+        if (isLoggedInAsCompany && companyType) {
+          if (tab.id === 'bio-data' || tab.id === 'agent-requests') {
+            // Bio-data and agent-requests are always accessible for agents
+            hasAccess = true;
+          } else {
+            // Get the correct access key for this tab
+            const accessKey = tab.accessKey;
+            
+            // Check if accessTabs has this key and its value is true
+            // Default to false if key doesn't exist or is false
+            hasAccess = agentAccessTabs[accessKey] === true;
+            
+            console.log(`DEBUG: Tab ${tab.id} checking accessKey: ${accessKey}, value: ${agentAccessTabs[accessKey]}, hasAccess: ${hasAccess}`);
+          }
+        } else {
+          // For non-agents or agents logged in as themselves, all tabs have access
+          hasAccess = true;
+        }
+        
+        return {
+          ...tab,
+          hasAccess
+        };
+      });
+
+    console.log("DEBUG: Final tabs to display with access:", tabs.map(t => ({ id: t.id, name: t.name, hasAccess: t.hasAccess })));
+    return tabs;
+  };
+
+  // Update available tabs and set initial active tab when user changes
+  useEffect(() => {
+    if (user) {
+      const tabs = getAvailableTabs();
+      console.log("DEBUG: Setting available tabs:", tabs);
+      setAvailableTabs(tabs);
+      
+      // Set initial active tab (first tab that has access in the list)
+      if (tabs.length > 0 && !initialTabSet) {
+        const firstAccessibleTab = tabs.find(tab => tab.hasAccess);
+        console.log("DEBUG: First accessible tab:", firstAccessibleTab);
+        if (firstAccessibleTab) {
+          setActiveTab(firstAccessibleTab.id);
+        } else if (tabs.length > 0) {
+          // If no tab has access (shouldn't happen), fall back to first tab
+          setActiveTab(tabs[0].id);
+        }
+        setInitialTabSet(true);
+      }
+    }
+  }, [user]);
 
   // Detect screen size and handle sidebar state
   useEffect(() => {
@@ -84,76 +278,47 @@ const Dashboard = ({ isMapsLoaded }) => {
     }
   }, []);
 
-  // Check if Google Maps is ready to use
-  useEffect(() => {
-    if (isMapsLoaded) {
-      const checkMaps = () => {
-        if (window.google && window.google.maps) {
-          console.log('Google Maps verified as ready');
-          setMapsReady(true);
-          return true;
-        }
-        return false;
-      };
-
-      // Check immediately
-      if (checkMaps()) return;
-
-      // Poll until maps are available
-      const intervalId = setInterval(() => {
-        if (checkMaps()) {
-          clearInterval(intervalId);
-        }
-      }, 100);
-
-      // Timeout after 3 seconds
-      const timeoutId = setTimeout(() => {
-        clearInterval(intervalId);
-        console.warn('Google Maps not available after timeout');
-        setMapsReady(true); // Set to true anyway to render dashboard
-      }, 3000);
-
-      return () => {
-        clearInterval(intervalId);
-        clearTimeout(timeoutId);
-      };
-    }
-  }, [isMapsLoaded]);
-
   // Handle tab change
   const handleTabChange = (tabId) => {
-    setActiveTab(tabId);
-    
-    // Show targeted regulations for specific tabs on first visit
-    if (tabsWithRegulations.includes(tabId) && !hasVisitedTab[tabId]) {
-      // Mark as visited after showing regulations
-      setTimeout(() => {
-        setHasVisitedTab(prev => ({ ...prev, [tabId]: true }));
-      }, 100);
+    const selectedTab = availableTabs.find(tab => tab.id === tabId);
+    if (selectedTab && selectedTab.hasAccess) {
+      setActiveTab(tabId);
       
-      // Show the targeted regulations modal
-      setShowTargetedRegulations(true);
-    }
-    
-    // Close sidebar on mobile after selection
-    if (isMobile) {
-      setIsSidebarOpen(false);
+      // Show targeted regulations for specific tabs on first visit
+      if (tabsWithRegulations.includes(tabId) && !hasVisitedTab[tabId]) {
+        // Mark as visited after showing regulations
+        setTimeout(() => {
+          setHasVisitedTab(prev => ({ ...prev, [tabId]: true }));
+        }, 100);
+        
+        // Show the targeted regulations modal
+        setShowTargetedRegulations(true);
+      }
+      
+      // Close sidebar on mobile after selection
+      if (isMobile) {
+        setIsSidebarOpen(false);
+      }
     }
   };
 
-  // Add a loading placeholder component for map-dependent components
-  const MapLoadingPlaceholder = () => (
-    <div className="flex flex-col items-center justify-center p-8 bg-white/50 rounded-xl min-h-[400px]">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mb-4"></div>
-      <p className="text-gray-600">Loading map component...</p>
-      <p className="text-sm text-gray-500 mt-2">Please wait while we initialize the map</p>
-    </div>
-  );
-
   const renderContent = () => {
+    // Check if current active tab is accessible
+    const currentTab = availableTabs.find(tab => tab.id === activeTab);
+    if (currentTab && !currentTab.hasAccess) {
+      // Find first accessible tab to show instead
+      const firstAccessibleTab = availableTabs.find(tab => tab.hasAccess);
+      if (firstAccessibleTab) {
+        setActiveTab(firstAccessibleTab.id);
+        return null; // Will re-render with new tab
+      }
+    }
+
     switch (activeTab) {
       case 'overview':
         return <Overview />;
+      case 'bio-data':
+        return <BioData />;
       case 'company-details':
         return <CompanyDetails />;
       case 'subject-matter':
@@ -163,45 +328,38 @@ const Dashboard = ({ isMapsLoaded }) => {
       case 'information-requirements':
         return <InformationRequirements />;
       case 'new-shipment':
-        // This component uses Google Maps
-        return mapsReady ? <NewShipmentOrigin /> : <MapLoadingPlaceholder />;
+        // Google Maps is already loaded by the parent component
+        return <NewShipmentOrigin />;
       case 'shipments':
         return <Shipments />;
       case 'reports':
         return <Reports />;
       case 'gps-camera':
-        // This component uses Google Maps
-        return mapsReady ? <GPSCamera /> : <MapLoadingPlaceholder />;
+        // Google Maps is already loaded by the parent component
+        return <GPSCamera />;
       case 'supply-chain':
         return <SupplyChain />;
+      case 'due-diligence':
+        return <DueDiligence />;
+      case 'risk-assessment':
+        return <RiskAssessment />;
+      case 'risk-mitigation':
+        return <RiskMitigation />;
+      case 'agent-management':
+        return <AgentManagement />;
+      case 'agent-requests':
+        return <AgentRequests />;
       default:
         return <Overview />;
     }
   };
 
-  // If maps aren't loaded at all, show a full-screen loading
-  if (!isMapsLoaded) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading dashboard...</p>
-          <p className="text-sm text-gray-500 mt-2">Setting up your workspace</p>
-        </div>
-      </div>
-    );
+  if (!user) {
+    return null; // Will redirect in useEffect
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
-      {/* Warning for slow map loading */}
-      {isMapsLoaded && !mapsReady && (
-        <div className="fixed top-20 right-4 z-50 bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-3 rounded shadow-lg max-w-xs">
-          <p className="text-sm font-medium">Initializing Maps...</p>
-          <p className="text-xs">Map features will be available shortly</p>
-        </div>
-      )}
-
       {/* Fixed Navbar with ref for height measurement */}
       <div ref={navbarRef} className="fixed top-0 left-0 right-0 z-50">
         <DashboardNavbar />
@@ -233,6 +391,8 @@ const Dashboard = ({ isMapsLoaded }) => {
         setIsSidebarOpen={setIsSidebarOpen}
         isMobile={isMobile}
         navbarHeight={navbarHeight}
+        availableTabs={availableTabs}
+        onLogout={logout}
       />
       
       {/* Main Content Area */}

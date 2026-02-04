@@ -1,25 +1,34 @@
-// src/pages/SignupPage.jsx
 import React, { useState, useEffect, useRef } from "react";
-import { FaUser, FaEnvelope, FaLock, FaBuilding, FaGlobe, FaIdCard, FaReceipt, FaChevronDown, FaSearch, FaShippingFast, FaCheckCircle, FaBox, FaTruck, FaClipboardCheck, FaUserTie, FaLandmark } from "react-icons/fa";
-import ReusableInput from "../components/ReusableInput";
+import { FaUser, FaEnvelope, FaLock, FaBuilding, FaGlobe, FaIdCard, FaReceipt, FaChevronDown, FaSearch, FaShippingFast, FaCheckCircle, FaBox, FaTruck, FaClipboardCheck, FaEye, FaEyeSlash } from "react-icons/fa";
 import { SIGNUP_BG_IMAGES } from "../constants";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useUserStore } from "../store/useUserStore";
 
 function SignupPage() {
   const [current, setCurrent] = useState(0);
   const [loading, setLoading] = useState(false);
   const [agreed, setAgreed] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [stage, setStage] = useState(1); // 1: Basic info, 2: Company info, 3: OTP
-  const [otp, setOtp] = useState(["", "", "", ""]);
+  const [stage, setStage] = useState(1); // 1: Basic info, 2: Company info (for importers/exporters)
   const [selectedCountry, setSelectedCountry] = useState("");
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedRole, setSelectedRole] = useState(""); // New state for role selection
+  const [selectedRole, setSelectedRole] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [companyName, setCompanyName] = useState("");
+  const [rcNumber, setRcNumber] = useState("");
+  const [tinNumber, setTinNumber] = useState("");
+  
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
+
+  const { signUp, setLoginData } = useUserStore();
 
   // Available roles with icons and descriptions
   const roles = [
@@ -38,14 +47,14 @@ function SignupPage() {
       color: "bg-green-500"
     },
     {
-      id: "freight_agent",
+      id: "freight agent",
       name: "Freight Agent",
       icon: FaTruck,
       description: "Handle logistics and transportation",
       color: "bg-purple-500"
     },
     {
-      id: "verifier_auditor_mda",
+      id: "verifier",
       name: "Verifier/Auditor/MDA",
       icon: FaClipboardCheck,
       description: "Verify, audit and regulate shipments",
@@ -111,72 +120,149 @@ function SignupPage() {
 
   const handleStage1Submit = (e) => {
     e.preventDefault();
+    setLoading(true);
+    
     if (!agreed) {
       toast.warning("Please agree to the Terms and Conditions");
+      setLoading(false);
       return;
     }
+    
     if (!selectedRole) {
-      toast.warning("Please select your role (Importer/Exporter/Freight Agent/Verifier/Auditor/MDA)");
+      toast.warning("Please select your role");
+      setLoading(false);
       return;
     }
-    toast.success("Basic information saved!");
-    setStage(2);
+    
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+    
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long");
+      setLoading(false);
+      return;
+    }
+    
+    // Check if importer or exporter
+    if (selectedRole === 'importer' || selectedRole === 'exporter') {
+      // Move to stage 2 for company info
+      setStage(2);
+      setLoading(false);
+    } else {
+      // For agents, create user directly
+      const userData = {
+        role: selectedRole,
+        email: email,
+        password: password
+      };
+      
+      const result = signUp(userData);
+      
+      if (result.success) {
+        // Store login data for verification page
+        setLoginData({
+          userId: result.user.id,
+          email: email,
+          fromLogin: false
+        });
+        
+        // Redirect to account verification
+        navigate("/verify-account", {
+          state: {
+            userId: result.user.id,
+            email: email,
+            fromLogin: false
+          }
+        });
+      } else {
+        toast.error(result.message);
+      }
+      
+      setLoading(false);
+    }
   };
 
   const handleStage2Submit = (e) => {
     e.preventDefault();
-
-    // Validate country selection
-    if (!selectedCountry) {
-      toast.error("Please select a country");
+    setLoading(true);
+    
+    // Validate inputs
+    if (!companyName.trim()) {
+      toast.error("Please enter company name");
+      setLoading(false);
       return;
     }
-
-    toast.success("Company information saved!");
-
-    // Generate random OTP for demo
-    const demoOtp = Math.floor(1000 + Math.random() * 9000);
-    toast.info(`Demo OTP: ${demoOtp} (For testing purposes)`);
-
-    setStage(3);
-  };
-
-  const handleOtpChange = (index, value) => {
-    if (value.length > 1) return;
-    const newOtp = [...otp];
-    newOtp[index] = value;
-    setOtp(newOtp);
-
-    // Auto-focus next input
-    if (value && index < 3) {
-      const nextInput = document.getElementById(`otp-${index + 1}`);
-      if (nextInput) nextInput.focus();
-    }
-  };
-
-  const handleOtpSubmit = (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    setTimeout(() => {
+    
+    if (!selectedCountry) {
+      toast.error("Please select a country");
       setLoading(false);
-      toast.success("Account created successfully! Redirecting to dashboard...");
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1500);
-    }, 1000);
+      return;
+    }
+    
+    if (!tinNumber.trim()) {
+      toast.error("Please enter TIN number");
+      setLoading(false);
+      return;
+    }
+    
+    if (!rcNumber.trim()) {
+      toast.error("Please enter RC number");
+      setLoading(false);
+      return;
+    }
+    
+    // Create user data object
+    const userData = {
+      role: selectedRole,
+      email: email,
+      password: password,
+      companyName: companyName,
+      country: selectedCountry,
+      tinNumber: tinNumber,
+      rcNumber: rcNumber
+    };
+    
+    // Sign up user
+    const result = signUp(userData);
+    
+    if (result.success) {
+      toast.success(`Account created successfully! Your TraceRx ID: ${result.user.traceRxId}`);
+      
+      // Store login data for verification page
+      setLoginData({
+        userId: result.user.id,
+        email: email,
+        fromLogin: false
+      });
+      
+      // Redirect to account verification
+      navigate("/verify-account", {
+        state: {
+          userId: result.user.id,
+          email: email,
+          fromLogin: false
+        }
+      });
+    } else {
+      toast.error(result.message);
+    }
+    
+    setLoading(false);
   };
 
   const handleBack = () => {
-    if (stage > 1) {
-      setStage(stage - 1);
+    if (stage === 2) {
+      setStage(1);
     }
   };
 
   const handleCountrySelect = (country) => {
     setSelectedCountry(country);
     setShowCountryDropdown(false);
-    setSearchQuery(""); // Clear search when country is selected
+    setSearchQuery("");
   };
 
   const handleRoleSelect = (roleId) => {
@@ -203,22 +289,17 @@ function SignupPage() {
       {/* Progress indicator */}
       <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-10">
         <div className="flex items-center space-x-4">
-          {[1, 2, 3].map((step) => (
+          {[1, 2].map((step) => (
             <div key={step} className="flex items-center">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${stage >= step ? "bg-green-600 text-white" : "bg-white/30 text-green-100"
                 }`}>
                 {step}
               </div>
-              {step < 3 && (
-                <div className={`w-16 h-1 ${stage > step ? "bg-green-600" : "bg-white/30"}`} />
+              {step < 2 && (
+                <div className={`w-12 h-1 ${stage > step ? "bg-green-600" : "bg-white/30"}`} />
               )}
             </div>
           ))}
-          <div className="ml-4 text-green-100 text-sm font-medium">
-            {stage === 1 && "Basic Info"}
-            {stage === 2 && "Company Info"}
-            {stage === 3 && "Verify OTP"}
-          </div>
         </div>
       </div>
 
@@ -227,15 +308,87 @@ function SignupPage() {
         <h2 className="text-3xl font-bold text-green-100 mb-6 text-center">
           {stage === 1 && "Create Account"}
           {stage === 2 && "Company Information"}
-          {stage === 3 && "Verify Account"}
         </h2>
 
         {/* Stage 1: Basic Information */}
         {stage === 1 && (
           <form onSubmit={handleStage1Submit} className="space-y-5">
-            <ReusableInput id="email" placeholder="Email Address" icon={FaEnvelope} variant="black" />
-            <ReusableInput id="password" placeholder="Password" icon={FaLock} variant="black" />
-            <ReusableInput id="confirmPassword" placeholder="Confirm Password" icon={FaLock} variant="black" />
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-green-100">
+                Email Address *
+              </label>
+              <div className="relative">
+                <div className="flex items-center">
+                  <div className="absolute left-3 text-green-300">
+                    <FaEnvelope />
+                  </div>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email Address"
+                    className="w-full pl-10 pr-4 py-3 bg-white/20 border border-green-300 rounded-lg text-green-100 placeholder-green-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-green-100">
+                Password *
+              </label>
+              <div className="relative">
+                <div className="flex items-center">
+                  <div className="absolute left-3 text-green-300">
+                    <FaLock />
+                  </div>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                    className="w-full pl-10 pr-12 py-3 bg-white/20 border border-green-300 rounded-lg text-green-100 placeholder-green-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 text-green-300 hover:text-green-400"
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-green-100">
+                Confirm Password *
+              </label>
+              <div className="relative">
+                <div className="flex items-center">
+                  <div className="absolute left-3 text-green-300">
+                    <FaLock />
+                  </div>
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Confirm Password"
+                    className="w-full pl-10 pr-12 py-3 bg-white/20 border border-green-300 rounded-lg text-green-100 placeholder-green-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 text-green-300 hover:text-green-400"
+                  >
+                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
+              </div>
+            </div>
 
             {/* Role Selection */}
             <div className="space-y-3">
@@ -280,7 +433,7 @@ function SignupPage() {
                 type="checkbox"
                 id="agree"
                 checked={agreed}
-                onChange={(e) => setAgreed(e.target.checked)}
+                onChange={(e) => setAgreed(e.target.value)}
                 className="mt-1"
               />
               <label htmlFor="agree">
@@ -297,98 +450,156 @@ function SignupPage() {
 
             <button
               type="submit"
-              disabled={!agreed || !selectedRole}
+              disabled={loading || !agreed || !selectedRole || !email || !password || !confirmPassword}
               className="w-full py-3 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold transition disabled:opacity-50"
             >
-              Next → Company Info
+              {loading ? "Creating Account..." : selectedRole === 'importer' || selectedRole === 'exporter' ? "Next →" : "Create Account"}
             </button>
           </form>
         )}
 
-        {/* Stage 2: Company Information */}
+        {/* Stage 2: Company Information (for importers/exporters) */}
         {stage === 2 && (
           <form onSubmit={handleStage2Submit} className="space-y-5">
-            <ReusableInput id="companyName" placeholder="Company Name" icon={FaBuilding} variant="black" />
-
-            {/* Display Selected Role */}
             <div className="mb-4 p-3 bg-green-500/20 rounded-lg border border-green-300">
               <p className="text-green-100 text-sm">
                 <span className="font-semibold">Selected Role: </span>
                 {roles.find(r => r.id === selectedRole)?.name}
               </p>
+              <p className="text-green-100 text-sm">
+                <span className="font-semibold">Email: </span>
+                {email}
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-green-100">
+                Company Name *
+              </label>
+              <div className="relative">
+                <div className="flex items-center">
+                  <div className="absolute left-3 text-green-300">
+                    <FaBuilding />
+                  </div>
+                  <input
+                    type="text"
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                    placeholder="Company Name"
+                    className="w-full pl-10 pr-4 py-3 bg-white/20 border border-green-300 rounded-lg text-green-100 placeholder-green-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Country Dropdown */}
-            <div className="relative">
+            <div className="space-y-2">
               <label className="block text-sm font-medium text-green-100 mb-2">Country *</label>
-              <button
-                ref={buttonRef}
-                type="button"
-                onClick={() => {
-                  setShowCountryDropdown(!showCountryDropdown);
-                  setSearchQuery(""); // Clear search when opening
-                }}
-                className="w-full flex items-center justify-between px-4 py-3 bg-white/20 border border-green-300 rounded-lg text-green-900 placeholder-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-              >
-                <span className={`flex items-center gap-3 ${!selectedCountry ? "text-green-700" : "text-green-900"}`}>
-                  <FaGlobe className="text-green-700" />
-                  {selectedCountry || "Select a country"}
-                </span>
-                <FaChevronDown className={`text-green-700 transition-transform ${showCountryDropdown ? "rotate-180" : ""}`} />
-              </button>
-
-              {/* Dropdown List */}
-              {showCountryDropdown && (
-                <div
-                  ref={dropdownRef}
-                  className="absolute z-20 w-full mt-1 bg-white border border-green-300 rounded-lg shadow-lg"
-                  style={{ maxHeight: '300px' }}
+              <div className="relative">
+                <button
+                  ref={buttonRef}
+                  type="button"
+                  onClick={() => {
+                    setShowCountryDropdown(!showCountryDropdown);
+                    setSearchQuery("");
+                  }}
+                  className="w-full flex items-center justify-between px-4 py-3 bg-white/20 border border-green-300 rounded-lg text-green-100 placeholder-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
-                  <div className="p-2 border-b border-green-200">
-                    <div className="relative">
-                      <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-600" />
-                      <input
-                        type="text"
-                        placeholder="Search country..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-10 pr-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                        autoFocus
-                        onClick={(e) => e.stopPropagation()}
-                      />
+                  <span className={`flex items-center gap-3 ${!selectedCountry ? "text-green-700" : "text-green-100"}`}>
+                    <FaGlobe className="text-green-300" />
+                    {selectedCountry || "Select a country"}
+                  </span>
+                  <FaChevronDown className={`text-green-300 transition-transform ${showCountryDropdown ? "rotate-180" : ""}`} />
+                </button>
+
+                {/* Dropdown List */}
+                {showCountryDropdown && (
+                  <div
+                    ref={dropdownRef}
+                    className="absolute z-20 w-full mt-1 bg-white border border-green-300 rounded-lg shadow-lg"
+                    style={{ maxHeight: '300px' }}
+                  >
+                    <div className="p-2 border-b border-green-200">
+                      <div className="relative">
+                        <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-600" />
+                        <input
+                          type="text"
+                          placeholder="Search country..."
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="w-full pl-10 pr-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                          autoFocus
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      </div>
+                    </div>
+                    <div className="overflow-y-auto" style={{ maxHeight: '250px' }}>
+                      {filteredCountries.length > 0 ? (
+                        filteredCountries.map((country) => (
+                          <button
+                            key={country}
+                            type="button"
+                            onClick={() => handleCountrySelect(country)}
+                            className={`w-full px-4 py-3 text-left hover:bg-green-50 transition-colors flex items-center ${selectedCountry === country ? "bg-green-100 font-medium" : ""
+                              }`}
+                          >
+                            <FaGlobe className="mr-3 text-green-600" />
+                            {country}
+                          </button>
+                        ))
+                      ) : (
+                        <div className="px-4 py-3 text-center text-gray-500">
+                          No countries found
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <div className="overflow-y-auto" style={{ maxHeight: '250px' }}>
-                    {filteredCountries.length > 0 ? (
-                      filteredCountries.map((country) => (
-                        <button
-                          key={country}
-                          type="button"
-                          onClick={() => handleCountrySelect(country)}
-                          className={`w-full px-4 py-3 text-left hover:bg-green-50 transition-colors flex items-center ${selectedCountry === country ? "bg-green-100 font-medium" : ""
-                            }`}
-                        >
-                          <FaGlobe className="mr-3 text-green-600" />
-                          {country}
-                        </button>
-                      ))
-                    ) : (
-                      <div className="px-4 py-3 text-center text-gray-500">
-                        No countries found
-                      </div>
-                    )}
+                )}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-green-100">
+                RC Number *
+              </label>
+              <div className="relative">
+                <div className="flex items-center">
+                  <div className="absolute left-3 text-green-300">
+                    <FaIdCard />
                   </div>
+                  <input
+                    type="text"
+                    value={rcNumber}
+                    onChange={(e) => setRcNumber(e.target.value)}
+                    placeholder="RC Number"
+                    className="w-full pl-10 pr-4 py-3 bg-white/20 border border-green-300 rounded-lg text-green-100 placeholder-green-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required
+                  />
                 </div>
-              )}
+              </div>
             </div>
 
-            <ReusableInput id="rcNumber" placeholder="RC No." icon={FaIdCard} variant="black" />
-            <ReusableInput id="tinNumber" placeholder="TIN No." icon={FaReceipt} variant="black" />
-
-            {/* Only show Agency/Department ID for verifier/auditor/MDA role */}
-            {selectedRole === "verifier_auditor_mda" && (
-              <ReusableInput id="agencyId" placeholder="Agency/Department ID" icon={FaLandmark} variant="black" />
-            )}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-green-100">
+                TIN Number *
+              </label>
+              <div className="relative">
+                <div className="flex items-center">
+                  <div className="absolute left-3 text-green-300">
+                    <FaReceipt />
+                  </div>
+                  <input
+                    type="text"
+                    value={tinNumber}
+                    onChange={(e) => setTinNumber(e.target.value)}
+                    placeholder="TIN Number"
+                    className="w-full pl-10 pr-4 py-3 bg-white/20 border border-green-300 rounded-lg text-green-100 placeholder-green-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
 
             <div className="flex gap-3">
               <button
@@ -400,68 +611,16 @@ function SignupPage() {
               </button>
               <button
                 type="submit"
-                className="flex-1 py-3 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold transition"
-              >
-                Next → Verify OTP
-              </button>
-            </div>
-          </form>
-        )}
-
-        {/* Stage 3: OTP Verification */}
-        {stage === 3 && (
-          <form onSubmit={handleOtpSubmit} className="space-y-5">
-            <p className="text-green-100 text-center">
-              We've sent a 4-digit OTP to your email. Enter it below to verify your account.
-            </p>
-
-            <div className="flex justify-center gap-3">
-              {otp.map((digit, index) => (
-                <input
-                  key={index}
-                  id={`otp-${index}`}
-                  type="text"
-                  inputMode="numeric"
-                  pattern="[0-9]"
-                  maxLength={1}
-                  value={digit}
-                  onChange={(e) => handleOtpChange(index, e.target.value)}
-                  className="w-14 h-14 text-center text-2xl font-bold bg-white/20 border border-green-300 rounded-lg text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-              ))}
-            </div>
-
-            <p className="text-green-200 text-sm text-center">
-              Didn't receive OTP?{" "}
-              <button
-                type="button"
-                className="underline hover:text-green-300"
-                onClick={() => toast.info("Demo: New OTP sent! (Check toast notification)")}
-              >
-                Resend OTP
-              </button>
-            </p>
-
-            <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={handleBack}
-                className="flex-1 py-3 rounded-lg bg-gray-600 hover:bg-gray-700 text-white font-semibold transition"
-              >
-                ← Back
-              </button>
-              <button
-                type="submit"
-                disabled={loading}
+                disabled={loading || !companyName || !selectedCountry || !rcNumber || !tinNumber}
                 className="flex-1 py-3 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold transition disabled:opacity-50"
               >
-                {loading ? "Verifying..." : "Verify & Create Account"}
+                {loading ? "Creating..." : "Create Account"}
               </button>
             </div>
           </form>
         )}
 
-        {/* Already have account (only show in stage 1) */}
+        {/* Already have account */}
         {stage === 1 && (
           <p className="mt-4 text-center text-sm text-green-200">
             Already have an account?{" "}

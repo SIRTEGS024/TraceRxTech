@@ -1,20 +1,11 @@
+// Sidebar.js - UPDATED to show padlock for locked tabs
+
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as FiIcons from 'react-icons/fi';
+import { FaSignOutAlt, FaLock } from 'react-icons/fa';
 
-const Sidebar = ({ activeTab, setActiveTab, isSidebarOpen, setIsSidebarOpen, isMobile, navbarHeight }) => {
-  const tabs = [
-    { id: 'overview', name: 'Overview', icon: 'FiHome' },
-    { id: 'company-details', name: 'Company Details', icon: 'FiBuilding' },
-    { id: 'subject-matter', name: 'Subject matter & scope', icon: 'FiTarget' },
-    { id: 'eudr-definitions', name: 'EUDR Definition of terms', icon: 'FiBook' },
-    { id: 'information-requirements', name: 'Information requirements', icon: 'FiInfo' },
-    { id: 'new-shipment', name: 'New Shipment Origin', icon: 'FiTruck' },
-    { id: 'shipments', name: 'Shipments', icon: 'FiPackage' },
-    { id: 'reports', name: 'Reports', icon: 'FiBarChart2' },
-    { id: 'gps-camera', name: 'GPS Camera', icon: 'FiCamera' },
-    { id: 'supply-chain', name: 'Supply Chain', icon: 'FiLink' }
-  ];
-
+const Sidebar = ({ activeTab, setActiveTab, isSidebarOpen, setIsSidebarOpen, isMobile, navbarHeight, availableTabs, onLogout }) => {
   // Fallback icon component in case of import issues
   const FallbackIcon = () => (
     <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -32,6 +23,12 @@ const Sidebar = ({ activeTab, setActiveTab, isSidebarOpen, setIsSidebarOpen, isM
 
   // Determine sidebar state based on device
   const shouldShowSidebar = isMobile ? isSidebarOpen : true;
+
+  const handleTabClick = (tab) => {
+    if (tab.hasAccess) {
+      setActiveTab(tab.id);
+    }
+  };
 
   return (
     <>
@@ -87,31 +84,50 @@ const Sidebar = ({ activeTab, setActiveTab, isSidebarOpen, setIsSidebarOpen, isM
         {/* Navigation Tabs */}
         <div className="flex-1 overflow-y-auto py-2 px-3">
           <div className="space-y-1">
-            {tabs.map((tab) => {
+            {availableTabs.map((tab) => {
               const IconComponent = getIconComponent(tab.icon);
+              const isActive = activeTab === tab.id;
+              const hasAccess = tab.hasAccess !== false; // Default to true if not specified
+              
               return (
                 <motion.button
                   key={tab.id}
-                  whileHover={{ x: 2 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-all duration-200 text-sm ${
-                    activeTab === tab.id
+                  whileHover={{ x: hasAccess ? 2 : 0 }}
+                  whileTap={{ scale: hasAccess ? 0.98 : 1 }}
+                  onClick={() => handleTabClick(tab)}
+                  className={`w-full flex items-center justify-between space-x-3 px-3 py-2 rounded-lg transition-all duration-200 text-sm ${
+                    isActive && hasAccess
                       ? 'bg-green-600 text-white shadow-md shadow-green-200'
-                      : 'text-green-700 hover:bg-green-100 hover:text-green-800'
+                      : hasAccess
+                      ? 'text-green-700 hover:bg-green-100 hover:text-green-800'
+                      : 'text-gray-400 cursor-not-allowed bg-gray-100'
                   }`}
+                  disabled={!hasAccess}
+                  title={!hasAccess ? "You don't have access to this tab" : ""}
                 >
-                  <IconComponent className="w-4 h-4 flex-shrink-0" />
-                  <span className="text-left font-medium whitespace-normal break-words">{tab.name}</span>
+                  <div className="flex items-center space-x-3">
+                    <IconComponent className="w-4 h-4 flex-shrink-0" />
+                    <span className="text-left font-medium whitespace-normal break-words">{tab.name}</span>
+                  </div>
+                  
+                  {!hasAccess && (
+                    <FaLock className="w-3 h-3 flex-shrink-0 text-gray-400" />
+                  )}
                 </motion.button>
               );
             })}
           </div>
         </div>
 
-        {/* Footer */}
+        {/* Footer with Logout Button */}
         <div className="p-3 border-t border-green-200 bg-white shrink-0">
-          <p className="text-green-600 text-xs text-center">EUDR Compliance v1.0</p>
+          <button
+            onClick={onLogout}
+            className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition-colors duration-200"
+          >
+            <FaSignOutAlt className="w-4 h-4" />
+            <span className="font-medium">Logout</span>
+          </button>
         </div>
       </motion.div>
     </>
