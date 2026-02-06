@@ -29,6 +29,12 @@ const demoData = {
       currentOtpKey: null,
       traceRxId: "EX123456",
       isRegistered: true,
+      undertaken: {
+        name: "John Adeyemi",
+        function: "Managing Director",
+        signature: "https://cloud-storage.com/docs/john-adeyemi.pdf",
+        url: "https://cloud-storage.com/docs/john-adeyemi.pdf",
+      },
       basicInfo: {
         companyName: "Green Timber Exports Ltd",
         email: "contact@greentimber.com",
@@ -358,6 +364,12 @@ const demoData = {
       isVerified: true,
       currentOtpKey: null,
       isRegistered: true,
+      undertaken: {
+        name: "Sarah Okonkwo",
+        function: "Operations Manager",
+        signature: "https://cloud-storage.com/docs/sarah-okonkwo.pdf",
+        url: "https://cloud-storage.com/docs/sarah-okonkwo.pdf",
+      },
       traceRxId: "EX654321",
       basicInfo: {
         companyName: "Brazilian Coffee Exporters",
@@ -437,6 +449,12 @@ const demoData = {
       isVerified: true,
       currentOtpKey: null,
       isRegistered: true,
+      undertaken: {
+        name: "Michael Johnson",
+        function: "Finance Manager",
+        signature: "https://cloud-storage.com/docs/michael-johnson.pdf",
+        url: "https://cloud-storage.com/docs/michael-johnson.pdf",
+      },
       traceRxId: "IM123456",
       basicInfo: {
         companyName: "European Timber Importers GmbH",
@@ -706,6 +724,12 @@ const demoData = {
       isVerified: true,
       currentOtpKey: null,
       isRegistered: false,
+      undertaken: {
+        name: "Amina Bello",
+        function: "Human Resources Manager",
+        signature: "https://cloud-storage.com/docs/amina-bello.pdf",
+        url: "https://cloud-storage.com/docs/amina-bello.pdf",
+      },
       traceRxId: "IM654321",
       basicInfo: {
         companyName: "UK Furniture Manufacturers Ltd",
@@ -1051,9 +1075,14 @@ const demoData = {
             {
               id: "harvest-area-1",
               name: "Section A Harvest",
+              hectares: 1231,
               coordinates: [
                 [-3.456, -61.7464],
                 [-3.4565, -61.747],
+                [-3.4568, -61.7468],
+                [-3.4571, -61.7462],
+                [-3.4563, -61.7459],
+                [-3.456, -61.7464],
               ],
             },
           ],
@@ -1068,8 +1097,9 @@ const demoData = {
       processingLoadingSite: "Santos Port Warehouse",
       productDescription:
         "Certified sustainable mahogany logs for furniture manufacturing",
-      totalShippingFee: 1250,
-      totalHectares: 5,
+      totalShippingFee: 100,
+      totalHectares: 1231,
+      totalKilograms: 20000,
       containers: [
         {
           containerNumber: "MAEU-1234567",
@@ -1078,31 +1108,134 @@ const demoData = {
             url: "https://cloud-storage.com/docs/shipment/packing-1.pdf",
           },
           kilograms: 20000,
-          images: [
-            {
-              name: "Container Loading",
-              url: "https://cloud-storage.com/docs/shipment/container-1.jpg",
-            },
-          ],
         },
       ],
       status: "active",
-      shipmentDate: "2023-10-20",
       createdOn: "2023-09-15",
-      imagesVideos: [
+      images: [
         {
           name: "Loading Process",
           url: "https://cloud-storage.com/docs/shipment/loading-vid.mp4",
         },
       ],
-      verificationStatus: "under_review",
+      videos: [
+        {
+          name: "Loading Process",
+          url: "https://cloud-storage.com/docs/shipment/loading-vid.mp4",
+        },
+      ],
+      documents: {
+        "Land Use Rights": [
+          {
+            name: "Land Lease Agreement",
+            url: "https://cloud-storage.com/docs/shipment-1/land-lease.pdf",
+          },
+          {
+            name: "Land Title Certificate",
+            url: "https://cloud-storage.com/docs/shipment-1/land-title.pdf",
+          },
+        ],
+        "Environmental Protection": [
+          {
+            name: "Environmental Impact Assessment",
+            url: "https://cloud-storage.com/docs/shipment-1/eia-report.pdf",
+          },
+          {
+            name: "Water Quality Report",
+            url: "https://cloud-storage.com/docs/shipment-1/water-quality.pdf",
+          },
+        ],
+        "Forest-related Rules": [
+          {
+            name: "Forest Management Plan",
+            url: "https://cloud-storage.com/docs/shipment-1/forest-plan.pdf",
+          },
+          {
+            name: "Harvesting Permit",
+            url: "https://cloud-storage.com/docs/shipment-1/harvest-permit.pdf",
+          },
+        ],
+        "Third Parties Rights": [
+          {
+            name: "Community Agreement",
+            url: "https://cloud-storage.com/docs/shipment-1/community-agreement.pdf",
+          },
+        ],
+        "Labour Rights": [
+          {
+            name: "Employee Contracts",
+            url: "https://cloud-storage.com/docs/shipment-1/employee-contracts.pdf",
+          },
+          {
+            name: "Safety Training Certificates",
+            url: "https://cloud-storage.com/docs/shipment-1/safety-training.pdf",
+          },
+        ],
+        "Human Rights": [
+          {
+            name: "Human Rights Assessment",
+            url: "https://cloud-storage.com/docs/shipment-1/human-rights-assessment.pdf",
+          },
+        ],
+        "FPIC (Free, Prior, Informed Consent)": [
+          {
+            name: "FPIC Documentation",
+            url: "https://cloud-storage.com/docs/shipment-1/fpic-documentation.pdf",
+          },
+          {
+            name: "Community Meeting Minutes",
+            url: "https://cloud-storage.com/docs/shipment-1/community-minutes.pdf",
+          },
+        ],
+        "Tax, Anti-corruption, Trade & Customs": [
+          {
+            name: "Tax Compliance Certificate",
+            url: "https://cloud-storage.com/docs/shipment-1/tax-compliance.pdf",
+          },
+          {
+            name: "Export Declaration",
+            url: "https://cloud-storage.com/docs/shipment-1/export-declaration.pdf",
+          },
+          {
+            name: "Anti-corruption Policy",
+            url: "https://cloud-storage.com/docs/shipment-1/anti-corruption-policy.pdf",
+          },
+        ],
+      },
     },
     "shipment-2": {
       id: "shipment-2",
       batchNumber: "TRX-7891",
       exporterId: "exporter-1",
       importerId: "importer-2",
-      forests: [],
+      forests: [
+        {
+          forestId: "fac-2",
+          selectedProducts: [
+            {
+              commodity: "Wood",
+              code: "4403",
+              name: "Wood in the rough",
+              quantity: 25000,
+            },
+          ],
+          harvestAreas: [
+            {
+              id: "harvest-area-1",
+              name: "Section A Harvest",
+              hectares: 1231,
+              coordinates: [
+                [-3.456, -61.7464],
+                [-3.4565, -61.747],
+                [-3.457, -61.7475],
+                [-3.4575, -61.747],
+                [-3.4568, -61.7463],
+                [-3.456, -61.7464],
+              ],
+            },
+          ],
+        },
+      ],
       productionDate: "2023-11-01",
       processingLoadingDate: "2023-11-10",
       importerConsignee: "UK Furniture Manufacturers Ltd",
@@ -1112,20 +1245,124 @@ const demoData = {
       processingLoadingSite: "Santos Port Warehouse",
       productDescription: "Processed wood planks",
       totalShippingFee: 1800,
-      totalHectares: 8,
-      containers: [],
+      totalHectares: 1123,
+      totalKilograms: 20000,
+      containers: [
+        {
+          containerNumber: "MAEU-1234578",
+          packingList: {
+            name: "packing list",
+            url: "https://cloud-storage.com/docs/shipment/packing-1.pdf",
+          },
+          kilograms: 20000,
+        },
+      ],
       status: "pending",
-      shipmentDate: "2023-11-15",
       createdOn: "2023-10-20",
-      imagesVideos: [],
-      verificationStatus: "not_started",
+      images: [
+        {
+          name: "Loading Process",
+          url: "https://cloud-storage.com/docs/shipment/loading-vid.mp4",
+        },
+      ],
+      videos: [
+        {
+          name: "Loading Process",
+          url: "https://cloud-storage.com/docs/shipment/loading-vid.mp4",
+        },
+      ],
+      documents: {
+        "Land Use Rights": [
+          {
+            name: "Land Use Certificate",
+            url: "https://cloud-storage.com/docs/shipment-2/land-use-certificate.pdf",
+          },
+        ],
+        "Environmental Protection": [
+          {
+            name: "Environmental Compliance Report",
+            url: "https://cloud-storage.com/docs/shipment-2/env-compliance.pdf",
+          },
+          {
+            name: "Waste Management Plan",
+            url: "https://cloud-storage.com/docs/shipment-2/waste-management.pdf",
+          },
+        ],
+        "Forest-related Rules": [
+          {
+            name: "Timber Legality Verification",
+            url: "https://cloud-storage.com/docs/shipment-2/timber-legality.pdf",
+          },
+        ],
+        "Third Parties Rights": [
+          {
+            name: "Neighbor Agreements",
+            url: "https://cloud-storage.com/docs/shipment-2/neighbor-agreements.pdf",
+          },
+        ],
+        "Labour Rights": [
+          {
+            name: "Fair Wage Certification",
+            url: "https://cloud-storage.com/docs/shipment-2/fair-wage.pdf",
+          },
+        ],
+        "Human Rights": [
+          {
+            name: "Non-Discrimination Policy",
+            url: "https://cloud-storage.com/docs/shipment-2/non-discrimination.pdf",
+          },
+        ],
+        "FPIC (Free, Prior, Informed Consent)": [
+          {
+            name: "Consent Records",
+            url: "https://cloud-storage.com/docs/shipment-2/consent-records.pdf",
+          },
+        ],
+        "Tax, Anti-corruption, Trade & Customs": [
+          {
+            name: "Customs Documentation",
+            url: "https://cloud-storage.com/docs/shipment-2/customs-docs.pdf",
+          },
+          {
+            name: "Trade License",
+            url: "https://cloud-storage.com/docs/shipment-2/trade-license.pdf",
+          },
+        ],
+      },
     },
     "shipment-3": {
       id: "shipment-3",
       batchNumber: "TRX-7892",
       exporterId: "exporter-2",
       importerId: "importer-1",
-      forests: [],
+      forests: [
+        {
+          forestId: "fac-2",
+          selectedProducts: [
+            {
+              commodity: "Wood",
+              code: "4403",
+              name: "Wood in the rough",
+              quantity: 25000,
+            },
+          ],
+          harvestAreas: [
+            {
+              id: "harvest-area-1",
+              name: "Section A Harvest",
+              hectares: 1231,
+              coordinates: [
+                [-3.456, -61.7464],
+                [-3.4565, -61.747],
+                [-3.4572, -61.7461],
+                [-3.4559, -61.7456],
+                [-3.4555, -61.7469],
+                [-3.456, -61.7464],
+              ],
+            },
+          ],
+        },
+      ],
       productionDate: "2023-09-15",
       processingLoadingDate: "2023-09-25",
       importerConsignee: "European Timber Importers GmbH",
@@ -1134,14 +1371,77 @@ const demoData = {
       shippingLine: "Hapag-Lloyd",
       processingLoadingSite: "Rio Warehouse",
       productDescription: "Premium Brazilian coffee beans",
-      totalShippingFee: 800,
-      totalHectares: 0,
-      containers: [],
+      totalShippingFee: 100,
+      totalHectares: 1234,
+      totalKilograms: 20000,
+      containers: [
+        {
+          containerNumber: "MAEU-1234568",
+          packingList: {
+            name: "packing list",
+            url: "https://cloud-storage.com/docs/shipment/packing-1.pdf",
+          },
+          kilograms: 20000,
+        },
+      ],
       status: "completed",
-      shipmentDate: "2023-09-30",
       createdOn: "2023-08-15",
-      imagesVideos: [],
-      verificationStatus: "approved",
+      images: [],
+      videos: [],
+      documents: {
+        "Land Use Rights": [
+          {
+            name: "Property Deed",
+            url: "https://cloud-storage.com/docs/shipment-3/property-deed.pdf",
+          },
+        ],
+        "Environmental Protection": [
+          {
+            name: "Soil Conservation Report",
+            url: "https://cloud-storage.com/docs/shipment-3/soil-conservation.pdf",
+          },
+        ],
+        "Forest-related Rules": [
+          {
+            name: "Sustainable Harvesting Certificate",
+            url: "https://cloud-storage.com/docs/shipment-3/sustainable-harvest.pdf",
+          },
+        ],
+        "Third Parties Rights": [
+          {
+            name: "Right-of-Way Agreement",
+            url: "https://cloud-storage.com/docs/shipment-3/right-of-way.pdf",
+          },
+        ],
+        "Labour Rights": [
+          {
+            name: "Workplace Safety Report",
+            url: "https://cloud-storage.com/docs/shipment-3/workplace-safety.pdf",
+          },
+        ],
+        "Human Rights": [
+          {
+            name: "Grievance Mechanism Report",
+            url: "https://cloud-storage.com/docs/shipment-3/grievance-report.pdf",
+          },
+        ],
+        "FPIC (Free, Prior, Informed Consent)": [
+          {
+            name: "Indigenous Community Consent",
+            url: "https://cloud-storage.com/docs/shipment-3/indigenous-consent.pdf",
+          },
+        ],
+        "Tax, Anti-corruption, Trade & Customs": [
+          {
+            name: "Tax Receipts",
+            url: "https://cloud-storage.com/docs/shipment-3/tax-receipts.pdf",
+          },
+          {
+            name: "Export Permit",
+            url: "https://cloud-storage.com/docs/shipment-3/export-permit.pdf",
+          },
+        ],
+      },
     },
   },
 
@@ -1536,6 +1836,13 @@ export const useUserStore = create((set, get) => ({
         isVerified: false,
         currentOtpKey: null,
         traceRxId: traceRxId,
+        isRegistered: false,
+        undertaken: {
+          name: "",
+          function: "",
+          signature: "",
+          url: "",
+        },
         basicInfo: {
           companyName: userData.companyName || "",
           email: userData.email,

@@ -1,240 +1,9 @@
 import { motion } from 'framer-motion';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Search, X, Upload, FileText, ChevronRight, ChevronLeft, Check, Image as ImageIcon } from 'lucide-react';
+import { useUserStore } from '../store/useUserStore';
 
-const mockAllCompanies = [
-  {
-    id: 1,
-    name: "Timber Export Co.",
-    country: "Canada",
-    address: "456 Timber Lane\nVancouver, BC V6B 1A1\nCanada",
-    registrationNumber: "CAN-TIM-2024-001",
-    taxId: "TIN-CA-123456",
-    exportCertificate: "CA-EXPORT-2024-789",
-    documents: [
-      {
-        category: "Registration Documents",
-        files: [
-          { name: "Business License 2024", date: "2024-01-15" },
-          { name: "Articles of Incorporation", date: "2024-01-10" }
-        ]
-      },
-      {
-        category: "Licenses & Permits",
-        files: [
-          { name: "Export License", date: "2024-02-01" },
-          { name: "Forestry Permit", date: "2024-01-20" }
-        ]
-      }
-    ],
-    offices: [
-      {
-        id: 101,
-        type: "corporate",
-        name: "Head Office",
-        address: "456 Timber Lane, Vancouver",
-        staff: [
-          { id: 1001, name: "John Smith", jobTitle: "CEO", age: 45 },
-          { id: 1002, name: "Sarah Johnson", jobTitle: "Export Manager", age: 38 }
-        ]
-      },
-      {
-        id: 102,
-        type: "production",
-        name: "Sawmill Facility",
-        address: "789 Forest Road, Whistler",
-        staff: [
-          { id: 1003, name: "Mike Wilson", jobTitle: "Production Manager", age: 42 },
-          { id: 1004, name: "Lisa Chen", jobTitle: "Quality Control", age: 35 }
-        ]
-      }
-    ]
-  },
-  {
-    id: 2,
-    name: "Global Wood Products",
-    country: "Sweden",
-    address: "789 Pine Street\nStockholm, 111 29\nSweden",
-    registrationNumber: "SWE-WOOD-2024-002",
-    taxId: "TIN-SE-654321",
-    exportCertificate: "SE-EXPORT-2024-456",
-    documents: [
-      {
-        category: "Registration Documents",
-        files: [
-          { name: "Swedish Business Registration", date: "2024-02-10" },
-          { name: "EU Export Certificate", date: "2024-02-15" }
-        ]
-      }
-    ],
-    offices: [
-      {
-        id: 201,
-        type: "corporate",
-        name: "Stockholm HQ",
-        address: "789 Pine Street, Stockholm",
-        staff: [
-          { id: 2001, name: "Anders Larsson", jobTitle: "Managing Director", age: 50 },
-          { id: 2002, name: "Eva Nilsson", jobTitle: "International Sales", age: 41 }
-        ]
-      }
-    ]
-  },
-  {
-    id: 3,
-    name: "Pacific Lumber Inc.",
-    country: "United States",
-    address: "321 Redwood Ave\nSeattle, WA 98101\nUSA",
-    registrationNumber: "US-PAC-2024-003",
-    taxId: "TIN-US-987654",
-    exportCertificate: "US-EXPORT-2024-123",
-    documents: [
-      {
-        category: "Registration Documents",
-        files: [
-          { name: "Washington State Business License", date: "2024-01-05" },
-          { name: "Federal EIN Certificate", date: "2024-01-10" }
-        ]
-      },
-      {
-        category: "Licenses & Permits",
-        files: [
-          { name: "Sustainable Forestry Certificate", date: "2024-02-20" },
-          { name: "USDA Export License", date: "2024-02-15" }
-        ]
-      }
-    ],
-    offices: [
-      {
-        id: 301,
-        type: "corporate",
-        name: "Seattle Headquarters",
-        address: "321 Redwood Ave, Seattle",
-        staff: [
-          { id: 3001, name: "Robert Brown", jobTitle: "President", age: 52 },
-          { id: 3002, name: "Maria Garcia", jobTitle: "Export Director", age: 44 }
-        ]
-      },
-      {
-        id: 302,
-        type: "production",
-        name: "Portland Mill",
-        address: "555 Oak Street, Portland",
-        staff: [
-          { id: 3003, name: "David Wilson", jobTitle: "Plant Manager", age: 48 }
-        ]
-      }
-    ]
-  }
-];
-
-const commoditiesData = [
-  {
-    commodity: "Cattle",
-    products: [
-      { code: "0102 21 00", name: "Live bovine animals (breeding)" },
-      { code: "0102 29 05", name: "Live bovine animals (other, <80 kg)" },
-      { code: "0102 29 95", name: "Live bovine animals (other)" },
-      { code: "0201", name: "Meat of bovine animals, fresh or chilled" },
-      { code: "0202", name: "Meat of bovine animals, frozen" },
-      { code: "0206 10 95", name: "Edible offal of bovine animals, fresh or chilled" },
-      { code: "0206 22 00", name: "Bovine livers, frozen" },
-      { code: "0206 29 91", name: "Bovine offal, frozen (excluding tongues and livers)" },
-      { code: "0210 20", name: "Meat of bovine animals, salted, in brine, dried or smoked" },
-      { code: "4101", name: "Raw hides and skins of bovine animals" },
-      { code: "4102", name: "Raw skins of sheep or lambs" },
-      { code: "4103", name: "Other raw hides and skins" },
-      { code: "4301", name: "Raw furskins" }
-    ]
-  },
-  {
-    commodity: "Cocoa",
-    products: [
-      { code: "1801 00 00", name: "Cocoa beans, whole or broken, raw or roasted" },
-      { code: "1802 00 00", name: "Cocoa shells, husks, skins and other cocoa waste" },
-      { code: "1803", name: "Cocoa paste, whether or not defatted" },
-      { code: "1804 00 00", name: "Cocoa butter, fat and oil" },
-      { code: "1805 00 00", name: "Cocoa powder, not containing added sugar" },
-      { code: "1806", name: "Chocolate and other food preparations containing cocoa" }
-    ]
-  },
-  {
-    commodity: "Coffee",
-    products: [
-      { code: "ex 0901 11 00", name: "Coffee, not roasted, not decaffeinated" },
-      { code: "ex 0901 12 00", name: "Coffee, not roasted, decaffeinated" },
-      { code: "ex 0901 21 00", name: "Roasted coffee, not decaffeinated" },
-      { code: "ex 0901 22 00", name: "Roasted coffee, decaffeinated" },
-      { code: "ex 0901 90 90", name: "Coffee husks and skins; coffee substitutes containing coffee" }
-    ]
-  },
-  {
-    commodity: "Oil palm",
-    products: [
-      { code: "1207 10 00", name: "Palm nuts and kernels" },
-      { code: "1511", name: "Palm oil and its fractions" },
-      { code: "1513 21", name: "Palm kernel oil, crude" },
-      { code: "1513 29", name: "Palm kernel oil and its fractions, refined" },
-      { code: "1516 20 96", name: "Palm oil derivatives (vegetable fats and oils)" },
-      { code: "2306 60 00", name: "Oil-cake and other solid residues from palm oil extraction" }
-    ]
-  },
-  {
-    commodity: "Rubber",
-    products: [
-      { code: "4001", name: "Natural rubber, balata, gutta-percha, guayule, chicle and similar natural gums" },
-      { code: "4002", name: "Synthetic rubber and factice derived from oils" },
-      { code: "4005", name: "Compounded rubber, unvulcanised" },
-      { code: "4006", name: "Unvulcanised rubber in other forms" },
-      { code: "4007", name: "Vulcanised rubber thread and cord" },
-      { code: "4008", name: "Plates, sheets, strip, rods and profile shapes of vulcanised rubber" },
-      { code: "4009", name: "Tubes, pipes and hoses of vulcanised rubber" },
-      { code: "4010", name: "Conveyor or transmission belts of vulcanised rubber" },
-      { code: "4011", name: "New pneumatic tyres, of rubber" },
-      { code: "4012", name: "Retreaded or used pneumatic tyres; solid or cushion tyres" },
-      { code: "4013", name: "Inner tubes, of rubber" },
-      { code: "4014", name: "Hygienic or pharmaceutical articles of vulcanised rubber" },
-      { code: "4015", name: "Articles of apparel and clothing accessories of vulcanised rubber" },
-      { code: "4016", name: "Other articles of vulcanised rubber (excluding hard rubber)" },
-      { code: "4017", name: "Hard rubber in all forms" }
-    ]
-  },
-  {
-    commodity: "Soya",
-    products: [
-      { code: "1201 90 00", name: "Soya beans, whether or not broken" },
-      { code: "1208 10 00", name: "Flours and meals of soya beans" },
-      { code: "1507", name: "Soya-bean oil and its fractions" },
-      { code: "2304 00 00", name: "Oil-cake and other solid residues from soya-bean oil extraction" }
-    ]
-  },
-  {
-    commodity: "Wood",
-    products: [
-      { code: "4401", name: "Fuel wood" },
-      { code: "4402", name: "Wood charcoal" },
-      { code: "4403", name: "Wood in the rough" },
-      { code: "4404", name: "Hoopwood; split poles; piles, pickets and stakes" },
-      { code: "4405", name: "Wood wool; wood flour" },
-      { code: "4406", name: "Railway or tramway sleepers of wood" },
-      { code: "4407", name: "Wood sawn or chipped lengthwise" },
-      { code: "4408", name: "Sheets for veneering" },
-      { code: "4409", name: "Wood continuously shaped along any edges" },
-      { code: "4410", name: "Particle board, OSB and similar board" },
-      { code: "4411", name: "Fibreboard of wood" },
-      { code: "4412", name: "Plywood, veneered panels and similar laminated wood" },
-      { code: "4413", name: "Densified wood" },
-      { code: "4414", name: "Wooden frames for paintings, photographs, etc." },
-      { code: "4415", name: "Packing cases, boxes, crates, drums and pallets" },
-      { code: "4416", name: "Casks, barrels, vats, tubs and other coopers' products" },
-      { code: "4417", name: "Tools, tool bodies, tool handles, broom or brush bodies" },
-      { code: "4418", name: "Builders' joinery and carpentry of wood" },
-      { code: "4419", name: "Tableware and kitchenware, of wood" },
-      { code: "4420", name: "Wood marquetry and inlaid wood; caskets and cases" },
-      { code: "4421", name: "Other articles of wood" }
-    ]
-  }
-];
+// Static mockAllCompanies removed since we'll use userStore data
 
 const SubjectMatterScope = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -250,18 +19,105 @@ const SubjectMatterScope = () => {
   const [companyLogo, setCompanyLogo] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(true);
 
   const fileInputRef = useRef(null);
   const logoInputRef = useRef(null);
 
-  // Company details (this would come from props or context in real app)
-  const companyDetails = {
-    name: "American Timber Exports Inc.",
-    country: "United States",
-    registration: "BUS-2024-TIM-001",
-    taxId: "TIN-US-789012",
-    exportCert: "US-EXPORT-2024-345678",
-    address: "123 Business District\nPortland, Oregon 97204\nUSA"
+  const { user, demoData, updateUser } = useUserStore();
+
+  // Get current company data based on logged-in status
+  const getCurrentCompany = () => {
+    if (!user) return null;
+    
+    // Check if user is logged in as a company (agent scenario)
+    if (user.loggedInAs?.companyId) {
+      return demoData.users[user.loggedInAs.companyId];
+    } else if (user.role === 'exporter' || user.role === 'importer') {
+      // User is an exporter or importer logged in directly
+      return user;
+    }
+    return null;
+  };
+
+  const currentCompany = getCurrentCompany();
+  const isExporter = currentCompany?.role === 'exporter';
+  const isImporter = currentCompany?.role === 'importer';
+
+  // Get commodities data from userStore
+  const commoditiesData = demoData.commodities || [];
+
+  // Load existing data on component mount
+  useEffect(() => {
+    if (currentCompany && initialLoad) {
+      // Load existing selected products
+      if (currentCompany.supportedCommodities && currentCompany.supportedCommodities.length > 0) {
+        const existingProducts = currentCompany.supportedCommodities.flatMap(commodity =>
+          commodity.products.map(product => ({
+            ...product,
+            commodity: commodity.commodity
+          }))
+        );
+        setSelectedProducts(existingProducts);
+        
+        // Expand commodities that have selected products
+        const expanded = {};
+        existingProducts.forEach(product => {
+          expanded[product.commodity] = true;
+        });
+        setExpandedCommodities(expanded);
+      }
+
+      // Load undertaking data if exists
+      if (currentCompany.undertaken) {
+        setSignatureData({
+          signature: currentCompany.undertaken.signature || "",
+          signeeName: currentCompany.undertaken.name || "",
+          signeeFunction: currentCompany.undertaken.function || "",
+          exporterId: currentCompany.traceRxId || ""
+        });
+      }
+
+      // Load company logo if exists
+      if (currentCompany.logo?.url) {
+        setCompanyLogo(currentCompany.logo.url);
+      }
+
+      setInitialLoad(false);
+    }
+  }, [currentCompany, initialLoad]);
+
+  // Get corporate address from first corporate facility
+  const getCorporateAddress = () => {
+    if (!currentCompany?.facilities) return '';
+    
+    const corporateFacilities = currentCompany.facilities.filter(
+      facility => facility.type === 'Corporate facility'
+    );
+    
+    if (corporateFacilities.length > 0) {
+      return corporateFacilities[0].address || '';
+    }
+    
+    return currentCompany.basicInfo?.country || '';
+  };
+
+  // Company details from current user
+  const companyDetails = currentCompany ? {
+    name: currentCompany.basicInfo?.companyName || "Company Name",
+    country: currentCompany.basicInfo?.country || "Country",
+    registration: currentCompany.basicInfo?.rcNumber || "RC Number",
+    taxId: currentCompany.basicInfo?.tinNumber || "Tax ID",
+    license: currentCompany.basicInfo?.licenseNumber || (isExporter ? "Export License" : "Import License"),
+    address: getCorporateAddress()
+  } : {
+    name: "Company Name",
+    country: "Country",
+    registration: "RC Number",
+    taxId: "Tax ID",
+    license: isExporter ? "Export License" : "Import License",
+    address: "Corporate Address"
   };
 
   const filteredProducts = searchQuery
@@ -276,11 +132,13 @@ const SubjectMatterScope = () => {
   const handleProductSelect = (product, commodity) => {
     if (!selectedProducts.some(p => p.code === product.code)) {
       setSelectedProducts([...selectedProducts, { ...product, commodity }]);
+      setIsEditing(true);
     }
   };
 
   const handleRemoveProduct = (code) => {
     setSelectedProducts(selectedProducts.filter(p => p.code !== code));
+    setIsEditing(true);
   };
 
   const toggleCommodity = (commodity) => {
@@ -299,6 +157,7 @@ const SubjectMatterScope = () => {
           ...prev,
           signature: reader.result
         }));
+        setIsEditing(true);
       };
       reader.readAsDataURL(file);
     }
@@ -310,13 +169,86 @@ const SubjectMatterScope = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setCompanyLogo(reader.result);
+        setIsEditing(true);
       };
       reader.readAsDataURL(file);
     }
   };
 
+  // Convert selected products to supportedCommodities format
+  const convertToSupportedCommodities = () => {
+    const groupedByCommodity = {};
+    
+    selectedProducts.forEach(product => {
+      if (!groupedByCommodity[product.commodity]) {
+        groupedByCommodity[product.commodity] = {
+          commodity: product.commodity,
+          products: []
+        };
+      }
+      groupedByCommodity[product.commodity].products.push({
+        code: product.code,
+        name: product.name
+      });
+    });
+    
+    return Object.values(groupedByCommodity);
+  };
+
+  const handleSave = () => {
+    if (!currentCompany) return;
+    
+    // Update the user data in the store
+    const updatedCompany = {
+      ...currentCompany,
+      supportedCommodities: convertToSupportedCommodities(),
+      undertaken: {
+        ...currentCompany.undertaken,
+        name: signatureData.signeeName,
+        function: signatureData.signeeFunction,
+        signature: signatureData.signature || currentCompany.undertaken?.signature || ""
+      },
+      logo: companyLogo ? {
+        name: isExporter ? 'exporter-logo' : 'importer-logo',
+        url: companyLogo
+      } : currentCompany.logo
+    };
+    
+    updateUser(currentCompany.id, updatedCompany);
+    setIsEditing(false);
+    alert("Draft saved successfully!");
+  };
+
+  const handleSubmit = () => {
+    if (!currentCompany) return;
+    
+    // First save all data
+    const updatedCompany = {
+      ...currentCompany,
+      supportedCommodities: convertToSupportedCommodities(),
+      undertaken: {
+        ...currentCompany.undertaken,
+        name: signatureData.signeeName,
+        function: signatureData.signeeFunction,
+        signature: signatureData.signature || currentCompany.undertaken?.signature || "",
+        url: signatureData.signature || currentCompany.undertaken?.url || ""
+      },
+      logo: companyLogo ? {
+        name: isExporter ? 'exporter-logo' : 'importer-logo',
+        url: companyLogo
+      } : currentCompany.logo,
+      isRegistered: true // Mark as registered after submitting undertaking
+    };
+    
+    updateUser(currentCompany.id, updatedCompany);
+    setIsEditing(false);
+    setIsSubmitted(true);
+    
+    // In a real app, you would generate and download PDF here
+    alert("Undertaking submitted successfully! PDF has been generated.");
+  };
+
   const generatePDFContent = () => {
-    const selectedExporter = mockAllCompanies.find(c => c.id.toString() === signatureData.exporterId);
     const currentDate = new Date().toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
@@ -336,17 +268,6 @@ const SubjectMatterScope = () => {
       companyLogo: companyLogo,
       companyAddress: companyDetails.address
     };
-  };
-
-  const handleSubmit = () => {
-    setIsSubmitted(true);
-    // In a real app, you would generate and download PDF here
-    alert("Undertaking submitted successfully! PDF has been generated.");
-  };
-
-  const handleSave = () => {
-    // Handle save functionality here
-    alert("Draft saved successfully!");
   };
 
   const renderStep = () => {
@@ -378,7 +299,10 @@ const SubjectMatterScope = () => {
                         <button
                           type="button"
                           className="text-red-600 hover:text-red-800 text-sm"
-                          onClick={() => setCompanyLogo(null)}
+                          onClick={() => {
+                            setCompanyLogo(null);
+                            setIsEditing(true);
+                          }}
                         >
                           Remove Logo
                         </button>
@@ -422,16 +346,18 @@ const SubjectMatterScope = () => {
                   <div className="font-medium">{companyDetails.country}</div>
                 </div>
                 <div className="bg-white p-4 rounded-lg border border-green-100">
-                  <div className="text-sm text-gray-500">Registration</div>
+                  <div className="text-sm text-gray-500">Registration Number</div>
                   <div className="font-medium">{companyDetails.registration}</div>
                 </div>
                 <div className="bg-white p-4 rounded-lg border border-green-100">
-                  <div className="text-sm text-gray-500">Tax ID</div>
+                  <div className="text-sm text-gray-500">Tax ID Number</div>
                   <div className="font-medium">{companyDetails.taxId}</div>
                 </div>
                 <div className="bg-white p-4 rounded-lg border border-green-100">
-                  <div className="text-sm text-gray-500">Export Certificate</div>
-                  <div className="font-medium">{companyDetails.exportCert}</div>
+                  <div className="text-sm text-gray-500">
+                    {isExporter ? "Export License" : "Import License"}
+                  </div>
+                  <div className="font-medium">{companyDetails.license}</div>
                 </div>
                 <div className="bg-white p-4 rounded-lg border border-green-100 md:col-span-2">
                   <div className="text-sm text-gray-500">Corporate Address</div>
@@ -450,11 +376,23 @@ const SubjectMatterScope = () => {
             className="space-y-6"
           >
             <div>
-              <h2 className="text-xl font-semibold text-green-800 mb-2">Select Relevant Products</h2>
-              <p className="text-gray-600 mb-4">
-                Under EUDR regulations, these commodities and derived products must be deforestation-free,
-                produced in accordance with relevant legislation, and covered by a due diligence statement.
-              </p>
+              <div className="flex justify-between items-center mb-4">
+                <div>
+                  <h2 className="text-xl font-semibold text-green-800 mb-2">Select Relevant Products</h2>
+                  <p className="text-gray-600">
+                    Under EUDR regulations, these commodities and derived products must be deforestation-free,
+                    produced in accordance with relevant legislation, and covered by a due diligence statement.
+                  </p>
+                </div>
+                {isEditing && (
+                  <button
+                    onClick={handleSave}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                  >
+                    Save Changes
+                  </button>
+                )}
+              </div>
 
               <div className="mb-6">
                 <div className="relative">
@@ -500,26 +438,29 @@ const SubjectMatterScope = () => {
 
                     {expandedCommodities[commodityGroup.commodity] && (
                       <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {commodityGroup.products.map((product) => (
-                          <div
-                            key={product.code}
-                            className={`p-3 border rounded-lg cursor-pointer transition-all hover:border-green-500 hover:bg-green-50 ${selectedProducts.some(p => p.code === product.code)
-                                ? 'border-green-500 bg-green-50'
-                                : 'border-gray-200'
-                              }`}
-                            onClick={() => handleProductSelect(product, commodityGroup.commodity)}
-                          >
-                            <div className="flex justify-between items-start">
-                              <div>
-                                <div className="font-medium text-sm">{product.name}</div>
-                                <div className="text-xs text-gray-500 font-mono mt-1">{product.code}</div>
+                        {commodityGroup.products.map((product) => {
+                          const isSelected = selectedProducts.some(p => p.code === product.code);
+                          return (
+                            <div
+                              key={product.code}
+                              className={`p-3 border rounded-lg cursor-pointer transition-all hover:border-green-500 hover:bg-green-50 ${isSelected
+                                  ? 'border-green-500 bg-green-50'
+                                  : 'border-gray-200'
+                                }`}
+                              onClick={() => handleProductSelect(product, commodityGroup.commodity)}
+                            >
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <div className="font-medium text-sm">{product.name}</div>
+                                  <div className="text-xs text-gray-500 font-mono mt-1">{product.code}</div>
+                                </div>
+                                {isSelected && (
+                                  <Check className="text-green-600" size={16} />
+                                )}
                               </div>
-                              {selectedProducts.some(p => p.code === product.code) && (
-                                <Check className="text-green-600" size={16} />
-                              )}
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     )}
                   </div>
@@ -559,7 +500,17 @@ const SubjectMatterScope = () => {
             animate={{ opacity: 1, x: 0 }}
             className="space-y-6"
           >
-            <h2 className="text-xl font-semibold text-green-800 mb-4">Signatory Information</h2>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold text-green-800">Signatory Information</h2>
+              {isEditing && (
+                <button
+                  onClick={handleSave}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                >
+                  Save Changes
+                </button>
+              )}
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
@@ -571,7 +522,10 @@ const SubjectMatterScope = () => {
                     type="text"
                     className="w-full px-3 py-2 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     value={signatureData.signeeName}
-                    onChange={(e) => setSignatureData(prev => ({ ...prev, signeeName: e.target.value }))}
+                    onChange={(e) => {
+                      setSignatureData(prev => ({ ...prev, signeeName: e.target.value }));
+                      setIsEditing(true);
+                    }}
                     required
                   />
                 </div>
@@ -584,7 +538,10 @@ const SubjectMatterScope = () => {
                     type="text"
                     className="w-full px-3 py-2 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     value={signatureData.signeeFunction}
-                    onChange={(e) => setSignatureData(prev => ({ ...prev, signeeFunction: e.target.value }))}
+                    onChange={(e) => {
+                      setSignatureData(prev => ({ ...prev, signeeFunction: e.target.value }));
+                      setIsEditing(true);
+                    }}
                     placeholder="e.g., Export Manager, CEO"
                     required
                   />
@@ -608,7 +565,10 @@ const SubjectMatterScope = () => {
                       <button
                         type="button"
                         className="text-red-600 hover:text-red-800 text-sm"
-                        onClick={() => setSignatureData(prev => ({ ...prev, signature: null }))}
+                        onClick={() => {
+                          setSignatureData(prev => ({ ...prev, signature: null }));
+                          setIsEditing(true);
+                        }}
                       >
                         Remove Signature
                       </button>
@@ -759,7 +719,7 @@ const SubjectMatterScope = () => {
               onClick={handleSave}
               className="px-6 py-2 border border-green-600 text-green-600 rounded-lg hover:bg-green-50 w-full sm:w-auto"
             >
-              Save
+              Save Draft
             </button>
             <button
               onClick={handleSubmit}
@@ -778,6 +738,23 @@ const SubjectMatterScope = () => {
       </motion.div>
     </div>
   );
+
+  if (!user || !currentCompany) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="p-6"
+      >
+        <h1 className="text-2xl lg:text-3xl font-bold text-green-800 mb-4 lg:mb-6">
+          Subject Matter & Scope
+        </h1>
+        <div className="text-center py-8">
+          <p className="text-gray-600">Loading company data...</p>
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
@@ -875,6 +852,18 @@ const SubjectMatterScope = () => {
                 </div>
               )}
             </div>
+          </div>
+        )}
+
+        {/* Save button for editing */}
+        {isEditing && currentStep !== 2 && (
+          <div className="mt-6 pt-4 border-t">
+            <button
+              onClick={handleSave}
+              className="px-6 py-2 border border-green-600 text-green-600 rounded-lg hover:bg-green-50 w-full"
+            >
+              Save Changes
+            </button>
           </div>
         )}
       </div>

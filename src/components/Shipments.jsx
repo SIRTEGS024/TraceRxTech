@@ -35,312 +35,14 @@ import {
   Navigation,
   DollarSign,
   Weight,
+  Map,
 } from 'lucide-react';
-
-// Ports list for selection
-const portsList = [
-  "Port of Shanghai, China",
-  "Port of Singapore, Singapore",
-  "Port of Ningbo-Zhoushan, China",
-  "Port of Shenzhen, China",
-  "Port of Qingdao, China",
-  "Port of Busan, South Korea",
-  "Port of Guangzhou, China",
-  "Port of Tianjin, China",
-  "Port of Port Klang, Malaysia",
-  "Port of Rotterdam, Netherlands",
-  "Port of Los Angeles, USA",
-  "Port of Long Beach, USA",
-  "Port of Dubai (Jebel Ali), UAE",
-  "Port of Antwerp-Bruges, Belgium",
-  "Port of Hamburg, Germany",
-  "Port of Hong Kong, China",
-  "Port of Tanjung Pelepas, Malaysia",
-  "Port of Xiamen, China",
-  "Port of Laem Chabang, Thailand",
-  "Port of New York/New Jersey, USA"
-];
-
-// Generate more detailed mock shipments with document descriptions
-const generateMockShipments = () => {
-  const shipments = [];
-  const forestNames = [
-    "Amazon Rainforest - Brazil",
-    "Congo Basin Forest",
-    "Borneo Rainforest",
-    "Peruvian Amazon",
-    "Colombian Rainforest",
-    "Malaysian Borneo",
-    "Papua New Guinea Forest",
-    "Cameroon Forest Reserve",
-    "Gabon Rainforest",
-    "Vietnam Forest Zone"
-  ];
-
-  const countries = ["Brazil", "DR Congo", "Indonesia", "Peru", "Colombia", "Malaysia", "Papua New Guinea", "Cameroon", "Gabon", "Vietnam"];
-  const statuses = ["Pending", "Active", "Completed"];
-  const statusColors = {
-    "Completed": "bg-green-100 text-green-800 border-green-200",
-    "Active": "bg-blue-100 text-blue-800 border-blue-200",
-    "Pending": "bg-yellow-100 text-yellow-800 border-yellow-200"
-  };
-
-  // Document types and descriptions for each section
-  const documentTypes = {
-    a: [
-      "Land Title Document",
-      "Purchase Receipt",
-      "Survey Plan",
-      "Site Plan",
-      "Ownership Certificate"
-    ],
-    b: [
-      "Environmental Impact Assessment",
-      "Environmental Approval",
-      "EIA Report",
-      "Environmental Compliance Certificate"
-    ],
-    c: [
-      "Forest Management Plan",
-      "Biodiversity Conservation Plan",
-      "Species Inventory",
-      "Harvesting Schedule",
-      "Sustainable Management Certificate"
-    ],
-    d: [
-      "Third Party Agreement",
-      "Sublease Contract",
-      "Community Agreement",
-      "Land Use Agreement"
-    ],
-    e: [
-      "Labor Rights Compliance",
-      "Worker Safety Protocol",
-      "Employment Contracts",
-      "Workers Rights Documentation"
-    ],
-    f: [
-      "Human Rights Due Diligence",
-      "Community Impact Assessment",
-      "Human Rights Policy"
-    ],
-    g: [
-      "FPIC Agreement",
-      "Indigenous Community Consent",
-      "Community Consultation Report"
-    ],
-    h: [
-      "Tax Compliance Certificate",
-      "Customs Documentation",
-      "Anti-corruption Policy",
-      "Trade Compliance Documents"
-    ]
-  };
-
-  const documentDescriptions = {
-    a: [
-      "Official land ownership title with boundaries",
-      "Land purchase receipt and transaction details",
-      "Survey plan with GPS coordinates",
-      "Detailed site development plan",
-      "Certificate of land ownership"
-    ],
-    b: [
-      "Complete environmental impact assessment report",
-      "Approval from environmental agency",
-      "Environmental impact study findings",
-      "Environmental compliance verification"
-    ],
-    c: [
-      "5-year forest management plan",
-      "Biodiversity conservation strategy",
-      "Inventory of tree species with scientific names",
-      "Timber harvesting schedule",
-      "Sustainable forest management certification"
-    ],
-    d: [
-      "Agreement with third-party land users",
-      "Sublease contract terms and conditions",
-      "Community land use agreement",
-      "Partnership agreement documentation"
-    ],
-    e: [
-      "Compliance with labor regulations",
-      "Worker safety procedures and protocols",
-      "Standard employment contracts",
-      "Workers rights and benefits documentation"
-    ],
-    f: [
-      "Human rights due diligence report",
-      "Community impact assessment results",
-      "Company human rights policy",
-      "Stakeholder engagement records"
-    ],
-    g: [
-      "Free, Prior and Informed Consent agreement",
-      "Indigenous community consent documentation",
-      "Community consultation meeting records",
-      "FPIC process documentation"
-    ],
-    h: [
-      "Annual tax compliance certificate",
-      "Customs and trade documentation",
-      "Company anti-corruption policy",
-      "Trade regulation compliance documents"
-    ]
-  };
-
-  // Company names for shipping to (importer/consignee)
-  const importerNames = [
-    "GreenWood International Ltd.",
-    "Sustainable Timber Corp",
-    "EcoForest Products Inc.",
-    "Global Wood Solutions",
-    "Nature's Harvest Co.",
-    "Forest Partners Group",
-    "Renewable Resources Ltd.",
-    "EcoCommodities Trading"
-  ];
-
-  // Shipping lines
-  const shippingLines = [
-    "Maersk Line",
-    "MSC (Mediterranean Shipping Company)",
-    "CMA CGM",
-    "COSCO Shipping",
-    "Hapag-Lloyd",
-    "ONE (Ocean Network Express)",
-    "Evergreen Marine",
-    "Yang Ming Marine Transport",
-    "HMM (Hyundai Merchant Marine)",
-    "ZIM Integrated Shipping Services"
-  ];
-
-  for (let i = 1; i <= 12; i++) {
-    const forestCount = Math.floor(Math.random() * 3) + 1; // 1-3 forests per shipment
-    const selectedForests = [];
-    const selectedForestIds = new Set();
-
-    while (selectedForests.length < forestCount) {
-      const forestIndex = Math.floor(Math.random() * forestNames.length);
-      if (!selectedForestIds.has(forestIndex)) {
-        selectedForestIds.add(forestIndex);
-
-        // Generate polygons/areas for this forest (each forest can have multiple plotted areas)
-        const areaCount = Math.floor(Math.random() * 3) + 1; // 1-3 areas per forest
-        const areas = [];
-        
-        for (let a = 0; a < areaCount; a++) {
-          // Generate polygon coordinates for each area
-          const polygonCoordinates = [];
-          const vertices = Math.floor(Math.random() * 5) + 3; // 3-7 vertices for polygon
-          
-          for (let v = 0; v < vertices; v++) {
-            polygonCoordinates.push({
-              lat: -5 + (Math.random() * 10),
-              lng: -60 + (Math.random() * 120)
-            });
-          }
-          
-          areas.push({
-            id: `area-${a + 1}`,
-            name: `Area ${a + 1}`,
-            coordinates: polygonCoordinates,
-            hectares: (Math.random() * 5000 + 1000).toFixed(0),
-            description: `Plotted forest area ${a + 1} for sustainable harvesting`
-          });
-        }
-
-        // Generate documents for this forest
-        const forestDocuments = {};
-        Object.keys(documentTypes).forEach(section => {
-          const docCount = Math.floor(Math.random() * 3) + 1; // 1-3 documents per section
-          const docs = [];
-
-          for (let j = 0; j < docCount; j++) {
-            const docTypeIndex = Math.floor(Math.random() * documentTypes[section].length);
-            const descriptionIndex = Math.floor(Math.random() * documentDescriptions[section].length);
-
-            docs.push({
-              id: `${section}-${j + 1}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-              name: documentTypes[section][docTypeIndex],
-              description: documentDescriptions[section][descriptionIndex],
-              uploadedAt: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-              section: section,
-              fileSize: `${(Math.random() * 5 + 0.5).toFixed(1)} MB`,
-              format: "PDF",
-              uploadedBy: ["Admin User", "Forest Manager", "Compliance Officer"][Math.floor(Math.random() * 3)]
-            });
-          }
-
-          forestDocuments[section] = docs;
-        });
-
-        selectedForests.push({
-          id: forestIndex + 1,
-          name: forestNames[forestIndex],
-          country: countries[forestIndex],
-          coordinates: {
-            lat: -5 + (Math.random() * 10),
-            lng: -60 + (Math.random() * 120)
-          },
-          areas: areas, // Multiple plotted areas
-          area: `${(Math.random() * 10 + 1).toFixed(1)}M hectares`,
-          region: ["South America", "Central Africa", "Southeast Asia"][Math.floor(Math.random() * 3)],
-          registrationDate: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-          documents: forestDocuments,
-          complianceScore: Math.floor(Math.random() * 30) + 70 // 70-100%
-        });
-      }
-    }
-
-    const status = statuses[Math.floor(Math.random() * statuses.length)];
-    const date = new Date();
-    date.setDate(date.getDate() - Math.floor(Math.random() * 30));
-
-    // Calculate total documents
-    const totalDocuments = selectedForests.reduce((sum, forest) => {
-      return sum + Object.values(forest.documents).reduce((docSum, docs) => docSum + docs.length, 0);
-    }, 0);
-
-    // Calculate total weight (random between 10,000 and 100,000 kg)
-    const totalKg = Math.floor(Math.random() * 90000) + 10000;
-    // Calculate cost: $100 per 20,000kg
-    const totalCost = Math.floor((totalKg / 20000) * 100);
-
-    // Randomly select importer and ports
-    const importerIndex = Math.floor(Math.random() * importerNames.length);
-    const portOfShipmentIndex = Math.floor(Math.random() * portsList.length);
-    const portOfDestinationIndex = Math.floor(Math.random() * portsList.length);
-
-    shipments.push({
-      id: `TRX-${String(1000000 + i).substring(1)}`,
-      name: `Shipment #${i}`,
-      date: date.toISOString().split('T')[0],
-      status: status,
-      statusColor: statusColors[status],
-      totalForests: forestCount,
-      forests: selectedForests,
-      totalDocuments: totalDocuments,
-      // Updated fields
-      portOfShipment: portsList[portOfShipmentIndex],
-      portOfDestination: portsList[portOfDestinationIndex],
-      shippingLine: shippingLines[Math.floor(Math.random() * shippingLines.length)],
-      exporterCompany: "American Timber Exports Inc.", // Always use this exporter
-      importerConsignee: importerNames[importerIndex],
-      totalKg: totalKg,
-      totalCost: totalCost,
-      costPerUnit: "$100 per 20,000kg",
-      createdBy: "Admin User",
-      lastUpdated: new Date(date.getTime() + Math.random() * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-    });
-  }
-
-  return shipments.sort((a, b) => new Date(b.date) - new Date(a.date));
-};
+import { useUserStore } from '../store/useUserStore';
 
 // Document Detail Modal Component
 const DocumentDetailModal = ({ isOpen, onClose, shipment, selectedForest, selectedSection }) => {
+  const [showAllCoordinates, setShowAllCoordinates] = useState(false);
+
   if (!isOpen || !shipment || !selectedForest) return null;
 
   const sectionTitles = {
@@ -354,10 +56,23 @@ const DocumentDetailModal = ({ isOpen, onClose, shipment, selectedForest, select
     h: "(h) Tax, Anti-corruption, Trade & Customs"
   };
 
-  const forest = shipment.forests.find(f => f.id === selectedForest);
-  const documents = selectedSection ? forest?.documents[selectedSection] || [] : [];
+  const sectionMapping = {
+    a: "Land Use Rights",
+    b: "Environmental Protection",
+    c: "Forest-related Rules",
+    d: "Third Parties Rights",
+    e: "Labour Rights",
+    f: "Human Rights",
+    g: "FPIC (Free, Prior, Informed Consent)",
+    h: "Tax, Anti-corruption, Trade & Customs"
+  };
+
+  // Find the forest in shipment data
+  const forest = shipment.forests?.find(f => f.forestId === selectedForest);
+  const documents = selectedSection ? shipment.documents?.[sectionMapping[selectedSection]] || [] : [];
 
   const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
@@ -377,13 +92,15 @@ const DocumentDetailModal = ({ isOpen, onClose, shipment, selectedForest, select
           <div>
             <div className="flex items-center gap-2 mb-1">
               <Trees className="text-green-600" size={20} />
-              <h2 className="text-xl font-semibold text-gray-800">{forest.name}</h2>
+              <h2 className="text-xl font-semibold text-gray-800">
+                {forest?.harvestAreas?.[0]?.name || `Harvest Area - ${selectedForest}`}
+              </h2>
             </div>
             <p className="text-gray-600">
-              {selectedSection ? sectionTitles[selectedSection] : "All Documents"} • {forest.country}
+              {selectedSection ? sectionTitles[selectedSection] : "All Documents"}
             </p>
             <p className="text-sm text-gray-500 mt-1">
-              Shipment: {shipment.name} ({shipment.id})
+              Shipment: {shipment.batchNumber}
             </p>
           </div>
           <button
@@ -396,6 +113,42 @@ const DocumentDetailModal = ({ isOpen, onClose, shipment, selectedForest, select
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-6">
+          {/* Harvest Areas Coordinates */}
+          {forest?.harvestAreas && forest.harvestAreas.length > 0 && (
+            <div className="mb-6 p-4 bg-gray-50 rounded-lg border">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="font-semibold text-gray-800 flex items-center gap-2">
+                  <Map size={16} />
+                  Harvest Area Coordinates
+                </h4>
+                <button
+                  onClick={() => setShowAllCoordinates(!showAllCoordinates)}
+                  className="text-sm text-green-600 hover:text-green-700"
+                >
+                  {showAllCoordinates ? 'Show Less' : 'Show All Points'}
+                </button>
+              </div>
+              {forest.harvestAreas.map((area, areaIndex) => (
+                <div key={area.id || areaIndex} className="mb-4 last:mb-0">
+                  <p className="font-medium text-gray-700 mb-2">{area.name}</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {(showAllCoordinates ? area.coordinates : area.coordinates.slice(0, 4)).map((coord, coordIndex) => (
+                      <div key={coordIndex} className="flex items-center gap-2 text-sm text-gray-600 bg-white p-2 rounded border">
+                        <span className="text-green-500">●</span>
+                        <span>Lat: {coord[0]?.toFixed(4) || 'N/A'}, Lng: {coord[1]?.toFixed(4) || 'N/A'}</span>
+                      </div>
+                    ))}
+                    {!showAllCoordinates && area.coordinates.length > 4 && (
+                      <div className="text-sm text-gray-500 italic">
+                        +{area.coordinates.length - 4} more points...
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
           {selectedSection ? (
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">
@@ -404,7 +157,7 @@ const DocumentDetailModal = ({ isOpen, onClose, shipment, selectedForest, select
               {documents.length > 0 ? (
                 documents.map((doc, index) => (
                   <motion.div
-                    key={doc.id}
+                    key={doc.name || index}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
@@ -417,26 +170,30 @@ const DocumentDetailModal = ({ isOpen, onClose, shipment, selectedForest, select
                         </div>
                         <div>
                           <h4 className="font-semibold text-gray-800">{doc.name}</h4>
-                          <p className="text-sm text-gray-600 mt-1">{doc.description}</p>
+                          <p className="text-sm text-gray-600 mt-1">
+                            {doc.description || "Document for compliance verification"}
+                          </p>
                         </div>
                       </div>
                       <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                        {doc.format}
+                        {doc.format || "PDF"}
                       </span>
                     </div>
 
                     <div className="flex flex-wrap gap-4 text-sm text-gray-600 mt-3 pt-3 border-t">
-                      <div className="flex items-center gap-1">
-                        <Calendar size={14} />
-                        <span>Uploaded: {formatDate(doc.uploadedAt)}</span>
-                      </div>
+                      {doc.uploadedAt && (
+                        <div className="flex items-center gap-1">
+                          <Calendar size={14} />
+                          <span>Uploaded: {formatDate(doc.uploadedAt)}</span>
+                        </div>
+                      )}
                       <div className="flex items-center gap-1">
                         <User size={14} />
-                        <span>By: {doc.uploadedBy}</span>
+                        <span>By: {doc.uploadedBy || "System Admin"}</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Hash size={14} />
-                        <span>{doc.fileSize}</span>
+                        <span>{doc.fileSize || "1.5 MB"}</span>
                       </div>
                     </div>
                   </motion.div>
@@ -452,7 +209,8 @@ const DocumentDetailModal = ({ isOpen, onClose, shipment, selectedForest, select
             // Show all documents grouped by section
             <div className="space-y-6">
               {Object.entries(sectionTitles).map(([sectionKey, sectionTitle]) => {
-                const sectionDocs = forest?.documents[sectionKey] || [];
+                const sectionName = sectionMapping[sectionKey];
+                const sectionDocs = shipment.documents?.[sectionName] || [];
                 if (sectionDocs.length === 0) return null;
 
                 return (
@@ -462,22 +220,28 @@ const DocumentDetailModal = ({ isOpen, onClose, shipment, selectedForest, select
                       <p className="text-sm text-gray-600 mt-1">{sectionDocs.length} documents</p>
                     </div>
                     <div className="p-4 space-y-3">
-                      {sectionDocs.map((doc) => (
-                        <div key={doc.id} className="flex items-start justify-between p-3 hover:bg-gray-50 rounded-lg">
+                      {sectionDocs.map((doc, index) => (
+                        <div key={doc.name || index} className="flex items-start justify-between p-3 hover:bg-gray-50 rounded-lg">
                           <div className="flex items-start gap-3">
                             <File className="text-gray-400 mt-1" size={16} />
                             <div>
                               <p className="font-medium text-gray-800">{doc.name}</p>
-                              <p className="text-sm text-gray-600 mt-1 line-clamp-2">{doc.description}</p>
+                              <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                                {doc.description || "Document for compliance verification"}
+                              </p>
                               <div className="flex items-center gap-3 text-xs text-gray-500 mt-2">
-                                <span>{formatDate(doc.uploadedAt)}</span>
-                                <span>•</span>
-                                <span>{doc.uploadedBy}</span>
+                                {doc.uploadedAt && <span>{formatDate(doc.uploadedAt)}</span>}
+                                {doc.uploadedBy && (
+                                  <>
+                                    <span>•</span>
+                                    <span>{doc.uploadedBy}</span>
+                                  </>
+                                )}
                               </div>
                             </div>
                           </div>
                           <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                            {doc.format}
+                            {doc.format || "PDF"}
                           </span>
                         </div>
                       ))}
@@ -506,15 +270,17 @@ const DocumentDetailModal = ({ isOpen, onClose, shipment, selectedForest, select
   );
 };
 
-// Shipment Detail Modal Component (Updated)
-const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
+// Shipment Detail Modal Component
+const ShipmentDetailModal = ({ isOpen, onClose, shipment, demoData }) => {
   const [selectedForest, setSelectedForest] = useState(null);
   const [selectedSection, setSelectedSection] = useState(null);
   const [showDocumentModal, setShowDocumentModal] = useState(false);
+  const [showAllCoordinates, setShowAllCoordinates] = useState({});
 
   if (!isOpen || !shipment) return null;
 
   const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
@@ -523,7 +289,7 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
   };
 
   const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return num?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") || "0";
   };
 
   const sectionTitles = {
@@ -537,10 +303,38 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
     h: "(h) Tax, Anti-corruption, Trade & Customs"
   };
 
+  const sectionMapping = {
+    a: "Land Use Rights",
+    b: "Environmental Protection",
+    c: "Forest-related Rules",
+    d: "Third Parties Rights",
+    e: "Labour Rights",
+    f: "Human Rights",
+    g: "FPIC (Free, Prior, Informed Consent)",
+    h: "Tax, Anti-corruption, Trade & Customs"
+  };
+
+  // Get exporter and importer details
+  const exporter = demoData.users[shipment.exporterId];
+  const importer = demoData.users[shipment.importerId];
+
   const handleViewDocuments = (forestId, section = null) => {
     setSelectedForest(forestId);
     setSelectedSection(section);
     setShowDocumentModal(true);
+  };
+
+  const toggleCoordinates = (forestId) => {
+    setShowAllCoordinates(prev => ({
+      ...prev,
+      [forestId]: !prev[forestId]
+    }));
+  };
+
+  // Calculate total documents
+  const calculateTotalDocuments = () => {
+    if (!shipment.documents) return 0;
+    return Object.values(shipment.documents).reduce((total, docs) => total + docs.length, 0);
   };
 
   return (
@@ -556,12 +350,16 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <Package className="text-green-600" size={24} />
-                <h2 className="text-2xl font-bold text-gray-800">{shipment.name}</h2>
-                <span className={`px-3 py-1 text-xs font-medium rounded-full border ${shipment.statusColor}`}>
-                  {shipment.status}
+                <h2 className="text-2xl font-bold text-gray-800">Shipment {shipment.batchNumber}</h2>
+                <span className={`px-3 py-1 text-xs font-medium rounded-full border ${
+                  shipment.status === 'completed' ? 'bg-green-100 text-green-800 border-green-200' :
+                  shipment.status === 'active' ? 'bg-blue-100 text-blue-800 border-blue-200' :
+                  'bg-yellow-100 text-yellow-800 border-yellow-200'
+                }`}>
+                  {shipment.status?.charAt(0).toUpperCase() + shipment.status?.slice(1) || 'Pending'}
                 </span>
               </div>
-              <p className="text-gray-600">ID: {shipment.id} • Created on {formatDate(shipment.date)}</p>
+              <p className="text-gray-600">ID: {shipment.batchNumber} • Created on {formatDate(shipment.createdOn)}</p>
             </div>
             <button
               onClick={onClose}
@@ -581,7 +379,9 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
                     <Building size={16} className="text-green-600" />
                     <p className="text-sm text-gray-600">Exporter</p>
                   </div>
-                  <p className="text-lg font-semibold text-gray-800">{shipment.exporterCompany}</p>
+                  <p className="text-lg font-semibold text-gray-800">
+                    {exporter?.basicInfo?.companyName || 'Unknown Exporter'}
+                  </p>
                 </div>
                 
                 <div className="bg-gray-50 p-4 rounded-lg">
@@ -589,7 +389,9 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
                     <Building size={16} className="text-blue-600" />
                     <p className="text-sm text-gray-600">Importer/Consignee</p>
                   </div>
-                  <p className="text-lg font-semibold text-gray-800">{shipment.importerConsignee}</p>
+                  <p className="text-lg font-semibold text-gray-800">
+                    {importer?.basicInfo?.companyName || shipment.importerConsignee || 'Unknown Importer'}
+                  </p>
                 </div>
 
                 <div className="bg-gray-50 p-4 rounded-lg">
@@ -597,7 +399,7 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
                     <Ship size={16} className="text-purple-600" />
                     <p className="text-sm text-gray-600">Shipping Line</p>
                   </div>
-                  <p className="text-lg font-semibold text-gray-800">{shipment.shippingLine}</p>
+                  <p className="text-lg font-semibold text-gray-800">{shipment.shippingLine || 'Not Specified'}</p>
                 </div>
 
                 <div className="bg-gray-50 p-4 rounded-lg">
@@ -605,36 +407,52 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
                     <DollarSign size={16} className="text-green-600" />
                     <p className="text-sm text-gray-600">Total Cost</p>
                   </div>
-                  <p className="text-lg font-semibold text-gray-800">${formatNumber(shipment.totalCost)}</p>
-                  <p className="text-xs text-gray-500 mt-1">{shipment.costPerUnit}</p>
+                  <p className="text-lg font-semibold text-gray-800">${formatNumber(shipment.totalShippingFee)}</p>
+                  <p className="text-xs text-gray-500 mt-1">$100 per container</p>
                 </div>
               </div>
 
               {/* Shipment Details */}
               <div className="bg-white border border-gray-200 rounded-lg p-4 mb-8">
                 <h4 className="font-semibold text-gray-800 mb-3">Shipment Details</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div>
                     <p className="text-sm text-gray-600">Total Weight</p>
-                    <p className="font-semibold text-gray-800">{formatNumber(shipment.totalKg)} kg</p>
+                    <p className="font-semibold text-gray-800">{formatNumber(shipment.totalKilograms)} kg</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Total Forests</p>
-                    <p className="font-semibold text-gray-800">{shipment.totalForests}</p>
+                    <p className="font-semibold text-gray-800">{shipment.forests?.length || 0}</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Total Documents</p>
-                    <p className="font-semibold text-gray-800">{shipment.totalDocuments}</p>
+                    <p className="font-semibold text-gray-800">{calculateTotalDocuments()}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Total Hectares</p>
+                    <p className="font-semibold text-gray-800">{formatNumber(shipment.totalHectares)} ha</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Shipment Status</p>
-                    <span className={`px-2 py-1 text-xs rounded-full ${shipment.statusColor}`}>
-                      {shipment.status}
+                    <span className={`px-2 py-1 text-xs rounded-full ${
+                      shipment.status === 'completed' ? 'bg-green-100 text-green-800' :
+                      shipment.status === 'active' ? 'bg-blue-100 text-blue-800' :
+                      'bg-yellow-100 text-yellow-800'
+                    }`}>
+                      {shipment.status?.charAt(0).toUpperCase() + shipment.status?.slice(1) || 'Pending'}
                     </span>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Shipment Date</p>
-                    <p className="font-semibold text-gray-800">{formatDate(shipment.date)}</p>
+                    <p className="text-sm text-gray-600">Production Date</p>
+                    <p className="font-semibold text-gray-800">{formatDate(shipment.productionDate)}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Processing/Loading Date</p>
+                    <p className="font-semibold text-gray-800">{formatDate(shipment.processingLoadingDate)}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Created On</p>
+                    <p className="font-semibold text-gray-800">{formatDate(shipment.createdOn)}</p>
                   </div>
                 </div>
               </div>
@@ -673,18 +491,18 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
                     <p className="text-sm text-gray-600">Total Weight</p>
                     <div className="flex items-center gap-2">
                       <Weight size={20} className="text-gray-400" />
-                      <p className="text-2xl font-bold text-gray-800">{formatNumber(shipment.totalKg)} kg</p>
+                      <p className="text-2xl font-bold text-gray-800">{formatNumber(shipment.totalKilograms)} kg</p>
                     </div>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Rate</p>
-                    <p className="text-lg font-semibold text-gray-800">{shipment.costPerUnit}</p>
+                    <p className="text-lg font-semibold text-gray-800">$100 per container</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Total Payment</p>
                     <div className="flex items-center gap-2">
                       <DollarSign size={24} className="text-green-600" />
-                      <p className="text-2xl font-bold text-green-700">${formatNumber(shipment.totalCost)}</p>
+                      <p className="text-2xl font-bold text-green-700">${formatNumber(shipment.totalShippingFee)}</p>
                     </div>
                   </div>
                 </div>
@@ -693,136 +511,159 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
               {/* Forests Section */}
               <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
                 <Trees size={20} />
-                Included Forests ({shipment.forests.length})
+                Included Forests ({shipment.forests?.length || 0})
               </h3>
 
               <div className="space-y-6">
-                {shipment.forests.map((forest, index) => (
-                  <motion.div
-                    key={forest.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="border border-gray-200 rounded-lg overflow-hidden"
-                  >
-                    {/* Forest Header */}
-                    <div className="bg-green-50 p-4 border-b">
-                      <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
-                        <div>
-                          <h4 className="font-semibold text-lg text-gray-800">{forest.name}</h4>
-                          <div className="flex flex-wrap gap-3 text-sm text-gray-600 mt-1">
-                            <span className="flex items-center gap-1">
-                              <MapPin size={14} />
-                              {forest.country}, {forest.region}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Globe size={14} />
-                              {forest.area}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Calendar size={14} />
-                              Registered: {formatDate(forest.registrationDate)}
-                            </span>
+                {shipment.forests?.map((forest, index) => {
+                  const forestDetails = demoData.users[shipment.exporterId]?.facilities?.find(f => f.id === forest.forestId);
+                  const areaIndex = showAllCoordinates[forest.forestId];
+                  
+                  return (
+                    <motion.div
+                      key={forest.forestId || index}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="border border-gray-200 rounded-lg overflow-hidden"
+                    >
+                      {/* Forest Header */}
+                      <div className="bg-green-50 p-4 border-b">
+                        <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
+                          <div>
+                            <h4 className="font-semibold text-lg text-gray-800">
+                              {forestDetails?.name || `Forest Plot ${index + 1}`}
+                            </h4>
+                            <div className="flex flex-wrap gap-3 text-sm text-gray-600 mt-1">
+                              <span className="flex items-center gap-1">
+                                <Globe size={14} />
+                                {forest.harvestAreas?.[0]?.hectares || 'N/A'} hectares
+                              </span>
+                              {forestDetails?.address && (
+                                <span className="flex items-center gap-1">
+                                  <MapPin size={14} />
+                                  {forestDetails.address}
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
-                        <span className={`px-3 py-1 text-sm rounded-full ${forest.complianceScore >= 90 ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                          {forest.complianceScore}% compliant
-                        </span>
                       </div>
-                    </div>
 
-                    {/* Forest Areas */}
-                    <div className="p-4 border-b">
-                      <h5 className="font-medium text-gray-700 mb-3 flex items-center gap-2">
-                        <Globe size={16} />
-                        Plotted Forest Areas ({forest.areas.length})
-                      </h5>
-                      <div className="space-y-3">
-                        {forest.areas.map((area, areaIndex) => (
-                          <div key={area.id} className="bg-gray-50 p-3 rounded-lg">
-                            <div className="flex flex-col sm:flex-row justify-between items-start gap-2 mb-2">
-                              <div>
-                                <p className="font-medium text-gray-800">{area.name}</p>
-                                <p className="text-sm text-gray-600">{area.hectares} hectares</p>
-                              </div>
-                              <span className="text-xs text-gray-500 bg-white px-2 py-1 rounded">
-                                Polygon {areaIndex + 1}
-                              </span>
-                            </div>
-                            <p className="text-sm text-gray-600 mb-2">{area.description}</p>
-                            <div className="text-xs text-gray-500">
-                              <p className="font-medium mb-1">Coordinates:</p>
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
-                                {area.coordinates.slice(0, 4).map((coord, coordIndex) => (
-                                  <div key={coordIndex} className="flex items-center gap-1">
-                                    <span className="text-gray-400">●</span>
-                                    <span>Lat: {coord.lat.toFixed(4)}, Lng: {coord.lng.toFixed(4)}</span>
+                      {/* Forest Areas */}
+                      {forest.harvestAreas && forest.harvestAreas.length > 0 && (
+                        <div className="p-4 border-b">
+                          <h5 className="font-medium text-gray-700 mb-3 flex items-center gap-2">
+                            <Globe size={16} />
+                            Harvest Areas ({forest.harvestAreas.length})
+                          </h5>
+                          <div className="space-y-3">
+                            {forest.harvestAreas.map((area, areaIndex) => (
+                              <div key={area.id || areaIndex} className="bg-gray-50 p-3 rounded-lg">
+                                <div className="flex flex-col sm:flex-row justify-between items-start gap-2 mb-2">
+                                  <div>
+                                    <p className="font-medium text-gray-800">
+                                      {area.name || `Harvest Area ${areaIndex + 1}`}
+                                    </p>
+                                    <p className="text-sm text-gray-600">{area.hectares} hectares</p>
                                   </div>
-                                ))}
-                                {area.coordinates.length > 4 && (
-                                  <div className="text-gray-400">
-                                    +{area.coordinates.length - 4} more points
+                                  <button
+                                    onClick={() => toggleCoordinates(forest.forestId)}
+                                    className="text-xs text-green-600 hover:text-green-700 bg-white px-2 py-1 rounded border border-green-200"
+                                  >
+                                    {showAllCoordinates[forest.forestId] ? 'Hide Points' : 'Show All Points'}
+                                  </button>
+                                </div>
+                                <div className="text-xs text-gray-500">
+                                  <p className="font-medium mb-1">Coordinates:</p>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
+                                    {(showAllCoordinates[forest.forestId] ? area.coordinates : area.coordinates.slice(0, 4)).map((coord, coordIndex) => (
+                                      <div key={coordIndex} className="flex items-center gap-1">
+                                        <span className="text-green-500">●</span>
+                                        <span>Lat: {coord[0]?.toFixed(4) || 'N/A'}, Lng: {coord[1]?.toFixed(4) || 'N/A'}</span>
+                                      </div>
+                                    ))}
+                                    {!showAllCoordinates[forest.forestId] && area.coordinates.length > 4 && (
+                                      <div className="text-gray-400">
+                                        +{area.coordinates.length - 4} more points
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Selected Products */}
+                      {forest.selectedProducts && forest.selectedProducts.length > 0 && (
+                        <div className="p-4 border-b">
+                          <h5 className="font-medium text-gray-700 mb-3">Selected Products</h5>
+                          <div className="flex flex-wrap gap-2">
+                            {forest.selectedProducts.map((product, idx) => (
+                              <span key={idx} className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
+                                {product.name} ({product.quantity} kg)
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Documents by Section */}
+                      <div className="p-4">
+                        <h5 className="font-medium text-gray-700 mb-3">Compliance Documents</h5>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                          {Object.entries(sectionTitles).map(([sectionKey, sectionTitle]) => {
+                            const sectionName = sectionMapping[sectionKey];
+                            const documents = shipment.documents?.[sectionName] || [];
+                            const docCount = documents.length;
+
+                            return (
+                              <motion.button
+                                key={sectionKey}
+                                whileHover={{ scale: 1.02 }}
+                                onClick={() => handleViewDocuments(forest.forestId, sectionKey)}
+                                className="bg-white border border-gray-200 rounded-lg p-3 text-left hover:bg-gray-50 transition-colors"
+                              >
+                                <div className="flex items-start justify-between mb-2">
+                                  <div className="flex items-center gap-2">
+                                    <FileText size={16} className="text-green-600" />
+                                    <span className="font-medium text-gray-800 text-sm">{sectionTitle.split(') ')[1]}</span>
+                                  </div>
+                                  <span className={`text-xs px-2 py-1 rounded-full ${docCount > 0 ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
+                                    {docCount}
+                                  </span>
+                                </div>
+                                <p className="text-xs text-gray-500 line-clamp-2">
+                                  {docCount > 0 ? `${docCount} document${docCount > 1 ? 's' : ''} uploaded` : 'No documents'}
+                                </p>
+                                {docCount > 0 && (
+                                  <div className="mt-2 text-xs text-green-600 flex items-center gap-1">
+                                    <Eye size={12} />
+                                    View documents
                                   </div>
                                 )}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                              </motion.button>
+                            );
+                          })}
+                        </div>
 
-                    {/* Documents by Section */}
-                    <div className="p-4">
-                      <h5 className="font-medium text-gray-700 mb-3">Compliance Documents</h5>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                        {Object.entries(sectionTitles).map(([sectionKey, sectionTitle]) => {
-                          const documents = forest.documents[sectionKey] || [];
-                          const docCount = documents.length;
-
-                          return (
-                            <motion.button
-                              key={sectionKey}
-                              whileHover={{ scale: 1.02 }}
-                              onClick={() => handleViewDocuments(forest.id, sectionKey)}
-                              className="bg-white border border-gray-200 rounded-lg p-3 text-left hover:bg-gray-50 transition-colors"
-                            >
-                              <div className="flex items-start justify-between mb-2">
-                                <div className="flex items-center gap-2">
-                                  <FileText size={16} className="text-green-600" />
-                                  <span className="font-medium text-gray-800 text-sm">{sectionTitle.split(') ')[1]}</span>
-                                </div>
-                                <span className={`text-xs px-2 py-1 rounded-full ${docCount > 0 ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
-                                  {docCount}
-                                </span>
-                              </div>
-                              <p className="text-xs text-gray-500 line-clamp-2">
-                                {docCount > 0 ? `${docCount} document${docCount > 1 ? 's' : ''} uploaded` : 'No documents'}
-                              </p>
-                              {docCount > 0 && (
-                                <div className="mt-2 text-xs text-green-600 flex items-center gap-1">
-                                  <Eye size={12} />
-                                  View documents
-                                </div>
-                              )}
-                            </motion.button>
-                          );
-                        })}
+                        {/* View All Documents Button */}
+                        <div className="mt-4">
+                          <button
+                            onClick={() => handleViewDocuments(forest.forestId)}
+                            className="flex items-center justify-center gap-2 px-4 py-2 text-green-600 border border-green-300 rounded-lg hover:bg-green-50 w-full sm:w-auto"
+                          >
+                            <Layers size={16} />
+                            View All Documents ({calculateTotalDocuments()})
+                            <ChevronRightIcon size={16} />
+                          </button>
+                        </div>
                       </div>
-
-                      {/* View All Documents Button */}
-                      <div className="mt-4">
-                        <button
-                          onClick={() => handleViewDocuments(forest.id)}
-                          className="flex items-center justify-center gap-2 px-4 py-2 text-green-600 border border-green-300 rounded-lg hover:bg-green-50 w-full sm:w-auto"
-                        >
-                          <Layers size={16} />
-                          View All Documents ({Object.values(forest.documents).reduce((sum, docs) => sum + docs.length, 0)})
-                          <ChevronRightIcon size={16} />
-                        </button>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -865,9 +706,10 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment }) => {
   );
 };
 
-// Individual Shipment Card Component (Updated)
-const ShipmentCard = ({ shipment, isExpanded, onToggle, onViewDetails }) => {
+// Individual Shipment Card Component
+const ShipmentCard = ({ shipment, demoData, isExpanded, onToggle, onViewDetails }) => {
   const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
@@ -876,17 +718,30 @@ const ShipmentCard = ({ shipment, isExpanded, onToggle, onViewDetails }) => {
   };
 
   const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return num?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") || "0";
   };
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'Completed': return <CheckCircle className="text-green-600" size={16} />;
-      case 'Active': return <Truck className="text-blue-600" size={16} />;
-      case 'Pending': return <Clock className="text-yellow-600" size={16} />;
+      case 'completed': return <CheckCircle className="text-green-600" size={16} />;
+      case 'active': return <Truck className="text-blue-600" size={16} />;
+      case 'pending': return <Clock className="text-yellow-600" size={16} />;
       default: return <Clock className="text-gray-600" size={16} />;
     }
   };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'completed': return 'bg-green-100 text-green-800 border-green-200';
+      case 'active': return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'pending': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
+  // Get exporter and importer details
+  const exporter = demoData.users[shipment.exporterId];
+  const importer = demoData.users[shipment.importerId];
 
   return (
     <div className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
@@ -899,15 +754,15 @@ const ShipmentCard = ({ shipment, isExpanded, onToggle, onViewDetails }) => {
             <div className="flex items-center gap-3 mb-2">
               <Package className="text-green-600" size={20} />
               <div>
-                <h3 className="font-semibold text-gray-800">{shipment.name}</h3>
-                <p className="text-sm text-gray-500">ID: {shipment.id}</p>
+                <h3 className="font-semibold text-gray-800">Shipment {shipment.batchNumber}</h3>
+                <p className="text-sm text-gray-500">ID: {shipment.batchNumber}</p>
               </div>
             </div>
 
             <div className="flex flex-wrap gap-3 text-sm">
               <div className="flex items-center gap-1">
                 <Calendar size={14} className="text-gray-400" />
-                <span className="text-gray-600">{formatDate(shipment.date)}</span>
+                <span className="text-gray-600">{formatDate(shipment.createdOn)}</span>
               </div>
               <div className="flex items-center gap-1">
                 <MapPin size={14} className="text-gray-400" />
@@ -915,19 +770,19 @@ const ShipmentCard = ({ shipment, isExpanded, onToggle, onViewDetails }) => {
               </div>
               <div className="flex items-center gap-1">
                 <DollarSign size={14} className="text-gray-400" />
-                <span className="text-gray-600">${formatNumber(shipment.totalCost)}</span>
+                <span className="text-gray-600">${formatNumber(shipment.totalShippingFee)}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Weight size={14} className="text-gray-400" />
-                <span className="text-gray-600">{formatNumber(shipment.totalKg)} kg</span>
+                <span className="text-gray-600">{formatNumber(shipment.totalKilograms)} kg</span>
               </div>
             </div>
           </div>
 
           <div className="flex flex-col items-start sm:items-end gap-2 w-full sm:w-auto">
-            <span className={`px-3 py-1 text-xs font-medium rounded-full border ${shipment.statusColor} flex items-center gap-1`}>
+            <span className={`px-3 py-1 text-xs font-medium rounded-full border ${getStatusColor(shipment.status)} flex items-center gap-1`}>
               {getStatusIcon(shipment.status)}
-              {shipment.status}
+              {shipment.status?.charAt(0).toUpperCase() + shipment.status?.slice(1) || 'Pending'}
             </span>
             <div className="flex gap-2 w-full sm:w-auto">
               <button
@@ -970,7 +825,9 @@ const ShipmentCard = ({ shipment, isExpanded, onToggle, onViewDetails }) => {
                     <Building size={16} className="text-green-600" />
                     <span className="text-sm font-medium text-gray-700">Exporter</span>
                   </div>
-                  <p className="text-lg font-semibold text-gray-800">{shipment.exporterCompany}</p>
+                  <p className="text-lg font-semibold text-gray-800">
+                    {exporter?.basicInfo?.companyName || 'Unknown Exporter'}
+                  </p>
                 </div>
 
                 <div className="bg-white p-3 rounded-lg border">
@@ -978,7 +835,9 @@ const ShipmentCard = ({ shipment, isExpanded, onToggle, onViewDetails }) => {
                     <Building size={16} className="text-blue-600" />
                     <span className="text-sm font-medium text-gray-700">Importer/Consignee</span>
                   </div>
-                  <p className="text-lg font-semibold text-gray-800">{shipment.importerConsignee}</p>
+                  <p className="text-lg font-semibold text-gray-800">
+                    {importer?.basicInfo?.companyName || shipment.importerConsignee || 'Unknown Importer'}
+                  </p>
                 </div>
 
                 <div className="bg-white p-3 rounded-lg border">
@@ -986,7 +845,7 @@ const ShipmentCard = ({ shipment, isExpanded, onToggle, onViewDetails }) => {
                     <Ship size={16} className="text-purple-600" />
                     <span className="text-sm font-medium text-gray-700">Shipping Line</span>
                   </div>
-                  <p className="text-lg font-semibold text-gray-800">{shipment.shippingLine}</p>
+                  <p className="text-lg font-semibold text-gray-800">{shipment.shippingLine || 'Not Specified'}</p>
                 </div>
 
                 <div className="bg-white p-3 rounded-lg border">
@@ -1000,7 +859,7 @@ const ShipmentCard = ({ shipment, isExpanded, onToggle, onViewDetails }) => {
 
               <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
                 <div className="text-sm text-gray-600 text-center sm:text-left">
-                  Total: ${formatNumber(shipment.totalCost)} • {formatNumber(shipment.totalKg)} kg • {shipment.totalDocuments} documents
+                  Total: ${formatNumber(shipment.totalShippingFee)} • {formatNumber(shipment.totalKilograms)} kg • {shipment.totalHectares} ha
                 </div>
                 <button
                   onClick={onViewDetails}
@@ -1020,7 +879,6 @@ const ShipmentCard = ({ shipment, isExpanded, onToggle, onViewDetails }) => {
 
 // Main Shipments Component
 const Shipments = () => {
-  const [shipments, setShipments] = useState([]);
   const [expandedShipment, setExpandedShipment] = useState(null);
   const [selectedShipment, setSelectedShipment] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
@@ -1029,9 +887,32 @@ const Shipments = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
+  const { user, demoData } = useUserStore();
+  const [shipments, setShipments] = useState([]);
+
   useEffect(() => {
-    setShipments(generateMockShipments());
-  }, []);
+    if (!user || !demoData) return;
+
+    let userShipments = [];
+
+    // Check if user is logged in as a company (agent scenario)
+    if (user.loggedInAs?.companyId) {
+      // Get the company data from demoData
+      const company = demoData.users[user.loggedInAs.companyId];
+      if (company && company.shipments) {
+        userShipments = company.shipments.map(shipmentId => demoData.shipments[shipmentId]).filter(Boolean);
+      }
+    } else if (user.role === 'exporter' || user.role === 'importer') {
+      // User is an exporter or importer logged in directly
+      if (user.shipments) {
+        userShipments = user.shipments.map(shipmentId => demoData.shipments[shipmentId]).filter(Boolean);
+      }
+    }
+
+    // Sort shipments by created date (newest first)
+    userShipments.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn));
+    setShipments(userShipments);
+  }, [user, demoData]);
 
   const toggleShipment = (shipmentId) => {
     setExpandedShipment(expandedShipment === shipmentId ? null : shipmentId);
@@ -1044,11 +925,10 @@ const Shipments = () => {
 
   const filteredShipments = shipments.filter(shipment => {
     const matchesSearch =
-      shipment.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      shipment.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      shipment.portOfDestination.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      shipment.importerConsignee.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      shipment.exporterCompany.toLowerCase().includes(searchTerm.toLowerCase());
+      shipment.batchNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      shipment.importerConsignee?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      shipment.portOfDestination?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      shipment.shippingLine?.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesStatus = statusFilter === 'all' || shipment.status === statusFilter;
 
@@ -1061,25 +941,28 @@ const Shipments = () => {
 
   const statusOptions = [
     { value: 'all', label: 'All Status', count: shipments.length },
-    { value: 'Completed', label: 'Completed', count: shipments.filter(s => s.status === 'Completed').length },
-    { value: 'Active', label: 'Active', count: shipments.filter(s => s.status === 'Active').length },
-    { value: 'Pending', label: 'Pending', count: shipments.filter(s => s.status === 'Pending').length }
+    { value: 'completed', label: 'Completed', count: shipments.filter(s => s.status === 'completed').length },
+    { value: 'active', label: 'Active', count: shipments.filter(s => s.status === 'active').length },
+    { value: 'pending', label: 'Pending', count: shipments.filter(s => s.status === 'pending').length }
   ];
 
   // Calculate totals
   const stats = {
     total: shipments.length,
-    active: shipments.filter(s => s.status === 'Active').length,
-    completed: shipments.filter(s => s.status === 'Completed').length,
-    pending: shipments.filter(s => s.status === 'Pending').length,
-    totalForests: shipments.reduce((sum, s) => sum + s.totalForests, 0),
-    totalDocuments: shipments.reduce((sum, s) => sum + s.totalDocuments, 0),
-    totalKg: shipments.reduce((sum, s) => sum + s.totalKg, 0),
-    totalCost: shipments.reduce((sum, s) => sum + s.totalCost, 0)
+    active: shipments.filter(s => s.status === 'active').length,
+    completed: shipments.filter(s => s.status === 'completed').length,
+    pending: shipments.filter(s => s.status === 'pending').length,
+    totalForests: shipments.reduce((sum, s) => sum + (s.forests?.length || 0), 0),
+    totalDocuments: shipments.reduce((sum, s) => {
+      if (!s.documents) return sum;
+      return sum + Object.values(s.documents).reduce((docSum, docs) => docSum + docs.length, 0);
+    }, 0),
+    totalKg: shipments.reduce((sum, s) => sum + (s.totalKilograms || 0), 0),
+    totalCost: shipments.reduce((sum, s) => sum + (s.totalShippingFee || 0), 0)
   };
 
   const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return num?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") || "0";
   };
 
   return (
@@ -1149,7 +1032,7 @@ const Shipments = () => {
               </div>
             </div>
             <div className="mt-2 text-sm text-green-600">
-              $100 per 20,000kg rate
+              $100 per container rate
             </div>
           </div>
         </div>
@@ -1162,7 +1045,7 @@ const Shipments = () => {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                 <input
                   type="text"
-                  placeholder="Search shipments by ID, port, importer, or exporter..."
+                  placeholder="Search shipments by batch number, port, or importer..."
                   value={searchTerm}
                   onChange={(e) => {
                     setSearchTerm(e.target.value);
@@ -1207,6 +1090,7 @@ const Shipments = () => {
                 <ShipmentCard
                   key={shipment.id}
                   shipment={shipment}
+                  demoData={demoData}
                   isExpanded={expandedShipment === shipment.id}
                   onToggle={() => toggleShipment(shipment.id)}
                   onViewDetails={() => handleViewDetails(shipment)}
@@ -1287,6 +1171,7 @@ const Shipments = () => {
           setSelectedShipment(null);
         }}
         shipment={selectedShipment}
+        demoData={demoData}
       />
     </>
   );
