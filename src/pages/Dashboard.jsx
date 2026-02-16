@@ -19,9 +19,8 @@ import TargetedRegulations from "../components/TargetedRegulations";
 import DashboardNavbar from "../components/DashboardNavbar";
 import BioData from "../components/BioData";
 import AgentManagement from "../components/AgentManagement";
-import DueDiligence from "../components/DueDiligence";
-import RiskAssessment from "../components/RiskAssessment";
-import RiskMitigation from "../components/RiskMitigation";
+import PastDueDiligence from "../components/PastDueDiligence";
+import CurrentDueDiligence from "../components/CurrentDueDiligence";
 import AgentRequests from "../components/AgentRequests";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../store/useUserStore";
@@ -80,9 +79,9 @@ const Dashboard = ({ isMapsLoaded }) => {
       'new-shipment': { id: 'new-shipment', name: 'New Shipment Origin', icon: 'FiTruck', accessKey: 'newShipmentOrigin' },
       
       // Importer-specific tabs
-      'due-diligence': { id: 'due-diligence', name: 'Due Diligence', icon: 'FiShield', accessKey: 'dueDiligence' },
-      'risk-assessment': { id: 'risk-assessment', name: 'Risk Assessment', icon: 'FiAlertTriangle', accessKey: 'riskAssessment' },
-      'risk-mitigation': { id: 'risk-mitigation', name: 'Risk Mitigation', icon: 'FiTool', accessKey: 'riskMitigation' },
+      'current-due-diligence': { id: 'current-due-diligence', name: 'Current Due Diligence', icon: 'FiShield', accessKey: 'currentdueDiligence' },
+      'past-due-diligence': { id: 'past-due-diligence', name: 'Past Due Diligence', icon: 'FiShield', accessKey: 'pastdueDiligence' },
+
       
       // Agent-specific tab
       'agent-requests': { id: 'agent-requests', name: 'Company Access', icon: 'FiSend', accessKey: 'overview' }
@@ -123,9 +122,8 @@ const Dashboard = ({ isMapsLoaded }) => {
           'overview',
           'company-details',
           'subject-matter',
-          'due-diligence',
-          'risk-assessment',
-          'risk-mitigation',
+          'past-due-diligence',
+          'current-due-diligence',
           'shipments',
           'reports',
           'gps-camera',
@@ -156,9 +154,8 @@ const Dashboard = ({ isMapsLoaded }) => {
           'overview',
           'company-details',
           'subject-matter',
-          'due-diligence',
-          'risk-assessment',
-          'risk-mitigation',
+          'past-due-diligence',
+          'current-due-diligence',
           'shipments',
           'reports',
           'gps-camera',
@@ -339,12 +336,10 @@ const Dashboard = ({ isMapsLoaded }) => {
         return <GPSCamera />;
       case 'supply-chain':
         return <SupplyChain />;
-      case 'due-diligence':
-        return <DueDiligence />;
-      case 'risk-assessment':
-        return <RiskAssessment />;
-      case 'risk-mitigation':
-        return <RiskMitigation />;
+      case 'past-due-diligence':
+        return <PastDueDiligence />;
+       case 'current-due-diligence':
+        return <CurrentDueDiligence />;
       case 'agent-management':
         return <AgentManagement />;
       case 'agent-requests':

@@ -195,9 +195,7 @@ const demoData = {
             2021: [
               {
                 id: "record-2021-1",
-                license: "EX-2021-1234",
                 description: "Export of certified mahogany logs",
-                tradeName: "Amazon Mahogany",
                 commonName: "Mahogany",
                 scientificName: "Swietenia macrophylla",
                 hsCodes: [
@@ -217,6 +215,7 @@ const demoData = {
                 customerName: "European Timber Importers GmbH",
                 customerAddress: "Hamburg, Germany",
                 customerEmail: "orders@eti-gmbh.de",
+                customerId: "importer-1",
                 deforestationFreeDocs: [
                   {
                     name: "Deforestation-Free Certification",
@@ -534,61 +533,38 @@ const demoData = {
         url: "https://cloud-storage.com/logo/importer-logo.png",
       },
       exporters: ["exporter-1", "exporter-2"],
-      supplierRecords: {
-        2021: [
-          {
-            supplierId: "exporter-1",
-            supplierName: "Green Timber Exports Ltd",
-            supplierAddress: "São Paulo, Brazil",
-            supplierEmail: "contact@greentimber.com",
-            description: "Import of mahogany logs",
-            tradeName: "Amazon Mahogany",
-            commonName: "Mahogany",
-            scientificName: "Swietenia macrophylla",
-            hsCodes: [
-              {
-                commodity: "Wood",
-                code: "4403",
-                name: "Wood in the rough",
-              },
-            ],
-            netMassKg: 50000,
-            customerName: "European Timber Importers GmbH",
-            customerAddress: "Hamburg, Germany",
-            customerEmail: "orders@eti-gmbh.de",
-          },
-          {
-            supplierId: "exporter-2",
-            supplierName: "Brazilian Coffee Exporters",
-            supplierAddress: "Brazil",
-            supplierEmail: "export@brazilcoffee.com",
-            description: "Import of Brazilian coffee beans",
-            tradeName: "Arabica Premium",
-            commonName: "Coffee",
-            scientificName: "Coffea arabica",
-            hsCodes: [
-              {
-                commodity: "Coffee",
-                code: "ex 0901 11 00",
-                name: "Coffee, not roasted, not decaffeinated",
-              },
-            ],
-            netMassKg: 10000,
-            customerName: "European Timber Importers GmbH",
-            customerAddress: "Hamburg, Germany",
-            customerEmail: "orders@eti-gmbh.de",
-          },
-        ],
-        2022: [],
-        2023: [],
-        2024: [],
-        2025: [],
-      },
-      riskAssessment: {
-        2021: [
-          {
-            supplierId: "exporter-1",
-            riskLevel: "negligible risk",
+      currentSupplierRecords: [
+        {
+          supplierId: "exporter-1",
+          supplierName: "Green Timber Exports Ltd",
+          batchNumber: "TRX-7890",
+          supplierAddress: "São Paulo, Brazil",
+          supplierEmail: "contact@greentimber.com",
+          description: "Import of mahogany logs",
+          commonName: "Mahogany",
+          scientificName: "Swietenia macrophylla",
+          hsCodes: [
+            {
+              commodity: "Wood",
+              code: "4403",
+              name: "Wood in the rough",
+            },
+          ],
+          containers: [
+            {
+              containerNumber: "MAEU-1234567",
+              kilograms: 20000,
+            },
+          ],
+          netMassKg: 20000,
+          customerName: "Adroitsoft Nigeria Limited",
+          customerAddress: "Lagos, Nigeria",
+          customerEmail: "acedu@adroitsoft.com",
+          amount: 100,
+          paymentStatus: true,
+          status: "approved",
+          riskAssessment: {
+            riskLevel: "high risk",
             assessmentDocs: [
               {
                 name: "Risk Assessment Report 2021 - Exporter 1",
@@ -596,26 +572,7 @@ const demoData = {
               },
             ],
           },
-          {
-            supplierId: "exporter-2",
-            riskLevel: "high risk",
-            assessmentDocs: [
-              {
-                name: "Risk Assessment Report 2021 - Exporter 2",
-                url: "https://cloud-storage.com/docs/risk/2021-exporter2.pdf",
-              },
-            ],
-          },
-        ],
-        2022: [],
-        2023: [],
-        2024: [],
-        2025: [],
-      },
-      riskMitigation: {
-        2021: [
-          {
-            supplierId: "exporter-2",
+          riskMitigation: {
             highRiskSection: {
               additionalInfo: [
                 {
@@ -670,13 +627,116 @@ const demoData = {
               },
             ],
           },
+        },
+      ],
+      connectedPastRecords: [
+        {
+          recordId: "record-2021-1",
+          exporterId: "exporter-1",
+          year: 2021,
+          facilityId:"fac-2",
+        },
+      ],
+      pastSupplierRecords: {
+        2021: [
+          {
+            recordId: "record-2021-1",
+            supplierId: "exporter-1",
+            supplierName: "Green Timber Exports Ltd",
+            supplierAddress: "São Paulo, Brazil",
+            supplierEmail: "contact@greentimber.com",
+            description: "Import of mahogany logs",
+            commonName: "Mahogany",
+            scientificName: "Swietenia macrophylla",
+            hsCodes: [
+              {
+                commodity: "Wood",
+                code: "4403",
+                name: "Wood in the rough",
+              },
+            ],
+            netMassKg: 20000,
+            customerName: "Adroitsoft Nigeria Limited",
+            customerAddress: "Lagos, Nigeria",
+            customerEmail: "acedu@adroitsoft.com",
+            amount: 10,
+            paymentStatus: true,
+            status: "approved",
+            riskAssessment: {
+              riskLevel: "high risk",
+              assessmentDocs: [
+                {
+                  name: "Risk Assessment Report 2021 - Exporter 1",
+                  url: "https://cloud-storage.com/docs/risk/2021-exporter1.pdf",
+                },
+              ],
+            },
+            riskMitigation: {
+              highRiskSection: {
+                additionalInfo: [
+                  {
+                    name: "Additional Supplier Info - Exporter 2",
+                    url: "https://cloud-storage.com/docs/mitigation/add-info-ex2.pdf",
+                  },
+                ],
+                independentSurveys: [
+                  {
+                    name: "Third-Party Audit Report - Exporter 2",
+                    url: "https://cloud-storage.com/docs/mitigation/audit-ex2.pdf",
+                  },
+                ],
+                otherMeasures: [],
+                capacityBuilding: [
+                  {
+                    name: "Supplier Training Program - Exporter 2",
+                    url: "https://cloud-storage.com/docs/mitigation/training-ex2.pdf",
+                  },
+                ],
+              },
+              policiesControls: {
+                modelPractices: {
+                  isSme: false,
+                  officerName: "Anna Weber",
+                  officerIdCard: {
+                    name: "officer id card",
+                    url: "https://cloud-storage.com/docs/mitigation/officer-id.pdf",
+                  },
+                  appointmentLetter: {
+                    name: "appointment letter",
+                    url: "https://cloud-storage.com/docs/mitigation/appointment.pdf",
+                  },
+                  Docs: [
+                    {
+                      name: "Risk Management Policy - Exporter 2",
+                      url: "https://cloud-storage.com/docs/mitigation/policy-ex2.pdf",
+                    },
+                  ],
+                },
+                independentAudit: [
+                  {
+                    name: "Annual Internal Audit - Exporter 2",
+                    url: "https://cloud-storage.com/docs/mitigation/internal-audit-ex2.pdf",
+                  },
+                ],
+              },
+              decisionsReview: [
+                {
+                  name: "Annual Risk Mitigation Review - Exporter 2",
+                  url: "https://cloud-storage.com/docs/mitigation/review-2023-ex2.pdf",
+                },
+              ],
+            },
+          },
         ],
         2022: [],
         2023: [],
         2024: [],
         2025: [],
       },
-      shipments: ["shipment-1", "shipment-3"],
+      shipmentId: [
+        { id: "shipment-1", status: "approved" },
+        { id: "shipment-3", status: "unapproved" },
+      ],
       linkedVerifiers: [
         {
           id: "verifier-1",
@@ -762,28 +822,15 @@ const demoData = {
         url: "https://cloud-storage.com/logo/uk-logo.png",
       },
       exporters: ["exporter-1"],
-      supplierRecords: {
+      currentSupplierRecords: [],
+      pastSupplierRecords: {
         2021: [],
         2022: [],
         2023: [],
         2024: [],
         2025: [],
       },
-      riskAssessment: {
-        2021: [],
-        2022: [],
-        2023: [],
-        2024: [],
-        2025: [],
-      },
-      riskMitigation: {
-        2021: [],
-        2022: [],
-        2023: [],
-        2024: [],
-        2025: [],
-      },
-      shipments: ["shipment-2"],
+      shipments: [{ id: "shipment-2", status: "unapproved" }],
       linkedVerifiers: [],
       linkedFreightAgents: [],
       pendingVerifiers: ["verifier-1"],
@@ -1068,7 +1115,6 @@ const demoData = {
               commodity: "Wood",
               code: "4403",
               name: "Wood in the rough",
-              quantity: 25000,
             },
           ],
           harvestAreas: [
@@ -1086,6 +1132,7 @@ const demoData = {
               ],
             },
           ],
+          quantity: 25000,
         },
       ],
       productionDate: "2023-10-01",
@@ -1099,7 +1146,7 @@ const demoData = {
         "Certified sustainable mahogany logs for furniture manufacturing",
       totalShippingFee: 100,
       totalHectares: 1231,
-      totalKilograms: 20000,
+      totalKilograms: 25000,
       containers: [
         {
           containerNumber: "MAEU-1234567",
@@ -1110,7 +1157,7 @@ const demoData = {
           kilograms: 20000,
         },
       ],
-      status: "active",
+      status: "completed",
       createdOn: "2023-09-15",
       images: [
         {
@@ -1124,84 +1171,6 @@ const demoData = {
           url: "https://cloud-storage.com/docs/shipment/loading-vid.mp4",
         },
       ],
-      documents: {
-        "Land Use Rights": [
-          {
-            name: "Land Lease Agreement",
-            url: "https://cloud-storage.com/docs/shipment-1/land-lease.pdf",
-          },
-          {
-            name: "Land Title Certificate",
-            url: "https://cloud-storage.com/docs/shipment-1/land-title.pdf",
-          },
-        ],
-        "Environmental Protection": [
-          {
-            name: "Environmental Impact Assessment",
-            url: "https://cloud-storage.com/docs/shipment-1/eia-report.pdf",
-          },
-          {
-            name: "Water Quality Report",
-            url: "https://cloud-storage.com/docs/shipment-1/water-quality.pdf",
-          },
-        ],
-        "Forest-related Rules": [
-          {
-            name: "Forest Management Plan",
-            url: "https://cloud-storage.com/docs/shipment-1/forest-plan.pdf",
-          },
-          {
-            name: "Harvesting Permit",
-            url: "https://cloud-storage.com/docs/shipment-1/harvest-permit.pdf",
-          },
-        ],
-        "Third Parties Rights": [
-          {
-            name: "Community Agreement",
-            url: "https://cloud-storage.com/docs/shipment-1/community-agreement.pdf",
-          },
-        ],
-        "Labour Rights": [
-          {
-            name: "Employee Contracts",
-            url: "https://cloud-storage.com/docs/shipment-1/employee-contracts.pdf",
-          },
-          {
-            name: "Safety Training Certificates",
-            url: "https://cloud-storage.com/docs/shipment-1/safety-training.pdf",
-          },
-        ],
-        "Human Rights": [
-          {
-            name: "Human Rights Assessment",
-            url: "https://cloud-storage.com/docs/shipment-1/human-rights-assessment.pdf",
-          },
-        ],
-        "FPIC (Free, Prior, Informed Consent)": [
-          {
-            name: "FPIC Documentation",
-            url: "https://cloud-storage.com/docs/shipment-1/fpic-documentation.pdf",
-          },
-          {
-            name: "Community Meeting Minutes",
-            url: "https://cloud-storage.com/docs/shipment-1/community-minutes.pdf",
-          },
-        ],
-        "Tax, Anti-corruption, Trade & Customs": [
-          {
-            name: "Tax Compliance Certificate",
-            url: "https://cloud-storage.com/docs/shipment-1/tax-compliance.pdf",
-          },
-          {
-            name: "Export Declaration",
-            url: "https://cloud-storage.com/docs/shipment-1/export-declaration.pdf",
-          },
-          {
-            name: "Anti-corruption Policy",
-            url: "https://cloud-storage.com/docs/shipment-1/anti-corruption-policy.pdf",
-          },
-        ],
-      },
     },
     "shipment-2": {
       id: "shipment-2",
@@ -1216,7 +1185,6 @@ const demoData = {
               commodity: "Wood",
               code: "4403",
               name: "Wood in the rough",
-              quantity: 25000,
             },
           ],
           harvestAreas: [
@@ -1234,6 +1202,7 @@ const demoData = {
               ],
             },
           ],
+          quantity: 25000,
         },
       ],
       productionDate: "2023-11-01",
@@ -1244,9 +1213,9 @@ const demoData = {
       shippingLine: "MSC",
       processingLoadingSite: "Santos Port Warehouse",
       productDescription: "Processed wood planks",
-      totalShippingFee: 1800,
+      totalShippingFee: 100,
       totalHectares: 1123,
-      totalKilograms: 20000,
+      totalKilograms: 25000,
       containers: [
         {
           containerNumber: "MAEU-1234578",
@@ -1257,7 +1226,7 @@ const demoData = {
           kilograms: 20000,
         },
       ],
-      status: "pending",
+      status: "active",
       createdOn: "2023-10-20",
       images: [
         {
@@ -1271,64 +1240,6 @@ const demoData = {
           url: "https://cloud-storage.com/docs/shipment/loading-vid.mp4",
         },
       ],
-      documents: {
-        "Land Use Rights": [
-          {
-            name: "Land Use Certificate",
-            url: "https://cloud-storage.com/docs/shipment-2/land-use-certificate.pdf",
-          },
-        ],
-        "Environmental Protection": [
-          {
-            name: "Environmental Compliance Report",
-            url: "https://cloud-storage.com/docs/shipment-2/env-compliance.pdf",
-          },
-          {
-            name: "Waste Management Plan",
-            url: "https://cloud-storage.com/docs/shipment-2/waste-management.pdf",
-          },
-        ],
-        "Forest-related Rules": [
-          {
-            name: "Timber Legality Verification",
-            url: "https://cloud-storage.com/docs/shipment-2/timber-legality.pdf",
-          },
-        ],
-        "Third Parties Rights": [
-          {
-            name: "Neighbor Agreements",
-            url: "https://cloud-storage.com/docs/shipment-2/neighbor-agreements.pdf",
-          },
-        ],
-        "Labour Rights": [
-          {
-            name: "Fair Wage Certification",
-            url: "https://cloud-storage.com/docs/shipment-2/fair-wage.pdf",
-          },
-        ],
-        "Human Rights": [
-          {
-            name: "Non-Discrimination Policy",
-            url: "https://cloud-storage.com/docs/shipment-2/non-discrimination.pdf",
-          },
-        ],
-        "FPIC (Free, Prior, Informed Consent)": [
-          {
-            name: "Consent Records",
-            url: "https://cloud-storage.com/docs/shipment-2/consent-records.pdf",
-          },
-        ],
-        "Tax, Anti-corruption, Trade & Customs": [
-          {
-            name: "Customs Documentation",
-            url: "https://cloud-storage.com/docs/shipment-2/customs-docs.pdf",
-          },
-          {
-            name: "Trade License",
-            url: "https://cloud-storage.com/docs/shipment-2/trade-license.pdf",
-          },
-        ],
-      },
     },
     "shipment-3": {
       id: "shipment-3",
@@ -1343,7 +1254,6 @@ const demoData = {
               commodity: "Wood",
               code: "4403",
               name: "Wood in the rough",
-              quantity: 25000,
             },
           ],
           harvestAreas: [
@@ -1361,6 +1271,7 @@ const demoData = {
               ],
             },
           ],
+          quantity: 25000,
         },
       ],
       productionDate: "2023-09-15",
@@ -1373,7 +1284,7 @@ const demoData = {
       productDescription: "Premium Brazilian coffee beans",
       totalShippingFee: 100,
       totalHectares: 1234,
-      totalKilograms: 20000,
+      totalKilograms: 25000,
       containers: [
         {
           containerNumber: "MAEU-1234568",
@@ -1384,64 +1295,10 @@ const demoData = {
           kilograms: 20000,
         },
       ],
-      status: "completed",
+      status: "pending",
       createdOn: "2023-08-15",
       images: [],
       videos: [],
-      documents: {
-        "Land Use Rights": [
-          {
-            name: "Property Deed",
-            url: "https://cloud-storage.com/docs/shipment-3/property-deed.pdf",
-          },
-        ],
-        "Environmental Protection": [
-          {
-            name: "Soil Conservation Report",
-            url: "https://cloud-storage.com/docs/shipment-3/soil-conservation.pdf",
-          },
-        ],
-        "Forest-related Rules": [
-          {
-            name: "Sustainable Harvesting Certificate",
-            url: "https://cloud-storage.com/docs/shipment-3/sustainable-harvest.pdf",
-          },
-        ],
-        "Third Parties Rights": [
-          {
-            name: "Right-of-Way Agreement",
-            url: "https://cloud-storage.com/docs/shipment-3/right-of-way.pdf",
-          },
-        ],
-        "Labour Rights": [
-          {
-            name: "Workplace Safety Report",
-            url: "https://cloud-storage.com/docs/shipment-3/workplace-safety.pdf",
-          },
-        ],
-        "Human Rights": [
-          {
-            name: "Grievance Mechanism Report",
-            url: "https://cloud-storage.com/docs/shipment-3/grievance-report.pdf",
-          },
-        ],
-        "FPIC (Free, Prior, Informed Consent)": [
-          {
-            name: "Indigenous Community Consent",
-            url: "https://cloud-storage.com/docs/shipment-3/indigenous-consent.pdf",
-          },
-        ],
-        "Tax, Anti-corruption, Trade & Customs": [
-          {
-            name: "Tax Receipts",
-            url: "https://cloud-storage.com/docs/shipment-3/tax-receipts.pdf",
-          },
-          {
-            name: "Export Permit",
-            url: "https://cloud-storage.com/docs/shipment-3/export-permit.pdf",
-          },
-        ],
-      },
     },
   },
 
@@ -1848,7 +1705,7 @@ export const useUserStore = create((set, get) => ({
           email: userData.email,
           country: userData.country || "",
           tinNumber: userData.tinNumber || "",
-          rcNumber: userData.Number || "",
+          rcNumber: userData.rcNumber || "", // Fixed: was "Number" before
           licenseNumber: "", // Will be filled later
         },
         documents: {
@@ -1858,18 +1715,8 @@ export const useUserStore = create((set, get) => ({
         },
         contactPersons: [],
         facilities: [],
-        pastRecords: {
-          2021: [],
-          2022: [],
-          2023: [],
-          2024: [],
-          2025: [],
-        },
         supportedCommodities: [],
         logo: null,
-        importers: [],
-        exporters: [],
-        shipments: [],
         report: null,
         linkedVerifiers: [],
         linkedFreightAgents: [],
@@ -1880,23 +1727,21 @@ export const useUserStore = create((set, get) => ({
       // Add specific fields based on role
       if (userData.role === "exporter") {
         newUser.importers = [];
+        newUser.shipments = [];
+        newUser.pastRecords = {
+          2021: [],
+          2022: [],
+          2023: [],
+          2024: [],
+          2025: [],
+        };
       } else {
+        // importer
         newUser.exporters = [];
-        newUser.supplierRecords = {
-          2021: [],
-          2022: [],
-          2023: [],
-          2024: [],
-          2025: [],
-        };
-        newUser.riskAssessment = {
-          2021: [],
-          2022: [],
-          2023: [],
-          2024: [],
-          2025: [],
-        };
-        newUser.riskMitigation = {
+        newUser.shipments = []; // This will store objects with { id, status }
+        newUser.currentSupplierRecords = [];
+        newUser.connectedPastRecords = [];
+        newUser.pastSupplierRecords = {
           2021: [],
           2022: [],
           2023: [],
@@ -2819,9 +2664,33 @@ export const useUserStore = create((set, get) => ({
   },
   // In your useUserStore.js, add these methods:
 
-  // Add this method to update demo data
+  // FIND AND REPLACE THIS METHOD (around line 600):
   updateDemoData: (updatedData) => {
+    console.log("========== updateDemoData CALLED ==========");
+    console.log(
+      "Shipments being set:",
+      updatedData.shipments
+        ? Object.keys(updatedData.shipments)
+        : "No shipments",
+    );
+    console.log(
+      "Sample shipment:",
+      updatedData.shipments ? Object.values(updatedData.shipments)[0] : "None",
+    );
+
     set({ demoData: updatedData });
+
+    // Also update current user if it's the same user
+    const currentState = get();
+    if (currentState.user && currentState.user.id) {
+      const updatedUser = updatedData.users[currentState.user.id];
+      if (updatedUser) {
+        set({ user: updatedUser });
+      }
+    }
+
+    console.log("========== updateDemoData COMPLETE ==========");
+    return { success: true };
   },
 
   updateUser: (userId, updatedUserData) => {
