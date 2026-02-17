@@ -513,38 +513,40 @@ const PastDueDiligence = () => {
   const getFileIcon = (fileName) => {
     const ext = fileName.split('.').pop().toLowerCase();
     switch(ext) {
-      case 'pdf': return <FaFilePdf className="text-red-500" />;
+      case 'pdf': return <FaFilePdf className="text-red-500 flex-shrink-0" />;
       case 'doc':
-      case 'docx': return <FaFileWord className="text-blue-500" />;
+      case 'docx': return <FaFileWord className="text-blue-500 flex-shrink-0" />;
       case 'xls':
-      case 'xlsx': return <FaFileExcel className="text-green-500" />;
+      case 'xlsx': return <FaFileExcel className="text-green-500 flex-shrink-0" />;
       case 'jpg':
       case 'jpeg':
       case 'png':
-      case 'gif': return <FaFileImage className="text-purple-500" />;
-      default: return <FaFileGeneric className="text-gray-500" />;
+      case 'gif': return <FaFileImage className="text-purple-500 flex-shrink-0" />;
+      default: return <FaFileGeneric className="text-gray-500 flex-shrink-0" />;
     }
   };
 
   const renderDocumentBox = (doc, index) => (
-    <div key={index} className="bg-gray-50 rounded-lg p-3 border border-gray-200 flex items-center justify-between">
-      <div className="flex items-center space-x-3">
+    <div key={index} className="bg-gray-50 rounded-lg p-3 border border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="flex items-center space-x-3 min-w-0">
         {getFileIcon(doc.url)}
-        <div>
-          <p className="text-sm font-medium text-gray-800">{doc.name}</p>
-          <p className="text-xs text-gray-500">{doc.url}</p>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-medium text-gray-800 truncate">{doc.name}</p>
+          <p className="text-xs text-gray-500 truncate">{doc.url}</p>
         </div>
       </div>
-      <div className="flex space-x-2">
+      <div className="flex space-x-2 sm:ml-auto">
         <button 
-          className="p-1 text-blue-600 hover:text-blue-800"
+          className="p-1.5 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors"
           onClick={() => toast.info('Document viewing will be available in the final implementation')}
+          title="View document"
         >
           <FaEye size={14} />
         </button>
         <button 
-          className="p-1 text-green-600 hover:text-green-800"
+          className="p-1.5 text-green-600 hover:text-green-800 hover:bg-green-50 rounded transition-colors"
           onClick={() => toast.info('Document download will be available in the final implementation')}
+          title="Download document"
         >
           <FaDownload size={14} />
         </button>
@@ -565,106 +567,110 @@ const PastDueDiligence = () => {
     const pastRecord = record.exporterPastRecord;
 
     return (
-      <div className="space-y-6">
-        <div className="bg-green-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-green-800 mb-3 flex items-center">
-            <FaInfoCircle className="mr-2" /> Basic Information
+      <div className="space-y-4 sm:space-y-6">
+        <div className="bg-green-50 p-3 sm:p-4 rounded-lg">
+          <h3 className="font-semibold text-green-800 mb-3 flex items-center text-sm sm:text-base">
+            <FaInfoCircle className="mr-2 flex-shrink-0" /> Basic Information
           </h3>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-sm text-gray-600">Description</p>
-              <p className="font-medium">{pastRecord.description}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-gray-600">Description</p>
+              <p className="font-medium text-sm sm:text-base break-words">{pastRecord.description}</p>
             </div>
-            <div>
-              <p className="text-sm text-gray-600">Common Name</p>
-              <p className="font-medium">{pastRecord.commonName}</p>
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-gray-600">Common Name</p>
+              <p className="font-medium text-sm sm:text-base break-words">{pastRecord.commonName}</p>
             </div>
-            <div>
-              <p className="text-sm text-gray-600">Scientific Name</p>
-              <p className="font-medium">{pastRecord.scientificName}</p>
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-gray-600">Scientific Name</p>
+              <p className="font-medium text-sm sm:text-base break-words">{pastRecord.scientificName}</p>
             </div>
-            <div>
-              <p className="text-sm text-gray-600">Country of Production</p>
-              <p className="font-medium">{pastRecord.countryOfProduction}</p>
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-gray-600">Country of Production</p>
+              <p className="font-medium text-sm sm:text-base break-words">{pastRecord.countryOfProduction}</p>
             </div>
-            <div>
-              <p className="text-sm text-gray-600">Production Location</p>
-              <p className="font-medium">{pastRecord.productionLocation}</p>
+            <div className="min-w-0 col-span-1 sm:col-span-2">
+              <p className="text-xs sm:text-sm text-gray-600">Production Location</p>
+              <p className="font-medium text-sm sm:text-base break-words">{pastRecord.productionLocation}</p>
             </div>
-            <div>
-              <p className="text-sm text-gray-600">Production Date Range</p>
-              <p className="font-medium">{pastRecord.productionDateRange?.from || 'N/A'} to {pastRecord.productionDateRange?.to || 'N/A'}</p>
+            <div className="min-w-0 col-span-1 sm:col-span-2">
+              <p className="text-xs sm:text-sm text-gray-600">Production Date Range</p>
+              <p className="font-medium text-sm sm:text-base break-words">{pastRecord.productionDateRange?.from || 'N/A'} to {pastRecord.productionDateRange?.to || 'N/A'}</p>
             </div>
-            <div>
-              <p className="text-sm text-gray-600">Net Mass (kg)</p>
-              <p className="font-medium">{pastRecord.netMassKg?.toLocaleString() || 'N/A'}</p>
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-gray-600">Net Mass (kg)</p>
+              <p className="font-medium text-sm sm:text-base">{pastRecord.netMassKg?.toLocaleString() || 'N/A'}</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-blue-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-blue-800 mb-3 flex items-center">
-            <FaBoxes className="mr-2" /> HS Codes
+        <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
+          <h3 className="font-semibold text-blue-800 mb-3 flex items-center text-sm sm:text-base">
+            <FaBoxes className="mr-2 flex-shrink-0" /> HS Codes
           </h3>
           <div className="space-y-2">
             {pastRecord.hsCodes?.map((code, idx) => (
-              <div key={idx} className="bg-white p-2 rounded border border-blue-200">
-                <p className="text-sm font-medium">{code.code} - {code.name}</p>
-                <p className="text-xs text-gray-600">Commodity: {code.commodity}</p>
+              <div key={idx} className="bg-white p-2 sm:p-3 rounded border border-blue-200">
+                <p className="text-xs sm:text-sm font-medium break-words">{code.code} - {code.name}</p>
+                <p className="text-xs text-gray-600 break-words">Commodity: {code.commodity}</p>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="bg-purple-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-purple-800 mb-3 flex items-center">
-            <FaTree className="mr-2" /> Planting Areas
+        <div className="bg-purple-50 p-3 sm:p-4 rounded-lg">
+          <h3 className="font-semibold text-purple-800 mb-3 flex items-center text-sm sm:text-base">
+            <FaTree className="mr-2 flex-shrink-0" /> Planting Areas
           </h3>
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {pastRecord.plantingAreas?.map((area, idx) => (
-              <div key={idx} className="bg-white p-3 rounded border border-purple-200">
-                <p className="font-medium">{area.name}</p>
-                <p className="text-sm text-gray-600">Hectares: {area.hectares}</p>
+              <div key={idx} className="bg-white p-2 sm:p-3 rounded border border-purple-200">
+                <p className="font-medium text-sm sm:text-base break-words">{area.name}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Hectares: {area.hectares}</p>
                 <p className="text-xs text-gray-500">Coordinates: {area.coordinates?.length || 0} points</p>
               </div>
             ))}
           </div>
           {pastRecord.totalHectares && (
             <div className="mt-3 pt-3 border-t border-purple-200">
-              <p className="font-medium">Total Hectares: {pastRecord.totalHectares}</p>
+              <p className="font-medium text-sm sm:text-base">Total Hectares: {pastRecord.totalHectares}</p>
             </div>
           )}
         </div>
 
-        <div className="bg-amber-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-amber-800 mb-3 flex items-center">
-            <FaFileAlt className="mr-2" /> Documents
+        <div className="bg-amber-50 p-3 sm:p-4 rounded-lg">
+          <h3 className="font-semibold text-amber-800 mb-3 flex items-center text-sm sm:text-base">
+            <FaFileAlt className="mr-2 flex-shrink-0" /> Documents
           </h3>
           <div className="space-y-3">
             {pastRecord.deforestationFreeDocs?.length > 0 && (
               <div>
-                <p className="text-sm font-medium text-gray-700 mb-2">Deforestation-Free Documentation</p>
-                {pastRecord.deforestationFreeDocs.map((doc, idx) => renderDocumentBox(doc, idx))}
+                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">Deforestation-Free Documentation</p>
+                <div className="space-y-2">
+                  {pastRecord.deforestationFreeDocs.map((doc, idx) => renderDocumentBox(doc, idx))}
+                </div>
               </div>
             )}
             {pastRecord.legalComplianceDocs?.length > 0 && (
               <div>
-                <p className="text-sm font-medium text-gray-700 mb-2">Legal Compliance Documentation</p>
-                {pastRecord.legalComplianceDocs.map((doc, idx) => renderDocumentBox(doc, idx))}
+                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">Legal Compliance Documentation</p>
+                <div className="space-y-2">
+                  {pastRecord.legalComplianceDocs.map((doc, idx) => renderDocumentBox(doc, idx))}
+                </div>
               </div>
             )}
           </div>
         </div>
 
-        <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
-            <FaBuilding className="mr-2" /> Facility Information
+        <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+          <h3 className="font-semibold text-gray-800 mb-3 flex items-center text-sm sm:text-base">
+            <FaBuilding className="mr-2 flex-shrink-0" /> Facility Information
           </h3>
           {record.exporterFacility && (
-            <div>
-              <p><span className="text-sm text-gray-600">Facility Name:</span> {record.exporterFacility.name}</p>
-              <p><span className="text-sm text-gray-600">Facility Type:</span> {record.exporterFacility.type}</p>
-              <p><span className="text-sm text-gray-600">Facility Address:</span> {record.exporterFacility.address}</p>
+            <div className="space-y-1">
+              <p className="text-sm sm:text-base break-words"><span className="text-xs sm:text-sm text-gray-600">Facility Name:</span> {record.exporterFacility.name}</p>
+              <p className="text-sm sm:text-base break-words"><span className="text-xs sm:text-sm text-gray-600">Facility Type:</span> {record.exporterFacility.type}</p>
+              <p className="text-sm sm:text-base break-words"><span className="text-xs sm:text-sm text-gray-600">Facility Address:</span> {record.exporterFacility.address}</p>
             </div>
           )}
         </div>
@@ -673,72 +679,74 @@ const PastDueDiligence = () => {
   };
 
   const renderImporterInfo = (data) => (
-    <div className="space-y-6">
-      <div className="bg-green-50 p-4 rounded-lg">
-        <h3 className="font-semibold text-green-800 mb-3 flex items-center">
-          <FaInfoCircle className="mr-2" /> Trade Information
+    <div className="space-y-4 sm:space-y-6">
+      <div className="bg-green-50 p-3 sm:p-4 rounded-lg">
+        <h3 className="font-semibold text-green-800 mb-3 flex items-center text-sm sm:text-base">
+          <FaInfoCircle className="mr-2 flex-shrink-0" /> Trade Information
         </h3>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <p className="text-sm text-gray-600">Description</p>
-            <p className="font-medium">{data.description}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <div className="min-w-0 col-span-1 sm:col-span-2">
+            <p className="text-xs sm:text-sm text-gray-600">Description</p>
+            <p className="font-medium text-sm sm:text-base break-words">{data.description}</p>
           </div>
-          <div>
-            <p className="text-sm text-gray-600">Common Name</p>
-            <p className="font-medium">{data.commonName}</p>
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm text-gray-600">Common Name</p>
+            <p className="font-medium text-sm sm:text-base break-words">{data.commonName}</p>
           </div>
-          <div>
-            <p className="text-sm text-gray-600">Scientific Name</p>
-            <p className="font-medium">{data.scientificName}</p>
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm text-gray-600">Scientific Name</p>
+            <p className="font-medium text-sm sm:text-base break-words">{data.scientificName}</p>
           </div>
-          <div>
-            <p className="text-sm text-gray-600">Net Mass (kg)</p>
-            <p className="font-medium">{data.netMassKg.toLocaleString()}</p>
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm text-gray-600">Net Mass (kg)</p>
+            <p className="font-medium text-sm sm:text-base">{data.netMassKg.toLocaleString()}</p>
           </div>
         </div>
       </div>
 
-      <div className="bg-blue-50 p-4 rounded-lg">
-        <h3 className="font-semibold text-blue-800 mb-3 flex items-center">
-          <FaBoxes className="mr-2" /> HS Codes
+      <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
+        <h3 className="font-semibold text-blue-800 mb-3 flex items-center text-sm sm:text-base">
+          <FaBoxes className="mr-2 flex-shrink-0" /> HS Codes
         </h3>
         <div className="space-y-2">
           {data.hsCodes.map((code, idx) => (
-            <div key={idx} className="bg-white p-2 rounded border border-blue-200">
-              <p className="text-sm font-medium">{code.code} - {code.name}</p>
-              <p className="text-xs text-gray-600">Commodity: {code.commodity}</p>
+            <div key={idx} className="bg-white p-2 sm:p-3 rounded border border-blue-200">
+              <p className="text-xs sm:text-sm font-medium break-words">{code.code} - {code.name}</p>
+              <p className="text-xs text-gray-600 break-words">Commodity: {code.commodity}</p>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="bg-purple-50 p-4 rounded-lg">
-        <h3 className="font-semibold text-purple-800 mb-3 flex items-center">
-          <FaUser className="mr-2" /> Customer Information
+      <div className="bg-purple-50 p-3 sm:p-4 rounded-lg">
+        <h3 className="font-semibold text-purple-800 mb-3 flex items-center text-sm sm:text-base">
+          <FaUser className="mr-2 flex-shrink-0" /> Customer Information
         </h3>
         <div className="space-y-2">
-          <p><span className="text-sm text-gray-600">Name:</span> {data.customerName}</p>
-          <p><span className="text-sm text-gray-600">Address:</span> {data.customerAddress}</p>
-          <p><span className="text-sm text-gray-600">Email:</span> {data.customerEmail}</p>
+          <p className="text-sm sm:text-base break-words"><span className="text-xs sm:text-sm text-gray-600">Name:</span> {data.customerName}</p>
+          <p className="text-sm sm:text-base break-words"><span className="text-xs sm:text-sm text-gray-600">Address:</span> {data.customerAddress}</p>
+          <p className="text-sm sm:text-base break-words"><span className="text-xs sm:text-sm text-gray-600">Email:</span> {data.customerEmail}</p>
         </div>
       </div>
 
-      <div className="bg-amber-50 p-4 rounded-lg">
-        <h3 className="font-semibold text-amber-800 mb-3 flex items-center">
-          <FaMoneyBillWave className="mr-2" /> Payment Information
+      <div className="bg-amber-50 p-3 sm:p-4 rounded-lg">
+        <h3 className="font-semibold text-amber-800 mb-3 flex items-center text-sm sm:text-base">
+          <FaMoneyBillWave className="mr-2 flex-shrink-0" /> Payment Information
         </h3>
         <div className="space-y-2">
-          <p><span className="text-sm text-gray-600">Amount Paid:</span> ${data.amount}</p>
-          <p><span className="text-sm text-gray-600">Payment Status:</span> 
-            <span className={`ml-2 px-2 py-1 rounded-full text-xs font-semibold ${data.paymentStatus ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+          <p className="text-sm sm:text-base"><span className="text-xs sm:text-sm text-gray-600">Amount Paid:</span> ${data.amount}</p>
+          <div className="flex flex-col xs:flex-row xs:items-center gap-2">
+            <span className="text-xs sm:text-sm text-gray-600">Payment Status:</span>
+            <span className={`inline-flex px-2 py-1 rounded-full text-xs font-semibold w-fit ${data.paymentStatus ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
               {data.paymentStatus ? 'Paid' : 'Unpaid'}
             </span>
-          </p>
-          <p><span className="text-sm text-gray-600">Due Diligence Status:</span>
-            <span className={`ml-2 px-2 py-1 rounded-full text-xs font-semibold ${data.status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+          </div>
+          <div className="flex flex-col xs:flex-row xs:items-center gap-2">
+            <span className="text-xs sm:text-sm text-gray-600">Due Diligence Status:</span>
+            <span className={`inline-flex px-2 py-1 rounded-full text-xs font-semibold w-fit ${data.status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
               {data.status === 'approved' ? 'Approved' : 'In Progress'}
             </span>
-          </p>
+          </div>
         </div>
       </div>
     </div>
@@ -748,15 +756,15 @@ const PastDueDiligence = () => {
     if (!data) return null;
 
     return (
-      <div className="space-y-6">
-        <div className={`p-4 rounded-lg ${
+      <div className="space-y-4 sm:space-y-6">
+        <div className={`p-3 sm:p-4 rounded-lg ${
           data.riskLevel === 'high risk' ? 'bg-red-50' : 
           data.riskLevel === 'low risk' ? 'bg-green-50' : 'bg-yellow-50'
         }`}>
-          <h3 className="font-semibold mb-3 flex items-center">
-            <FaExclamationTriangle className="mr-2" /> Risk Level
+          <h3 className="font-semibold mb-3 flex items-center text-sm sm:text-base">
+            <FaExclamationTriangle className="mr-2 flex-shrink-0" /> Risk Level
           </h3>
-          <p className={`text-lg font-bold ${
+          <p className={`text-base sm:text-lg font-bold break-words ${
             data.riskLevel === 'high risk' ? 'text-red-800' : 
             data.riskLevel === 'low risk' ? 'text-green-800' : 'text-yellow-800'
           }`}>
@@ -764,11 +772,11 @@ const PastDueDiligence = () => {
           </p>
         </div>
 
-        <div className="bg-blue-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-blue-800 mb-3 flex items-center">
-            <FaFileAlt className="mr-2" /> Supporting Documents
+        <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
+          <h3 className="font-semibold text-blue-800 mb-3 flex items-center text-sm sm:text-base">
+            <FaFileAlt className="mr-2 flex-shrink-0" /> Supporting Documents
           </h3>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {data.assessmentDocs?.map((doc, idx) => renderDocumentBox(doc, idx))}
           </div>
         </div>
@@ -780,73 +788,87 @@ const PastDueDiligence = () => {
     if (!data) return null;
 
     return (
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         {data.highRiskSection && (
-          <div className="bg-red-50 p-4 rounded-lg">
-            <h3 className="font-semibold text-red-800 mb-3">High Risk Section</h3>
+          <div className="bg-red-50 p-3 sm:p-4 rounded-lg">
+            <h3 className="font-semibold text-red-800 mb-3 text-sm sm:text-base">High Risk Section</h3>
             
             {data.highRiskSection.additionalInfo?.length > 0 && (
               <div className="mb-4">
-                <p className="text-sm font-medium text-gray-700 mb-2">Additional Information</p>
-                {data.highRiskSection.additionalInfo.map((doc, idx) => renderDocumentBox(doc, idx))}
+                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">Additional Information</p>
+                <div className="space-y-2">
+                  {data.highRiskSection.additionalInfo.map((doc, idx) => renderDocumentBox(doc, idx))}
+                </div>
               </div>
             )}
             
             {data.highRiskSection.independentSurveys?.length > 0 && (
               <div className="mb-4">
-                <p className="text-sm font-medium text-gray-700 mb-2">Independent Surveys/Audits</p>
-                {data.highRiskSection.independentSurveys.map((doc, idx) => renderDocumentBox(doc, idx))}
+                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">Independent Surveys/Audits</p>
+                <div className="space-y-2">
+                  {data.highRiskSection.independentSurveys.map((doc, idx) => renderDocumentBox(doc, idx))}
+                </div>
               </div>
             )}
             
             {data.highRiskSection.otherMeasures?.length > 0 && (
               <div className="mb-4">
-                <p className="text-sm font-medium text-gray-700 mb-2">Other Measures</p>
-                {data.highRiskSection.otherMeasures.map((doc, idx) => renderDocumentBox(doc, idx))}
+                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">Other Measures</p>
+                <div className="space-y-2">
+                  {data.highRiskSection.otherMeasures.map((doc, idx) => renderDocumentBox(doc, idx))}
+                </div>
               </div>
             )}
             
             {data.highRiskSection.capacityBuilding?.length > 0 && (
               <div>
-                <p className="text-sm font-medium text-gray-700 mb-2">Capacity Building & Investments</p>
-                {data.highRiskSection.capacityBuilding.map((doc, idx) => renderDocumentBox(doc, idx))}
+                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">Capacity Building & Investments</p>
+                <div className="space-y-2">
+                  {data.highRiskSection.capacityBuilding.map((doc, idx) => renderDocumentBox(doc, idx))}
+                </div>
               </div>
             )}
           </div>
         )}
 
         {data.policiesControls && (
-          <div className="bg-blue-50 p-4 rounded-lg">
-            <h3 className="font-semibold text-blue-800 mb-3">Policies, Controls & Procedures</h3>
+          <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
+            <h3 className="font-semibold text-blue-800 mb-3 text-sm sm:text-base">Policies, Controls & Procedures</h3>
             
             <div className="mb-4">
-              <p className="text-sm font-medium text-gray-700 mb-2">Model Risk Management Practices</p>
+              <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">Model Risk Management Practices</p>
               {!data.policiesControls.modelPractices?.isSme && (
                 <div className="bg-white p-3 rounded border border-blue-200 mb-3">
-                  <p className="text-sm"><span className="font-medium">Officer Name:</span> {data.policiesControls.modelPractices.officerName}</p>
+                  <p className="text-sm break-words"><span className="font-medium">Officer Name:</span> {data.policiesControls.modelPractices.officerName}</p>
                   <div className="mt-2 space-y-2">
                     {data.policiesControls.modelPractices.officerIdCard && renderDocumentBox(data.policiesControls.modelPractices.officerIdCard, 'officer-id')}
                     {data.policiesControls.modelPractices.appointmentLetter && renderDocumentBox(data.policiesControls.modelPractices.appointmentLetter, 'appointment')}
                   </div>
                 </div>
               )}
-              {data.policiesControls.modelPractices?.Docs?.map((doc, idx) => renderDocumentBox(doc, idx))}
+              <div className="space-y-2">
+                {data.policiesControls.modelPractices?.Docs?.map((doc, idx) => renderDocumentBox(doc, idx))}
+              </div>
             </div>
             
             {data.policiesControls.independentAudit?.length > 0 && (
               <div>
-                <p className="text-sm font-medium text-gray-700 mb-2">Independent Audit Function</p>
-                {data.policiesControls.independentAudit.map((doc, idx) => renderDocumentBox(doc, idx))}
+                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">Independent Audit Function</p>
+                <div className="space-y-2">
+                  {data.policiesControls.independentAudit.map((doc, idx) => renderDocumentBox(doc, idx))}
+                </div>
               </div>
             )}
           </div>
         )}
 
         {data.decisionsReview?.length > 0 && (
-          <div className="bg-green-50 p-4 rounded-lg">
-            <h3 className="font-semibold text-green-800 mb-3">Decisions on Risk Mitigation Procedures</h3>
-            <p className="text-sm text-gray-600 mb-3">Reviewed at least on an annual basis</p>
-            {data.decisionsReview.map((doc, idx) => renderDocumentBox(doc, idx))}
+          <div className="bg-green-50 p-3 sm:p-4 rounded-lg">
+            <h3 className="font-semibold text-green-800 mb-2 text-sm sm:text-base">Decisions on Risk Mitigation Procedures</h3>
+            <p className="text-xs sm:text-sm text-gray-600 mb-3">Reviewed at least on an annual basis</p>
+            <div className="space-y-2">
+              {data.decisionsReview.map((doc, idx) => renderDocumentBox(doc, idx))}
+            </div>
           </div>
         )}
       </div>
@@ -857,23 +879,23 @@ const PastDueDiligence = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-6"
+      className="p-4 sm:p-6"
     >
-      <h1 className="text-2xl lg:text-3xl font-bold text-green-800 mb-4 lg:mb-6 pl-11 lg:pl-0">
+      <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-800 mb-4 sm:mb-6">
         Past Due Diligence
       </h1>
 
-      <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100">
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Select Year</h2>
-          <div className="flex flex-wrap gap-3">
+      <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-green-100">
+        <div className="mb-4 sm:mb-6">
+          <h2 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">Select Year</h2>
+          <div className="flex flex-wrap gap-2 sm:gap-3">
             {years.map(year => {
               const recordCount = yearRecordCounts[year] || 0;
               return (
                 <button
                   key={year}
                   onClick={() => setSelectedYear(year)}
-                  className={`relative px-4 py-2 rounded-lg font-medium transition-colors ${
+                  className={`relative px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base font-medium transition-colors ${
                     selectedYear === year
                       ? 'bg-green-600 text-white'
                       : recordCount > 0
@@ -892,22 +914,22 @@ const PastDueDiligence = () => {
             })}
           </div>
           {yearRecordCounts[selectedYear] === 0 && (
-            <p className="mt-2 text-sm text-gray-500">
+            <p className="mt-2 text-xs sm:text-sm text-gray-500">
               No records found for {selectedYear}
             </p>
           )}
         </div>
 
         {yearRecordCounts[selectedYear] > 0 && (
-          <div className="border-t border-gray-200 pt-6">
+          <div className="border-t border-gray-200 pt-4 sm:pt-6">
             <button
               onClick={() => toggleYear(selectedYear)}
-              className="flex items-center justify-between w-full text-left mb-4"
+              className="flex items-center justify-between w-full text-left mb-3 sm:mb-4"
             >
-              <h3 className="text-lg font-semibold text-gray-800">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800">
                 Records for {selectedYear} ({yearRecordCounts[selectedYear]})
               </h3>
-              {expandedYears[selectedYear] ? <FaChevronUp /> : <FaChevronDown />}
+              {expandedYears[selectedYear] ? <FaChevronUp className="flex-shrink-0" /> : <FaChevronDown className="flex-shrink-0" />}
             </button>
 
             <AnimatePresence>
@@ -916,23 +938,23 @@ const PastDueDiligence = () => {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="space-y-4"
+                  className="space-y-3 sm:space-y-4"
                 >
                   {getRecordsByYear(selectedYear).map(record => (
                     <motion.div
                       key={record.recordId}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      className="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow"
+                      className="bg-gray-50 rounded-lg p-3 sm:p-4 border border-gray-200 hover:shadow-md transition-shadow"
                     >
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <p className="text-sm text-gray-500">Record ID: {record.recordId}</p>
-                          <h4 className="font-semibold text-gray-800">{record.exporterName}</h4>
-                          <p className="text-sm text-gray-600 mt-1">
+                      <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs sm:text-sm text-gray-500 break-words">Record ID: {record.recordId}</p>
+                          <h4 className="font-semibold text-gray-800 text-sm sm:text-base break-words">{record.exporterName}</h4>
+                          <p className="text-xs sm:text-sm text-gray-600 mt-1 break-words">
                             {record.dueDiligenceData?.description || record.exporterPastRecord?.description || 'No description yet'}
                           </p>
-                          <div className="flex items-center mt-2 space-x-2">
+                          <div className="flex flex-wrap items-center gap-2 mt-2">
                             <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
                               record.status === 'completed' ? 'bg-green-100 text-green-800' :
                               record.status === 'in-progress' ? 'bg-yellow-100 text-yellow-800' :
@@ -948,41 +970,41 @@ const PastDueDiligence = () => {
                             )}
                           </div>
                         </div>
-                        <div>
+                        <div className="w-full sm:w-auto">
                           {record.status === 'not-started' && (
                             <button
                               onClick={() => handleStartDueDiligence(record)}
-                              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
+                              className="w-full sm:w-auto px-3 sm:px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center text-sm sm:text-base"
                             >
-                              <FaPlus className="mr-2" size={14} />
-                              Start Due Diligence
+                              <FaPlus className="mr-2 flex-shrink-0" size={14} />
+                              Start
                             </button>
                           )}
                           {record.status === 'in-progress' && !record.paymentStatus && (
                             <button
                               onClick={() => handleContinuePayment(record)}
-                              className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors flex items-center"
+                              className="w-full sm:w-auto px-3 sm:px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors flex items-center justify-center text-sm sm:text-base"
                             >
-                              <FaMoneyBillWave className="mr-2" size={14} />
-                              Continue to Payment
+                              <FaMoneyBillWave className="mr-2 flex-shrink-0" size={14} />
+                              Pay
                             </button>
                           )}
                           {record.status === 'in-progress' && record.paymentStatus && (
                             <button
                               onClick={() => handleViewDetails(record)}
-                              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+                              className="w-full sm:w-auto px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center text-sm sm:text-base"
                             >
-                              <FaEye className="mr-2" size={14} />
-                              View Details
+                              <FaEye className="mr-2 flex-shrink-0" size={14} />
+                              View
                             </button>
                           )}
                           {record.status === 'completed' && (
                             <button
                               onClick={() => handleViewDetails(record)}
-                              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
+                              className="w-full sm:w-auto px-3 sm:px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center text-sm sm:text-base"
                             >
-                              <FaEye className="mr-2" size={14} />
-                              View Details
+                              <FaEye className="mr-2 flex-shrink-0" size={14} />
+                              View
                             </button>
                           )}
                         </div>
@@ -1003,7 +1025,7 @@ const PastDueDiligence = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-2 sm:p-4"
             onClick={() => setShowModal(false)}
           >
             <motion.div
@@ -1014,8 +1036,8 @@ const PastDueDiligence = () => {
               onClick={e => e.stopPropagation()}
             >
               {/* Modal Header */}
-              <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex justify-between items-center">
-                <h2 className="text-xl font-bold text-gray-800">
+              <div className="sticky top-0 bg-white border-b border-gray-200 p-3 sm:p-4 flex justify-between items-center">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-800 break-words pr-4">
                   {modalMode === 'start' && 'Start Due Diligence'}
                   {modalMode === 'payment' && 'Complete Payment'}
                   {modalMode === 'details' && 'Due Diligence Details'}
@@ -1024,88 +1046,88 @@ const PastDueDiligence = () => {
                 </h2>
                 <button
                   onClick={() => setShowModal(false)}
-                  className="p-2 hover:bg-gray-100 rounded-full"
+                  className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-full flex-shrink-0"
                 >
                   <FaTimes />
                 </button>
               </div>
 
               {/* Modal Body */}
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 {modalMode === 'start' && (
-                  <div className="space-y-6">
+                  <div className="space-y-4 sm:space-y-6">
                     {currentStep === 1 && (
                       <>
-                        <div className="bg-blue-50 p-4 rounded-lg mb-4">
-                          <p className="text-sm text-blue-800">
-                            <FaInfoCircle className="inline mr-2" />
-                            Please provide information about this past trade
+                        <div className="bg-blue-50 p-3 sm:p-4 rounded-lg mb-4">
+                          <p className="text-xs sm:text-sm text-blue-800 flex items-start">
+                            <FaInfoCircle className="inline mr-2 flex-shrink-0 mt-0.5" />
+                            <span>Please provide information about this past trade</span>
                           </p>
                         </div>
 
                         <div className="space-y-4">
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                               Description (include trade name and type of products) *
                             </label>
                             <textarea
                               value={formData.description}
                               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                              className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
                               rows="3"
                               placeholder="e.g., Import of certified mahogany logs for furniture manufacturing"
                             />
                           </div>
 
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                               Common Name of Species *
                             </label>
                             <input
                               type="text"
                               value={formData.commonName}
                               onChange={(e) => setFormData({ ...formData, commonName: e.target.value })}
-                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                              className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
                               placeholder="e.g., Mahogany"
                             />
                           </div>
 
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                               Scientific Name *
                             </label>
                             <input
                               type="text"
                               value={formData.scientificName}
                               onChange={(e) => setFormData({ ...formData, scientificName: e.target.value })}
-                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                              className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
                               placeholder="e.g., Swietenia macrophylla"
                             />
                           </div>
 
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                               HS Codes (EUDR supported products) *
                             </label>
                             <button
                               type="button"
                               onClick={() => setShowHsCodeSelector(true)}
-                              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-left flex items-center justify-between hover:bg-gray-50"
+                              className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-left flex items-center justify-between hover:bg-gray-50 text-sm"
                             >
-                              <span>
+                              <span className="truncate">
                                 {formData.hsCodes.length > 0 
                                   ? `${formData.hsCodes.length} product(s) selected` 
                                   : 'Select HS Codes'}
                               </span>
-                              <FaChevronDown />
+                              <FaChevronDown className="flex-shrink-0" />
                             </button>
                             
                             {formData.hsCodes.length > 0 && (
                               <div className="mt-2 space-y-2">
                                 {formData.hsCodes.map((code, idx) => (
                                   <div key={idx} className="bg-green-50 p-2 rounded border border-green-200">
-                                    <p className="text-sm font-medium">{code.code} - {code.name}</p>
-                                    <p className="text-xs text-gray-600">Commodity: {code.commodity}</p>
+                                    <p className="text-xs sm:text-sm font-medium break-words">{code.code} - {code.name}</p>
+                                    <p className="text-xs text-gray-600 break-words">Commodity: {code.commodity}</p>
                                   </div>
                                 ))}
                               </div>
@@ -1113,75 +1135,75 @@ const PastDueDiligence = () => {
                           </div>
 
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                               Net Mass (kg) *
                             </label>
                             <input
                               type="number"
                               value={formData.netMassKg}
                               onChange={(e) => setFormData({ ...formData, netMassKg: e.target.value })}
-                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                              className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
                               placeholder="e.g., 50000"
                             />
                           </div>
 
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                               Customer Name *
                             </label>
                             <input
                               type="text"
                               value={formData.customerName}
                               onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
-                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                              className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
                               placeholder="e.g., Adroitsoft Nigeria Limited"
                             />
                           </div>
 
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                               Customer Postal Address *
                             </label>
                             <input
                               type="text"
                               value={formData.customerAddress}
                               onChange={(e) => setFormData({ ...formData, customerAddress: e.target.value })}
-                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                              className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
                               placeholder="e.g., Lagos, Nigeria"
                             />
                           </div>
 
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                               Customer Email Address *
                             </label>
                             <input
                               type="email"
                               value={formData.customerEmail}
                               onChange={(e) => setFormData({ ...formData, customerEmail: e.target.value })}
-                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                              className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
                               placeholder="e.g., customer@company.com"
                             />
                           </div>
                         </div>
 
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <p className="text-sm text-gray-600 mb-2">Auto-filled supplier information:</p>
-                          <p><span className="font-medium">Supplier Name:</span> {selectedRecord?.exporterName}</p>
-                          <p><span className="font-medium">Supplier Email:</span> {selectedRecord?.exporterEmail}</p>
-                          <p><span className="font-medium">Supplier Address:</span> {selectedRecord?.exporterAddress || 'Not available'}</p>
+                        <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                          <p className="text-xs sm:text-sm text-gray-600 mb-2">Auto-filled supplier information:</p>
+                          <p className="text-sm break-words"><span className="font-medium">Supplier Name:</span> {selectedRecord?.exporterName}</p>
+                          <p className="text-sm break-words"><span className="font-medium">Supplier Email:</span> {selectedRecord?.exporterEmail}</p>
+                          <p className="text-sm break-words"><span className="font-medium">Supplier Address:</span> {selectedRecord?.exporterAddress || 'Not available'}</p>
                         </div>
 
-                        <div className="flex justify-end space-x-3">
+                        <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:space-x-3">
                           <button
                             onClick={() => setShowModal(false)}
-                            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
                           >
                             Cancel
                           </button>
                           <button
                             onClick={handleSaveImporterInfo}
-                            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
                           >
                             Continue to Payment
                           </button>
@@ -1192,43 +1214,43 @@ const PastDueDiligence = () => {
                 )}
 
                 {modalMode === 'payment' && (
-                  <div className="space-y-6">
-                    <div className="bg-yellow-50 p-6 rounded-lg text-center">
-                      <FaMoneyBillWave className="text-5xl text-yellow-600 mx-auto mb-4" />
-                      <h3 className="text-xl font-bold text-gray-800 mb-2">Payment Required</h3>
-                      <p className="text-gray-600 mb-4">
-                        Amount to pay: <span className="text-2xl font-bold text-green-600">
+                  <div className="space-y-4 sm:space-y-6">
+                    <div className="bg-yellow-50 p-4 sm:p-6 rounded-lg text-center">
+                      <FaMoneyBillWave className="text-3xl sm:text-5xl text-yellow-600 mx-auto mb-3 sm:mb-4" />
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">Payment Required</h3>
+                      <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">
+                        Amount to pay: <span className="text-xl sm:text-2xl font-bold text-green-600">
                           ${calculateAmount(formData.netMassKg || selectedRecord?.dueDiligenceData?.netMassKg || 0)}
                         </span>
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-xs sm:text-sm text-gray-500">
                         (Calculated as $10 per 20,000kg)
                       </p>
                     </div>
 
-                    <div className="bg-blue-50 p-4 rounded-lg">
-                      <p className="text-sm text-blue-800">
-                        <FaInfoCircle className="inline mr-2" />
-                        This is a dummy payment system for demonstration purposes. Click "Pay Now" to simulate payment.
+                    <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
+                      <p className="text-xs sm:text-sm text-blue-800 flex items-start">
+                        <FaInfoCircle className="inline mr-2 flex-shrink-0 mt-0.5" />
+                        <span>This is a dummy payment system for demonstration purposes. Click "Pay Now" to simulate payment.</span>
                       </p>
                     </div>
 
-                    <div className="flex justify-end space-x-3">
+                    <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:space-x-3">
                       <button
                         onClick={() => setModalMode('start')}
-                        className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                        className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
                       >
                         Back
                       </button>
                       <button
                         onClick={handlePayment}
                         disabled={paymentLoading}
-                        className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 flex items-center"
+                        className="px-4 sm:px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 flex items-center justify-center text-sm"
                       >
                         {paymentLoading ? (
                           <>
                             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                            Processing...
+                            <span>Processing...</span>
                           </>
                         ) : (
                           'Pay Now'
@@ -1239,35 +1261,35 @@ const PastDueDiligence = () => {
                 )}
 
                 {modalMode === 'details' && viewingRecord && (
-                  <div className="space-y-6">
+                  <div className="space-y-4 sm:space-y-6">
                     {/* Tab Navigation */}
-                    <div className="flex space-x-2 border-b border-gray-200 overflow-x-auto pb-1">
+                    <div className="flex flex-nowrap gap-1 sm:gap-2 border-b border-gray-200 overflow-x-auto pb-1 -mx-4 sm:-mx-6 px-4 sm:px-6">
                       <button
                         onClick={() => setViewTab('importer-info')}
-                        className={`px-4 py-2 font-medium text-sm whitespace-nowrap ${
+                        className={`px-3 sm:px-4 py-2 font-medium text-xs sm:text-sm whitespace-nowrap flex-shrink-0 ${
                           viewTab === 'importer-info'
                             ? 'border-b-2 border-green-600 text-green-600'
                             : 'text-gray-500 hover:text-gray-700'
                         }`}
                       >
-                        Importer Information
+                        Importer Info
                       </button>
                       {viewingRecord.paymentStatus && (
                         <>
                           <button
                             onClick={() => setViewTab('exporter-info')}
-                            className={`px-4 py-2 font-medium text-sm whitespace-nowrap ${
+                            className={`px-3 sm:px-4 py-2 font-medium text-xs sm:text-sm whitespace-nowrap flex-shrink-0 ${
                               viewTab === 'exporter-info'
                                 ? 'border-b-2 border-green-600 text-green-600'
                                 : 'text-gray-500 hover:text-gray-700'
                             }`}
                           >
-                            Exporter Information
+                            Exporter Info
                           </button>
                           {viewingRecord.dueDiligenceData?.riskAssessment && (
                             <button
                               onClick={() => setViewTab('risk-assessment')}
-                              className={`px-4 py-2 font-medium text-sm whitespace-nowrap ${
+                              className={`px-3 sm:px-4 py-2 font-medium text-xs sm:text-sm whitespace-nowrap flex-shrink-0 ${
                                 viewTab === 'risk-assessment'
                                   ? 'border-b-2 border-green-600 text-green-600'
                                   : 'text-gray-500 hover:text-gray-700'
@@ -1279,7 +1301,7 @@ const PastDueDiligence = () => {
                           {viewingRecord.dueDiligenceData?.riskMitigation && (
                             <button
                               onClick={() => setViewTab('risk-mitigation')}
-                              className={`px-4 py-2 font-medium text-sm whitespace-nowrap ${
+                              className={`px-3 sm:px-4 py-2 font-medium text-xs sm:text-sm whitespace-nowrap flex-shrink-0 ${
                                 viewTab === 'risk-mitigation'
                                   ? 'border-b-2 border-green-600 text-green-600'
                                   : 'text-gray-500 hover:text-gray-700'
@@ -1312,7 +1334,7 @@ const PastDueDiligence = () => {
                     <div className="flex justify-end">
                       <button
                         onClick={() => setShowModal(false)}
-                        className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+                        className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 text-sm"
                       >
                         Close
                       </button>
@@ -1321,30 +1343,30 @@ const PastDueDiligence = () => {
                 )}
 
                 {modalMode === 'risk-assessment' && (
-                  <div className="space-y-6">
-                    <div className="bg-blue-50 p-4 rounded-lg">
-                      <p className="text-sm text-blue-800">
-                        <FaInfoCircle className="inline mr-2" />
-                        Please assess the risk level of this trade and provide supporting documentation.
+                  <div className="space-y-4 sm:space-y-6">
+                    <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
+                      <p className="text-xs sm:text-sm text-blue-800 flex items-start">
+                        <FaInfoCircle className="inline mr-2 flex-shrink-0 mt-0.5" />
+                        <span>Please assess the risk level of this trade and provide supporting documentation.</span>
                       </p>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-3">
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2 sm:mb-3">
                         Risk Level *
                       </label>
                       <div className="space-y-2">
                         {['low risk', 'negligible risk', 'high risk'].map(level => (
-                          <label key={level} className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                          <label key={level} className="flex items-start space-x-3 p-2 sm:p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
                             <input
                               type="radio"
                               name="riskLevel"
                               value={level}
                               checked={riskLevel === level}
                               onChange={(e) => setRiskLevel(e.target.value)}
-                              className="h-4 w-4 text-green-600"
+                              className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0"
                             />
-                            <span className="text-sm font-medium text-gray-700">
+                            <span className="text-xs sm:text-sm font-medium text-gray-700">
                               {level.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                             </span>
                           </label>
@@ -1353,13 +1375,13 @@ const PastDueDiligence = () => {
                     </div>
 
                     <div>
-                      <div className="flex justify-between items-center mb-3">
-                        <label className="block text-sm font-medium text-gray-700">
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-3">
+                        <label className="block text-xs sm:text-sm font-medium text-gray-700">
                           Supporting Documents *
                         </label>
                         <button
                           onClick={() => setShowAssessmentDocModal(true)}
-                          className="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 flex items-center"
+                          className="w-full sm:w-auto px-3 py-1.5 bg-blue-600 text-white text-xs sm:text-sm rounded-lg hover:bg-blue-700 flex items-center justify-center"
                         >
                           <FaUpload className="mr-2" size={12} />
                           Add Document
@@ -1368,37 +1390,37 @@ const PastDueDiligence = () => {
                       
                       <div className="space-y-2">
                         {assessmentDocs.map((doc, idx) => (
-                          <div key={idx} className="bg-gray-50 p-3 rounded-lg border border-gray-200 flex justify-between items-center">
-                            <div className="flex items-center space-x-3">
+                          <div key={idx} className="bg-gray-50 p-2 sm:p-3 rounded-lg border border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                            <div className="flex items-center space-x-3 min-w-0">
                               {getFileIcon(doc.url)}
-                              <span className="text-sm font-medium">{doc.name}</span>
+                              <span className="text-xs sm:text-sm font-medium break-words">{doc.name}</span>
                             </div>
                             <button
                               onClick={() => handleRemoveAssessmentDoc(idx)}
-                              className="text-red-600 hover:text-red-800"
+                              className="text-red-600 hover:text-red-800 self-end sm:self-center"
                             >
                               <FaTimes />
                             </button>
                           </div>
                         ))}
                         {assessmentDocs.length === 0 && (
-                          <p className="text-sm text-gray-500 text-center py-4">
+                          <p className="text-xs sm:text-sm text-gray-500 text-center py-4">
                             No documents added yet
                           </p>
                         )}
                       </div>
                     </div>
 
-                    <div className="flex justify-end space-x-3">
+                    <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:space-x-3">
                       <button
                         onClick={() => setShowModal(false)}
-                        className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                        className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
                       >
                         Cancel
                       </button>
                       <button
                         onClick={handleSaveRiskAssessment}
-                        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
                       >
                         Save & Continue
                       </button>
@@ -1407,23 +1429,23 @@ const PastDueDiligence = () => {
                 )}
 
                 {modalMode === 'risk-mitigation' && (
-                  <div className="space-y-8">
-                    <div className="bg-red-50 p-4 rounded-lg">
-                      <p className="text-sm text-red-800">
-                        <FaExclamationTriangle className="inline mr-2" />
-                        High risk trade detected. Please complete all required risk mitigation steps.
+                  <div className="space-y-6 sm:space-y-8">
+                    <div className="bg-red-50 p-3 sm:p-4 rounded-lg">
+                      <p className="text-xs sm:text-sm text-red-800 flex items-start">
+                        <FaExclamationTriangle className="inline mr-2 flex-shrink-0 mt-0.5" />
+                        <span>High risk trade detected. Please complete all required risk mitigation steps.</span>
                       </p>
                     </div>
 
                     {/* High Risk Section */}
-                    <div className="border border-red-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-red-800 mb-4">High Risk Section</h3>
+                    <div className="border border-red-200 rounded-lg p-3 sm:p-4">
+                      <h3 className="text-base sm:text-lg font-semibold text-red-800 mb-3 sm:mb-4">High Risk Section</h3>
                       
                       <div className="space-y-4">
                         {/* Additional Information */}
                         <div>
-                          <div className="flex justify-between items-center mb-2">
-                            <label className="text-sm font-medium text-gray-700">
+                          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+                            <label className="text-xs sm:text-sm font-medium text-gray-700">
                               (a) Requiring additional information, data or documents
                             </label>
                             <button
@@ -1431,7 +1453,7 @@ const PastDueDiligence = () => {
                                 setDocModalData({ section: 'highRiskSection', subsection: 'additionalInfo', description: '' });
                                 setShowDocModal(true);
                               }}
-                              className="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
+                              className="w-full sm:w-auto px-3 py-1.5 bg-blue-600 text-white text-xs sm:text-sm rounded-lg hover:bg-blue-700"
                             >
                               Add Document
                             </button>
@@ -1443,8 +1465,8 @@ const PastDueDiligence = () => {
 
                         {/* Independent Surveys */}
                         <div>
-                          <div className="flex justify-between items-center mb-2">
-                            <label className="text-sm font-medium text-gray-700">
+                          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+                            <label className="text-xs sm:text-sm font-medium text-gray-700">
                               (b) Carrying out independent surveys or audits
                             </label>
                             <button
@@ -1452,7 +1474,7 @@ const PastDueDiligence = () => {
                                 setDocModalData({ section: 'highRiskSection', subsection: 'independentSurveys', description: '' });
                                 setShowDocModal(true);
                               }}
-                              className="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
+                              className="w-full sm:w-auto px-3 py-1.5 bg-blue-600 text-white text-xs sm:text-sm rounded-lg hover:bg-blue-700"
                             >
                               Add Document
                             </button>
@@ -1464,8 +1486,8 @@ const PastDueDiligence = () => {
 
                         {/* Other Measures */}
                         <div>
-                          <div className="flex justify-between items-center mb-2">
-                            <label className="text-sm font-medium text-gray-700">
+                          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+                            <label className="text-xs sm:text-sm font-medium text-gray-700">
                               (c) Taking other measures pertaining to information requirements
                             </label>
                             <button
@@ -1473,7 +1495,7 @@ const PastDueDiligence = () => {
                                 setDocModalData({ section: 'highRiskSection', subsection: 'otherMeasures', description: '' });
                                 setShowDocModal(true);
                               }}
-                              className="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
+                              className="w-full sm:w-auto px-3 py-1.5 bg-blue-600 text-white text-xs sm:text-sm rounded-lg hover:bg-blue-700"
                             >
                               Add Document
                             </button>
@@ -1485,8 +1507,8 @@ const PastDueDiligence = () => {
 
                         {/* Capacity Building */}
                         <div>
-                          <div className="flex justify-between items-center mb-2">
-                            <label className="text-sm font-medium text-gray-700">
+                          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+                            <label className="text-xs sm:text-sm font-medium text-gray-700">
                               (d) Capacity building and investments
                             </label>
                             <button
@@ -1494,7 +1516,7 @@ const PastDueDiligence = () => {
                                 setDocModalData({ section: 'highRiskSection', subsection: 'capacityBuilding', description: '' });
                                 setShowDocModal(true);
                               }}
-                              className="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
+                              className="w-full sm:w-auto px-3 py-1.5 bg-blue-600 text-white text-xs sm:text-sm rounded-lg hover:bg-blue-700"
                             >
                               Add Document
                             </button>
@@ -1507,14 +1529,14 @@ const PastDueDiligence = () => {
                     </div>
 
                     {/* Policies, Controls and Procedures */}
-                    <div className="border border-blue-200 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-blue-800 mb-4">Policies, Controls and Procedures</h3>
+                    <div className="border border-blue-200 rounded-lg p-3 sm:p-4">
+                      <h3 className="text-base sm:text-lg font-semibold text-blue-800 mb-3 sm:mb-4">Policies, Controls and Procedures</h3>
                       
-                      <div className="space-y-6">
+                      <div className="space-y-4 sm:space-y-6">
                         {/* Model Practices */}
                         <div>
-                          <div className="flex justify-between items-center mb-2">
-                            <label className="text-sm font-medium text-gray-700">
+                          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+                            <label className="text-xs sm:text-sm font-medium text-gray-700">
                               (a) Model risk management practices, reporting, record-keeping
                             </label>
                             <button
@@ -1522,22 +1544,22 @@ const PastDueDiligence = () => {
                                 setDocModalData({ section: 'policiesControls', subsection: 'modelPractices', description: '' });
                                 setShowDocModal(true);
                               }}
-                              className="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
+                              className="w-full sm:w-auto px-3 py-1.5 bg-blue-600 text-white text-xs sm:text-sm rounded-lg hover:bg-blue-700"
                             >
                               Add Document
                             </button>
                           </div>
 
                           {/* Non-SME Section */}
-                          <div className="mb-4 p-4 bg-gray-50 rounded-lg">
-                            <label className="flex items-center space-x-2 mb-3">
+                          <div className="mb-4 p-3 sm:p-4 bg-gray-50 rounded-lg">
+                            <label className="flex items-start space-x-2 mb-3">
                               <input
                                 type="checkbox"
                                 checked={isNonSme}
                                 onChange={(e) => setIsNonSme(e.target.checked)}
-                                className="h-4 w-4 text-green-600"
+                                className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0"
                               />
-                              <span className="text-sm text-gray-700">I am an SME (Small or Medium Enterprise)</span>
+                              <span className="text-xs sm:text-sm text-gray-700">I am an SME (Small or Medium Enterprise)</span>
                             </label>
 
                             {!isNonSme && (
@@ -1547,12 +1569,12 @@ const PastDueDiligence = () => {
                                   placeholder="Name of Officer"
                                   value={officerName}
                                   onChange={(e) => setOfficerName(e.target.value)}
-                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
                                 />
-                                <div className="flex space-x-2">
+                                <div className="flex justify-end">
                                   <button
                                     onClick={handleAddOfficerIdCard}
-                                    className="px-3 py-1 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700"
+                                    className="w-full sm:w-auto px-3 py-1.5 bg-green-600 text-white text-xs sm:text-sm rounded-lg hover:bg-green-700"
                                   >
                                     Save Officer Info
                                   </button>
@@ -1568,8 +1590,8 @@ const PastDueDiligence = () => {
 
                         {/* Independent Audit */}
                         <div>
-                          <div className="flex justify-between items-center mb-2">
-                            <label className="text-sm font-medium text-gray-700">
+                          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+                            <label className="text-xs sm:text-sm font-medium text-gray-700">
                               (b) Independent audit function
                             </label>
                             <button
@@ -1577,7 +1599,7 @@ const PastDueDiligence = () => {
                                 setDocModalData({ section: 'policiesControls', subsection: 'independentAudit', description: '' });
                                 setShowDocModal(true);
                               }}
-                              className="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
+                              className="w-full sm:w-auto px-3 py-1.5 bg-blue-600 text-white text-xs sm:text-sm rounded-lg hover:bg-blue-700"
                             >
                               Add Document
                             </button>
@@ -1590,40 +1612,40 @@ const PastDueDiligence = () => {
                     </div>
 
                     {/* Decisions Review */}
-                    <div className="border border-green-200 rounded-lg p-4">
-                      <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-lg font-semibold text-green-800">
-                          Decisions on Risk Mitigation Procedures and Measures
+                    <div className="border border-green-200 rounded-lg p-3 sm:p-4">
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-3 sm:mb-4">
+                        <h3 className="text-base sm:text-lg font-semibold text-green-800">
+                          Decisions on Risk Mitigation Procedures
                         </h3>
                         <button
                           onClick={() => {
                             setDocModalData({ section: 'decisionsReview', subsection: '', description: '' });
                             setShowDocModal(true);
                           }}
-                          className="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
+                          className="w-full sm:w-auto px-3 py-1.5 bg-blue-600 text-white text-xs sm:text-sm rounded-lg hover:bg-blue-700"
                         >
                           Add Document
                         </button>
                       </div>
-                      <p className="text-sm text-gray-600 mb-3">Reviewed at least on an annual basis</p>
+                      <p className="text-xs sm:text-sm text-gray-600 mb-3">Reviewed at least on an annual basis</p>
                       <div className="space-y-2">
                         {riskMitigation.decisionsReview?.map((doc, idx) => renderDocumentBox(doc, idx))}
                       </div>
                     </div>
 
-                    <div className="flex justify-end space-x-3">
+                    <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:space-x-3">
                       <button
                         onClick={() => setShowModal(false)}
-                        className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                        className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
                       >
                         Cancel
                       </button>
                       <button
                         onClick={handleSaveRiskMitigation}
-                        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center"
+                        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center justify-center text-sm"
                       >
-                        <FaSave className="mr-2" />
-                        Save & Complete Due Diligence
+                        <FaSave className="mr-2 flex-shrink-0" />
+                        Complete Due Diligence
                       </button>
                     </div>
                   </div>
@@ -1641,7 +1663,7 @@ const PastDueDiligence = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-2 sm:p-4"
             onClick={() => setShowHsCodeSelector(false)}
           >
             <motion.div
@@ -1651,11 +1673,11 @@ const PastDueDiligence = () => {
               className="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[80vh] overflow-y-auto"
               onClick={e => e.stopPropagation()}
             >
-              <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex justify-between items-center">
-                <h3 className="text-lg font-bold text-gray-800">Select HS Codes</h3>
+              <div className="sticky top-0 bg-white border-b border-gray-200 p-3 sm:p-4 flex justify-between items-center">
+                <h3 className="text-base sm:text-lg font-bold text-gray-800">Select HS Codes</h3>
                 <button
                   onClick={() => setShowHsCodeSelector(false)}
-                  className="p-2 hover:bg-gray-100 rounded-full"
+                  className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-full flex-shrink-0"
                 >
                   <FaTimes />
                 </button>
@@ -1668,7 +1690,7 @@ const PastDueDiligence = () => {
                     placeholder="Search HS codes..."
                     value={hsCodeSearch}
                     onChange={(e) => setHsCodeSearch(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-sm"
                   />
                 </div>
 
@@ -1683,21 +1705,21 @@ const PastDueDiligence = () => {
 
                     return (
                       <div key={idx} className="border border-gray-200 rounded-lg">
-                        <div className="bg-gray-50 px-4 py-2 rounded-t-lg font-semibold text-gray-700">
+                        <div className="bg-gray-50 px-3 sm:px-4 py-2 rounded-t-lg font-semibold text-gray-700 text-sm sm:text-base">
                           {commodity.commodity}
                         </div>
-                        <div className="p-4 space-y-2">
+                        <div className="p-3 sm:p-4 space-y-2">
                           {filteredProducts.map((product, pidx) => (
                             <label key={pidx} className="flex items-start space-x-3 p-2 hover:bg-gray-50 rounded cursor-pointer">
                               <input
                                 type="checkbox"
                                 checked={selectedHsCodes.some(h => h.commodity === commodity.commodity && h.code === product.code)}
                                 onChange={() => handleHsCodeSelect(commodity.commodity, product)}
-                                className="mt-1 h-4 w-4 text-green-600"
+                                className="mt-1 h-4 w-4 text-green-600 flex-shrink-0"
                               />
-                              <div>
-                                <p className="text-sm font-medium text-gray-800">{product.code}</p>
-                                <p className="text-sm text-gray-600">{product.name}</p>
+                              <div className="min-w-0">
+                                <p className="text-xs sm:text-sm font-medium text-gray-800 break-words">{product.code}</p>
+                                <p className="text-xs sm:text-sm text-gray-600 break-words">{product.name}</p>
                               </div>
                             </label>
                           ))}
@@ -1707,16 +1729,16 @@ const PastDueDiligence = () => {
                   })}
                 </div>
 
-                <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 flex justify-end space-x-3">
+                <div className="sticky bottom-0 bg-white border-t border-gray-200 p-3 sm:p-4 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:space-x-3">
                   <button
                     onClick={() => setShowHsCodeSelector(false)}
-                    className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                    className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleAddHsCodes}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                    className="w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
                   >
                     Add Selected ({selectedHsCodes.length})
                   </button>
@@ -1734,7 +1756,7 @@ const PastDueDiligence = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-2 sm:p-4"
             onClick={() => setShowAssessmentDocModal(false)}
           >
             <motion.div
@@ -1744,39 +1766,39 @@ const PastDueDiligence = () => {
               className="bg-white rounded-xl shadow-lg w-full max-w-md"
               onClick={e => e.stopPropagation()}
             >
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-gray-800 mb-4">Add Supporting Document</h3>
+              <div className="p-4 sm:p-6">
+                <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-4">Add Supporting Document</h3>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                       Document Description *
                     </label>
                     <input
                       type="text"
                       value={assessmentDocDesc}
                       onChange={(e) => setAssessmentDocDesc(e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                      className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-sm"
                       placeholder="e.g., Risk Assessment Report"
                       autoFocus
                     />
                   </div>
                   <div className="bg-blue-50 p-3 rounded-lg">
-                    <p className="text-sm text-blue-800">
-                      <FaInfoCircle className="inline mr-2" />
-                      In this demo, a dummy document will be created with the description above.
+                    <p className="text-xs sm:text-sm text-blue-800 flex items-start">
+                      <FaInfoCircle className="inline mr-2 flex-shrink-0 mt-0.5" />
+                      <span>In this demo, a dummy document will be created with the description above.</span>
                     </p>
                   </div>
                 </div>
-                <div className="flex justify-end space-x-3 mt-6">
+                <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:space-x-3 mt-6">
                   <button
                     onClick={() => setShowAssessmentDocModal(false)}
-                    className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                    className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleAddAssessmentDoc}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                    className="w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
                   >
                     Add Document
                   </button>
@@ -1794,7 +1816,7 @@ const PastDueDiligence = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-2 sm:p-4"
             onClick={() => setShowDocModal(false)}
           >
             <motion.div
@@ -1804,39 +1826,39 @@ const PastDueDiligence = () => {
               className="bg-white rounded-xl shadow-lg w-full max-w-md"
               onClick={e => e.stopPropagation()}
             >
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-gray-800 mb-4">Add Document</h3>
+              <div className="p-4 sm:p-6">
+                <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-4">Add Document</h3>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                       Document Description *
                     </label>
                     <input
                       type="text"
                       value={docModalData.description}
                       onChange={(e) => setDocModalData({ ...docModalData, description: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                      className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-sm"
                       placeholder="e.g., Audit Report"
                       autoFocus
                     />
                   </div>
                   <div className="bg-blue-50 p-3 rounded-lg">
-                    <p className="text-sm text-blue-800">
-                      <FaInfoCircle className="inline mr-2" />
-                      In this demo, a dummy document will be created with the description above.
+                    <p className="text-xs sm:text-sm text-blue-800 flex items-start">
+                      <FaInfoCircle className="inline mr-2 flex-shrink-0 mt-0.5" />
+                      <span>In this demo, a dummy document will be created with the description above.</span>
                     </p>
                   </div>
                 </div>
-                <div className="flex justify-end space-x-3 mt-6">
+                <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:space-x-3 mt-6">
                   <button
                     onClick={() => setShowDocModal(false)}
-                    className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                    className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleAddDoc}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                    className="w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
                   >
                     Add Document
                   </button>
