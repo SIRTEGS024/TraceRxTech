@@ -33,7 +33,7 @@ const demoData = {
         name: "John Adeyemi",
         function: "Managing Director",
         signature: "https://cloud-storage.com/docs/john-adeyemi.pdf",
-        url: "https://cloud-storage.com/docs/john-adeyemi.pdf",
+        url: "https://cloud-storage.com/docs/john-adeyem8i.pdf",
       },
       basicInfo: {
         companyName: "Green Timber Exports Ltd",
@@ -187,6 +187,7 @@ const demoData = {
                 [-3.456, -61.7464],
                 [-3.457, -61.7475],
                 [-3.455, -61.748],
+                [-3.456, -61.7464],
               ],
               hectares: 500,
             },
@@ -205,9 +206,10 @@ const demoData = {
                     name: "Wood in the rough",
                   },
                 ],
-                netMassKg: 50000,
-                countryOfProduction: "Brazil",
-                productionLocation: "Amazonas",
+                netMassKg: 40000,
+                amount: 20,
+                paymentStatus: true,
+                productionLocation: "Amazonas,Brazil",
                 productionDateRange: {
                   from: "2021-03-01",
                   to: "2021-08-31",
@@ -233,9 +235,10 @@ const demoData = {
                     id: "planting-area-1-2021",
                     name: "2021 Planting Zone A",
                     coordinates: [
-                      [-3.458, -61.749],
-                      [-3.459, -61.75],
-                      [-3.46, -61.751],
+                      [-3.4561, -61.7466],
+                      [-3.4564, -61.747],
+                      [-3.4562, -61.7471],
+                      [-3.4561, -61.7466],
                     ],
                     hectares: 25,
                   },
@@ -243,8 +246,10 @@ const demoData = {
                     id: "planting-area-2-2021",
                     name: "2021 Planting Zone B",
                     coordinates: [
-                      [-3.462, -61.752],
-                      [-3.463, -61.753],
+                      [-3.4565, -61.7473],
+                      [-3.4567, -61.7475],
+                      [-3.456, -61.7477],
+                      [-3.4565, -61.7473],
                     ],
                     hectares: 25,
                   },
@@ -271,6 +276,15 @@ const demoData = {
                 },
               ],
             },
+            {
+              commodity: "Coffee",
+              products: [
+                {
+                  code: "ex 0901 11 00",
+                  name: "Coffee, not roasted, not decaffeinated",
+                },
+              ],
+            },
           ],
           totalHectares: 5000,
         },
@@ -286,6 +300,15 @@ const demoData = {
             {
               code: "4407",
               name: "Wood sawn or chipped lengthwise",
+            },
+          ],
+        },
+        {
+          commodity: "Coffee",
+          products: [
+            {
+              code: "ex 0901 11 00",
+              name: "Coffee, not roasted, not decaffeinated",
             },
           ],
         },
@@ -445,7 +468,7 @@ const demoData = {
       id: "importer-1",
       role: "importer",
       password: "germanyImport789",
-      isVerified: true,
+      isVerified: true,  
       currentOtpKey: null,
       isRegistered: true,
       undertaken: {
@@ -634,7 +657,7 @@ const demoData = {
           recordId: "record-2021-1",
           exporterId: "exporter-1",
           year: 2021,
-          facilityId:"fac-2",
+          facilityId: "fac-2",
         },
       ],
       pastSupplierRecords: {
@@ -745,9 +768,8 @@ const demoData = {
             overview: true,
             companyDetails: false,
             subjectMatterScope: true,
-            dueDiligence: true,
-            riskAssessment: true,
-            riskMitigation: true,
+            currentDueDiligence: true,
+            pastDueDiligence: true,
             shipments: true,
             reports: true,
             gpsCamera: false,
@@ -763,9 +785,8 @@ const demoData = {
             overview: true,
             companyDetails: false,
             subjectMatterScope: false,
-            dueDiligence: false,
-            riskAssessment: false,
-            riskMitigation: false,
+            currentDueDiligence: true,
+            pastDueDiligence: true,
             shipments: true,
             reports: false,
             gpsCamera: true,
@@ -985,23 +1006,25 @@ const demoData = {
           id: "ver-report-1",
           companyId: "exporter-1",
           companyType: "exporter",
-          date: "2023-11-15",
-          type: "compliance_audit",
-          status: "",
+          date: "2026-11-15",
+          type: "compliance audit",
+          status: "compliant",
           reportUrl:
             "https://cloud-storage.com/docs/verification/ver-report-1.pdf",
           findings: [
             {
-              tab: "forest_management",
+              tab: "informationRequirements",
               status: "compliant",
-              notes:
+              notes: [
                 "All forest management plans are up to date and compliant with EUDR regulations.",
+              ],
             },
             {
-              tab: "due_diligence",
+              tab: "currentDueDiligence",
               status: "compliant",
-              notes:
+              notes: [
                 "Due diligence process properly documented and implemented.",
+              ],
             },
           ],
         },
@@ -1009,16 +1032,16 @@ const demoData = {
           id: "ver-report-3",
           companyId: "exporter-2",
           companyType: "exporter",
-          date: "2023-09-20",
-          type: "compliance_audit",
-          status: "",
+          date: "2026-09-20",
+          type: "compliance audit",
+          status: "non-compliant",
           reportUrl:
             "https://cloud-storage.com/docs/verification/ver-report-3.pdf",
           findings: [
             {
-              tab: "company_details",
+              tab: "companyDetails",
               status: "compliant",
-              notes: "Company registration and licenses are valid.",
+              notes: ["Company registration and licenses are not valid."],
             },
           ],
         },
@@ -1083,16 +1106,16 @@ const demoData = {
           id: "ver-report-2",
           companyId: "exporter-1",
           companyType: "exporter",
-          date: "2023-10-10",
-          type: "shipment_verification",
-          status: "",
+          date: "2026-10-10",
+          type: "shipment verification",
+          status: "compliant",
           reportUrl:
             "https://cloud-storage.com/docs/verification/ver-report-2.pdf",
           findings: [
             {
               tab: "shipments",
               status: "compliant",
-              notes: "Shipment documentation complete and accurate.",
+              notes: ["Shipment documentation complete and accurate."],
             },
           ],
         },

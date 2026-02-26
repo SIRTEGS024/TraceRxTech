@@ -585,10 +585,6 @@ const PastDueDiligence = () => {
               <p className="text-xs sm:text-sm text-gray-600">Scientific Name</p>
               <p className="font-medium text-sm sm:text-base break-words">{pastRecord.scientificName}</p>
             </div>
-            <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-600">Country of Production</p>
-              <p className="font-medium text-sm sm:text-base break-words">{pastRecord.countryOfProduction}</p>
-            </div>
             <div className="min-w-0 col-span-1 sm:col-span-2">
               <p className="text-xs sm:text-sm text-gray-600">Production Location</p>
               <p className="font-medium text-sm sm:text-base break-words">{pastRecord.productionLocation}</p>

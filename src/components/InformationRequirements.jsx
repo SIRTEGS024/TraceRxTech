@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useUserStore } from "../store/useUserStore";
 import {
   ChevronDown,
   Search,
@@ -20,11 +21,23 @@ import {
   Map,
   Layers,
   Edit,
-  Trash2
+  Trash2,
+  DollarSign,
+  CreditCard,
+  Maximize2,
+  ArrowLeft
 } from 'lucide-react';
 
 // For the map - we'll use Google Maps
-import { GoogleMap, Autocomplete, Polygon, DrawingManager } from '@react-google-maps/api';
+import { GoogleMap, Autocomplete, Polygon, DrawingManager, Marker, InfoWindow } from '@react-google-maps/api';
+
+// Helper function to convert [lat, lng] array to {lat, lng} object
+const convertToLatLng = (coord) => {
+  if (Array.isArray(coord)) {
+    return { lat: coord[0], lng: coord[1] };
+  }
+  return coord;
+};
 
 // Custom hook to check if Google Maps is loaded
 const useGoogleMapsLoaded = () => {
@@ -57,171 +70,8 @@ const useGoogleMapsLoaded = () => {
   return isLoaded;
 };
 
-// Mock forest data
-const mockForests = [
-  {
-    id: 1,
-    name: "Amazon Rainforest - Brazil Sector",
-    coordinates: { lat: -3.4653, lng: -62.2159 },
-    area: "5.5M hectares",
-    country: "Brazil",
-    region: "South America"
-  },
-  {
-    id: 2,
-    name: "Congo Basin Forest",
-    coordinates: { lat: 0.2280, lng: 15.8277 },
-    area: "3.0M hectares",
-    country: "Democratic Republic of Congo",
-    region: "Central Africa"
-  },
-  {
-    id: 3,
-    name: "Borneo Rainforest",
-    coordinates: { lat: 0.9619, lng: 114.5548 },
-    area: "2.2M hectares",
-    country: "Indonesia",
-    region: "Southeast Asia"
-  }
-];
-
 // Years to cover
-const years = [2020, 2021, 2022, 2023, 2024, 2025];
-
-// HS Codes data - grouped by commodity
-const commoditiesData = [
-  {
-    commodity: "Cattle",
-    products: [
-      { code: "0102 21 00", name: "Live bovine animals (breeding)" },
-      { code: "0102 29 05", name: "Live bovine animals (other, <80 kg)" },
-      { code: "0102 29 95", name: "Live bovine animals (other)" },
-      { code: "0201", name: "Meat of bovine animals, fresh or chilled" },
-      { code: "0202", name: "Meat of bovine animals, frozen" },
-      { code: "0206 10 95", name: "Edible offal of bovine animals, fresh or chilled" },
-      { code: "0206 22 00", name: "Bovine livers, frozen" },
-      { code: "0206 29 91", name: "Bovine offal, frozen (excluding tongues and livers)" },
-      { code: "0210 20", name: "Meat of bovine animals, salted, in brine, dried or smoked" },
-      { code: "4101", name: "Raw hides and skins of bovine animals" },
-      { code: "4102", name: "Raw skins of sheep or lambs" },
-      { code: "4103", name: "Other raw hides and skins" },
-      { code: "4301", name: "Raw furskins" }
-    ]
-  },
-  {
-    commodity: "Cocoa",
-    products: [
-      { code: "1801 00 00", name: "Cocoa beans, whole or broken, raw or roasted" },
-      { code: "1802 00 00", name: "Cocoa shells, husks, skins and other cocoa waste" },
-      { code: "1803", name: "Cocoa paste, whether or not defatted" },
-      { code: "1804 00 00", name: "Cocoa butter, fat and oil" },
-      { code: "1805 00 00", name: "Cocoa powder, not containing added sugar" },
-      { code: "1806", name: "Chocolate and other food preparations containing cocoa" }
-    ]
-  },
-  {
-    commodity: "Coffee",
-    products: [
-      { code: "ex 0901 11 00", name: "Coffee, not roasted, not decaffeinated" },
-      { code: "ex 0901 12 00", name: "Coffee, not roasted, decaffeinated" },
-      { code: "ex 0901 21 00", name: "Roasted coffee, not decaffeinated" },
-      { code: "ex 0901 22 00", name: "Roasted coffee, decaffeinated" },
-      { code: "ex 0901 90 90", name: "Coffee husks and skins; coffee substitutes containing coffee" }
-    ]
-  },
-  {
-    commodity: "Oil palm",
-    products: [
-      { code: "1207 10 00", name: "Palm nuts and kernels" },
-      { code: "1511", name: "Palm oil and its fractions" },
-      { code: "1513 21", name: "Palm kernel oil, crude" },
-      { code: "1513 29", name: "Palm kernel oil and its fractions, refined" },
-      { code: "1516 20 96", name: "Palm oil derivatives (vegetable fats and oils)" },
-      { code: "2306 60 00", name: "Oil-cake and other solid residues from palm oil extraction" }
-    ]
-  },
-  {
-    commodity: "Rubber",
-    products: [
-      { code: "4001", name: "Natural rubber, balata, gutta-percha, guayule, chicle and similar natural gums" },
-      { code: "4002", name: "Synthetic rubber and factice derived from oils" },
-      { code: "4005", name: "Compounded rubber, unvulcanised" },
-      { code: "4006", name: "Unvulcanised rubber in other forms" },
-      { code: "4007", name: "Vulcanised rubber thread and cord" },
-      { code: "4008", name: "Plates, sheets, strip, rods and profile shapes of vulcanised rubber" },
-      { code: "4009", name: "Tubes, pipes and hoses of vulcanised rubber" },
-      { code: "4010", name: "Conveyor or transmission belts of vulcanised rubber" },
-      { code: "4011", name: "New pneumatic tyres, of rubber" },
-      { code: "4012", name: "Retreaded or used pneumatic tyres; solid or cushion tyres" },
-      { code: "4013", name: "Inner tubes, of rubber" },
-      { code: "4014", name: "Hygienic or pharmaceutical articles of vulcanised rubber" },
-      { code: "4015", name: "Articles of apparel and clothing accessories of vulcanised rubber" },
-      { code: "4016", name: "Other articles of vulcanised rubber (excluding hard rubber)" },
-      { code: "4017", name: "Hard rubber in all forms" }
-    ]
-  },
-  {
-    commodity: "Soya",
-    products: [
-      { code: "1201 90 00", name: "Soya beans, whether or not broken" },
-      { code: "1208 10 00", name: "Flours and meals of soya beans" },
-      { code: "1507", name: "Soya-bean oil and its fractions" },
-      { code: "2304 00 00", name: "Oil-cake and other solid residues from soya-bean oil extraction" }
-    ]
-  },
-  {
-    commodity: "Wood",
-    products: [
-      { code: "4401", name: "Fuel wood" },
-      { code: "4402", name: "Wood charcoal" },
-      { code: "4403", name: "Wood in the rough" },
-      { code: "4404", name: "Hoopwood; split poles; piles, pickets and stakes" },
-      { code: "4405", name: "Wood wool; wood flour" },
-      { code: "4406", name: "Railway or tramway sleepers of wood" },
-      { code: "4407", name: "Wood sawn or chipped lengthwise" },
-      { code: "4408", name: "Sheets for veneering" },
-      { code: "4409", name: "Wood continuously shaped along any edges" },
-      { code: "4410", name: "Particle board, OSB and similar board" },
-      { code: "4411", name: "Fibreboard of wood" },
-      { code: "4412", name: "Plywood, veneered panels and similar laminated wood" },
-      { code: "4413", name: "Densified wood" },
-      { code: "4414", name: "Wooden frames for paintings, photographs, etc." },
-      { code: "4415", name: "Packing cases, boxes, crates, drums and pallets" },
-      { code: "4416", name: "Casks, barrels, vats, tubs and other coopers' products" },
-      { code: "4417", name: "Tools, tool bodies, tool handles, broom or brush bodies" },
-      { code: "4418", name: "Builders' joinery and carpentry of wood" },
-      { code: "4419", name: "Tableware and kitchenware, of wood" },
-      { code: "4420", name: "Wood marquetry and inlaid wood; caskets and cases" },
-      { code: "4421", name: "Other articles of wood" }
-    ]
-  }
-];
-
-// Countries list for dropdown
-const countries = [
-  "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia",
-  "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium",
-  "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria",
-  "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad",
-  "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic",
-  "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt",
-  "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France",
-  "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau",
-  "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel",
-  "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia",
-  "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi",
-  "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia",
-  "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal",
-  "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman",
-  "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland",
-  "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines",
-  "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone",
-  "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan",
-  "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania",
-  "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu",
-  "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu",
-  "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
-];
+const years = [2021, 2022, 2023, 2024, 2025];
 
 // Document upload modal component
 const DocumentUploadModal = ({ isOpen, onClose, documentType, onUpload }) => {
@@ -241,9 +91,12 @@ const DocumentUploadModal = ({ isOpen, onClose, documentType, onUpload }) => {
 
   const handleUpload = () => {
     if (selectedFile && documentName.trim()) {
+      // For demo purposes, we create a dummy URL
+      const dummyUrl = `https://cloud-storage.com/demo/docs/${Date.now()}-${documentName.replace(/\s+/g, '-').toLowerCase()}.pdf`;
+      
       onUpload({
         name: documentName.trim(),
-        file: selectedFile,
+        url: dummyUrl,
         type: documentType,
         uploadedAt: new Date().toISOString()
       });
@@ -348,22 +201,25 @@ const DocumentUploadModal = ({ isOpen, onClose, documentType, onUpload }) => {
   );
 };
 
-// HS Code Selector Component
-const HSCodeSelector = ({ selectedCodes, onSelect, onRemove }) => {
+// HS Code Selector Component - Modified to use facility's supportedProducts
+const HSCodeSelector = ({ selectedCodes = [], onSelect, onRemove, supportedProducts = [] }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredCommodities = commoditiesData.filter(commodity =>
-    commodity.commodity.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    commodity.products.some(product =>
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.code.includes(searchQuery)
-    )
-  );
+  // Filter products based on search query
+  const filteredCommodities = supportedProducts
+    .map(commodity => ({
+      ...commodity,
+      products: commodity.products.filter(product =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.code.includes(searchQuery)
+      )
+    }))
+    .filter(commodity => commodity.products.length > 0);
 
-  const handleSelect = (code, name) => {
+  const handleSelect = (code, name, commodity) => {
     if (!selectedCodes.some(c => c.code === code)) {
-      onSelect({ code, name });
+      onSelect({ code, name, commodity });
     }
   };
 
@@ -441,14 +297,16 @@ const HSCodeSelector = ({ selectedCodes, onSelect, onRemove }) => {
                     {commodity.products.map(product => (
                       <button
                         key={product.code}
-                        onClick={() => handleSelect(product.code, product.name)}
+                        onClick={() => handleSelect(product.code, product.name, commodity.commodity)}
                         disabled={selectedCodes.some(c => c.code === product.code)}
-                        className={`w-full flex items-start p-3 hover:bg-gray-50 transition-colors text-left ${selectedCodes.some(c => c.code === product.code) ? 'bg-green-50' : ''
-                          }`}
+                        className={`w-full flex items-start p-3 hover:bg-gray-50 transition-colors text-left ${
+                          selectedCodes.some(c => c.code === product.code) ? 'bg-green-50' : ''
+                        }`}
                       >
                         <div className="flex-shrink-0 mt-1">
-                          <div className={`w-3 h-3 rounded-full ${selectedCodes.some(c => c.code === product.code) ? 'bg-green-500' : 'bg-gray-300'
-                            }`}></div>
+                          <div className={`w-3 h-3 rounded-full ${
+                            selectedCodes.some(c => c.code === product.code) ? 'bg-green-500' : 'bg-gray-300'
+                          }`}></div>
                         </div>
                         <div className="ml-3">
                           <div className="font-medium text-gray-900">{product.code}</div>
@@ -461,7 +319,9 @@ const HSCodeSelector = ({ selectedCodes, onSelect, onRemove }) => {
               ))
             ) : (
               <div className="p-4 text-center text-gray-500">
-                No HS codes found matching "{searchQuery}"
+                {supportedProducts.length === 0 
+                  ? "This facility doesn't have any supported products configured yet."
+                  : `No HS codes found matching "${searchQuery}"`}
               </div>
             )}
           </div>
@@ -471,152 +331,190 @@ const HSCodeSelector = ({ selectedCodes, onSelect, onRemove }) => {
   );
 };
 
-// Coordinate Input Component
-const CoordinateInput = ({ coordinates = [], onCoordinatesChange }) => {
-  const [lat, setLat] = useState('');
-  const [lng, setLng] = useState('');
-  const [editingIndex, setEditingIndex] = useState(null);
+// Importer Selector Component
+const ImporterSelector = ({ importers = [], selectedImporter, onSelect, onClear }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const handleAdd = () => {
-    if (lat && lng) {
-      const latNum = parseFloat(lat);
-      const lngNum = parseFloat(lng);
-
-      if (!isNaN(latNum) && !isNaN(lngNum)) {
-        if (editingIndex !== null) {
-          // Update existing coordinate
-          const newCoords = [...coordinates];
-          newCoords[editingIndex] = { lat: latNum, lng: lngNum };
-          onCoordinatesChange(newCoords);
-          setEditingIndex(null);
-        } else {
-          // Add new coordinate
-          onCoordinatesChange([...coordinates, { lat: latNum, lng: lngNum }]);
-        }
-        setLat('');
-        setLng('');
-      }
-    }
-  };
-
-  const handleEdit = (index) => {
-    setLat(coordinates[index].lat.toString());
-    setLng(coordinates[index].lng.toString());
-    setEditingIndex(index);
-  };
-
-  const handleDelete = (index) => {
-    const newCoords = coordinates.filter((_, i) => i !== index);
-    onCoordinatesChange(newCoords);
-    if (editingIndex === index) {
-      setEditingIndex(null);
-      setLat('');
-      setLng('');
-    }
-  };
-
-  const handleCancelEdit = () => {
-    setEditingIndex(null);
-    setLat('');
-    setLng('');
-  };
+  const filteredImporters = importers.filter(importer =>
+    importer.basicInfo.companyName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm text-gray-600 mb-1">Latitude</label>
-          <input
-            type="number"
-            step="any"
-            value={lat}
-            onChange={(e) => setLat(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-            placeholder="e.g., 9.12345"
-          />
-        </div>
-        <div>
-          <label className="block text-sm text-gray-600 mb-1">Longitude</label>
-          <input
-            type="number"
-            step="any"
-            value={lng}
-            onChange={(e) => setLng(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-            placeholder="e.g., 7.12345"
-          />
-        </div>
-      </div>
-
-      <div className="flex gap-2">
-        <button
-          onClick={handleAdd}
-          disabled={!lat || !lng}
-          className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          {editingIndex !== null ? 'Update Coordinate' : 'Add Coordinate'}
-        </button>
-        {editingIndex !== null && (
-          <button
-            onClick={handleCancelEdit}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
-          >
-            Cancel
-          </button>
-        )}
-      </div>
-
-      {coordinates.length > 0 && (
-        <div className="mt-4">
-          <h4 className="text-sm font-medium text-gray-700 mb-2">Plot Coordinates ({coordinates.length} points)</h4>
-          <div className="space-y-2 max-h-40 overflow-y-auto">
-            {coordinates.map((coord, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200"
-              >
-                <div className="flex items-center gap-3">
-                  <MapPin className="w-4 h-4 text-gray-500" />
-                  <div>
-                    <span className="text-sm font-medium text-gray-700">
-                      Point {index + 1}:
-                    </span>
-                    <span className="text-sm text-gray-600 ml-2">
-                      {coord.lat.toFixed(5)}, {coord.lng.toFixed(5)}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleEdit(index)}
-                    className="text-blue-600 hover:text-blue-800 transition-colors"
-                    title="Edit"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(index)}
-                    className="text-red-600 hover:text-red-800 transition-colors"
-                    title="Delete"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            ))}
+    <div className="relative">
+      {/* Selected Importer Display */}
+      {selectedImporter ? (
+        <div className="mb-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-green-800">{selectedImporter.basicInfo.companyName}</p>
+              <p className="text-xs text-green-600 mt-1">{selectedImporter.basicInfo.email}</p>
+              <p className="text-xs text-green-600">{selectedImporter.basicInfo.country}</p>
+            </div>
+            <button
+              onClick={onClear}
+              className="text-green-600 hover:text-green-800 transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
           </div>
-          <p className="text-xs text-gray-500 mt-2">
-            <strong>Note:</strong> A polygon requires at least 3 coordinates to form a closed shape.
-            Add coordinates in order around the plot boundary.
-          </p>
+        </div>
+      ) : (
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-full flex items-center justify-between p-3 border-2 border-gray-200 rounded-lg hover:border-green-300 transition-colors bg-white text-left"
+        >
+          <div className="flex items-center gap-3">
+            <Globe className="w-5 h-5 text-gray-400" />
+            <span className="text-gray-700">Select an importer...</span>
+          </div>
+          <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        </button>
+      )}
+
+      {/* Dropdown Content */}
+      {isOpen && (
+        <div className="absolute z-10 w-full mt-2 bg-white rounded-lg shadow-xl border border-gray-200 max-h-96 overflow-hidden">
+          {/* Search */}
+          <div className="p-3 border-b border-gray-100">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search importers..."
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              />
+            </div>
+          </div>
+
+          {/* Importers List */}
+          <div className="overflow-y-auto max-h-64">
+            {filteredImporters.length > 0 ? (
+              filteredImporters.map(importer => (
+                <button
+                  key={importer.id}
+                  onClick={() => {
+                    onSelect(importer);
+                    setIsOpen(false);
+                    setSearchQuery('');
+                  }}
+                  className="w-full flex items-start p-4 hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex-shrink-0 mt-1">
+                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                  </div>
+                  <div className="ml-3 text-left">
+                    <div className="font-medium text-gray-900">{importer.basicInfo.companyName}</div>
+                    <div className="text-sm text-gray-600 mt-1">{importer.basicInfo.country} • {importer.basicInfo.email}</div>
+                  </div>
+                </button>
+              ))
+            ) : (
+              <div className="p-4 text-center text-gray-500">
+                No importers found matching "{searchQuery}"
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
   );
 };
 
-// Map Component for Polygon Drawing - UPDATED
-const PolygonMapComponent = ({ coordinates = [], onCoordinatesChange, isLoaded }) => {
+// Record Card Component for displaying existing records
+const RecordCard = ({ record, year, onView, onPayment, isPaid }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+    >
+      <div className="flex items-start justify-between">
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-2">
+            <h4 className="font-medium text-gray-900">{record.description?.substring(0, 50)}...</h4>
+            {isPaid ? (
+              <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full flex items-center gap-1">
+                <CheckCircle className="w-3 h-3" />
+                Paid
+              </span>
+            ) : (
+              <span className="px-2 py-1 text-xs font-medium bg-amber-100 text-amber-700 rounded-full flex items-center gap-1">
+                <AlertCircle className="w-3 h-3" />
+                Payment Pending
+              </span>
+            )}
+          </div>
+          
+          <div className="grid grid-cols-2 gap-2 text-sm">
+            <div>
+              <span className="text-gray-500">HS Codes:</span>
+              <span className="ml-1 font-medium">{record.hsCodes?.length || 0}</span>
+            </div>
+            <div>
+              <span className="text-gray-500">Net Mass:</span>
+              <span className="ml-1 font-medium">{record.netMassKg?.toLocaleString()} kg</span>
+            </div>
+            <div>
+              <span className="text-gray-500">Customer:</span>
+              <span className="ml-1 font-medium">{record.customerName || 'N/A'}</span>
+            </div>
+            <div>
+              <span className="text-gray-500">Planting Areas:</span>
+              <span className="ml-1 font-medium">{record.plantingAreas?.length || 0}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="flex gap-2 ml-4">
+          <button
+            onClick={() => onView(record)}
+            className="px-3 py-1 text-sm text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors"
+          >
+            View
+          </button>
+          {!isPaid && (
+            <button
+              onClick={() => onPayment(record)}
+              className="px-3 py-1 text-sm text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors flex items-center gap-1"
+            >
+              <CreditCard className="w-3 h-3" />
+              Pay
+            </button>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+// Map Component for Polygon Drawing and Visualization - UPDATED with zIndex handling and removed map/satellite label
+const PolygonMapComponent = ({ 
+  coordinates = [], 
+  onCoordinatesChange, 
+  isLoaded, 
+  facilityAreas = [],
+  facilityName = '',
+  facilityAddress = '',
+  viewOnly = false,
+  initialCenter = null,
+  initialZoom = 15
+}) => {
+  const [map, setMap] = useState(null);
+  const [drawingManager, setDrawingManager] = useState(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [plotName, setPlotName] = useState('');
+  const [showSaveDialog, setShowSaveDialog] = useState(false);
+  const [tempCoordinates, setTempCoordinates] = useState([]);
+  const [plotToSave, setPlotToSave] = useState(null);
+  const [selectedArea, setSelectedArea] = useState(null);
+  const [showInfoWindow, setShowInfoWindow] = useState(false);
+  const [infoWindowPosition, setInfoWindowPosition] = useState(null);
+  const [expandedPlot, setExpandedPlot] = useState(null);
+  const autocompleteRef = useRef(null);
+
   // ADD THIS LOADING CHECK AT THE BEGINNING OF THE COMPONENT
   if (!isLoaded) {
     return (
@@ -639,10 +537,24 @@ const PolygonMapComponent = ({ coordinates = [], onCoordinatesChange, isLoaded }
     );
   }
 
-  const [map, setMap] = useState(null);
-  const [drawingManager, setDrawingManager] = useState(null);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const autocompleteRef = useRef(null);
+  // Calculate center based on facility areas or first planting area
+  const calculateCenter = () => {
+    if (initialCenter) return initialCenter;
+    
+    if (facilityAreas.length > 0 && facilityAreas[0].coordinates && facilityAreas[0].coordinates.length > 0) {
+      // Use the first coordinate of the first facility area
+      const coord = convertToLatLng(facilityAreas[0].coordinates[0]);
+      return { lat: coord.lat, lng: coord.lng };
+    }
+    
+    if (coordinates.length > 0 && coordinates[0].coordinates && coordinates[0].coordinates.length > 0) {
+      // Use the first coordinate of the first planting area
+      const coord = convertToLatLng(coordinates[0].coordinates[0]);
+      return { lat: coord.lat, lng: coord.lng };
+    }
+    
+    return { lat: 0, lng: 0 };
+  };
 
   const onLoad = useCallback((mapInstance) => {
     setMap(mapInstance);
@@ -668,11 +580,65 @@ const PolygonMapComponent = ({ coordinates = [], onCoordinatesChange, isLoaded }
       });
     }
 
-    onCoordinatesChange(coords);
-    polygon.setMap(null); // Remove the drawn polygon
-    drawingManager.setDrawingMode(null); // Exit drawing mode
-    setIsDrawing(false);
-  }, [drawingManager, onCoordinatesChange]);
+    // Store the drawn polygon temporarily
+    setTempCoordinates(coords);
+    setPlotToSave(polygon);
+    
+    // Show save dialog
+    setShowSaveDialog(true);
+    
+    // Exit drawing mode
+    if (drawingManager) {
+      drawingManager.setDrawingMode(null);
+      setIsDrawing(false);
+    }
+  }, [drawingManager]);
+
+  const handleSavePlot = () => {
+    if (plotName.trim() && tempCoordinates.length >= 3) {
+      // Calculate hectares (simplified calculation - in real app would use more accurate method)
+      const hectares = calculateHectares(tempCoordinates);
+      
+      // Add the plot to the list
+      onCoordinatesChange([
+        ...coordinates,
+        {
+          id: `plot-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          name: plotName.trim(),
+          coordinates: tempCoordinates,
+          hectares: hectares
+        }
+      ]);
+      
+      // Reset
+      setPlotName('');
+      setTempCoordinates([]);
+      setShowSaveDialog(false);
+      
+      // Remove the drawn polygon from map
+      if (plotToSave) {
+        plotToSave.setMap(null);
+        setPlotToSave(null);
+      }
+    }
+  };
+
+  const cancelSavePlot = () => {
+    // Remove the drawn polygon from map
+    if (plotToSave) {
+      plotToSave.setMap(null);
+      setPlotToSave(null);
+    }
+    setTempCoordinates([]);
+    setPlotName('');
+    setShowSaveDialog(false);
+  };
+
+  const calculateHectares = (coords) => {
+    // Simplified calculation - in production, use proper geodesic area calculation
+    // For demo purposes, we'll return a random value between 10 and 100
+    return Math.round((Math.random() * 90 + 10) * 100) / 100;
+  };
 
   const startDrawing = () => {
     if (drawingManager) {
@@ -688,126 +654,239 @@ const PolygonMapComponent = ({ coordinates = [], onCoordinatesChange, isLoaded }
     }
   };
 
-  const clearPolygon = () => {
-    onCoordinatesChange([]);
+  const deletePlot = (plotId) => {
+    onCoordinatesChange(coordinates.filter(plot => plot.id !== plotId));
+  };
+
+  const handleAreaClick = (area, event) => {
+    // Stop event propagation to prevent parent handlers from firing
+    event.stop();
+    
+    setSelectedArea(area);
+    setInfoWindowPosition({ lat: event.latLng.lat(), lng: event.latLng.lng() });
+    setShowInfoWindow(true);
+  };
+
+  // Zoom to facility areas when map loads
+  useEffect(() => {
+    if (map && facilityAreas.length > 0 && facilityAreas[0].coordinates && facilityAreas[0].coordinates.length > 0) {
+      const bounds = new window.google.maps.LatLngBounds();
+      
+      // Add all facility area coordinates to bounds
+      facilityAreas.forEach(area => {
+        if (area.coordinates && area.coordinates.length > 0) {
+          area.coordinates.forEach(coord => {
+            const latLng = convertToLatLng(coord);
+            bounds.extend(latLng);
+          });
+        }
+      });
+      
+      // Add all planting areas to bounds
+      coordinates.forEach(plot => {
+        if (plot.coordinates && plot.coordinates.length > 0) {
+          plot.coordinates.forEach(coord => {
+            const latLng = convertToLatLng(coord);
+            bounds.extend(latLng);
+          });
+        }
+      });
+      
+      map.fitBounds(bounds);
+    }
+  }, [map, facilityAreas, coordinates]);
+
+  // Helper to convert coordinates for polygon paths
+  const getPolygonPaths = (coords) => {
+    return coords.map(coord => convertToLatLng(coord));
   };
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Layers className="w-5 h-5 text-green-600" />
-          <h4 className="font-medium text-gray-700">Plot Boundary Map</h4>
+      {!viewOnly && (
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Layers className="w-5 h-5 text-green-600" />
+            <h4 className="font-medium text-gray-700">Plot Boundary Map</h4>
+          </div>
+          <div className="flex gap-2">
+            {!isDrawing && (
+              <button
+                onClick={startDrawing}
+                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                Draw New Plot
+              </button>
+            )}
+            {isDrawing && (
+              <button
+                onClick={cancelDrawing}
+                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Cancel Drawing
+              </button>
+            )}
+          </div>
         </div>
-        <div className="flex gap-2">
-          {!isDrawing && coordinates.length === 0 && (
-            <button
-              onClick={startDrawing}
-              className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
-            >
-              <Plus className="w-4 h-4" />
-              Draw Plot Boundary
-            </button>
-          )}
-          {isDrawing && (
-            <button
-              onClick={cancelDrawing}
-              className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
-            >
-              Cancel Drawing
-            </button>
-          )}
-          {coordinates.length > 0 && (
-            <button
-              onClick={clearPolygon}
-              className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
-            >
-              <Trash2 className="w-4 h-4" />
-              Clear Plot
-            </button>
-          )}
-        </div>
-      </div>
+      )}
 
       <div className="relative h-[500px] rounded-lg overflow-hidden border border-gray-300">
+        {/* Facility Address Overlay */}
+        {facilityAddress && (
+          <div className="absolute top-4 right-4 z-20 bg-white bg-opacity-90 px-4 py-2 rounded-lg shadow-lg border border-gray-200">
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-green-600" />
+              <span className="text-sm font-medium text-gray-700">{facilityName}</span>
+              <span className="text-xs text-gray-500">| {facilityAddress}</span>
+            </div>
+          </div>
+        )}
+
         <GoogleMap
           mapContainerStyle={{ width: '100%', height: '100%' }}
-          center={coordinates.length > 0 ? coordinates[0] : { lat: 0, lng: 0 }}
-          zoom={coordinates.length > 0 ? 12 : 2}
+          center={calculateCenter()}
+          zoom={initialZoom}
           onLoad={onLoad}
           onUnmount={onUnmount}
           options={{
             mapTypeId: 'satellite',
             streetViewControl: false,
-            mapTypeControl: false,
+            mapTypeControl: false, // This removes the map/satellite label
             zoomControl: true,
+            fullscreenControl: true,
           }}
         >
-          {/* Drawing Manager */}
-          <DrawingManager
-            onLoad={onDrawingManagerLoad}
-            onPolygonComplete={onPolygonComplete}
-            drawingMode={isDrawing ? window.google.maps.drawing.OverlayType.POLYGON : null}
-            options={{
-              drawingControl: false,
-              polygonOptions: {
-                fillColor: '#22c55e',
-                fillOpacity: 0.3,
-                strokeColor: '#16a34a',
-                strokeWeight: 2,
-                editable: false,
-                draggable: false,
-              }
-            }}
-          />
-
-          {/* Display saved polygon */}
-          {coordinates.length >= 3 && (
-            <Polygon
-              paths={coordinates}
+          {/* Drawing Manager - only show if not in viewOnly mode */}
+          {!viewOnly && (
+            <DrawingManager
+              onLoad={onDrawingManagerLoad}
+              onPolygonComplete={onPolygonComplete}
+              drawingMode={isDrawing ? window.google.maps.drawing.OverlayType.POLYGON : null}
               options={{
-                fillColor: '#22c55e',
-                fillOpacity: 0.3,
-                strokeColor: '#16a34a',
-                strokeWeight: 2,
+                drawingControl: false,
+                polygonOptions: {
+                  fillColor: '#22c55e',
+                  fillOpacity: 0.3,
+                  strokeColor: '#16a34a',
+                  strokeWeight: 2,
+                  editable: false,
+                  draggable: false,
+                  zIndex: 2 // Higher zIndex for drawn polygons
+                }
               }}
             />
           )}
 
-          {/* Search overlay */}
-          <div className="absolute top-4 left-4 z-10">
-            <Autocomplete
-              onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
-              onPlaceChanged={() => {
-                if (autocompleteRef.current) {
-                  const place = autocompleteRef.current.getPlace();
-                  if (place.geometry) {
-                    map.panTo(place.geometry.location);
-                    map.setZoom(15);
-                  }
-                }
-              }}
-              options={{
-                fields: ["geometry", "name"],
-                strictBounds: false,
-              }}
+          {/* Display facility areas (base forest areas) with labels - lower zIndex */}
+          {facilityAreas.map((area, index) => (
+            area.coordinates && area.coordinates.length >= 3 && (
+              <Polygon
+                key={`facility-${index}`}
+                paths={getPolygonPaths(area.coordinates)}
+                options={{
+                  fillColor: '#3b82f6',
+                  fillOpacity: 0.2,
+                  strokeColor: '#2563eb',
+                  strokeWeight: 2,
+                  strokeOpacity: 0.8,
+                  zIndex: 1, // Lower zIndex for facility areas
+                  clickable: true // Always clickable in both view and edit modes
+                }}
+                onClick={(e) => handleAreaClick({
+                  type: 'facility',
+                  name: area.name || facilityName || 'Production Site',
+                  hectares: area.hectares || 0,
+                  points: area.coordinates.length
+                }, e)}
+              />
+            )
+          ))}
+
+          {/* Display saved planting areas with labels - higher zIndex */}
+          {coordinates.map((plot) => (
+            plot.coordinates && plot.coordinates.length >= 3 && (
+              <Polygon
+                key={plot.id}
+                paths={getPolygonPaths(plot.coordinates)}
+                options={{
+                  fillColor: '#22c55e',
+                  fillOpacity: 0.4,
+                  strokeColor: '#16a34a',
+                  strokeWeight: 2,
+                  zIndex: 2, // Higher zIndex for planting areas
+                  clickable: true // Always clickable
+                }}
+                onClick={(e) => handleAreaClick({
+                  type: 'planting',
+                  name: plot.name,
+                  hectares: plot.hectares,
+                  points: plot.coordinates.length,
+                  coordinates: plot.coordinates // Pass coordinates for detailed view
+                }, e)}
+              />
+            )
+          ))}
+
+          {/* Info Window for clicked areas */}
+          {showInfoWindow && selectedArea && infoWindowPosition && (
+            <InfoWindow
+              position={infoWindowPosition}
+              onCloseClick={() => setShowInfoWindow(false)}
             >
-              <div className="flex items-center bg-white bg-opacity-90 rounded shadow-lg">
-                <input
-                  type="text"
-                  placeholder="Search location..."
-                  className="p-2 h-10 w-80 border-none rounded-l focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-                <button
-                  type="button"
-                  className="p-2 h-10 bg-green-500 text-white rounded-r hover:bg-green-600 focus:outline-none flex items-center justify-center"
-                  onClick={() => autocompleteRef.current && autocompleteRef.current.focus()}
-                >
-                  <Search className="h-5 w-5" />
-                </button>
+              <div className="p-2 max-w-xs">
+                <h4 className="font-semibold text-gray-900 mb-1">{selectedArea.name}</h4>
+                <div className="text-sm space-y-1">
+                  <p className="text-gray-600">
+                    <span className="font-medium">Type:</span> {selectedArea.type === 'facility' ? 'Production Site' : 'Planting Area'}
+                  </p>
+                  <p className="text-gray-600">
+                    <span className="font-medium">Area:</span> {selectedArea.hectares} hectares
+                  </p>
+                  <p className="text-gray-600">
+                    <span className="font-medium">Points:</span> {selectedArea.points}
+                  </p>
+                </div>
               </div>
-            </Autocomplete>
-          </div>
+            </InfoWindow>
+          )}
+
+          {/* Search overlay - only show when not in viewOnly mode */}
+          {!viewOnly && (
+            <div className="absolute top-4 left-4 z-10">
+              <Autocomplete
+                onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
+                onPlaceChanged={() => {
+                  if (autocompleteRef.current) {
+                    const place = autocompleteRef.current.getPlace();
+                    if (place.geometry) {
+                      map.panTo(place.geometry.location);
+                      map.setZoom(15);
+                    }
+                  }
+                }}
+                options={{
+                  fields: ["geometry", "name"],
+                  strictBounds: false,
+                }}
+              >
+                <div className="flex items-center bg-white bg-opacity-90 rounded shadow-lg">
+                  <input
+                    type="text"
+                    placeholder="Search location..."
+                    className="p-2 h-10 w-80 border-none rounded-l focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                  <button
+                    type="button"
+                    className="p-2 h-10 bg-green-500 text-white rounded-r hover:bg-green-600 focus:outline-none flex items-center justify-center"
+                    onClick={() => autocompleteRef.current && autocompleteRef.current.focus()}
+                  >
+                    <Search className="h-5 w-5" />
+                  </button>
+                </div>
+              </Autocomplete>
+            </div>
+          )}
 
           {/* Drawing Instructions */}
           {isDrawing && (
@@ -820,132 +899,950 @@ const PolygonMapComponent = ({ coordinates = [], onCoordinatesChange, isLoaded }
         </GoogleMap>
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <div className="flex items-start gap-2">
-          <Info className="w-5 h-5 text-blue-600 mt-0.5" />
-          <div>
-            <h5 className="text-sm font-medium text-blue-800 mb-1">Instructions</h5>
-            <ul className="text-sm text-blue-700 space-y-1">
-              <li>• Click "Draw Plot Boundary" to start drawing your forest plot area</li>
-              <li>• Alternatively, enter latitude/longitude coordinates manually</li>
-              <li>• A polygon requires at least 3 points to form a closed shape</li>
-              <li>• You can also search for locations using the search bar on the map</li>
-            </ul>
+      {/* Save Plot Dialog */}
+      {showSaveDialog && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-xl shadow-xl max-w-md w-full"
+          >
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Save Planting Area
+                </h3>
+                <button
+                  onClick={cancelSavePlot}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Plot Name
+                  </label>
+                  <input
+                    type="text"
+                    value={plotName}
+                    onChange={(e) => setPlotName(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                    placeholder="e.g., North Section, Plot A"
+                    autoFocus
+                  />
+                </div>
+
+                <div className="bg-green-50 p-4 rounded-lg">
+                  <div className="flex items-center gap-2 text-green-700">
+                    <MapPin className="w-5 h-5" />
+                    <span className="font-medium">Plot Details</span>
+                  </div>
+                  <div className="mt-2 space-y-1">
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium">Points:</span> {tempCoordinates.length}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium">Coordinates:</span>
+                    </p>
+                    <div className="max-h-32 overflow-y-auto bg-white rounded p-2 text-xs">
+                      {tempCoordinates.map((coord, idx) => (
+                        <div key={idx} className="font-mono">
+                          {idx + 1}. {coord.lat.toFixed(6)}, {coord.lng.toFixed(6)}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-end space-x-3 pt-4">
+                  <button
+                    onClick={cancelSavePlot}
+                    className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleSavePlot}
+                    disabled={!plotName.trim()}
+                    className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Save Plot
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Existing Plots List - Enhanced with detailed information */}
+      {!viewOnly && coordinates.length > 0 && (
+        <div className="mt-4">
+          <h4 className="text-sm font-medium text-gray-700 mb-2">Saved Planting Areas</h4>
+          <div className="space-y-2 max-h-80 overflow-y-auto">
+            {coordinates.map((plot) => (
+              <div
+                key={plot.id}
+                className="bg-green-50 rounded-lg border border-green-200 overflow-hidden"
+              >
+                <div 
+                  className="flex items-center justify-between p-3 cursor-pointer hover:bg-green-100 transition-colors"
+                  onClick={() => setExpandedPlot(expandedPlot === plot.id ? null : plot.id)}
+                >
+                  <div className="flex items-center gap-3 flex-1">
+                    <div className="w-2 h-2 rounded-full bg-green-600"></div>
+                    <div className="flex-1">
+                      <span className="text-sm font-medium text-gray-900">{plot.name}</span>
+                      <div className="text-xs text-gray-600">
+                        <span>Points: {plot.coordinates.length} • </span>
+                        <span>Area: {plot.hectares} ha</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deletePlot(plot.id);
+                      }}
+                      className="text-red-600 hover:text-red-800 transition-colors"
+                      title="Delete Plot"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                    <ChevronDown 
+                      className={`w-4 h-4 text-gray-500 transition-transform ${
+                        expandedPlot === plot.id ? 'rotate-180' : ''
+                      }`} 
+                    />
+                  </div>
+                </div>
+                
+                {/* Expanded Details */}
+                {expandedPlot === plot.id && (
+                  <div className="px-3 pb-3 pt-1 border-t border-green-200 bg-green-50/50">
+                    <h5 className="text-xs font-medium text-gray-700 mb-2">Coordinates:</h5>
+                    <div className="max-h-40 overflow-y-auto bg-white rounded p-2 text-xs font-mono">
+                      {plot.coordinates.map((coord, idx) => {
+                        const latLng = convertToLatLng(coord);
+                        return (
+                          <div key={idx} className="py-0.5">
+                            {idx + 1}. {latLng.lat.toFixed(6)}, {latLng.lng.toFixed(6)}
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
+                      <div className="bg-white p-2 rounded">
+                        <span className="text-gray-500">Hectares:</span>
+                        <span className="ml-1 font-medium">{plot.hectares}</span>
+                      </div>
+                      <div className="bg-white p-2 rounded">
+                        <span className="text-gray-500">Total Points:</span>
+                        <span className="ml-1 font-medium">{plot.coordinates.length}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
-      </div>
+      )}
+
+      {/* Instructions */}
+      {!viewOnly && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="flex items-start gap-2">
+            <Info className="w-5 h-5 text-blue-600 mt-0.5" />
+            <div>
+              <h5 className="text-sm font-medium text-blue-800 mb-1">Instructions</h5>
+              <ul className="text-sm text-blue-700 space-y-1">
+                <li>• Blue areas show your facility's base forest boundaries</li>
+                <li>• Click "Draw New Plot" to draw a planting area polygon</li>
+                <li>• After drawing, give it a name and save it</li>
+                <li>• You can draw multiple plots for different planting areas</li>
+                <li>• Click on any polygon to see its details</li>
+                <li>• Click on a saved plot to expand and see detailed coordinates</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Record Detail Modal with Enhanced Map View - UPDATED to ensure both facility and planting areas are shown
+const RecordDetailModal = ({ record, year, facility, onClose }) => {
+  const isLoaded = useGoogleMapsLoaded();
+  const [selectedTab, setSelectedTab] = useState('details');
+  const [mapError, setMapError] = useState(null);
+  
+  if (!record) return null;
+
+  // Calculate center from facility or first planting area
+  const getInitialCenter = () => {
+    // Try facility areas first
+    if (facility?.areas && facility.areas.length > 0 && facility.areas[0].coordinates && facility.areas[0].coordinates.length > 0) {
+      const coord = convertToLatLng(facility.areas[0].coordinates[0]);
+      return { lat: coord.lat, lng: coord.lng };
+    }
+    // Then try planting areas
+    if (record.plantingAreas && record.plantingAreas.length > 0 && record.plantingAreas[0].coordinates && record.plantingAreas[0].coordinates.length > 0) {
+      const coord = convertToLatLng(record.plantingAreas[0].coordinates[0]);
+      return { lat: coord.lat, lng: coord.lng };
+    }
+    return { lat: 0, lng: 0 };
+  };
+
+  // Check if there are any areas to display
+  const hasFacilityAreas = facility?.areas && facility.areas.length > 0 && 
+    facility.areas.some(area => area.coordinates && area.coordinates.length >= 3);
+  
+  const hasPlantingAreas = record.plantingAreas && record.plantingAreas.length > 0 && 
+    record.plantingAreas.some(area => area.coordinates && area.coordinates.length >= 3);
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="bg-white rounded-xl shadow-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto"
+      >
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900">
+              Record Details - {year}
+            </h3>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Tab Navigation */}
+          <div className="flex border-b border-gray-200 mb-6">
+            <button
+              onClick={() => setSelectedTab('details')}
+              className={`px-4 py-2 font-medium text-sm transition-colors ${
+                selectedTab === 'details'
+                  ? 'text-green-600 border-b-2 border-green-600'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              Details
+            </button>
+            <button
+              onClick={() => setSelectedTab('map')}
+              className={`px-4 py-2 font-medium text-sm transition-colors ${
+                selectedTab === 'map'
+                  ? 'text-green-600 border-b-2 border-green-600'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              Map View
+            </button>
+            <button
+              onClick={() => setSelectedTab('documents')}
+              className={`px-4 py-2 font-medium text-sm transition-colors ${
+                selectedTab === 'documents'
+                  ? 'text-green-600 border-b-2 border-green-600'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              Documents
+            </button>
+          </div>
+
+          {selectedTab === 'details' && (
+            <div className="space-y-6">
+              {/* Basic Info */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-gray-50 p-3 rounded-lg">
+                  <p className="text-sm text-gray-500">Description</p>
+                  <p className="font-medium">{record.description}</p>
+                </div>
+                <div className="bg-gray-50 p-3 rounded-lg">
+                  <p className="text-sm text-gray-500">Species</p>
+                  <p className="font-medium">{record.commonName} ({record.scientificName})</p>
+                </div>
+              </div>
+
+              {/* HS Codes */}
+              <div>
+                <h4 className="text-sm font-medium text-gray-700 mb-2">HS Codes</h4>
+                <div className="flex flex-wrap gap-2">
+                  {record.hsCodes?.map((code, index) => (
+                    <div key={index} className="bg-green-50 text-green-700 px-3 py-2 rounded-lg text-sm">
+                      <span className="font-medium">{code.code}</span> - {code.name}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Quantity and Location */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-gray-50 p-3 rounded-lg">
+                  <p className="text-sm text-gray-500">Net Mass</p>
+                  <p className="font-medium text-lg">{record.netMassKg?.toLocaleString()} kg</p>
+                </div>
+                <div className="bg-gray-50 p-3 rounded-lg">
+                  <p className="text-sm text-gray-500">Production Location</p>
+                  <p className="font-medium">{record.productionLocation}</p>
+                </div>
+                <div className="bg-gray-50 p-3 rounded-lg">
+                  <p className="text-sm text-gray-500">Production Date Range</p>
+                  <p className="font-medium">
+                    {record.productionDateRange?.from} to {record.productionDateRange?.to}
+                  </p>
+                </div>
+              </div>
+
+              {/* Facility Main Harvest Zone (if available) */}
+              {facility?.areas && facility.areas.length > 0 && (
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <h4 className="text-sm font-medium text-blue-800 mb-2">Facility Main Harvest Zone</h4>
+                  <div className="space-y-3">
+                    {facility.areas.map((area, index) => (
+                      <div key={index} className="bg-white p-3 rounded border border-blue-200">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="font-medium">{area.name}</span>
+                          <span className="text-sm bg-blue-100 px-2 py-1 rounded text-blue-700">
+                            {area.hectares} hectares
+                          </span>
+                        </div>
+                        
+                        {/* Coordinates Section */}
+                        <div className="mt-2">
+                          <p className="text-xs font-medium text-gray-600 mb-1">Coordinates:</p>
+                          <div className="max-h-32 overflow-y-auto bg-gray-50 rounded p-2 text-xs font-mono">
+                            {area.coordinates && area.coordinates.map((coord, coordIdx) => {
+                              const latLng = convertToLatLng(coord);
+                              return (
+                                <div key={coordIdx} className="py-0.5">
+                                  {coordIdx + 1}. {latLng.lat.toFixed(6)}, {latLng.lng.toFixed(6)}
+                                </div>
+                              );
+                            })}
+                          </div>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Total Points: {area.coordinates?.length || 0}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Planting Areas Summary */}
+              {record.plantingAreas && record.plantingAreas.length > 0 && (
+                <div className="bg-green-50 p-4 rounded-lg">
+                  <h4 className="text-sm font-medium text-green-800 mb-2">Planting Areas</h4>
+                  <div className="space-y-3">
+                    {record.plantingAreas.map((area, index) => (
+                      <div key={index} className="bg-white p-3 rounded border border-green-200">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="font-medium">{area.name}</span>
+                          <span className="text-sm bg-green-100 px-2 py-1 rounded text-green-700">
+                            {area.hectares} hectares
+                          </span>
+                        </div>
+                        
+                        {/* Coordinates Section */}
+                        <div className="mt-2">
+                          <p className="text-xs font-medium text-gray-600 mb-1">Coordinates:</p>
+                          <div className="max-h-32 overflow-y-auto bg-gray-50 rounded p-2 text-xs font-mono">
+                            {area.coordinates && area.coordinates.map((coord, coordIdx) => {
+                              const latLng = convertToLatLng(coord);
+                              return (
+                                <div key={coordIdx} className="py-0.5">
+                                  {coordIdx + 1}. {latLng.lat.toFixed(6)}, {latLng.lng.toFixed(6)}
+                                </div>
+                              );
+                            })}
+                          </div>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Total Points: {area.coordinates?.length || 0}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="border-t border-green-200 pt-2 mt-2">
+                      <div className="flex justify-between font-medium">
+                        <span>Total Area:</span>
+                        <span>{record.totalHectares || record.plantingAreas.reduce((sum, a) => sum + (a.hectares || 0), 0)} hectares</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Customer Info */}
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h4 className="text-sm font-medium text-blue-800 mb-2">Customer Information</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <p className="text-xs text-blue-600">Name</p>
+                    <p className="font-medium">{record.customerName}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-blue-600">Address</p>
+                    <p className="font-medium">{record.customerAddress}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-blue-600">Email</p>
+                    <p className="font-medium">{record.customerEmail}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Payment Info */}
+              <div className="border-t pt-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-500">Payment Status</p>
+                    {record.paymentStatus ? (
+                      <div className="flex items-center gap-2 text-green-600">
+                        <CheckCircle className="w-5 h-5" />
+                        <span className="font-medium">Paid</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2 text-amber-600">
+                        <AlertCircle className="w-5 h-5" />
+                        <span className="font-medium">Payment Pending</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-gray-500">Amount</p>
+                    <p className="text-lg font-bold text-gray-900">${record.amount || 0}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {selectedTab === 'map' && (
+            <div className="space-y-4">
+              {/* Map Legend */}
+              <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-blue-500 opacity-30 border-2 border-blue-600 rounded"></div>
+                  <span className="text-sm text-gray-700">Facility Main Harvest Zone</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-green-500 opacity-40 border-2 border-green-600 rounded"></div>
+                  <span className="text-sm text-gray-700">Planting Areas</span>
+                </div>
+              </div>
+
+              {/* Area Summary */}
+              <div className="grid grid-cols-2 gap-4">
+                {hasFacilityAreas && (
+                  <div className="bg-blue-50 p-3 rounded-lg">
+                    <p className="text-sm font-medium text-blue-800">Facility Areas</p>
+                    <p className="text-lg font-bold text-blue-900">
+                      {facility.areas.reduce((sum, a) => sum + (a.hectares || 0), 0)} ha
+                    </p>
+                    <p className="text-xs text-blue-600">
+                      {facility.areas.length} area{facility.areas.length > 1 ? 's' : ''}
+                    </p>
+                  </div>
+                )}
+                {hasPlantingAreas && (
+                  <div className="bg-green-50 p-3 rounded-lg">
+                    <p className="text-sm font-medium text-green-800">Planting Areas</p>
+                    <p className="text-lg font-bold text-green-900">
+                      {record.plantingAreas.reduce((sum, a) => sum + (a.hectares || 0), 0)} ha
+                    </p>
+                    <p className="text-xs text-green-600">
+                      {record.plantingAreas.length} area{record.plantingAreas.length > 1 ? 's' : ''}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Error Message if no areas */}
+              {!hasFacilityAreas && !hasPlantingAreas && (
+                <div className="bg-amber-50 p-4 rounded-lg">
+                  <p className="text-amber-800">No geographic areas found for this record.</p>
+                </div>
+              )}
+
+              {/* Map Component */}
+              <PolygonMapComponent
+                isLoaded={isLoaded}
+                coordinates={record.plantingAreas || []}
+                onCoordinatesChange={() => {}} // No-op for view-only
+                facilityAreas={facility?.areas || []}
+                facilityName={facility?.name}
+                facilityAddress={facility?.address}
+                viewOnly={true}
+                initialCenter={getInitialCenter()}
+                initialZoom={16}
+              />
+            </div>
+          )}
+
+          {selectedTab === 'documents' && (
+            <div className="space-y-6">
+              {/* Deforestation-free Docs */}
+              {record.deforestationFreeDocs && record.deforestationFreeDocs.length > 0 && (
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">Deforestation-free Documents</h4>
+                  <div className="space-y-2">
+                    {record.deforestationFreeDocs.map((doc, index) => (
+                      <div key={index} className="flex items-center justify-between bg-green-50 text-green-700 px-3 py-2 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <FileText className="w-4 h-4" />
+                          <span className="text-sm">{doc.name}</span>
+                        </div>
+                        <a
+                          href={doc.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 text-sm"
+                        >
+                          View
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Legal Compliance Docs */}
+              {record.legalComplianceDocs && record.legalComplianceDocs.length > 0 && (
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">Legal Compliance Documents</h4>
+                  <div className="space-y-2">
+                    {record.legalComplianceDocs.map((doc, index) => (
+                      <div key={index} className="flex items-center justify-between bg-green-50 text-green-700 px-3 py-2 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <FileText className="w-4 h-4" />
+                          <span className="text-sm">{doc.name}</span>
+                        </div>
+                        <a
+                          href={doc.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 text-sm"
+                        >
+                          View
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* No Documents Message */}
+              {(!record.deforestationFreeDocs || record.deforestationFreeDocs.length === 0) &&
+               (!record.legalComplianceDocs || record.legalComplianceDocs.length === 0) && (
+                <div className="text-center py-8 bg-gray-50 rounded-lg">
+                  <FileText className="w-12 h-12 mx-auto text-gray-400 mb-3" />
+                  <p className="text-gray-600">No documents uploaded for this record</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </motion.div>
     </div>
   );
 };
 
 const InformationRequirements = () => {
-  // USE THE CUSTOM HOOK INSTEAD OF useJsApiLoader
   const isLoaded = useGoogleMapsLoaded();
+  const { user, demoData, updateUser } = useUserStore();
 
   // State management
-  const [selectedForest, setSelectedForest] = useState(null);
-  const [selectedYear, setSelectedYear] = useState(2020);
+  const [facilities, setFacilities] = useState([]);
+  const [selectedFacility, setSelectedFacility] = useState(null);
+  const [selectedYear, setSelectedYear] = useState(2021);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [formData, setFormData] = useState({});
+  const [currentRecord, setCurrentRecord] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [viewingRecord, setViewingRecord] = useState(null);
   const [uploadModal, setUploadModal] = useState({
     isOpen: false,
     documentType: '',
     fieldId: ''
   });
+  const [importers, setImporters] = useState([]);
 
-  // Initialize form data from localStorage
+  // Form state for new record
+  const [formData, setFormData] = useState({
+    description: '',
+    commonName: '',
+    scientificName: '',
+    hsCodes: [],
+    netMassKg: '',
+    productionLocation: '',
+    plantingAreas: [],
+    productionDateRange: {
+      from: '',
+      to: ''
+    },
+    customerId: null,
+    customerName: '',
+    customerAddress: '',
+    customerEmail: '',
+    deforestationFreeDocs: [],
+    legalComplianceDocs: [],
+    amount: 0,
+    paymentStatus: false
+  });
+
+  // Load facilities and importers from user data
   useEffect(() => {
-    const savedData = localStorage.getItem('eudr_information_requirements');
-    if (savedData) {
-      setFormData(JSON.parse(savedData));
-    }
-  }, []);
+    if (user) {
+      // Get production/forest facilities
+      const productionFacilities = (user.facilities || []).filter(
+        facility => facility.type === 'production/forest site'
+      );
+      setFacilities(productionFacilities);
 
-  // Save form data to localStorage
-  const saveData = (forestId, year, data) => {
-    const newFormData = {
-      ...formData,
-      [`${forestId}_${year}`]: data
-    };
-    setFormData(newFormData);
-    localStorage.setItem('eudr_information_requirements', JSON.stringify(newFormData));
+      // Get importers linked to this exporter
+      if (user.importers && user.importers.length > 0) {
+        const importerObjects = user.importers
+          .map(importerId => demoData.users[importerId])
+          .filter(importer => importer && importer.role === 'importer');
+        setImporters(importerObjects);
+      }
+    }
+  }, [user, demoData.users]);
+
+  // Reset form when facility or year changes
+  useEffect(() => {
+    if (selectedFacility && selectedYear) {
+      // Check if we're editing or creating
+      if (!isCreating && !isEditing) {
+        // Just viewing mode - we don't load any form data
+        setCurrentRecord(null);
+        setFormData({
+          description: '',
+          commonName: '',
+          scientificName: '',
+          hsCodes: [],
+          netMassKg: '',
+          productionLocation: selectedFacility.address || '',
+          plantingAreas: [],
+          productionDateRange: {
+            from: '',
+            to: ''
+          },
+          customerId: null,
+          customerName: '',
+          customerAddress: '',
+          customerEmail: '',
+          deforestationFreeDocs: [],
+          legalComplianceDocs: [],
+          amount: 0,
+          paymentStatus: false
+        });
+      }
+    }
+  }, [selectedFacility, selectedYear, isCreating, isEditing]);
+
+  // Get existing records for the selected facility and year
+  const getExistingRecords = () => {
+    if (!selectedFacility || !selectedYear) return [];
+    return selectedFacility.pastRecords?.[selectedYear] || [];
   };
 
-  // Get current form data
-  const currentData = selectedForest ? formData[`${selectedForest.id}_${selectedYear}`] || {} : {};
+  const existingRecords = getExistingRecords();
 
-  // Filter forests based on search
-  const filteredForests = mockForests.filter(forest =>
-    forest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    forest.country.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Handle facility selection
+  const handleFacilitySelect = (facility) => {
+    setSelectedFacility(facility);
+    setIsDropdownOpen(false);
+    setSearchQuery('');
+    setIsCreating(false);
+    setIsEditing(false);
+    setCurrentRecord(null);
+    
+    // Set production location from facility address
+    setFormData(prev => ({
+      ...prev,
+      productionLocation: facility.address || ''
+    }));
+  };
 
-  // Handle input changes
+  // Handle input changes for form
   const handleInputChange = (field, value) => {
-    if (!selectedForest) return;
-
-    const updatedData = {
-      ...currentData,
+    setFormData(prev => ({
+      ...prev,
       [field]: value
-    };
-    saveData(selectedForest.id, selectedYear, updatedData);
+    }));
+
+    // Calculate payment when netMassKg changes
+    if (field === 'netMassKg') {
+      const quantity = parseFloat(value) || 0;
+      const units = Math.ceil(quantity / 20000);
+      const paymentAmount = units * 10;
+      setFormData(prev => ({
+        ...prev,
+        amount: paymentAmount
+      }));
+    }
+  };
+
+  // Handle date range changes
+  const handleDateChange = (type, value) => {
+    setFormData(prev => ({
+      ...prev,
+      productionDateRange: {
+        ...prev.productionDateRange,
+        [type]: value
+      }
+    }));
   };
 
   // Handle HS Code selection
   const handleHSCodeSelect = (hsCode) => {
-    if (!selectedForest) return;
-
-    const currentCodes = currentData.hsCodes || [];
-    const updatedCodes = [...currentCodes, hsCode];
-
-    const updatedData = {
-      ...currentData,
-      hsCodes: updatedCodes
-    };
-    saveData(selectedForest.id, selectedYear, updatedData);
+    setFormData(prev => ({
+      ...prev,
+      hsCodes: [...prev.hsCodes, hsCode]
+    }));
   };
 
   // Handle HS Code removal
   const handleHSCodeRemove = (index) => {
-    if (!selectedForest) return;
+    setFormData(prev => ({
+      ...prev,
+      hsCodes: prev.hsCodes.filter((_, i) => i !== index)
+    }));
+  };
 
-    const currentCodes = currentData.hsCodes || [];
-    const updatedCodes = currentCodes.filter((_, i) => i !== index);
+  // Handle importer selection
+  const handleImporterSelect = (importer) => {
+    setFormData(prev => ({
+      ...prev,
+      customerId: importer.id,
+      customerName: importer.basicInfo.companyName,
+      customerAddress: importer.basicInfo.country,
+      customerEmail: importer.basicInfo.email
+    }));
+  };
 
-    const updatedData = {
-      ...currentData,
-      hsCodes: updatedCodes
-    };
-    saveData(selectedForest.id, selectedYear, updatedData);
+  const handleImporterClear = () => {
+    setFormData(prev => ({
+      ...prev,
+      customerId: null,
+      customerName: '',
+      customerAddress: '',
+      customerEmail: ''
+    }));
   };
 
   // Handle document upload
   const handleDocumentUpload = (fieldId, document) => {
-    if (!selectedForest) return;
-
-    const currentDocuments = currentData[fieldId] || [];
-    const updatedDocuments = [...currentDocuments, document];
-
-    const updatedData = {
-      ...currentData,
-      [fieldId]: updatedDocuments
-    };
-    saveData(selectedForest.id, selectedYear, updatedData);
+    setFormData(prev => ({
+      ...prev,
+      [fieldId]: [...(prev[fieldId] || []), document]
+    }));
   };
 
   // Remove document
   const removeDocument = (fieldId, index) => {
-    if (!selectedForest) return;
+    setFormData(prev => ({
+      ...prev,
+      [fieldId]: prev[fieldId].filter((_, i) => i !== index)
+    }));
+  };
 
-    const currentDocuments = currentData[fieldId] || [];
-    const updatedDocuments = currentDocuments.filter((_, i) => i !== index);
+  // Handle planting areas change
+  const handlePlantingAreasChange = (areas) => {
+    setFormData(prev => ({
+      ...prev,
+      plantingAreas: areas
+    }));
+  };
 
-    const updatedData = {
-      ...currentData,
-      [fieldId]: updatedDocuments
+  // Save new record
+  const handleSaveRecord = () => {
+    if (!selectedFacility || !selectedYear) return;
+
+    // Validate required fields
+    if (!formData.description || !formData.commonName || !formData.scientificName || 
+        formData.hsCodes.length === 0 || !formData.netMassKg || !formData.customerId) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    // Generate record ID
+    const recordId = `record-${selectedYear}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+    // Calculate total hectares from planting areas
+    const totalHectares = formData.plantingAreas.reduce((sum, area) => sum + (area.hectares || 0), 0);
+
+    // Create new record object
+    const newRecord = {
+      id: recordId,
+      ...formData,
+      netMassKg: parseFloat(formData.netMassKg),
+      amount: formData.amount,
+      paymentStatus: false,
+      totalHectares: totalHectares
     };
-    saveData(selectedForest.id, selectedYear, updatedData);
+
+    // Update the facility's pastRecords
+    const updatedFacility = { ...selectedFacility };
+    
+    if (!updatedFacility.pastRecords) {
+      updatedFacility.pastRecords = { 2021: [], 2022: [], 2023: [], 2024: [], 2025: [] };
+    }
+    
+    if (!updatedFacility.pastRecords[selectedYear]) {
+      updatedFacility.pastRecords[selectedYear] = [];
+    }
+    
+    updatedFacility.pastRecords[selectedYear].push(newRecord);
+
+    // Update the user's facilities array
+    const updatedFacilities = user.facilities.map(facility => 
+      facility.id === selectedFacility.id ? updatedFacility : facility
+    );
+
+    const updatedUser = {
+      ...user,
+      facilities: updatedFacilities
+    };
+
+    // Update in store
+    updateUser(user.id, updatedUser);
+
+    // Update local state
+    setSelectedFacility(updatedFacility);
+    setIsCreating(false);
+    
+    // Reset form
+    setFormData({
+      description: '',
+      commonName: '',
+      scientificName: '',
+      hsCodes: [],
+      netMassKg: '',
+      productionLocation: selectedFacility.address || '',
+      plantingAreas: [],
+      productionDateRange: {
+        from: '',
+        to: ''
+      },
+      customerId: null,
+      customerName: '',
+      customerAddress: '',
+      customerEmail: '',
+      deforestationFreeDocs: [],
+      legalComplianceDocs: [],
+      amount: 0,
+      paymentStatus: false
+    });
+
+    alert('Record saved successfully!');
+  };
+
+  // Handle payment for a record
+  const handlePayment = (record) => {
+    if (!selectedFacility || !selectedYear) return;
+
+    // Update record payment status
+    const updatedFacility = { ...selectedFacility };
+    const records = updatedFacility.pastRecords[selectedYear] || [];
+    const recordIndex = records.findIndex(r => r.id === record.id);
+    
+    if (recordIndex !== -1) {
+      records[recordIndex].paymentStatus = true;
+      
+      // Also update the connectedPastRecords for the importer
+      if (record.customerId) {
+        const importer = demoData.users[record.customerId];
+        if (importer) {
+          const updatedImporter = { ...importer };
+          
+          if (!updatedImporter.connectedPastRecords) {
+            updatedImporter.connectedPastRecords = [];
+          }
+          
+          // Add to connectedPastRecords
+          updatedImporter.connectedPastRecords.push({
+            recordId: record.id,
+            exporterId: user.id,
+            year: selectedYear,
+            facilityId: selectedFacility.id
+          });
+          
+          updateUser(importer.id, updatedImporter);
+        }
+      }
+      
+      updatedFacility.pastRecords[selectedYear] = records;
+      
+      // Update user
+      const updatedFacilities = user.facilities.map(facility => 
+        facility.id === selectedFacility.id ? updatedFacility : facility
+      );
+      
+      const updatedUser = {
+        ...user,
+        facilities: updatedFacilities
+      };
+      
+      updateUser(user.id, updatedUser);
+      setSelectedFacility(updatedFacility);
+    }
+    
+    alert(`Payment of $${record.amount} processed successfully!`);
+  };
+
+  // View record details
+  const handleViewRecord = (record) => {
+    setViewingRecord(record);
+  };
+
+  // Start creating a new record
+  const handleCreateNew = () => {
+    setIsCreating(true);
+    setIsEditing(false);
+    setCurrentRecord(null);
+    setFormData({
+      description: '',
+      commonName: '',
+      scientificName: '',
+      hsCodes: [],
+      netMassKg: '',
+      productionLocation: selectedFacility?.address || '',
+      plantingAreas: [],
+      productionDateRange: {
+        from: '',
+        to: ''
+      },
+      customerId: null,
+      customerName: '',
+      customerAddress: '',
+      customerEmail: '',
+      deforestationFreeDocs: [],
+      legalComplianceDocs: [],
+      amount: 0,
+      paymentStatus: false
+    });
+  };
+
+  // Cancel creating/editing
+  const handleCancel = () => {
+    setIsCreating(false);
+    setIsEditing(false);
+    setCurrentRecord(null);
   };
 
   return (
@@ -960,8 +1857,8 @@ const InformationRequirements = () => {
           5 YEARS MINIMUM PAST RECORDS
         </h1>
         <p className="text-gray-600 text-lg mb-2">
-          Documents and data of shipments, forest, management permits and approvals since 2020.
-          Year 2020 is the cut off date for deforestation.
+          Documents and data of shipments, forest, management permits and approvals since 2021.
+          Year 2021 is the cut off date for deforestation.
         </p>
 
         {/* Important Note */}
@@ -973,19 +1870,19 @@ const InformationRequirements = () => {
                 Important Notice:
               </p>
               <p className="text-amber-700 text-sm">
-                All users/Exporters are to pay $10 per container (20,000kg) for 2020 till date records of past shipment whether authenticated or not.
+                All users/Exporters are to pay $10 per 20,000kg for 2021 till date records of past shipment whether authenticated or not.
               </p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Forest Selection */}
+      {/* Facility Selection */}
       <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-8">
         <div className="flex items-center gap-2 mb-4">
           <Trees className="w-6 h-6 text-green-600" />
           <h2 className="text-xl font-semibold text-gray-800">
-            Select Forest Area
+            Select Production Site / Forest Area
           </h2>
         </div>
 
@@ -996,18 +1893,18 @@ const InformationRequirements = () => {
             className="w-full flex items-center justify-between p-4 border-2 border-gray-200 rounded-lg hover:border-green-300 transition-colors bg-white text-left"
           >
             <div className="flex items-center gap-3">
-              {selectedForest ? (
+              {selectedFacility ? (
                 <>
                   <div className="w-3 h-3 rounded-full bg-green-500"></div>
                   <div>
-                    <span className="font-medium text-gray-900">{selectedForest.name}</span>
-                    <span className="text-gray-500 text-sm ml-2">({selectedForest.country})</span>
+                    <span className="font-medium text-gray-900">{selectedFacility.name}</span>
+                    <span className="text-gray-500 text-sm ml-2">({selectedFacility.address})</span>
                   </div>
                 </>
               ) : (
                 <>
                   <div className="w-3 h-3 rounded-full bg-gray-300"></div>
-                  <span className="text-gray-500">Select a forest area...</span>
+                  <span className="text-gray-500">Select a production site...</span>
                 </>
               )}
             </div>
@@ -1024,7 +1921,7 @@ const InformationRequirements = () => {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search forests..."
+                    placeholder="Search sites..."
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   />
                 </div>
@@ -1032,32 +1929,36 @@ const InformationRequirements = () => {
 
               {/* List */}
               <div className="overflow-y-auto max-h-64">
-                {filteredForests.map(forest => (
-                  <button
-                    key={forest.id}
-                    onClick={() => {
-                      setSelectedForest(forest);
-                      setIsDropdownOpen(false);
-                      setSearchQuery('');
-                    }}
-                    className="w-full flex items-start p-4 hover:bg-gray-50 transition-colors"
-                  >
-                    <div className="flex-shrink-0 mt-1">
-                      <div className={`w-3 h-3 rounded-full ${selectedForest?.id === forest.id ? 'bg-green-500' : 'bg-gray-300'}`}></div>
-                    </div>
-                    <div className="ml-3 text-left">
-                      <div className="font-medium text-gray-900">{forest.name}</div>
-                      <div className="text-sm text-gray-600 mt-1">{forest.country} • {forest.area}</div>
-                    </div>
-                  </button>
-                ))}
+                {facilities.length > 0 ? (
+                  facilities
+                    .filter(facility => facility.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                    .map(facility => (
+                      <button
+                        key={facility.id}
+                        onClick={() => handleFacilitySelect(facility)}
+                        className="w-full flex items-start p-4 hover:bg-gray-50 transition-colors"
+                      >
+                        <div className="flex-shrink-0 mt-1">
+                          <div className={`w-3 h-3 rounded-full ${selectedFacility?.id === facility.id ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                        </div>
+                        <div className="ml-3 text-left">
+                          <div className="font-medium text-gray-900">{facility.name}</div>
+                          <div className="text-sm text-gray-600 mt-1">{facility.address}</div>
+                        </div>
+                      </button>
+                    ))
+                ) : (
+                  <div className="p-4 text-center text-gray-500">
+                    No production sites found. Please add a production site first.
+                  </div>
+                )}
               </div>
             </div>
           )}
         </div>
 
-        {/* Selected Forest Details */}
-        {selectedForest && (
+        {/* Selected Facility Details */}
+        {selectedFacility && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
@@ -1066,17 +1967,15 @@ const InformationRequirements = () => {
             <div className="flex items-start gap-3">
               <MapPin className="w-5 h-5 text-green-600 mt-0.5" />
               <div>
-                <h3 className="font-semibold text-green-800 mb-1">{selectedForest.name}</h3>
+                <h3 className="font-semibold text-green-800 mb-1">{selectedFacility.name}</h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-gray-600">Coordinates: </span>
-                    <span className="font-medium">
-                      {selectedForest.coordinates.lat.toFixed(4)}°, {selectedForest.coordinates.lng.toFixed(4)}°
-                    </span>
+                    <span className="text-gray-600">Address: </span>
+                    <span className="font-medium">{selectedFacility.address}</span>
                   </div>
                   <div>
-                    <span className="text-gray-600">Area: </span>
-                    <span className="font-medium">{selectedForest.area}</span>
+                    <span className="text-gray-600">Total Area: </span>
+                    <span className="font-medium">{selectedFacility.totalHectares || 0} hectares</span>
                   </div>
                 </div>
               </div>
@@ -1085,589 +1984,361 @@ const InformationRequirements = () => {
         )}
       </div>
 
-      {/* Year Selection */}
-      {selectedForest && (
+      {/* Year Selection and Records Display */}
+      {selectedFacility && (
         <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-8">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Information requirements according to Article 9 EUDR:
           </h3>
 
-          <div className="flex flex-wrap gap-2 mb-6">
-            {years.map(year => (
-              <button
-                key={year}
-                onClick={() => setSelectedYear(year)}
-                className={`px-4 py-2 rounded-lg border transition-colors ${selectedYear === year
-                    ? 'bg-green-600 text-white border-green-600'
-                    : 'bg-white text-gray-700 border-gray-300 hover:border-green-300'
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+            <div className="flex flex-wrap gap-2">
+              {years.map(year => (
+                <button
+                  key={year}
+                  onClick={() => setSelectedYear(year)}
+                  className={`px-4 py-2 rounded-lg border transition-colors ${
+                    selectedYear === year
+                      ? 'bg-green-600 text-white border-green-600'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-green-300'
                   }`}
-              >
-                {year}
-              </button>
-            ))}
-          </div>
-
-          <div className="text-center mb-6">
-            <h4 className="text-xl font-bold text-green-700">
-              {selectedYear}: Information requirements according to Article 9 EUDR
-            </h4>
-          </div>
-
-          {/* Form Fields */}
-          <div className="space-y-6">
-            {/* 1. Product Description */}
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                1. a description, including the trade name and type of the relevant products. the product description shall include the list of relevant commodities or relevant products contained therein or used to make those products
-              </label>
-              <textarea
-                value={currentData.productDescription || ''}
-                onChange={(e) => handleInputChange('productDescription', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                rows={4}
-                placeholder="Enter product description including trade name, type, and list of commodities..."
-              />
-            </div>
-
-            {/* 2. Species Information */}
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                2. as well as, in the case of relevant products that contain or have been made using wood
-              </label>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">
-                    a. the common name of the species
-                  </label>
-                  <input
-                    type="text"
-                    value={currentData.commonName || ''}
-                    onChange={(e) => handleInputChange('commonName', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    placeholder="e.g., Oak, Pine, Teak"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">
-                    b. and their full scientific name
-                  </label>
-                  <input
-                    type="text"
-                    value={currentData.scientificName || ''}
-                    onChange={(e) => handleInputChange('scientificName', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    placeholder="e.g., Quercus robur, Pinus sylvestris"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* 3. HS Code */}
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                3. HS Code
-              </label>
-              <HSCodeSelector
-                selectedCodes={currentData.hsCodes || []}
-                onSelect={handleHSCodeSelect}
-                onRemove={handleHSCodeRemove}
-              />
-            </div>
-
-            {/* 4. Quantity & Payment - UPDATED */}
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                4. the quantity of the relevant products in Kilograms; net mass, volume, number of items
-              </label>
-              
-              <div className="space-y-4">
-                {/* Quantity Input */}
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">Total Quantity (Kilograms)</label>
-                  <div className="relative">
-                    <input
-                      type="number"
-                      value={currentData.totalQuantity || ''}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        handleInputChange('totalQuantity', value);
-                        
-                        // Calculate payment when quantity changes
-                        if (value) {
-                          const quantity = parseFloat(value);
-                          if (!isNaN(quantity)) {
-                            const containers = Math.ceil(quantity / 20000); // 20,000kg per container
-                            const paymentAmount = containers * 10; // $10 per container
-                            handleInputChange('paymentAmount', paymentAmount);
-                            handleInputChange('containerCount', containers);
-                          } else {
-                            handleInputChange('paymentAmount', 0);
-                            handleInputChange('containerCount', 0);
-                          }
-                        } else {
-                          handleInputChange('paymentAmount', 0);
-                          handleInputChange('containerCount', 0);
-                        }
-                      }}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 pr-24"
-                      placeholder="e.g., 10000"
-                      min="0"
-                    />
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <span className="text-gray-500">kg</span>
-                    </div>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Note: Payment is calculated at $10 per container (20,000kg)
-                  </p>
-                </div>
-
-                {/* Payment Display - Only show if quantity is entered */}
-                {(currentData.totalQuantity || 0) > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    className="bg-green-50 border border-green-200 rounded-lg p-4"
-                  >
-                    <div className="flex items-center justify-between mb-3">
-                      <h4 className="text-sm font-semibold text-green-800">Payment Calculation for {selectedYear}</h4>
-                      <span className="text-sm font-medium text-green-700">
-                        ${currentData.paymentAmount || 0}
-                      </span>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                      <div className="bg-white p-3 rounded-lg border border-green-100">
-                        <div className="flex justify-between items-center mb-1">
-                          <span className="text-gray-600">Quantity:</span>
-                          <span className="font-medium">{currentData.totalQuantity} kg</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-gray-600">Containers (20,000kg each):</span>
-                          <span className="font-medium">{currentData.containerCount || Math.ceil(currentData.totalQuantity / 20000)}</span>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-green-100 p-3 rounded-lg border border-green-200">
-                        <div className="flex justify-between items-center">
-                          <span className="text-green-800">Payment Rate:</span>
-                          <span className="font-medium text-green-700">$10 per container</span>
-                        </div>
-                        <div className="flex justify-between items-center mt-1">
-                          <span className="text-green-800">Total Payment:</span>
-                          <span className="font-bold text-green-800 text-lg">${currentData.paymentAmount || 0}</span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Payment Information */}
-                    <div className="mt-4 pt-4 border-t border-green-200">
-                      <div className="flex items-start gap-2">
-                        <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5" />
-                        <div>
-                          <p className="text-sm font-medium text-amber-800 mb-1">Important Payment Information</p>
-                          <ul className="text-xs text-amber-700 space-y-1">
-                            <li>• Payment amount will be calculated for each year separately</li>
-                            <li>• 20,000kg = 1 container = $10 payment</li>
-                            <li>• Partial containers are counted as full containers</li>
-                            <li>• Payment is required for all years from 2020 to present</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Additional quantity information (optional) */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                  <div>
-                    <label className="block text-sm text-gray-600 mb-1">Volume (m³) - Optional</label>
-                    <input
-                      type="number"
-                      value={currentData.volume || ''}
-                      onChange={(e) => handleInputChange('volume', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                      placeholder="e.g., 50"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm text-gray-600 mb-1">Number of items - Optional</label>
-                    <input
-                      type="number"
-                      value={currentData.numberOfItems || ''}
-                      onChange={(e) => handleInputChange('numberOfItems', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                      placeholder="e.g., 1000"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* 5. Country of Production */}
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                5. the country of production and, where relevant, parts thereof
-              </label>
-              <select
-                value={currentData.countryOfProduction || ''}
-                onChange={(e) => handleInputChange('countryOfProduction', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-              >
-                <option value="">Select country of production</option>
-                {countries.map(country => (
-                  <option key={country} value={country}>{country}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* 6. Geolocation */}
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                6. the geolocation of all plots of land where the relevant commodities that the relevant product contains, or has been made using, were produced
-              </label>
-
-              <div className="mb-4">
-                <h4 className="text-sm font-medium text-gray-700 mb-3">Enter Plot Coordinates</h4>
-                <CoordinateInput
-                  coordinates={currentData.plotCoordinates || []}
-                  onCoordinatesChange={(coords) => handleInputChange('plotCoordinates', coords)}
-                />
-              </div>
-
-              <PolygonMapComponent
-                isLoaded={isLoaded}
-                coordinates={currentData.plotCoordinates || []}
-                onCoordinatesChange={(coords) => handleInputChange('plotCoordinates', coords)}
-              />
-
-              {(currentData.plotCoordinates || []).length >= 3 && (
-                <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-600" />
-                    <span className="text-sm font-medium text-green-700">
-                      Plot boundary defined with {currentData.plotCoordinates.length} coordinates
-                    </span>
-                  </div>
-                  <p className="text-xs text-gray-600 mt-1">
-                    The polygon will be saved and displayed when you return to this section.
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* 7. Date of Production */}
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                7. the date or time range of production
-              </label>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">From date</label>
-                  <input
-                    type="date"
-                    value={currentData.productionDateFrom || ''}
-                    onChange={(e) => handleInputChange('productionDateFrom', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">To date</label>
-                  <input
-                    type="date"
-                    value={currentData.productionDateTo || ''}
-                    onChange={(e) => handleInputChange('productionDateTo', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* 9. Supplier Information */}
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                9. the name, postal address and email address of any business or person from whom they have been supplied with the relevant products
-              </label>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">Name</label>
-                  <input
-                    type="text"
-                    value={currentData.supplierName || ''}
-                    onChange={(e) => handleInputChange('supplierName', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    placeholder="Enter supplier name"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">Postal address</label>
-                  <textarea
-                    value={currentData.supplierAddress || ''}
-                    onChange={(e) => handleInputChange('supplierAddress', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    rows={2}
-                    placeholder="Enter supplier postal address"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">Email address</label>
-                  <input
-                    type="email"
-                    value={currentData.supplierEmail || ''}
-                    onChange={(e) => handleInputChange('supplierEmail', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    placeholder="Enter supplier email address"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* 10. Customer Information */}
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                10. the name, postal address and email address of any business, operator or trader to whom the relevant products have been supplied
-              </label>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">Name</label>
-                  <input
-                    type="text"
-                    value={currentData.customerName || ''}
-                    onChange={(e) => handleInputChange('customerName', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    placeholder="Enter customer name"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">Postal address</label>
-                  <textarea
-                    value={currentData.customerAddress || ''}
-                    onChange={(e) => handleInputChange('customerAddress', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    rows={2}
-                    placeholder="Enter customer postal address"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">Email address</label>
-                  <input
-                    type="email"
-                    value={currentData.customerEmail || ''}
-                    onChange={(e) => handleInputChange('customerEmail', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    placeholder="Enter customer email address"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* 11. Deforestation-free Documentation */}
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  11. adequately conclusive and verifiable information, data and documents that the relevant products are deforestation-free
-                </label>
-                <button
-                  onClick={() => setUploadModal({ isOpen: true, documentType: 'Deforestation-free verification', fieldId: 'deforestationDocs' })}
-                  className="flex items-center gap-2 px-3 py-1 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
                 >
-                  <Plus className="w-4 h-4" />
-                  Add Document
+                  {year}
                 </button>
-              </div>
-
-              {/* Uploaded Documents */}
-              <div className="mt-3">
-                <div className="flex flex-wrap gap-2">
-                  {(currentData.deforestationDocs || []).map((doc, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-2 bg-green-50 text-green-700 px-3 py-2 rounded-lg"
-                    >
-                      <FileText className="w-4 h-4" />
-                      <span className="text-sm font-medium">{doc.name}</span>
-                      <button
-                        onClick={() => removeDocument('deforestationDocs', index)}
-                        className="text-green-600 hover:text-green-800 transition-colors"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              ))}
             </div>
-
-            {/* 12. Compliance Documentation */}
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  12. adequately conclusive and verifiable information, data and documents that the relevant commodities have been produced in accordance with the relevant legislation of the country of production, including any arrangement conferring the right to use the respective area for the purposes of the production of the relevant commodity
-                </label>
-                <button
-                  onClick={() => setUploadModal({ isOpen: true, documentType: 'Compliance verification', fieldId: 'complianceDocs' })}
-                  className="flex items-center gap-2 px-3 py-1 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
-                >
-                  <Plus className="w-4 h-4" />
-                  Add Document
-                </button>
-              </div>
-
-              {/* Uploaded Documents */}
-              <div className="mt-3">
-                <div className="flex flex-wrap gap-2">
-                  {(currentData.complianceDocs || []).map((doc, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-2 bg-green-50 text-green-700 px-3 py-2 rounded-lg"
-                    >
-                      <FileText className="w-4 h-4" />
-                      <span className="text-sm font-medium">{doc.name}</span>
-                      <button
-                        onClick={() => removeDocument('complianceDocs', index)}
-                        className="text-green-600 hover:text-green-800 transition-colors"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Total Payment Summary - Show only when a forest is selected */}
-            <div className="mt-8 bg-white rounded-xl p-6 shadow-lg border border-blue-100">
-              <div className="flex items-center gap-2 mb-4">
-                <Globe className="w-6 h-6 text-blue-600" />
-                <h3 className="text-xl font-semibold text-gray-800">
-                  Payment Summary (2020 - {selectedYear})
-                </h3>
-              </div>
-
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead>
-                    <tr className="bg-gray-50">
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Year</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity (kg)</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Containers</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payment Rate</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount Due</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {years
-                      .filter(year => year >= 2020 && year <= selectedYear)
-                      .map(year => {
-                        const yearData = formData[`${selectedForest.id}_${year}`] || {};
-                        const quantity = parseFloat(yearData.totalQuantity) || 0;
-                        const containers = Math.ceil(quantity / 20000);
-                        const payment = containers * 10;
-                        
-                        return (
-                          <tr key={year} className={year === selectedYear ? 'bg-green-50' : ''}>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
-                              {year} {year === selectedYear && <span className="ml-2 text-xs text-green-600">(Current)</span>}
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
-                              {quantity.toLocaleString()} kg
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
-                              {containers}
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
-                              $10 per container
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm font-semibold">
-                              ${payment}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    
-                    {/* Total Row */}
-                    <tr className="bg-blue-50 font-semibold">
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">Total</td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                        {years
-                          .filter(year => year >= 2020 && year <= selectedYear)
-                          .reduce((sum, year) => {
-                            const yearData = formData[`${selectedForest.id}_${year}`] || {};
-                            return sum + (parseFloat(yearData.totalQuantity) || 0);
-                          }, 0).toLocaleString()} kg
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                        {years
-                          .filter(year => year >= 2020 && year <= selectedYear)
-                          .reduce((sum, year) => {
-                            const yearData = formData[`${selectedForest.id}_${year}`] || {};
-                            const quantity = parseFloat(yearData.totalQuantity) || 0;
-                            return sum + Math.ceil(quantity / 20000);
-                          }, 0)}
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900"></td>
-                      <td className="px-4 py-3 whitespace-nowrap text-lg text-blue-800">
-                        $
-                        {years
-                          .filter(year => year >= 2020 && year <= selectedYear)
-                          .reduce((sum, year) => {
-                            const yearData = formData[`${selectedForest.id}_${year}`] || {};
-                            const quantity = parseFloat(yearData.totalQuantity) || 0;
-                            const containers = Math.ceil(quantity / 20000);
-                            return sum + (containers * 10);
-                          }, 0)}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Payment Button */}
-              <div className="mt-6 flex justify-end">
-                <button
-                  onClick={() => {
-                    // Calculate total payment
-                    const totalPayment = years
-                      .filter(year => year >= 2020 && year <= selectedYear)
-                      .reduce((sum, year) => {
-                        const yearData = formData[`${selectedForest.id}_${year}`] || {};
-                        const quantity = parseFloat(yearData.totalQuantity) || 0;
-                        const containers = Math.ceil(quantity / 20000);
-                        return sum + (containers * 10);
-                      }, 0);
-                    
-                    if (totalPayment > 0) {
-                      alert(`Total payment due: $${totalPayment}\n\nYou will be redirected to the payment gateway.`);
-                      // Here you would integrate with your payment gateway
-                      // For example: window.open('your-payment-gateway-url', '_blank');
-                    } else {
-                      alert('Please enter quantities for at least one year to make a payment.');
-                    }
-                  }}
-                  className="flex items-center gap-2 px-6 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors font-medium shadow-lg"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                  </svg>
-                  Proceed to Payment
-                </button>
-              </div>
-            </div>
-
-            {/* Save Button */}
-            <div className="flex justify-end">
+            
+            {!isCreating && !isEditing && (
               <button
-                onClick={() => {
-                  // Data is auto-saved, just show confirmation
-                  alert('Data saved successfully!');
-                }}
-                className="flex items-center gap-2 px-6 py-3 text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors font-medium"
+                onClick={handleCreateNew}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
               >
-                <Save className="w-5 h-5" />
-                Save Information for {selectedYear}
+                <Plus className="w-4 h-4" />
+                Create New Record
               </button>
-            </div>
+            )}
           </div>
+
+          {/* Existing Records List */}
+          {!isCreating && !isEditing && existingRecords.length > 0 && (
+            <div className="mb-8">
+              <h4 className="text-lg font-medium text-gray-700 mb-4">Existing Records for {selectedYear}</h4>
+              <div className="space-y-3">
+                {existingRecords.map(record => (
+                  <RecordCard
+                    key={record.id}
+                    record={record}
+                    year={selectedYear}
+                    onView={handleViewRecord}
+                    onPayment={handlePayment}
+                    isPaid={record.paymentStatus}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!isCreating && !isEditing && existingRecords.length === 0 && (
+            <div className="text-center py-8 bg-gray-50 rounded-lg border border-gray-200 mb-8">
+              <Package className="w-12 h-12 mx-auto text-gray-400 mb-3" />
+              <p className="text-gray-600">No records found for {selectedYear}</p>
+              <p className="text-sm text-gray-500 mt-1">Click "Create New Record" to add one</p>
+            </div>
+          )}
+
+          {/* New/Edit Record Form */}
+          {(isCreating || isEditing) && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-6 border-t pt-6"
+            >
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={handleCancel}
+                    className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    <ArrowLeft className="w-5 h-5" />
+                    <span>Back</span>
+                  </button>
+                  <h4 className="text-xl font-bold text-green-700">
+                    {isCreating ? 'Create New Record' : 'Edit Record'} - {selectedYear}
+                  </h4>
+                </div>
+              </div>
+
+              {/* Form Fields */}
+              <div className="space-y-6">
+                {/* 1. Description */}
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    1. Description *
+                  </label>
+                  <textarea
+                    value={formData.description}
+                    onChange={(e) => handleInputChange('description', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                    rows={4}
+                    placeholder="Enter product description including trade name, type, and list of commodities..."
+                  />
+                </div>
+
+                {/* 2. Species Information */}
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    2. Species Information *
+                  </label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm text-gray-600 mb-1">
+                        Common Name
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.commonName}
+                        onChange={(e) => handleInputChange('commonName', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                        placeholder="e.g., Mahogany, Oak, Pine"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-600 mb-1">
+                        Scientific Name
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.scientificName}
+                        onChange={(e) => handleInputChange('scientificName', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                        placeholder="e.g., Swietenia macrophylla"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. HS Code */}
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    3. HS Code *
+                  </label>
+                  <HSCodeSelector
+                    selectedCodes={formData.hsCodes}
+                    onSelect={handleHSCodeSelect}
+                    onRemove={handleHSCodeRemove}
+                    supportedProducts={selectedFacility.supportedProducts || []}
+                  />
+                </div>
+
+                {/* 4. Quantity */}
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    4. Total Quantity (Kilograms) *
+                  </label>
+                  <div>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        value={formData.netMassKg}
+                        onChange={(e) => handleInputChange('netMassKg', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 pr-24"
+                        placeholder="e.g., 50000"
+                        min="0"
+                      />
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <span className="text-gray-500">kg</span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Note: Payment is calculated at $10 per 20,000kg
+                    </p>
+                  </div>
+
+                  {/* Payment Preview */}
+                  {formData.netMassKg > 0 && (
+                    <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">Estimated Payment:</span>
+                        <span className="text-lg font-bold text-green-700">${formData.amount}</span>
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Based on {Math.ceil(parseFloat(formData.netMassKg) / 20000)} units of 20,000kg
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* 5. Production Location */}
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    5. Production Location *
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.productionLocation}
+                    onChange={(e) => handleInputChange('productionLocation', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-gray-100"
+                    readOnly
+                    placeholder="Auto-filled from facility address"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    This is auto-filled from the selected facility's address
+                  </p>
+                </div>
+
+                {/* 6. Geolocation - Planting Areas */}
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    6. Planting Areas (Geolocation)
+                  </label>
+                  
+                  <PolygonMapComponent
+                    isLoaded={isLoaded}
+                    coordinates={formData.plantingAreas}
+                    onCoordinatesChange={handlePlantingAreasChange}
+                    facilityAreas={selectedFacility.areas || []}
+                    facilityName={selectedFacility.name}
+                    facilityAddress={selectedFacility.address}
+                  />
+                </div>
+
+                {/* 7. Production Date Range */}
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    7. Production Date Range
+                  </label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm text-gray-600 mb-1">From date</label>
+                      <input
+                        type="date"
+                        value={formData.productionDateRange.from}
+                        onChange={(e) => handleDateChange('from', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-600 mb-1">To date</label>
+                      <input
+                        type="date"
+                        value={formData.productionDateRange.to}
+                        onChange={(e) => handleDateChange('to', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 8. Customer Information */}
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    8. Customer Information *
+                  </label>
+                  
+                  <ImporterSelector
+                    importers={importers}
+                    selectedImporter={formData.customerId ? importers.find(i => i.id === formData.customerId) : null}
+                    onSelect={handleImporterSelect}
+                    onClear={handleImporterClear}
+                  />
+                  
+                  {!formData.customerId && (
+                    <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                      <p className="text-sm text-amber-700">
+                        Please select an importer from the dropdown above. The name, address, and email will be auto-filled.
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* 9. Deforestation-free Documentation */}
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      9. Deforestation-free Documents
+                    </label>
+                    <button
+                      onClick={() => setUploadModal({ isOpen: true, documentType: 'Deforestation-free verification', fieldId: 'deforestationFreeDocs' })}
+                      className="flex items-center gap-2 px-3 py-1 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Add Document
+                    </button>
+                  </div>
+
+                  {/* Uploaded Documents */}
+                  <div className="mt-3">
+                    <div className="flex flex-wrap gap-2">
+                      {formData.deforestationFreeDocs.map((doc, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center gap-2 bg-green-50 text-green-700 px-3 py-2 rounded-lg"
+                        >
+                          <FileText className="w-4 h-4" />
+                          <span className="text-sm font-medium">{doc.name}</span>
+                          <button
+                            onClick={() => removeDocument('deforestationFreeDocs', index)}
+                            className="text-green-600 hover:text-green-800 transition-colors"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 10. Legal Compliance Documentation */}
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      10. Legal Compliance Documents
+                    </label>
+                    <button
+                      onClick={() => setUploadModal({ isOpen: true, documentType: 'Compliance verification', fieldId: 'legalComplianceDocs' })}
+                      className="flex items-center gap-2 px-3 py-1 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Add Document
+                    </button>
+                  </div>
+
+                  {/* Uploaded Documents */}
+                  <div className="mt-3">
+                    <div className="flex flex-wrap gap-2">
+                      {formData.legalComplianceDocs.map((doc, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center gap-2 bg-green-50 text-green-700 px-3 py-2 rounded-lg"
+                        >
+                          <FileText className="w-4 h-4" />
+                          <span className="text-sm font-medium">{doc.name}</span>
+                          <button
+                            onClick={() => removeDocument('legalComplianceDocs', index)}
+                            className="text-green-600 hover:text-green-800 transition-colors"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Save Button */}
+                <div className="flex justify-end">
+                  <button
+                    onClick={handleSaveRecord}
+                    className="flex items-center gap-2 px-6 py-3 text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors font-medium"
+                  >
+                    <Save className="w-5 h-5" />
+                    Save Record
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
         </div>
       )}
 
@@ -1681,6 +2352,14 @@ const InformationRequirements = () => {
             handleDocumentUpload(uploadModal.fieldId, document);
           }
         }}
+      />
+
+      {/* Record Detail Modal */}
+      <RecordDetailModal
+        record={viewingRecord}
+        year={selectedYear}
+        facility={selectedFacility}
+        onClose={() => setViewingRecord(null)}
       />
     </motion.div>
   );

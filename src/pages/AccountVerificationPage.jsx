@@ -4,7 +4,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useUserStore } from "../store/useUserStore";
 import { FaArrowLeft, FaEnvelope, FaCheckCircle } from "react-icons/fa";
-import { SIGNUP_BG_IMAGES } from "../constants"; // Import from constants
+import { SIGNUP_BG_IMAGES } from "../constants";
 
 // Use first 3 images from SIGNUP_BG_IMAGES
 const VERIFICATION_BG_IMAGES = SIGNUP_BG_IMAGES.slice(0, 3);
@@ -13,15 +13,14 @@ function AccountVerificationPage() {
   const [current, setCurrent] = useState(0);
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [loading, setLoading] = useState(false);
-  const [countdown, setCountdown] = useState(5); // Changed from 60 to 5 seconds
+  const [countdown, setCountdown] = useState(5);
   const [canResend, setCanResend] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const otpInputs = useRef([]);
   
-  // Use refs to track if verification code has been generated
-  const verificationCodeGeneratedRef = useRef(false);
-  const initialLoadRef = useRef(true);
+  // Use a ref to track if we've already sent the code
+  const codeSent = useRef(false);
 
   const { verifyAccount, generateVerificationOTP, setUser, loginData } = useUserStore();
   const userId = location.state?.userId || loginData?.userId;
@@ -29,17 +28,19 @@ function AccountVerificationPage() {
   const fromLogin = location.state?.fromLogin || loginData?.fromLogin;
 
   // Generate verification code function
-  const generateVerificationCode = useCallback(() => {
-    if (userId && !verificationCodeGeneratedRef.current) {
-      const result = generateVerificationOTP(userId);
-      if (result.success) {
-        toast.success(`Verification code sent: ${result.otp}`);
-        verificationCodeGeneratedRef.current = true;
-      }
-    } else if (!userId) {
+  const sendVerificationCode = useCallback(() => {
+    if (!userId) {
       toast.error("No user ID found. Please try signing up again.");
       setTimeout(() => navigate("/signup"), 2000);
+      return;
     }
+
+    const result = generateVerificationOTP(userId);
+    if (result.success) {
+      toast.success(`Verification code sent: ${result.otp}`);
+      return true;
+    }
+    return false;
   }, [userId, generateVerificationOTP, navigate]);
 
   // Cycle through background images every 5 seconds
@@ -51,28 +52,37 @@ function AccountVerificationPage() {
     return () => clearInterval(interval);
   }, []);
 
-  // Generate verification code on initial load only
+  // Generate verification code on initial mount only - with mount check
   useEffect(() => {
-    // Reset refs when component mounts (for new verification)
-    if (initialLoadRef.current) {
-      verificationCodeGeneratedRef.current = false;
-      initialLoadRef.current = false;
-      generateVerificationCode();
+    let isMounted = true;
+    
+    // Only send if we haven't already sent it
+    if (!codeSent.current && userId) {
+      const success = sendVerificationCode();
+      if (success && isMounted) {
+        codeSent.current = true;
+      }
     }
 
     // Start countdown
     const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          setCanResend(true);
-          return 0;
-        }
-        return prev - 1;
-      });
+      if (isMounted) {
+        setCountdown((prev) => {
+          if (prev <= 1) {
+            setCanResend(true);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }
     }, 1000);
 
-    return () => clearInterval(timer);
-  }, [generateVerificationCode]);
+    return () => {
+      isMounted = false;
+      clearInterval(timer);
+      // Don't reset codeSent - we want to remember that we sent it
+    };
+  }, []); // Empty dependency array - only runs once on mount
 
   const handleOtpChange = (index, value) => {
     if (!/^\d*$/.test(value)) return;
@@ -116,18 +126,8 @@ function AccountVerificationPage() {
       toast.success("Account verified successfully!");
       setUser(result.user);
       
-      // Redirect based on user role and source
       setTimeout(() => {
-        if (fromLogin) {
-          navigate("/dashboard");
-        } else {
-          // New signup
-          if (result.user.role === 'importer' || result.user.role === 'exporter') {
-            navigate("/dashboard");
-          } else if (result.user.role === 'verifier' || result.user.role === 'freight agent') {
-            navigate("/dashboard");
-          }
-        }
+        navigate("/dashboard");
       }, 1500);
     } else {
       toast.error(result.message || "Invalid OTP. Please try again.");
@@ -140,7 +140,7 @@ function AccountVerificationPage() {
     
     const result = generateVerificationOTP(userId);
     if (result.success) {
-      setCountdown(5); // Reset to 5 seconds
+      setCountdown(5);
       setCanResend(false);
       toast.success(`New verification code sent: ${result.otp}`);
     }
@@ -167,7 +167,7 @@ function AccountVerificationPage() {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background images from SIGNUP_BG_IMAGES */}
+      {/* Background images */}
       {VERIFICATION_BG_IMAGES.map(({ src, alt }, i) => (
         <div
           key={i}
@@ -181,16 +181,14 @@ function AccountVerificationPage() {
         />
       ))}
 
-      {/* Semi-transparent green gradient overlay */}
+      {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-green-800/50 to-green-600/50" />
 
-      {/* Glass-effect form container */}
+      {/* Form container */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative w-full max-w-md p-8 z-10
-                      bg-white/20 backdrop-blur-sm
-                      rounded-2xl shadow-lg"
+        className="relative w-full max-w-md p-8 z-10 bg-white/20 backdrop-blur-sm rounded-2xl shadow-lg"
       >
         {/* Back button */}
         <button
@@ -225,10 +223,7 @@ function AccountVerificationPage() {
               Enter verification code
             </label>
             
-            <div 
-              className="flex justify-center gap-3"
-              onPaste={handleOtpPaste}
-            >
+            <div className="flex justify-center gap-3" onPaste={handleOtpPaste}>
               {[0, 1, 2, 3].map((index) => (
                 <input
                   key={index}

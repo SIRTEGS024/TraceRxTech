@@ -1,12 +1,10 @@
-// OtpVerificationPage.js - UPDATED with shared background images
-
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useUserStore } from "../store/useUserStore";
 import { FaArrowLeft, FaEnvelope, FaShieldAlt } from "react-icons/fa";
-import { LOGIN_BG_IMAGES } from "../constants"; // Import from constants
+import { LOGIN_BG_IMAGES } from "../constants";
 
 // Use first 3 images from LOGIN_BG_IMAGES
 const OTP_BG_IMAGES = LOGIN_BG_IMAGES.slice(0, 3);
@@ -21,26 +19,28 @@ function OtpVerificationPage() {
   const location = useLocation();
   const otpInputs = useRef([]);
   
-  const otpGeneratedRef = useRef(false);
-  const initialLoadRef = useRef(true);
+  // Use a ref to track if we've already sent the OTP
+  const otpSent = useRef(false);
 
   const { verifyLoginOTP, generateLoginOTP, setUser, loginData, clearLoginData, loginForCompany } = useUserStore();
   const userId = location.state?.userId || loginData?.userId;
   const userEmail = location.state?.email || loginData?.email;
   const companyData = location.state?.companyData || loginData?.companyData;
 
-  // Generate OTP function
-  const generateOtp = useCallback(() => {
-    if (userId && !otpGeneratedRef.current) {
-      const result = generateLoginOTP(userId);
-      if (result.success) {
-        toast.success(`OTP sent to your email: ${result.otp}`);
-        otpGeneratedRef.current = true;
-      }
-    } else if (!userId) {
+  // Send OTP function
+  const sendOtp = useCallback(() => {
+    if (!userId) {
       toast.error("Session expired. Please login again.");
       setTimeout(() => navigate("/login"), 2000);
+      return false;
     }
+
+    const result = generateLoginOTP(userId);
+    if (result.success) {
+      toast.success(`OTP sent to your email: ${result.otp}`);
+      return true;
+    }
+    return false;
   }, [userId, generateLoginOTP, navigate]);
 
   // Cycle through background images every 5 seconds
@@ -52,27 +52,37 @@ function OtpVerificationPage() {
     return () => clearInterval(interval);
   }, []);
 
-  // Generate OTP on initial load only
+  // Generate OTP on initial mount only - with mount check
   useEffect(() => {
-    if (initialLoadRef.current) {
-      otpGeneratedRef.current = false;
-      initialLoadRef.current = false;
-      generateOtp();
+    let isMounted = true;
+    
+    // Only send if we haven't already sent it
+    if (!otpSent.current && userId) {
+      const success = sendOtp();
+      if (success && isMounted) {
+        otpSent.current = true;
+      }
     }
 
     // Start countdown
     const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          setCanResend(true);
-          return 0;
-        }
-        return prev - 1;
-      });
+      if (isMounted) {
+        setCountdown((prev) => {
+          if (prev <= 1) {
+            setCanResend(true);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }
     }, 1000);
 
-    return () => clearInterval(timer);
-  }, [generateOtp]);
+    return () => {
+      isMounted = false;
+      clearInterval(timer);
+      // Don't reset otpSent - we want to remember that we sent it
+    };
+  }, []); // Empty dependency array - only runs once on mount
 
   const handleOtpChange = (index, value) => {
     if (!/^\d*$/.test(value)) return;
@@ -117,7 +127,6 @@ function OtpVerificationPage() {
       
       // Handle company login properly
       if (companyData) {
-        // Get company and access information
         const companyLoginResult = loginForCompany(
           userId, 
           companyData.companyRole, 
@@ -125,7 +134,6 @@ function OtpVerificationPage() {
         );
         
         if (companyLoginResult.success) {
-          // IMPORTANT: Set user with company information INCLUDING access tabs
           console.log("DEBUG: Setting user with access tabs:", companyLoginResult.accessTabs);
           setUser(result.user, companyLoginResult.company, companyLoginResult.accessTabs);
         } else {
@@ -134,13 +142,11 @@ function OtpVerificationPage() {
           return;
         }
       } else {
-        // Regular login (not for a company)
         setUser(result.user);
       }
       
       clearLoginData();
       
-      // Redirect to dashboard
       setTimeout(() => {
         navigate("/dashboard");
       }, 1500);
@@ -178,7 +184,7 @@ function OtpVerificationPage() {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background images from LOGIN_BG_IMAGES */}
+      {/* Background images */}
       {OTP_BG_IMAGES.map(({ src, alt }, i) => (
         <div
           key={i}
@@ -192,16 +198,14 @@ function OtpVerificationPage() {
         />
       ))}
 
-      {/* Semi-transparent green gradient overlay */}
+      {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-green-800/50 to-green-600/50" />
 
-      {/* Glass-effect form container */}
+      {/* Form container */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative w-full max-w-md p-8 z-10
-                      bg-white/20 backdrop-blur-sm
-                      rounded-2xl shadow-lg"
+        className="relative w-full max-w-md p-8 z-10 bg-white/20 backdrop-blur-sm rounded-2xl shadow-lg"
       >
         {/* Back button */}
         <button
@@ -247,10 +251,7 @@ function OtpVerificationPage() {
               Enter OTP code
             </label>
             
-            <div 
-              className="flex justify-center gap-3"
-              onPaste={handleOtpPaste}
-            >
+            <div className="flex justify-center gap-3" onPaste={handleOtpPaste}>
               {[0, 1, 2, 3].map((index) => (
                 <input
                   key={index}

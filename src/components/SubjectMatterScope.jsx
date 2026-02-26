@@ -516,7 +516,7 @@ const SubjectMatterScope = () => {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Name of Signee *
+                    Name of Signatory *
                   </label>
                   <input
                     type="text"
@@ -532,7 +532,7 @@ const SubjectMatterScope = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Function of Signee *
+                    Designation of Signee *
                   </label>
                   <input
                     type="text"
