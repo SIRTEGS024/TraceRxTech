@@ -25,7 +25,9 @@ import {
   DollarSign,
   CreditCard,
   Maximize2,
-  ArrowLeft
+  ArrowLeft,
+  MessageSquare,
+  User
 } from 'lucide-react';
 
 // For the map - we'll use Google Maps
@@ -202,7 +204,7 @@ const DocumentUploadModal = ({ isOpen, onClose, documentType, onUpload }) => {
 };
 
 // HS Code Selector Component - Modified to use facility's supportedProducts
-const HSCodeSelector = ({ selectedCodes = [], onSelect, onRemove, supportedProducts = [] }) => {
+const HSCodeSelector = ({ selectedCodes = [], onSelect, onRemove, supportedProducts = [], disabled = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -238,12 +240,14 @@ const HSCodeSelector = ({ selectedCodes = [], onSelect, onRemove, supportedProdu
                 <span className="text-sm font-medium">
                   {item.code} - {item.name}
                 </span>
-                <button
-                  onClick={() => onRemove(index)}
-                  className="text-green-600 hover:text-green-800 transition-colors"
-                >
-                  <X className="w-4 h-4" />
-                </button>
+                {!disabled && (
+                  <button
+                    onClick={() => onRemove(index)}
+                    className="text-green-600 hover:text-green-800 transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
               </div>
             ))}
           </div>
@@ -254,8 +258,11 @@ const HSCodeSelector = ({ selectedCodes = [], onSelect, onRemove, supportedProdu
 
       {/* Dropdown Button */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between p-3 border-2 border-gray-200 rounded-lg hover:border-green-300 transition-colors bg-white text-left"
+        onClick={() => !disabled && setIsOpen(!isOpen)}
+        disabled={disabled}
+        className={`w-full flex items-center justify-between p-3 border-2 border-gray-200 rounded-lg transition-colors bg-white text-left ${
+          disabled ? 'cursor-default opacity-75' : 'hover:border-green-300'
+        }`}
       >
         <div className="flex items-center gap-3">
           <Package className="w-5 h-5 text-gray-400" />
@@ -265,11 +272,11 @@ const HSCodeSelector = ({ selectedCodes = [], onSelect, onRemove, supportedProdu
               : 'Select HS Code(s)'}
           </span>
         </div>
-        <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        {!disabled && <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />}
       </button>
 
       {/* Dropdown Content */}
-      {isOpen && (
+      {isOpen && !disabled && (
         <div className="absolute z-10 w-full mt-2 bg-white rounded-lg shadow-xl border border-gray-200 max-h-96 overflow-hidden">
           {/* Search */}
           <div className="p-3 border-b border-gray-100">
@@ -332,7 +339,7 @@ const HSCodeSelector = ({ selectedCodes = [], onSelect, onRemove, supportedProdu
 };
 
 // Importer Selector Component
-const ImporterSelector = ({ importers = [], selectedImporter, onSelect, onClear }) => {
+const ImporterSelector = ({ importers = [], selectedImporter, onSelect, onClear, disabled = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -351,29 +358,34 @@ const ImporterSelector = ({ importers = [], selectedImporter, onSelect, onClear 
               <p className="text-xs text-green-600 mt-1">{selectedImporter.basicInfo.email}</p>
               <p className="text-xs text-green-600">{selectedImporter.basicInfo.country}</p>
             </div>
-            <button
-              onClick={onClear}
-              className="text-green-600 hover:text-green-800 transition-colors"
-            >
-              <X className="w-4 h-4" />
-            </button>
+            {!disabled && (
+              <button
+                onClick={onClear}
+                className="text-green-600 hover:text-green-800 transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
         </div>
       ) : (
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between p-3 border-2 border-gray-200 rounded-lg hover:border-green-300 transition-colors bg-white text-left"
+          onClick={() => !disabled && setIsOpen(!isOpen)}
+          disabled={disabled}
+          className={`w-full flex items-center justify-between p-3 border-2 border-gray-200 rounded-lg transition-colors bg-white text-left ${
+            disabled ? 'cursor-default opacity-75' : 'hover:border-green-300'
+          }`}
         >
           <div className="flex items-center gap-3">
             <Globe className="w-5 h-5 text-gray-400" />
             <span className="text-gray-700">Select an importer...</span>
           </div>
-          <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          {!disabled && <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />}
         </button>
       )}
 
       {/* Dropdown Content */}
-      {isOpen && (
+      {isOpen && !disabled && (
         <div className="absolute z-10 w-full mt-2 bg-white rounded-lg shadow-xl border border-gray-200 max-h-96 overflow-hidden">
           {/* Search */}
           <div className="p-3 border-b border-gray-100">
@@ -424,7 +436,7 @@ const ImporterSelector = ({ importers = [], selectedImporter, onSelect, onClear 
 };
 
 // Record Card Component for displaying existing records
-const RecordCard = ({ record, year, onView, onPayment, isPaid }) => {
+const RecordCard = ({ record, year, onView, onPayment, isPaid, viewOnly = false }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -475,7 +487,7 @@ const RecordCard = ({ record, year, onView, onPayment, isPaid }) => {
           >
             View
           </button>
-          {!isPaid && (
+          {!viewOnly && !isPaid && (
             <button
               onClick={() => onPayment(record)}
               className="px-3 py-1 text-sm text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors flex items-center gap-1"
@@ -569,6 +581,7 @@ const PolygonMapComponent = ({
   }, []);
 
   const onPolygonComplete = useCallback((polygon) => {
+    if (viewOnly) return; // No drawing in view-only mode
     const paths = polygon.getPath();
     const coords = [];
 
@@ -592,7 +605,7 @@ const PolygonMapComponent = ({
       drawingManager.setDrawingMode(null);
       setIsDrawing(false);
     }
-  }, [drawingManager]);
+  }, [drawingManager, viewOnly]);
 
   const handleSavePlot = () => {
     if (plotName.trim() && tempCoordinates.length >= 3) {
@@ -641,6 +654,7 @@ const PolygonMapComponent = ({
   };
 
   const startDrawing = () => {
+    if (viewOnly) return;
     if (drawingManager) {
       drawingManager.setDrawingMode(window.google.maps.drawing.OverlayType.POLYGON);
       setIsDrawing(true);
@@ -655,6 +669,7 @@ const PolygonMapComponent = ({
   };
 
   const deletePlot = (plotId) => {
+    if (viewOnly) return;
     onCoordinatesChange(coordinates.filter(plot => plot.id !== plotId));
   };
 
@@ -900,7 +915,7 @@ const PolygonMapComponent = ({
       </div>
 
       {/* Save Plot Dialog */}
-      {showSaveDialog && (
+      {showSaveDialog && !viewOnly && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -1077,7 +1092,7 @@ const PolygonMapComponent = ({
 };
 
 // Record Detail Modal with Enhanced Map View - UPDATED to ensure both facility and planting areas are shown
-const RecordDetailModal = ({ record, year, facility, onClose }) => {
+const RecordDetailModal = ({ record, year, facility, onClose, viewOnly = false }) => {
   const isLoaded = useGoogleMapsLoaded();
   const [selectedTab, setSelectedTab] = useState('details');
   const [mapError, setMapError] = useState(null);
@@ -1459,12 +1474,27 @@ const RecordDetailModal = ({ record, year, facility, onClose }) => {
   );
 };
 
+// ---------- Main InformationRequirements Component ----------
 const InformationRequirements = () => {
   const isLoaded = useGoogleMapsLoaded();
   const { user, demoData, updateUser } = useUserStore();
 
-  // State management
-  const [facilities, setFacilities] = useState([]);
+  // Determine role
+  const isVerifier = user?.role === 'verifier' && user.loggedInAs;
+  const companyId = isVerifier ? user.loggedInAs.companyId : null;
+  const targetCompany = isVerifier
+    ? demoData.users[companyId]  // The exporter the verifier is reviewing
+    : user;                      // The exporter themselves (if logged in as exporter)
+
+  // Facilities (production/forest sites) from target company
+  const facilities = targetCompany?.facilities?.filter(f => f.type === 'production/forest site') || [];
+
+  // Importers linked to the target company (for exporter view)
+  const importers = (targetCompany?.importers || [])
+    .map(id => demoData.users[id])
+    .filter(i => i && i.role === 'importer');
+
+  // ---------- Exporter state ----------
   const [selectedFacility, setSelectedFacility] = useState(null);
   const [selectedYear, setSelectedYear] = useState(2021);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -1478,7 +1508,6 @@ const InformationRequirements = () => {
     documentType: '',
     fieldId: ''
   });
-  const [importers, setImporters] = useState([]);
 
   // Form state for new record
   const [formData, setFormData] = useState({
@@ -1503,58 +1532,100 @@ const InformationRequirements = () => {
     paymentStatus: false
   });
 
-  // Load facilities and importers from user data
-  useEffect(() => {
-    if (user) {
-      // Get production/forest facilities
-      const productionFacilities = (user.facilities || []).filter(
-        facility => facility.type === 'production/forest site'
-      );
-      setFacilities(productionFacilities);
+  // Dirty state for exporter
+  const [initialFormData, setInitialFormData] = useState({ ...formData });
+  const [isSaving, setIsSaving] = useState(false);
 
-      // Get importers linked to this exporter
-      if (user.importers && user.importers.length > 0) {
-        const importerObjects = user.importers
-          .map(importerId => demoData.users[importerId])
-          .filter(importer => importer && importer.role === 'importer');
-        setImporters(importerObjects);
+  // ---------- Verifier state (tab-level) ----------
+  const [verificationStatus, setVerificationStatus] = useState(null); // 'compliant' | 'non-compliant'
+  const [verificationNotes, setVerificationNotes] = useState([]);
+  const [initialVerificationStatus, setInitialVerificationStatus] = useState(null);
+  const [initialVerificationNotes, setInitialVerificationNotes] = useState([]);
+  const [newNote, setNewNote] = useState('');
+
+  // State to control expanded facilities in verifier view
+  const [expandedFacilities, setExpandedFacilities] = useState(new Set());
+
+  // ---------- Verification history for exporter ----------
+  const [verificationHistory, setVerificationHistory] = useState([]);
+  const [showNotesModal, setShowNotesModal] = useState(false);
+
+  // ---------- Load facility data when exporter selects one ----------
+  useEffect(() => {
+    if (selectedFacility && !isVerifier) {
+      const location = selectedFacility.address || '';
+      setFormData(prev => ({ ...prev, productionLocation: location }));
+      // No need to load initial form data for existing records; handled by create/edit
+    }
+  }, [selectedFacility, isVerifier]);
+
+  // ---------- Load verifier's existing verification ----------
+  useEffect(() => {
+    if (isVerifier && targetCompany && user) {
+      const reports = user.verificationReports || [];
+      const report = reports.find(r => r.companyId === targetCompany.id);
+      if (report) {
+        // Tab identifier in store is "informationRequirements" (camelCase)
+        const artFindings = report.findings?.find(f => f.tab === 'informationRequirements');
+        if (artFindings) {
+          setVerificationStatus(artFindings.status || null);
+          setVerificationNotes(artFindings.articles?.find(a => a.article === 'article-9')?.notes || []);
+          setInitialVerificationStatus(artFindings.status || null);
+          setInitialVerificationNotes(artFindings.articles?.find(a => a.article === 'article-9')?.notes || []);
+        }
       }
     }
-  }, [user, demoData.users]);
+  }, [isVerifier, targetCompany, user]);
 
-  // Reset form when facility or year changes
+  // ---------- Load verification history for exporter ----------
   useEffect(() => {
-    if (selectedFacility && selectedYear) {
-      // Check if we're editing or creating
-      if (!isCreating && !isEditing) {
-        // Just viewing mode - we don't load any form data
-        setCurrentRecord(null);
-        setFormData({
-          description: '',
-          commonName: '',
-          scientificName: '',
-          hsCodes: [],
-          netMassKg: '',
-          productionLocation: selectedFacility.address || '',
-          plantingAreas: [],
-          productionDateRange: {
-            from: '',
-            to: ''
-          },
-          customerId: null,
-          customerName: '',
-          customerAddress: '',
-          customerEmail: '',
-          deforestationFreeDocs: [],
-          legalComplianceDocs: [],
-          amount: 0,
-          paymentStatus: false
-        });
-      }
-    }
-  }, [selectedFacility, selectedYear, isCreating, isEditing]);
+    if (!isVerifier && targetCompany) {
+      const linkedVerifiers = targetCompany.linkedVerifiers || [];
+      const history = [];
 
-  // Get existing records for the selected facility and year
+      linkedVerifiers.forEach(verifierLink => {
+        const verifier = demoData.users[verifierLink.id];
+        if (!verifier || !verifier.verificationReports) return;
+
+        const report = verifier.verificationReports.find(r => r.companyId === targetCompany.id);
+        if (report) {
+          const artFindings = report.findings?.find(f => f.tab === 'informationRequirements');
+          if (artFindings) {
+            const notes = artFindings.articles?.find(a => a.article === 'article-9')?.notes || [];
+            if (notes.length > 0 || artFindings.status) {
+              history.push({
+                verifierName: verifier.basicInfo?.firstName 
+                  ? `${verifier.basicInfo.firstName} ${verifier.basicInfo.lastName}` 
+                  : verifier.basicInfo?.email || verifier.id,
+                status: artFindings.status,
+                notes: notes,
+                date: report.date
+              });
+            }
+          }
+        }
+      });
+
+      setVerificationHistory(history);
+    }
+  }, [isVerifier, targetCompany, demoData]);
+
+  // ---------- Dirty check for exporter ----------
+  const hasExporterChanges = () => {
+    // For simplicity, we compare formData with initialFormData (but we don't track initial for new records)
+    // In a real app, you'd track initial state more thoroughly.
+    return JSON.stringify(formData) !== JSON.stringify(initialFormData);
+  };
+
+  // ---------- Dirty check for verifier ----------
+  const hasVerificationChanges = () => {
+    return (
+      verificationStatus !== initialVerificationStatus ||
+      JSON.stringify(verificationNotes) !== JSON.stringify(initialVerificationNotes)
+    );
+  };
+
+  // ---------- Get existing records for selected facility and year ----------
   const getExistingRecords = () => {
     if (!selectedFacility || !selectedYear) return [];
     return selectedFacility.pastRecords?.[selectedYear] || [];
@@ -1562,7 +1633,7 @@ const InformationRequirements = () => {
 
   const existingRecords = getExistingRecords();
 
-  // Handle facility selection
+  // ---------- Handlers for exporter ----------
   const handleFacilitySelect = (facility) => {
     setSelectedFacility(facility);
     setIsDropdownOpen(false);
@@ -1576,9 +1647,9 @@ const InformationRequirements = () => {
       ...prev,
       productionLocation: facility.address || ''
     }));
+    setInitialFormData({ ...formData, productionLocation: facility.address || '' });
   };
 
-  // Handle input changes for form
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
@@ -1597,7 +1668,6 @@ const InformationRequirements = () => {
     }
   };
 
-  // Handle date range changes
   const handleDateChange = (type, value) => {
     setFormData(prev => ({
       ...prev,
@@ -1608,7 +1678,6 @@ const InformationRequirements = () => {
     }));
   };
 
-  // Handle HS Code selection
   const handleHSCodeSelect = (hsCode) => {
     setFormData(prev => ({
       ...prev,
@@ -1616,7 +1685,6 @@ const InformationRequirements = () => {
     }));
   };
 
-  // Handle HS Code removal
   const handleHSCodeRemove = (index) => {
     setFormData(prev => ({
       ...prev,
@@ -1624,7 +1692,6 @@ const InformationRequirements = () => {
     }));
   };
 
-  // Handle importer selection
   const handleImporterSelect = (importer) => {
     setFormData(prev => ({
       ...prev,
@@ -1645,7 +1712,6 @@ const InformationRequirements = () => {
     }));
   };
 
-  // Handle document upload
   const handleDocumentUpload = (fieldId, document) => {
     setFormData(prev => ({
       ...prev,
@@ -1653,7 +1719,6 @@ const InformationRequirements = () => {
     }));
   };
 
-  // Remove document
   const removeDocument = (fieldId, index) => {
     setFormData(prev => ({
       ...prev,
@@ -1661,7 +1726,6 @@ const InformationRequirements = () => {
     }));
   };
 
-  // Handle planting areas change
   const handlePlantingAreasChange = (areas) => {
     setFormData(prev => ({
       ...prev,
@@ -1669,7 +1733,6 @@ const InformationRequirements = () => {
     }));
   };
 
-  // Save new record
   const handleSaveRecord = () => {
     if (!selectedFacility || !selectedYear) return;
 
@@ -1710,17 +1773,16 @@ const InformationRequirements = () => {
     updatedFacility.pastRecords[selectedYear].push(newRecord);
 
     // Update the user's facilities array
-    const updatedFacilities = user.facilities.map(facility => 
+    const updatedFacilities = targetCompany.facilities.map(facility => 
       facility.id === selectedFacility.id ? updatedFacility : facility
     );
 
     const updatedUser = {
-      ...user,
+      ...targetCompany,
       facilities: updatedFacilities
     };
 
-    // Update in store
-    updateUser(user.id, updatedUser);
+    updateUser(targetCompany.id, updatedUser);
 
     // Update local state
     setSelectedFacility(updatedFacility);
@@ -1752,7 +1814,6 @@ const InformationRequirements = () => {
     alert('Record saved successfully!');
   };
 
-  // Handle payment for a record
   const handlePayment = (record) => {
     if (!selectedFacility || !selectedYear) return;
 
@@ -1777,7 +1838,7 @@ const InformationRequirements = () => {
           // Add to connectedPastRecords
           updatedImporter.connectedPastRecords.push({
             recordId: record.id,
-            exporterId: user.id,
+            exporterId: targetCompany.id,
             year: selectedYear,
             facilityId: selectedFacility.id
           });
@@ -1789,33 +1850,31 @@ const InformationRequirements = () => {
       updatedFacility.pastRecords[selectedYear] = records;
       
       // Update user
-      const updatedFacilities = user.facilities.map(facility => 
+      const updatedFacilities = targetCompany.facilities.map(facility => 
         facility.id === selectedFacility.id ? updatedFacility : facility
       );
       
       const updatedUser = {
-        ...user,
+        ...targetCompany,
         facilities: updatedFacilities
       };
       
-      updateUser(user.id, updatedUser);
+      updateUser(targetCompany.id, updatedUser);
       setSelectedFacility(updatedFacility);
     }
     
     alert(`Payment of $${record.amount} processed successfully!`);
   };
 
-  // View record details
   const handleViewRecord = (record) => {
     setViewingRecord(record);
   };
 
-  // Start creating a new record
   const handleCreateNew = () => {
     setIsCreating(true);
     setIsEditing(false);
     setCurrentRecord(null);
-    setFormData({
+    const newFormData = {
       description: '',
       commonName: '',
       scientificName: '',
@@ -1835,15 +1894,98 @@ const InformationRequirements = () => {
       legalComplianceDocs: [],
       amount: 0,
       paymentStatus: false
-    });
+    };
+    setFormData(newFormData);
+    setInitialFormData(newFormData);
   };
 
-  // Cancel creating/editing
   const handleCancel = () => {
     setIsCreating(false);
     setIsEditing(false);
     setCurrentRecord(null);
   };
+
+  // ---------- Handlers for verifier ----------
+  const handleAddNote = () => {
+    if (newNote.trim()) {
+      setVerificationNotes([...verificationNotes, newNote.trim()]);
+      setNewNote('');
+    }
+  };
+
+  const handleRemoveNote = (index) => {
+    setVerificationNotes(verificationNotes.filter((_, i) => i !== index));
+  };
+
+  const handleSaveVerification = () => {
+    if (!targetCompany || !user) return;
+
+    const verifierId = user.id;
+    const baseVerifier = demoData.users[verifierId];
+    if (!baseVerifier) return;
+
+    let reports = [...(baseVerifier.verificationReports || [])];
+    let reportIndex = reports.findIndex(r => r.companyId === targetCompany.id);
+
+    const artFindings = {
+      tab: 'informationRequirements', // Match store key
+      status: verificationStatus || 'non-compliant',
+      articles: [
+        {
+          article: 'article-9',
+          notes: verificationNotes
+        }
+      ]
+    };
+
+    if (reportIndex >= 0) {
+      const report = reports[reportIndex];
+      let findings = report.findings || [];
+      const existingIdx = findings.findIndex(f => f.tab === 'informationRequirements');
+      if (existingIdx >= 0) {
+        findings[existingIdx] = artFindings;
+      } else {
+        findings.push(artFindings);
+      }
+      reports[reportIndex] = { ...report, findings };
+    } else {
+      const newReport = {
+        id: `ver-report-${Date.now()}`,
+        companyId: targetCompany.id,
+        companyType: targetCompany.role,
+        date: new Date().toISOString().split('T')[0],
+        type: 'compliance audit',
+        status: 'pending',
+        findings: [artFindings]
+      };
+      reports.push(newReport);
+    }
+
+    const updatedVerifier = { ...baseVerifier, verificationReports: reports, loggedInAs: user.loggedInAs };
+    updateUser(verifierId, updatedVerifier);
+
+    setInitialVerificationStatus(verificationStatus);
+    setInitialVerificationNotes(verificationNotes);
+    alert("Verification saved successfully!");
+  };
+
+  const toggleFacility = (facilityId) => {
+    const newExpanded = new Set(expandedFacilities);
+    if (newExpanded.has(facilityId)) {
+      newExpanded.delete(facilityId);
+    } else {
+      newExpanded.add(facilityId);
+    }
+    setExpandedFacilities(newExpanded);
+  };
+
+  const filteredFacilities = facilities.filter(f =>
+    f.name?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  if (!targetCompany) {
+    return (<div className="p-6 text-center"><p className="text-gray-600">Loading company data...</p></div>);
+  }
 
   return (
     <motion.div
@@ -1851,516 +1993,740 @@ const InformationRequirements = () => {
       animate={{ opacity: 1, y: 0 }}
       className="p-6 max-w-6xl mx-auto"
     >
-      {/* Title Section */}
-      <div className="mb-8">
-        <h1 className="text-2xl lg:text-3xl font-bold text-green-800 mb-2">
-          5 YEARS MINIMUM PAST RECORDS
-        </h1>
-        <p className="text-gray-600 text-lg mb-2">
-          Documents and data of shipments, forest, management permits and approvals since 2021.
-          Year 2021 is the cut off date for deforestation.
-        </p>
-
-        {/* Important Note */}
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mt-4">
-          <div className="flex items-start gap-3">
-            <Info className="w-5 h-5 text-amber-600 mt-0.5" />
-            <div>
-              <p className="text-amber-800 font-medium">
-                Important Notice:
-              </p>
-              <p className="text-amber-700 text-sm">
-                All users/Exporters are to pay $10 per 20,000kg for 2021 till date records of past shipment whether authenticated or not.
-              </p>
-            </div>
-          </div>
+      {/* Title Section with Verification Notes Button */}
+      <div className="mb-8 flex justify-between items-start">
+        <div>
+          <h1 className="text-2xl lg:text-3xl font-bold text-green-800 mb-2">
+            5 YEARS MINIMUM PAST RECORDS
+          </h1>
+          <p className="text-gray-600 text-lg mb-2">
+            Documents and data of shipments, forest, management permits and approvals since 2021.
+            Year 2021 is the cut off date for deforestation.
+          </p>
         </div>
-      </div>
-
-      {/* Facility Selection */}
-      <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-8">
-        <div className="flex items-center gap-2 mb-4">
-          <Trees className="w-6 h-6 text-green-600" />
-          <h2 className="text-xl font-semibold text-gray-800">
-            Select Production Site / Forest Area
-          </h2>
-        </div>
-
-        {/* Dropdown */}
-        <div className="relative mb-6">
+        {!isVerifier && verificationHistory.length > 0 && (
           <button
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="w-full flex items-center justify-between p-4 border-2 border-gray-200 rounded-lg hover:border-green-300 transition-colors bg-white text-left"
+            onClick={() => setShowNotesModal(true)}
+            className="flex items-center gap-2 bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-2 rounded-lg transition-colors"
           >
-            <div className="flex items-center gap-3">
-              {selectedFacility ? (
-                <>
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  <div>
-                    <span className="font-medium text-gray-900">{selectedFacility.name}</span>
-                    <span className="text-gray-500 text-sm ml-2">({selectedFacility.address})</span>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="w-3 h-3 rounded-full bg-gray-300"></div>
-                  <span className="text-gray-500">Select a production site...</span>
-                </>
-              )}
-            </div>
-            <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+            <MessageSquare size={18} />
+            <span className="text-sm font-medium">
+              {verificationHistory.length} Verifier{verificationHistory.length > 1 ? 's' : ''} left notes
+            </span>
           </button>
-
-          {isDropdownOpen && (
-            <div className="absolute z-10 w-full mt-2 bg-white rounded-lg shadow-xl border border-gray-200 max-h-96 overflow-hidden">
-              {/* Search */}
-              <div className="p-3 border-b border-gray-100">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search sites..."
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  />
-                </div>
-              </div>
-
-              {/* List */}
-              <div className="overflow-y-auto max-h-64">
-                {facilities.length > 0 ? (
-                  facilities
-                    .filter(facility => facility.name.toLowerCase().includes(searchQuery.toLowerCase()))
-                    .map(facility => (
-                      <button
-                        key={facility.id}
-                        onClick={() => handleFacilitySelect(facility)}
-                        className="w-full flex items-start p-4 hover:bg-gray-50 transition-colors"
-                      >
-                        <div className="flex-shrink-0 mt-1">
-                          <div className={`w-3 h-3 rounded-full ${selectedFacility?.id === facility.id ? 'bg-green-500' : 'bg-gray-300'}`}></div>
-                        </div>
-                        <div className="ml-3 text-left">
-                          <div className="font-medium text-gray-900">{facility.name}</div>
-                          <div className="text-sm text-gray-600 mt-1">{facility.address}</div>
-                        </div>
-                      </button>
-                    ))
-                ) : (
-                  <div className="p-4 text-center text-gray-500">
-                    No production sites found. Please add a production site first.
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Selected Facility Details */}
-        {selectedFacility && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            className="bg-green-50 border border-green-200 rounded-lg p-4"
-          >
-            <div className="flex items-start gap-3">
-              <MapPin className="w-5 h-5 text-green-600 mt-0.5" />
-              <div>
-                <h3 className="font-semibold text-green-800 mb-1">{selectedFacility.name}</h3>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="text-gray-600">Address: </span>
-                    <span className="font-medium">{selectedFacility.address}</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-600">Total Area: </span>
-                    <span className="font-medium">{selectedFacility.totalHectares || 0} hectares</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
         )}
       </div>
 
-      {/* Year Selection and Records Display */}
-      {selectedFacility && (
-        <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-8">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">
-            Information requirements according to Article 9 EUDR:
-          </h3>
+      {/* Important Note */}
+      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8">
+        <div className="flex items-start gap-3">
+          <Info className="w-5 h-5 text-amber-600 mt-0.5" />
+          <div>
+            <p className="text-amber-800 font-medium">
+              Important Notice:
+            </p>
+            <p className="text-amber-700 text-sm">
+              All users/Exporters are to pay $10 per 20,000kg for 2021 till date records of past shipment whether authenticated or not.
+            </p>
+          </div>
+        </div>
+      </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-            <div className="flex flex-wrap gap-2">
-              {years.map(year => (
-                <button
-                  key={year}
-                  onClick={() => setSelectedYear(year)}
-                  className={`px-4 py-2 rounded-lg border transition-colors ${
-                    selectedYear === year
-                      ? 'bg-green-600 text-white border-green-600'
-                      : 'bg-white text-gray-700 border-gray-300 hover:border-green-300'
-                  }`}
-                >
-                  {year}
-                </button>
-              ))}
+      {/* Verifier View: Collapsible Forest Cards with Verification Panel */}
+      {isVerifier ? (
+        <div className="space-y-6">
+          {/* Tab-level verification status and notes */}
+          <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100">
+            <div className="flex items-center gap-2 mb-4">
+              <MessageSquare className="w-5 h-5 text-green-600" />
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Article 9 Compliance</h2>
+              <span className={`px-2 py-1 text-xs rounded-full ${
+                verificationStatus === 'compliant' ? 'bg-green-100 text-green-800' :
+                verificationStatus === 'non-compliant' ? 'bg-red-100 text-red-800' :
+                'bg-gray-100 text-gray-600'
+              }`}>
+                {verificationStatus ? verificationStatus.replace('-', ' ') : 'Not set'}
+              </span>
             </div>
-            
-            {!isCreating && !isEditing && (
-              <button
-                onClick={handleCreateNew}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
-              >
-                <Plus className="w-4 h-4" />
-                Create New Record
-              </button>
+
+            <div className="mb-4 flex gap-4">
+              <label className="flex items-center gap-2"><input type="radio" name="status" value="compliant" checked={verificationStatus === 'compliant'} onChange={() => setVerificationStatus('compliant')} className="text-green-600" /><span>Compliant</span></label>
+              <label className="flex items-center gap-2"><input type="radio" name="status" value="non-compliant" checked={verificationStatus === 'non-compliant'} onChange={() => setVerificationStatus('non-compliant')} className="text-red-600" /><span>Non‑compliant</span></label>
+            </div>
+
+            {verificationNotes.length > 0 && (
+              <div className="mb-4 space-y-2">
+                {verificationNotes.map((note, idx) => (
+                  <div key={idx} className="flex items-start gap-2 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                    <MessageSquare size={18} className="text-gray-400 mt-0.5" />
+                    <span className="flex-1 text-gray-700">{note}</span>
+                    <button onClick={() => handleRemoveNote(idx)} className="text-red-500 hover:text-red-700"><X size={16} /></button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="flex gap-2">
+              <input type="text" value={newNote} onChange={(e) => setNewNote(e.target.value)} placeholder="Add a note..." className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" />
+              <button onClick={handleAddNote} disabled={!newNote.trim()} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50">Add Note</button>
+            </div>
+          </div>
+
+          {/* Facilities List with Collapsible Cards */}
+          <div className="space-y-4">
+            {facilities.length === 0 ? (
+              <div className="bg-white p-8 text-center rounded-xl shadow-lg border border-green-100">
+                <Trees className="w-12 h-12 mx-auto text-gray-400 mb-3" />
+                <p className="text-gray-600">No production sites found for this exporter.</p>
+              </div>
+            ) : (
+              facilities.map(facility => {
+                const isExpanded = expandedFacilities.has(facility.id);
+                const facilityRecordsByYear = years.reduce((acc, year) => {
+                  acc[year] = facility.pastRecords?.[year] || [];
+                  return acc;
+                }, {});
+
+                return (
+                  <div key={facility.id} className="bg-white rounded-xl shadow-lg border border-green-100 overflow-hidden">
+                    {/* Facility Header */}
+                    <button
+                      onClick={() => toggleFacility(facility.id)}
+                      className="w-full flex items-center justify-between p-4 sm:p-6 bg-green-50 hover:bg-green-100 transition-colors"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Trees className="w-5 h-5 text-green-600" />
+                        <div className="text-left">
+                          <h3 className="font-semibold text-gray-800">{facility.name}</h3>
+                          <p className="text-sm text-gray-600">{facility.address}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <div className="hidden sm:flex items-center gap-3 text-sm">
+                          <span className="text-gray-600">Total Area: {facility.totalHectares || 0} ha</span>
+                          <span className="text-gray-600">Records: {Object.values(facilityRecordsByYear).flat().length}</span>
+                        </div>
+                        <ChevronDown className={`w-5 h-5 text-gray-500 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                      </div>
+                    </button>
+
+                    {/* Expanded Content */}
+                    {isExpanded && (
+                      <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="p-4 sm:p-6 border-t border-green-100">
+                        {/* Year tabs and records */}
+                        <div className="space-y-6">
+                          {years.map(year => {
+                            const records = facility.pastRecords?.[year] || [];
+                            if (records.length === 0) return null;
+
+                            return (
+                              <div key={year} className="border-b border-gray-200 last:border-b-0 pb-6 last:pb-0">
+                                <h4 className="text-lg font-semibold text-gray-800 mb-3">Year {year}</h4>
+                                <div className="space-y-3">
+                                  {records.map(record => (
+                                    <RecordCard
+                                      key={record.id}
+                                      record={record}
+                                      year={year}
+                                      onView={handleViewRecord}
+                                      onPayment={() => {}} // No payment in verifier view
+                                      isPaid={record.paymentStatus}
+                                      viewOnly={true}
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                            );
+                          })}
+                          {Object.values(facilityRecordsByYear).flat().length === 0 && (
+                            <p className="text-gray-500 italic">No records for this facility.</p>
+                          )}
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
+                );
+              })
             )}
           </div>
 
-          {/* Existing Records List */}
-          {!isCreating && !isEditing && existingRecords.length > 0 && (
-            <div className="mb-8">
-              <h4 className="text-lg font-medium text-gray-700 mb-4">Existing Records for {selectedYear}</h4>
-              <div className="space-y-3">
-                {existingRecords.map(record => (
-                  <RecordCard
-                    key={record.id}
-                    record={record}
-                    year={selectedYear}
-                    onView={handleViewRecord}
-                    onPayment={handlePayment}
-                    isPaid={record.paymentStatus}
-                  />
+          {/* Save Verification Button */}
+          <div className="flex justify-end pt-4">
+            <button onClick={handleSaveVerification} disabled={!hasVerificationChanges()} className={`px-6 py-2 rounded-lg flex items-center gap-2 ${!hasVerificationChanges() ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}>
+              <Save size={20} /> Save Verification
+            </button>
+          </div>
+        </div>
+      ) : (
+        /* ---------- Exporter View (unchanged) ---------- */
+        <>
+          {/* Facility Selection */}
+          <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <Trees className="w-6 h-6 text-green-600" />
+              <h2 className="text-xl font-semibold text-gray-800">
+                Select Production Site / Forest Area
+              </h2>
+            </div>
+
+            <div className="relative mb-6">
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="w-full flex items-center justify-between p-4 border-2 border-gray-200 rounded-lg hover:border-green-300 transition-colors bg-white text-left"
+              >
+                <div className="flex items-center gap-3">
+                  {selectedFacility ? (
+                    <>
+                      <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                      <div>
+                        <span className="font-medium text-gray-900">{selectedFacility.name}</span>
+                        <span className="text-gray-500 text-sm ml-2">({selectedFacility.address})</span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-3 h-3 rounded-full bg-gray-300"></div>
+                      <span className="text-gray-500">Select a production site...</span>
+                    </>
+                  )}
+                </div>
+                <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {isDropdownOpen && (
+                <div className="absolute z-10 w-full mt-2 bg-white rounded-lg shadow-xl border border-gray-200 max-h-96 overflow-hidden">
+                  {/* Search */}
+                  <div className="p-3 border-b border-gray-100">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search sites..."
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      />
+                    </div>
+                  </div>
+
+                  {/* List */}
+                  <div className="overflow-y-auto max-h-64">
+                    {facilities.length > 0 ? (
+                      facilities
+                        .filter(facility => facility.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                        .map(facility => (
+                          <button
+                            key={facility.id}
+                            onClick={() => handleFacilitySelect(facility)}
+                            className="w-full flex items-start p-4 hover:bg-gray-50 transition-colors"
+                          >
+                            <div className="flex-shrink-0 mt-1">
+                              <div className={`w-3 h-3 rounded-full ${selectedFacility?.id === facility.id ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                            </div>
+                            <div className="ml-3 text-left">
+                              <div className="font-medium text-gray-900">{facility.name}</div>
+                              <div className="text-sm text-gray-600 mt-1">{facility.address}</div>
+                            </div>
+                          </button>
+                        ))
+                    ) : (
+                      <div className="p-4 text-center text-gray-500">
+                        No production sites found. Please add a production site first.
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {selectedFacility && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                className="bg-green-50 border border-green-200 rounded-lg p-4"
+              >
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-5 h-5 text-green-600 mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold text-green-800 mb-1">{selectedFacility.name}</h3>
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <span className="text-gray-600">Address: </span>
+                        <span className="font-medium">{selectedFacility.address}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Total Area: </span>
+                        <span className="font-medium">{selectedFacility.totalHectares || 0} hectares</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </div>
+
+          {/* Year Selection and Records Display */}
+          {selectedFacility && (
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-green-100 mb-8">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                Information requirements according to Article 9 EUDR:
+              </h3>
+
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+                <div className="flex flex-wrap gap-2">
+                  {years.map(year => (
+                    <button
+                      key={year}
+                      onClick={() => setSelectedYear(year)}
+                      className={`px-4 py-2 rounded-lg border transition-colors ${
+                        selectedYear === year
+                          ? 'bg-green-600 text-white border-green-600'
+                          : 'bg-white text-gray-700 border-gray-300 hover:border-green-300'
+                      }`}
+                    >
+                      {year}
+                    </button>
+                  ))}
+                </div>
+                
+                {!isCreating && !isEditing && (
+                  <button
+                    onClick={handleCreateNew}
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Create New Record
+                  </button>
+                )}
+              </div>
+
+              {/* Existing Records List */}
+              {!isCreating && !isEditing && existingRecords.length > 0 && (
+                <div className="mb-8">
+                  <h4 className="text-lg font-medium text-gray-700 mb-4">Existing Records for {selectedYear}</h4>
+                  <div className="space-y-3">
+                    {existingRecords.map(record => (
+                      <RecordCard
+                        key={record.id}
+                        record={record}
+                        year={selectedYear}
+                        onView={handleViewRecord}
+                        onPayment={handlePayment}
+                        isPaid={record.paymentStatus}
+                        viewOnly={false}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Empty State */}
+              {!isCreating && !isEditing && existingRecords.length === 0 && (
+                <div className="text-center py-8 bg-gray-50 rounded-lg border border-gray-200 mb-8">
+                  <Package className="w-12 h-12 mx-auto text-gray-400 mb-3" />
+                  <p className="text-gray-600">No records found for {selectedYear}</p>
+                  <p className="text-sm text-gray-500 mt-1">Click "Create New Record" to add one</p>
+                </div>
+              )}
+
+              {/* New/Edit Record Form */}
+              {(isCreating || isEditing) && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-6 border-t pt-6"
+                >
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-4">
+                      <button
+                        onClick={handleCancel}
+                        className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+                      >
+                        <ArrowLeft className="w-5 h-5" />
+                        <span>Back</span>
+                      </button>
+                      <h4 className="text-xl font-bold text-green-700">
+                        {isCreating ? 'Create New Record' : 'Edit Record'} - {selectedYear}
+                      </h4>
+                    </div>
+                  </div>
+
+                  {/* Form Fields */}
+                  <div className="space-y-6">
+                    {/* 1. Description */}
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        1. Description *
+                      </label>
+                      <textarea
+                        value={formData.description}
+                        onChange={(e) => handleInputChange('description', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                        rows={4}
+                        placeholder="Enter product description including trade name, type, and list of commodities..."
+                      />
+                    </div>
+
+                    {/* 2. Species Information */}
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        2. Species Information *
+                      </label>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm text-gray-600 mb-1">
+                            Common Name
+                          </label>
+                          <input
+                            type="text"
+                            value={formData.commonName}
+                            onChange={(e) => handleInputChange('commonName', e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                            placeholder="e.g., Mahogany, Oak, Pine"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm text-gray-600 mb-1">
+                            Scientific Name
+                          </label>
+                          <input
+                            type="text"
+                            value={formData.scientificName}
+                            onChange={(e) => handleInputChange('scientificName', e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                            placeholder="e.g., Swietenia macrophylla"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 3. HS Code */}
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        3. HS Code *
+                      </label>
+                      <HSCodeSelector
+                        selectedCodes={formData.hsCodes}
+                        onSelect={handleHSCodeSelect}
+                        onRemove={handleHSCodeRemove}
+                        supportedProducts={selectedFacility.supportedProducts || []}
+                        disabled={false}
+                      />
+                    </div>
+
+                    {/* 4. Quantity */}
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        4. Total Quantity (Kilograms) *
+                      </label>
+                      <div>
+                        <div className="relative">
+                          <input
+                            type="number"
+                            value={formData.netMassKg}
+                            onChange={(e) => handleInputChange('netMassKg', e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 pr-24"
+                            placeholder="e.g., 50000"
+                            min="0"
+                          />
+                          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <span className="text-gray-500">kg</span>
+                          </div>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Note: Payment is calculated at $10 per 20,000kg
+                        </p>
+                      </div>
+
+                      {/* Payment Preview */}
+                      {formData.netMassKg > 0 && (
+                        <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-gray-600">Estimated Payment:</span>
+                            <span className="text-lg font-bold text-green-700">${formData.amount}</span>
+                          </div>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Based on {Math.ceil(parseFloat(formData.netMassKg) / 20000)} units of 20,000kg
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 5. Production Location */}
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        5. Production Location *
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.productionLocation}
+                        onChange={(e) => handleInputChange('productionLocation', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-gray-100"
+                        readOnly
+                        placeholder="Auto-filled from facility address"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        This is auto-filled from the selected facility's address
+                      </p>
+                    </div>
+
+                    {/* 6. Geolocation - Planting Areas */}
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        6. Planting Areas (Geolocation)
+                      </label>
+                      
+                      <PolygonMapComponent
+                        isLoaded={isLoaded}
+                        coordinates={formData.plantingAreas}
+                        onCoordinatesChange={handlePlantingAreasChange}
+                        facilityAreas={selectedFacility.areas || []}
+                        facilityName={selectedFacility.name}
+                        facilityAddress={selectedFacility.address}
+                        viewOnly={false}
+                      />
+                    </div>
+
+                    {/* 7. Production Date Range */}
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        7. Production Date Range
+                      </label>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm text-gray-600 mb-1">From date</label>
+                          <input
+                            type="date"
+                            value={formData.productionDateRange.from}
+                            onChange={(e) => handleDateChange('from', e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm text-gray-600 mb-1">To date</label>
+                          <input
+                            type="date"
+                            value={formData.productionDateRange.to}
+                            onChange={(e) => handleDateChange('to', e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 8. Customer Information */}
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        8. Customer Information *
+                      </label>
+                      
+                      <ImporterSelector
+                        importers={importers}
+                        selectedImporter={formData.customerId ? importers.find(i => i.id === formData.customerId) : null}
+                        onSelect={handleImporterSelect}
+                        onClear={handleImporterClear}
+                        disabled={false}
+                      />
+                      
+                      {!formData.customerId && (
+                        <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                          <p className="text-sm text-amber-700">
+                            Please select an importer from the dropdown above. The name, address, and email will be auto-filled.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 9. Deforestation-free Documentation */}
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="block text-sm font-medium text-gray-700">
+                          9. Deforestation-free Documents
+                        </label>
+                        <button
+                          onClick={() => setUploadModal({ isOpen: true, documentType: 'Deforestation-free verification', fieldId: 'deforestationFreeDocs' })}
+                          className="flex items-center gap-2 px-3 py-1 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
+                        >
+                          <Plus className="w-4 h-4" />
+                          Add Document
+                        </button>
+                      </div>
+
+                      {/* Uploaded Documents */}
+                      <div className="mt-3">
+                        <div className="flex flex-wrap gap-2">
+                          {formData.deforestationFreeDocs.map((doc, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center gap-2 bg-green-50 text-green-700 px-3 py-2 rounded-lg"
+                            >
+                              <FileText className="w-4 h-4" />
+                              <span className="text-sm font-medium">{doc.name}</span>
+                              <button
+                                onClick={() => removeDocument('deforestationFreeDocs', index)}
+                                className="text-green-600 hover:text-green-800 transition-colors"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 10. Legal Compliance Documentation */}
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="block text-sm font-medium text-gray-700">
+                          10. Legal Compliance Documents
+                        </label>
+                        <button
+                          onClick={() => setUploadModal({ isOpen: true, documentType: 'Compliance verification', fieldId: 'legalComplianceDocs' })}
+                          className="flex items-center gap-2 px-3 py-1 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
+                        >
+                          <Plus className="w-4 h-4" />
+                          Add Document
+                        </button>
+                      </div>
+
+                      {/* Uploaded Documents */}
+                      <div className="mt-3">
+                        <div className="flex flex-wrap gap-2">
+                          {formData.legalComplianceDocs.map((doc, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center gap-2 bg-green-50 text-green-700 px-3 py-2 rounded-lg"
+                            >
+                              <FileText className="w-4 h-4" />
+                              <span className="text-sm font-medium">{doc.name}</span>
+                              <button
+                                onClick={() => removeDocument('legalComplianceDocs', index)}
+                                className="text-green-600 hover:text-green-800 transition-colors"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Save Button */}
+                    <div className="flex justify-end">
+                      <button
+                        onClick={handleSaveRecord}
+                        className="flex items-center gap-2 px-6 py-3 text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors font-medium"
+                      >
+                        <Save className="w-5 h-5" />
+                        Save Record
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Document Upload Modal (exporter only) */}
+      {uploadModal.isOpen && !isVerifier && (
+        <DocumentUploadModal
+          isOpen={uploadModal.isOpen}
+          onClose={() => setUploadModal({ isOpen: false, documentType: '', fieldId: '' })}
+          documentType={uploadModal.documentType}
+          onUpload={(document) => {
+            if (uploadModal.fieldId) {
+              handleDocumentUpload(uploadModal.fieldId, document);
+            }
+          }}
+        />
+      )}
+
+      {/* Record Detail Modal */}
+      {viewingRecord && (
+        <RecordDetailModal
+          record={viewingRecord}
+          year={selectedYear}
+          facility={selectedFacility}
+          onClose={() => setViewingRecord(null)}
+          viewOnly={isVerifier}
+        />
+      )}
+
+      {/* Verification History Modal */}
+      {showNotesModal && (
+        <div
+          className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+          onClick={() => setShowNotesModal(false)}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-bold text-green-800">
+                  Verification Notes
+                </h2>
+                <button
+                  onClick={() => setShowNotesModal(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+              <div className="space-y-4">
+                {verificationHistory.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-gray-50 rounded-lg p-4 border border-gray-200"
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <User size={16} className="text-gray-500" />
+                        <span className="font-medium text-gray-700">
+                          {item.verifierName}
+                        </span>
+                        {item.date && (
+                          <span className="text-xs text-gray-400">
+                            {new Date(item.date).toLocaleDateString()}
+                          </span>
+                        )}
+                      </div>
+                      <span
+                        className={`px-2 py-1 text-xs rounded-full ${
+                          item.status === 'compliant'
+                            ? 'bg-green-100 text-green-800'
+                            : item.status === 'non-compliant'
+                              ? 'bg-red-100 text-red-800'
+                              : 'bg-gray-100 text-gray-600'
+                        }`}
+                      >
+                        {item.status ? item.status.replace('-', ' ') : 'Not set'}
+                      </span>
+                    </div>
+                    {item.notes.length > 0 && (
+                      <div className="mt-2 space-y-1">
+                        {item.notes.map((note, noteIdx) => (
+                          <div
+                            key={noteIdx}
+                            className="text-sm text-gray-600 pl-6 border-l-2 border-green-200 ml-2"
+                          >
+                            • {note}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ))}
               </div>
             </div>
-          )}
-
-          {/* Empty State */}
-          {!isCreating && !isEditing && existingRecords.length === 0 && (
-            <div className="text-center py-8 bg-gray-50 rounded-lg border border-gray-200 mb-8">
-              <Package className="w-12 h-12 mx-auto text-gray-400 mb-3" />
-              <p className="text-gray-600">No records found for {selectedYear}</p>
-              <p className="text-sm text-gray-500 mt-1">Click "Create New Record" to add one</p>
-            </div>
-          )}
-
-          {/* New/Edit Record Form */}
-          {(isCreating || isEditing) && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-6 border-t pt-6"
-            >
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  <button
-                    onClick={handleCancel}
-                    className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
-                  >
-                    <ArrowLeft className="w-5 h-5" />
-                    <span>Back</span>
-                  </button>
-                  <h4 className="text-xl font-bold text-green-700">
-                    {isCreating ? 'Create New Record' : 'Edit Record'} - {selectedYear}
-                  </h4>
-                </div>
-              </div>
-
-              {/* Form Fields */}
-              <div className="space-y-6">
-                {/* 1. Description */}
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    1. Description *
-                  </label>
-                  <textarea
-                    value={formData.description}
-                    onChange={(e) => handleInputChange('description', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    rows={4}
-                    placeholder="Enter product description including trade name, type, and list of commodities..."
-                  />
-                </div>
-
-                {/* 2. Species Information */}
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    2. Species Information *
-                  </label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm text-gray-600 mb-1">
-                        Common Name
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.commonName}
-                        onChange={(e) => handleInputChange('commonName', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                        placeholder="e.g., Mahogany, Oak, Pine"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm text-gray-600 mb-1">
-                        Scientific Name
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.scientificName}
-                        onChange={(e) => handleInputChange('scientificName', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                        placeholder="e.g., Swietenia macrophylla"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* 3. HS Code */}
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    3. HS Code *
-                  </label>
-                  <HSCodeSelector
-                    selectedCodes={formData.hsCodes}
-                    onSelect={handleHSCodeSelect}
-                    onRemove={handleHSCodeRemove}
-                    supportedProducts={selectedFacility.supportedProducts || []}
-                  />
-                </div>
-
-                {/* 4. Quantity */}
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    4. Total Quantity (Kilograms) *
-                  </label>
-                  <div>
-                    <div className="relative">
-                      <input
-                        type="number"
-                        value={formData.netMassKg}
-                        onChange={(e) => handleInputChange('netMassKg', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 pr-24"
-                        placeholder="e.g., 50000"
-                        min="0"
-                      />
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        <span className="text-gray-500">kg</span>
-                      </div>
-                    </div>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Note: Payment is calculated at $10 per 20,000kg
-                    </p>
-                  </div>
-
-                  {/* Payment Preview */}
-                  {formData.netMassKg > 0 && (
-                    <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600">Estimated Payment:</span>
-                        <span className="text-lg font-bold text-green-700">${formData.amount}</span>
-                      </div>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Based on {Math.ceil(parseFloat(formData.netMassKg) / 20000)} units of 20,000kg
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                {/* 5. Production Location */}
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    5. Production Location *
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.productionLocation}
-                    onChange={(e) => handleInputChange('productionLocation', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-gray-100"
-                    readOnly
-                    placeholder="Auto-filled from facility address"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    This is auto-filled from the selected facility's address
-                  </p>
-                </div>
-
-                {/* 6. Geolocation - Planting Areas */}
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    6. Planting Areas (Geolocation)
-                  </label>
-                  
-                  <PolygonMapComponent
-                    isLoaded={isLoaded}
-                    coordinates={formData.plantingAreas}
-                    onCoordinatesChange={handlePlantingAreasChange}
-                    facilityAreas={selectedFacility.areas || []}
-                    facilityName={selectedFacility.name}
-                    facilityAddress={selectedFacility.address}
-                  />
-                </div>
-
-                {/* 7. Production Date Range */}
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    7. Production Date Range
-                  </label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm text-gray-600 mb-1">From date</label>
-                      <input
-                        type="date"
-                        value={formData.productionDateRange.from}
-                        onChange={(e) => handleDateChange('from', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm text-gray-600 mb-1">To date</label>
-                      <input
-                        type="date"
-                        value={formData.productionDateRange.to}
-                        onChange={(e) => handleDateChange('to', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* 8. Customer Information */}
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    8. Customer Information *
-                  </label>
-                  
-                  <ImporterSelector
-                    importers={importers}
-                    selectedImporter={formData.customerId ? importers.find(i => i.id === formData.customerId) : null}
-                    onSelect={handleImporterSelect}
-                    onClear={handleImporterClear}
-                  />
-                  
-                  {!formData.customerId && (
-                    <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                      <p className="text-sm text-amber-700">
-                        Please select an importer from the dropdown above. The name, address, and email will be auto-filled.
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                {/* 9. Deforestation-free Documentation */}
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="block text-sm font-medium text-gray-700">
-                      9. Deforestation-free Documents
-                    </label>
-                    <button
-                      onClick={() => setUploadModal({ isOpen: true, documentType: 'Deforestation-free verification', fieldId: 'deforestationFreeDocs' })}
-                      className="flex items-center gap-2 px-3 py-1 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
-                    >
-                      <Plus className="w-4 h-4" />
-                      Add Document
-                    </button>
-                  </div>
-
-                  {/* Uploaded Documents */}
-                  <div className="mt-3">
-                    <div className="flex flex-wrap gap-2">
-                      {formData.deforestationFreeDocs.map((doc, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center gap-2 bg-green-50 text-green-700 px-3 py-2 rounded-lg"
-                        >
-                          <FileText className="w-4 h-4" />
-                          <span className="text-sm font-medium">{doc.name}</span>
-                          <button
-                            onClick={() => removeDocument('deforestationFreeDocs', index)}
-                            className="text-green-600 hover:text-green-800 transition-colors"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* 10. Legal Compliance Documentation */}
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="block text-sm font-medium text-gray-700">
-                      10. Legal Compliance Documents
-                    </label>
-                    <button
-                      onClick={() => setUploadModal({ isOpen: true, documentType: 'Compliance verification', fieldId: 'legalComplianceDocs' })}
-                      className="flex items-center gap-2 px-3 py-1 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
-                    >
-                      <Plus className="w-4 h-4" />
-                      Add Document
-                    </button>
-                  </div>
-
-                  {/* Uploaded Documents */}
-                  <div className="mt-3">
-                    <div className="flex flex-wrap gap-2">
-                      {formData.legalComplianceDocs.map((doc, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center gap-2 bg-green-50 text-green-700 px-3 py-2 rounded-lg"
-                        >
-                          <FileText className="w-4 h-4" />
-                          <span className="text-sm font-medium">{doc.name}</span>
-                          <button
-                            onClick={() => removeDocument('legalComplianceDocs', index)}
-                            className="text-green-600 hover:text-green-800 transition-colors"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Save Button */}
-                <div className="flex justify-end">
-                  <button
-                    onClick={handleSaveRecord}
-                    className="flex items-center gap-2 px-6 py-3 text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors font-medium"
-                  >
-                    <Save className="w-5 h-5" />
-                    Save Record
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          )}
+          </motion.div>
         </div>
       )}
-
-      {/* Document Upload Modal */}
-      <DocumentUploadModal
-        isOpen={uploadModal.isOpen}
-        onClose={() => setUploadModal({ isOpen: false, documentType: '', fieldId: '' })}
-        documentType={uploadModal.documentType}
-        onUpload={(document) => {
-          if (uploadModal.fieldId) {
-            handleDocumentUpload(uploadModal.fieldId, document);
-          }
-        }}
-      />
-
-      {/* Record Detail Modal */}
-      <RecordDetailModal
-        record={viewingRecord}
-        year={selectedYear}
-        facility={selectedFacility}
-        onClose={() => setViewingRecord(null)}
-      />
     </motion.div>
   );
 };

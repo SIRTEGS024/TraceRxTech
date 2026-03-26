@@ -1,1408 +1,3126 @@
-import { useState, useEffect, useRef } from 'react';
-import { useUserStore } from '../store/useUserStore';
-import { toast } from 'react-toastify';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useUserStore } from "../store/useUserStore";
+import { toast } from "react-toastify";
 import {
-  FaBox, FaFileAlt, FaMoneyBillWave, FaCheckCircle,
-  FaExclamationTriangle, FaUpload, FaPlus, FaTrash,
-  FaArrowRight, FaSave, FaEye, FaChevronRight, FaTimes,
-  FaClipboardList, FaShieldAlt, FaCreditCard, FaFileSignature,
-  FaBalanceScale, FaDownload, FaFileImage
-} from 'react-icons/fa';
+  FaHistory,
+  FaPlus,
+  FaChevronDown,
+  FaChevronUp,
+  FaFileAlt,
+  FaMoneyBillWave,
+  FaCheckCircle,
+  FaTimesCircle,
+  FaExclamationTriangle,
+  FaInfoCircle,
+  FaDownload,
+  FaEye,
+  FaEdit,
+  FaLock,
+  FaLockOpen,
+  FaClipboardCheck,
+  FaShieldAlt,
+  FaUpload,
+  FaSave,
+  FaArrowLeft,
+  FaArrowRight,
+  FaTimes,
+  FaIdCard,
+  FaEnvelope,
+  FaGlobe,
+  FaBoxes,
+  FaWeight,
+  FaUser,
+  FaBuilding,
+  FaMapMarkerAlt,
+  FaTree,
+  FaFilePdf,
+  FaFileWord,
+  FaFileExcel,
+  FaFileImage,
+  FaFileAlt as FaFileGeneric,
+  FaComment,
+  FaCheckDouble,
+  FaShippingFast,
+  FaHourglassHalf,
+  FaTrashAlt,
+} from "react-icons/fa";
 
-// ---------- Helper functions ----------
-const calculateTotalKg = (containers) => {
-  return containers.reduce((sum, c) => sum + (Number(c.kilograms) || 0), 0);
-};
-
-const calculateAmount = (containers) => {
-  return (containers.length || 0) * 100; // $100 per container
-};
-
-// ---------- Shipment Card Component ----------
-const ShipmentCard = ({ shipment, status, onClick }) => {
-  const statusConfig = {
-    start: {
-      text: 'Start Due Diligence',
-      color: 'bg-gradient-to-r from-emerald-500 to-green-600',
-      icon: FaPlus,
-      badge: 'New'
-    },
-    continue: {
-      text: 'Continue to Payment',
-      color: 'bg-gradient-to-r from-amber-500 to-orange-600',
-      icon: FaMoneyBillWave,
-      badge: 'Payment Pending'
-    },
-    view: {
-      text: 'View Details',
-      color: 'bg-gradient-to-r from-blue-500 to-indigo-600',
-      icon: FaEye,
-      badge: 'Completed'
-    },
-  };
-  const config = statusConfig[status];
-
-  return (
-    <div
-      className="bg-white rounded-2xl shadow-lg border border-emerald-100 overflow-hidden cursor-pointer group w-full hover:-translate-y-1 hover:scale-[1.02] transition-transform duration-200"
-      onClick={onClick}
-    >
-      <div className="p-4 sm:p-5">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-3">
-          <div className="flex-1 min-w-0">
-            <h3 className="text-base sm:text-lg font-bold text-gray-800 group-hover:text-emerald-700 transition-colors truncate">
-              Batch: {shipment.batchNumber}
-            </h3>
-            <p className="text-xs sm:text-sm text-gray-500 mt-1 line-clamp-2 break-words">{shipment.productDescription}</p>
-          </div>
-          <span className={`text-xs font-medium px-2 py-1 rounded-full self-start whitespace-nowrap ${
-            status === 'start' ? 'bg-emerald-100 text-emerald-700' :
-            status === 'continue' ? 'bg-amber-100 text-amber-700' :
-            'bg-blue-100 text-blue-700'
-          }`}>
-            {config.badge}
-          </span>
-        </div>
-
-        <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between border-t border-emerald-50 pt-4 gap-3">
-          <span className="text-xs font-mono text-gray-400 break-all">ID: {shipment.id.slice(0, 8)}...</span>
-          <button className={`${config.color} text-white px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-medium flex items-center gap-2 shadow-md hover:shadow-lg transition-all w-full sm:w-auto justify-center`}>
-            <config.icon className="text-xs" />
-            <span className="truncate">{config.text}</span>
-            <FaChevronRight className="text-xs flex-shrink-0" />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ---------- Data Display Component ----------
-const DataDisplay = ({ data, level = 0 }) => {
-  if (data === null || data === undefined) return <span className="text-gray-400 italic">Not provided</span>;
-  if (typeof data !== 'object') return <span className="text-gray-700 break-words">{String(data)}</span>;
-
-  if (Array.isArray(data)) {
-    return (
-      <div className={`space-y-3 ${level > 0 ? 'ml-2 sm:ml-4' : ''}`}>
-        {data.length === 0 ? (
-          <span className="text-gray-400 italic">Empty list</span>
-        ) : (
-          data.map((item, idx) => (
-            <div key={idx} className="border-l-3 border-emerald-300 pl-3 sm:pl-4 py-2 bg-gray-50 rounded-r-lg overflow-hidden">
-              <DataDisplay data={item} level={level + 1} />
-            </div>
-          ))
-        )}
-      </div>
-    );
-  }
-
-  return (
-    <div className={`space-y-3 ${level > 0 ? 'ml-2 sm:ml-4' : ''}`}>
-      {Object.entries(data).map(([key, value]) => (
-        <div key={key} className="flex flex-col sm:grid sm:grid-cols-3 gap-1 sm:gap-3 hover:bg-gray-50 p-2 rounded-lg transition-colors">
-          <span className="font-medium text-gray-600 capitalize text-xs sm:text-sm break-words">
-            {key.replace(/([A-Z])/g, ' $1').trim()}:
-          </span>
-          <div className="sm:col-span-2">
-            <DataDisplay data={value} level={level + 1} />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-// ---------- Document Uploader ----------
-const DocumentUploader = ({ docs, onAdd }) => {
-  const [desc, setDesc] = useState('');
-  const [isDragging, setIsDragging] = useState(false);
-  const fileInputRef = useRef(null);
-
-  const handleFileSelect = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setDesc(file.name);
-    }
-  };
-
-  const triggerFilePicker = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = () => {
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      setDesc(file.name);
-    }
-  };
-
-  return (
-    <div className="space-y-3">
-      {docs.map((doc, idx) => (
-        <div
-          key={idx}
-          className="flex flex-col sm:flex-row items-start sm:items-center gap-3 bg-gradient-to-r from-gray-50 to-white p-3 rounded-xl border border-gray-200 shadow-sm"
-        >
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <div className="p-2 bg-emerald-100 rounded-lg flex-shrink-0">
-              <FaFileAlt className="text-emerald-600" />
-            </div>
-            <span className="font-medium text-gray-700 flex-1 text-sm sm:text-base break-words">{doc.name}</span>
-          </div>
-          <span className="text-xs px-2 py-1 bg-gray-200 rounded-full text-gray-600 whitespace-nowrap self-end sm:self-auto">Draft</span>
-        </div>
-      ))}
-
-      <div
-        className={`relative border-2 border-dashed rounded-xl p-3 sm:p-4 transition-all ${
-          isDragging ? 'border-emerald-500 bg-emerald-50' : 'border-gray-300 hover:border-emerald-400'
-        }`}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-      >
-        <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
-          <input
-            type="text"
-            placeholder="Document description"
-            value={desc}
-            onChange={(e) => setDesc(e.target.value)}
-            className="flex-1 px-3 sm:px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all text-sm"
-          />
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={triggerFilePicker}
-              className="flex-1 sm:flex-none px-3 sm:px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-medium transition-all flex items-center justify-center gap-2 text-sm"
-            >
-              <FaFileImage className="text-gray-500 flex-shrink-0" />
-              <span className="hidden sm:inline">Browse</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                if (!desc.trim()) {
-                  toast.error('Please enter a description');
-                  return;
-                }
-                onAdd(desc.trim());
-                setDesc('');
-              }}
-              className="flex-1 sm:flex-none px-3 sm:px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white rounded-xl font-medium transition-all flex items-center justify-center gap-2 shadow-md text-sm"
-            >
-              <FaUpload className="flex-shrink-0" />
-              <span className="hidden sm:inline">Add</span>
-            </button>
-          </div>
-        </div>
-        <p className="text-xs text-gray-400 mt-2 text-center">Drag and drop or click to upload</p>
-      </div>
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleFileSelect}
-        className="hidden"
-        accept="*/*"
-      />
-    </div>
-  );
-};
-
-// ---------- Single Document Upload ----------
-const SingleDocumentUpload = ({ label, value, onChange }) => {
-  const fileInputRef = useRef(null);
-  const [desc, setDesc] = useState(value?.name || '');
-
-  const handleFileSelect = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setDesc(file.name);
-    }
-  };
-
-  const triggerFilePicker = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleAdd = () => {
-    if (!desc.trim()) {
-      toast.error('Please enter a description');
-      return;
-    }
-    onChange({ name: desc.trim(), url: 'dummy' });
-  };
-
-  return (
-    <div className="space-y-3 bg-gray-50 p-3 sm:p-4 rounded-xl">
-      <label className="block font-semibold text-gray-700 text-xs sm:text-sm">{label}</label>
-      {value && (
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 bg-white p-3 rounded-lg border border-gray-200">
-          <div className="flex items-center gap-3 w-full">
-            <div className="p-2 bg-emerald-100 rounded-lg flex-shrink-0">
-              <FaFileAlt className="text-emerald-600" />
-            </div>
-            <span className="font-medium text-gray-700 flex-1 text-sm break-words">{value.name}</span>
-          </div>
-          <span className="text-xs px-2 py-1 bg-gray-200 rounded-full text-gray-600 whitespace-nowrap self-end sm:self-auto">Draft</span>
-        </div>
-      )}
-      <div className="flex flex-col sm:flex-row gap-2 items-stretch">
-        <input
-          type="text"
-          placeholder="Document description"
-          value={desc}
-          onChange={(e) => setDesc(e.target.value)}
-          className="flex-1 px-3 sm:px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none text-sm"
-        />
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={triggerFilePicker}
-            className="flex-1 sm:flex-none px-3 sm:px-4 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-medium transition-all text-sm"
-          >
-            Browse
-          </button>
-          <button
-            type="button"
-            onClick={handleAdd}
-            className="flex-1 sm:flex-none px-3 sm:px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-all flex items-center justify-center gap-2 text-sm"
-          >
-            <FaCheckCircle className="text-sm flex-shrink-0" />
-            <span className="hidden sm:inline">Set</span>
-          </button>
-        </div>
-      </div>
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleFileSelect}
-        className="hidden"
-        accept="*/*"
-      />
-    </div>
-  );
-};
-
-// ---------- Step Indicator ----------
-const StepIndicator = ({ currentStep, steps }) => {
-  return (
-    <div className="mb-6 sm:mb-8 overflow-x-auto pb-2">
-      <div className="flex items-center justify-between min-w-[300px] sm:min-w-0">
-        {steps.map((step, index) => (
-          <div key={step.number} className="flex-1 relative">
-            <div className="flex items-center">
-              <div className="relative flex-shrink-0">
-                <div
-                  className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-bold shadow-lg ${
-                    currentStep >= step.number ? 'bg-emerald-500' : 'bg-gray-300'
-                  }`}
-                >
-                  {currentStep > step.number ? <FaCheckCircle className="text-white text-xs sm:text-sm" /> : step.number}
-                </div>
-              </div>
-              {index < steps.length - 1 && (
-                <div className="flex-1 h-1 mx-1 sm:mx-2 bg-gray-300 rounded-full">
-                  <div
-                    className="h-full bg-emerald-500 rounded-full transition-all duration-300"
-                    style={{ width: currentStep > step.number ? '100%' : '0%' }}
-                  />
-                </div>
-              )}
-            </div>
-            <p className={`text-[10px] sm:text-xs mt-2 font-medium whitespace-nowrap ${
-              currentStep >= step.number ? 'text-emerald-600' : 'text-gray-400'
-            }`}>
-              {step.label}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// ---------- Main Component ----------
 const CurrentDueDiligence = () => {
-  const { user, demoData, updateDemoData } = useUserStore();
+  const { user, demoData, updateUser } = useUserStore();
+
+  // Determine role
+  const isVerifier = user?.role === "verifier" && user.loggedInAs;
+  const companyId = isVerifier ? user.loggedInAs.companyId : null;
+  const targetImporter = isVerifier
+    ? demoData.users[companyId] // The importer the verifier is reviewing
+    : user; // The importer themselves (if logged in as importer)
+
+  // Build list of shipments from shipmentId array
   const [shipments, setShipments] = useState([]);
+  const [currentRecords, setCurrentRecords] = useState({}); // map shipmentId -> due diligence data
+
+  // Modal and form state
+  const [showModal, setShowModal] = useState(false);
+  const [modalMode, setModalMode] = useState("start"); // 'start', 'payment', 'details', 'risk-assessment', 'risk-mitigation'
   const [selectedShipment, setSelectedShipment] = useState(null);
-  const [existingRecord, setExistingRecord] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalStep, setModalStep] = useState(1);
+  const [selectedRecord, setSelectedRecord] = useState(null);
+  const [viewingRecord, setViewingRecord] = useState(null);
+  const [viewTab, setViewTab] = useState("importer-info");
+  const [exporterRecordData, setExporterRecordData] = useState(null);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [paymentLoading, setPaymentLoading] = useState(false);
+
+  // Diligence statement form state
+  const [diligenceForm, setDiligenceForm] = useState({
+    name: "",
+    function: "",
+    eoriNumber: "",
+    signature: null,
+    url: null,
+  });
+  const [submittingDiligence, setSubmittingDiligence] = useState(false);
+
+  // Form data for starting due diligence
   const [formData, setFormData] = useState({
-    description: '',
-    commonName: '',
-    scientificName: '',
+    description: "",
+    commonName: "",
+    scientificName: "",
     hsCodes: [],
-    containers: [],
-    netMassKg: 0,
-    customerName: '',
-    customerAddress: '',
-    customerEmail: '',
-    supplierId: '',
-    supplierName: '',
-    supplierAddress: '',
-    supplierEmail: '',
-    batchNumber: '',
-    amount: 0,
-    paymentStatus: false,
-    status: 'unapproved',
-    riskAssessment: null,
-    riskMitigation: null,
+    containers: [], // array of { containerNumber, kilograms }
+    customerName: "",
+    customerAddress: "",
+    customerEmail: "",
   });
-  const [selectedProducts, setSelectedProducts] = useState([]);
-  const [isSme, setIsSme] = useState(true);
-  const [nonSmeFields, setNonSmeFields] = useState({
-    officerName: '',
-    officerIdCard: null,
-    appointmentLetter: null,
+  const [selectedHsCodes, setSelectedHsCodes] = useState([]);
+  const [showHsCodeSelector, setShowHsCodeSelector] = useState(false);
+  const [hsCodeSearch, setHsCodeSearch] = useState("");
+
+  // Container management
+  const [newContainer, setNewContainer] = useState({
+    containerNumber: "",
+    kilograms: "",
   });
 
-  const steps = [
-    { number: 1, label: 'Information', icon: FaFileSignature },
-    { number: 2, label: 'Payment', icon: FaCreditCard },
-    { number: 3, label: 'Assessment', icon: FaBalanceScale },
-    { number: 4, label: 'Mitigation', icon: FaShieldAlt },
-  ];
-
-  // Load shipments connected to importer
-  useEffect(() => {
-    if (!user || user.role !== 'importer') return;
-
-    const shipmentIds = user.shipmentId?.map(s => s.id) || [];
-    const shipmentsData = shipmentIds
-      .map(id => demoData.shipments?.[id])
-      .filter(Boolean);
-
-    const enriched = shipmentsData.map(ship => {
-      const statusObj = user.shipmentId?.find(s => s.id === ship.id);
-      return { ...ship, shipmentStatus: statusObj?.status || 'unapproved' };
-    });
-    setShipments(enriched);
-  }, [user, demoData]);
-
-  const findExistingRecord = (batchNumber) => {
-    return user?.currentSupplierRecords?.find(r => r.batchNumber === batchNumber);
-  };
-
-  const getShipmentStatus = (shipment) => {
-    const record = findExistingRecord(shipment.batchNumber);
-    if (!record) return 'start';
-    if (!record.paymentStatus) return 'continue';
-    return 'view';
-  };
-
-  const handleShipmentClick = (shipment) => {
-    setSelectedShipment(shipment);
-    const record = findExistingRecord(shipment.batchNumber);
-    setExistingRecord(record);
-
-    if (record) {
-      setFormData({
-        ...record,
-        containers: record.containers || [],
-        hsCodes: record.hsCodes || [],
-      });
-      if (!record.paymentStatus) {
-        setModalStep(2);
-      } else if (record.status === 'approved') {
-        setModalStep(0);
-      } else {
-        setModalStep(3);
-      }
-    } else {
-      const exporter = demoData.users[shipment.exporterId];
-      const supplierAddress = exporter?.facilities?.find(f => f.type === 'Corporate facility')?.address || exporter?.basicInfo?.country || '';
-      setFormData({
-        description: '',
-        commonName: '',
-        scientificName: '',
-        hsCodes: [],
-        containers: [],
-        netMassKg: 0,
-        customerName: '',
-        customerAddress: '',
-        customerEmail: '',
-        supplierId: exporter?.id || '',
-        supplierName: exporter?.basicInfo?.companyName || '',
-        supplierAddress: supplierAddress,
-        supplierEmail: exporter?.basicInfo?.email || '',
-        batchNumber: shipment.batchNumber,
-        amount: 0,
-        paymentStatus: false,
-        status: 'unapproved',
-        riskAssessment: null,
-        riskMitigation: null,
-      });
-      setSelectedProducts([]);
-      setModalStep(1);
-    }
-    setModalOpen(true);
-  };
-
-  useEffect(() => {
-    const total = calculateTotalKg(formData.containers);
-    setFormData(prev => ({ ...prev, netMassKg: total }));
-  }, [formData.containers]);
-
-  useEffect(() => {
-    const amount = calculateAmount(formData.containers);
-    setFormData(prev => ({ ...prev, amount }));
-  }, [formData.containers]);
-
-  const addContainer = () => {
-    setFormData(prev => ({
-      ...prev,
-      containers: [...prev.containers, { containerNumber: '', kilograms: 0 }]
-    }));
-  };
-
-  const removeContainer = (index) => {
-    setFormData(prev => ({
-      ...prev,
-      containers: prev.containers.filter((_, i) => i !== index)
-    }));
-  };
-
-  const updateContainer = (index, field, value) => {
-    const newContainers = [...formData.containers];
-    newContainers[index][field] = field === 'kilograms' ? Number(value) : value;
-    setFormData(prev => ({ ...prev, containers: newContainers }));
-  };
-
-  const addHsCode = (commodity, code, name) => {
-    if (!formData.hsCodes.some(h => h.code === code)) {
-      setFormData(prev => ({
-        ...prev,
-        hsCodes: [...prev.hsCodes, { commodity, code, name }]
-      }));
-    }
-  };
-
-  const removeHsCode = (code) => {
-    setFormData(prev => ({
-      ...prev,
-      hsCodes: prev.hsCodes.filter(h => h.code !== code)
-    }));
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSaveInfo = () => {
-    if (!formData.description || !formData.commonName || !formData.scientificName || !formData.customerName || !formData.customerAddress || !formData.customerEmail) {
-      toast.error('Please fill all required fields');
-      return;
-    }
-    if (formData.containers.length === 0) {
-      toast.error('Please add at least one container');
-      return;
-    }
-    if (formData.containers.some(c => !c.containerNumber || !c.kilograms || c.kilograms <= 0)) {
-      toast.error('Please fill all container details correctly');
-      return;
-    }
-    if (formData.hsCodes.length === 0) {
-      toast.error('Please select at least one HS code');
-      return;
-    }
-
-    const newRecord = {
-      ...formData,
-      supplierId: selectedShipment.exporterId,
-      supplierName: formData.supplierName,
-      supplierAddress: formData.supplierAddress,
-      supplierEmail: formData.supplierEmail,
-      batchNumber: selectedShipment.batchNumber,
-      paymentStatus: false,
-      status: 'unapproved',
-    };
-
-    const updatedUser = { ...user };
-    if (!updatedUser.currentSupplierRecords) updatedUser.currentSupplierRecords = [];
-    updatedUser.currentSupplierRecords.push(newRecord);
-
-    const newDemoData = {
-      ...demoData,
-      users: {
-        ...demoData.users,
-        [user.id]: updatedUser,
-      },
-    };
-    updateDemoData(newDemoData);
-    toast.success('Information saved. Proceed to payment.');
-    setModalStep(2);
-  };
-
-  const handlePayment = () => {
-    const updatedRecords = user.currentSupplierRecords.map(r =>
-      r.batchNumber === selectedShipment.batchNumber ? { ...r, paymentStatus: true } : r
-    );
-    const updatedUser = { ...user, currentSupplierRecords: updatedRecords };
-    const updatedShipmentId = user.shipmentId.map(s =>
-      s.id === selectedShipment.id ? { ...s, status: 'approved' } : s
-    );
-    updatedUser.shipmentId = updatedShipmentId;
-
-    const newDemoData = {
-      ...demoData,
-      users: {
-        ...demoData.users,
-        [user.id]: updatedUser,
-      },
-    };
-    updateDemoData(newDemoData);
-    toast.success('Payment successful! You can now proceed with risk assessment.');
-    setModalStep(3);
-  };
-
+  // Risk assessment state (only used by verifier)
+  const [riskLevel, setRiskLevel] = useState("");
   const [assessmentDocs, setAssessmentDocs] = useState([]);
-  const [riskLevel, setRiskLevel] = useState('');
+  const [showAssessmentDocModal, setShowAssessmentDocModal] = useState(false);
+  const [assessmentDocDesc, setAssessmentDocDesc] = useState("");
 
-  const addAssessmentDoc = (description) => {
-    setAssessmentDocs(prev => [...prev, { name: description, url: 'dummy' }]);
-  };
-
-  const saveRiskAssessment = () => {
-    if (!riskLevel) {
-      toast.error('Please select a risk level');
-      return;
-    }
-    const updatedRecords = user.currentSupplierRecords.map(r =>
-      r.batchNumber === selectedShipment.batchNumber
-        ? { ...r, riskAssessment: { riskLevel, assessmentDocs } }
-        : r
-    );
-    const updatedUser = { ...user, currentSupplierRecords: updatedRecords };
-    const newDemoData = {
-      ...demoData,
-      users: {
-        ...demoData.users,
-        [user.id]: updatedUser,
-      },
-    };
-    updateDemoData(newDemoData);
-
-    if (riskLevel === 'high risk') {
-      setModalStep(4);
-    } else {
-      completeDueDiligence(updatedRecords.find(r => r.batchNumber === selectedShipment.batchNumber));
-    }
-  };
-
-  const [mitigationData, setMitigationData] = useState({
-    additionalInfo: [],
-    independentSurveys: [],
-    otherMeasures: [],
-    capacityBuilding: [],
+  // Risk mitigation state (used by importer)
+  const [riskMitigation, setRiskMitigation] = useState({
+    highRiskSection: {
+      additionalInfo: [],
+      independentSurveys: [],
+      otherMeasures: [],
+      capacityBuilding: [],
+    },
     policiesControls: {
-      modelPractices: {
-        isSme: true,
-        officerName: '',
-        officerIdCard: null,
-        appointmentLetter: null,
-        Docs: [],
-      },
+      modelPractices: [],
       independentAudit: [],
     },
     decisionsReview: [],
   });
+  const [showDocModal, setShowDocModal] = useState(false);
+  const [docModalData, setDocModalData] = useState({
+    section: "",
+    subsection: "",
+    description: "",
+  });
 
-  const addMitigationDoc = (section, description) => {
-    setMitigationData(prev => ({
-      ...prev,
-      [section]: [...prev[section], { name: description, url: 'dummy' }]
-    }));
+  // Officer details (filled by verifier)
+  const [officerName, setOfficerName] = useState("");
+  const [officerIdCard, setOfficerIdCard] = useState(null);
+  const [appointmentLetter, setAppointmentLetter] = useState(null);
+
+  // Verifier‑only state – per‑article notes
+  const [verificationStatus, setVerificationStatus] = useState(null);
+  const [verificationNotesByArticle, setVerificationNotesByArticle] = useState({
+    article7: [],
+    article8: [],
+    article9: [],
+    article10: [],
+    article11: [],
+  });
+  const [
+    initialVerificationNotesByArticle,
+    setInitialVerificationNotesByArticle,
+  ] = useState({
+    article7: [],
+    article8: [],
+    article9: [],
+    article10: [],
+    article11: [],
+  });
+  const [newNoteByArticle, setNewNoteByArticle] = useState({
+    article7: "",
+    article8: "",
+    article9: "",
+    article10: "",
+    article11: "",
+  });
+  const [initialVerificationStatus, setInitialVerificationStatus] =
+    useState(null);
+
+  // ---------- Verification history for importer ----------
+  const [verificationHistory, setVerificationHistory] = useState([]);
+  const [showNotesModal, setShowNotesModal] = useState(false);
+
+  // Article titles for display
+  const articleTitles = {
+    "article-7": "Article 7 – Placing on the market by operators established in third countries",
+    "article-8": "Article 8 – Due Diligence",
+    "article-9": "Article 9 – Information Requirements",
+    "article-10": "Article 10 – Risk Assessment",
+    "article-11": "Article 11 – Risk Mitigation",
   };
 
-  const updateModelPracticesDoc = (description) => {
-    setMitigationData(prev => ({
-      ...prev,
-      policiesControls: {
-        ...prev.policiesControls,
-        modelPractices: {
-          ...prev.policiesControls.modelPractices,
-          Docs: [...prev.policiesControls.modelPractices.Docs, { name: description, url: 'dummy' }]
+  // Load shipments and current records
+  useEffect(() => {
+    if (targetImporter && targetImporter.id && targetImporter.shipmentId) {
+      const shipmentList = targetImporter.shipmentId
+        .map((ship) => {
+          const shipmentData = demoData.shipments[ship.id];
+          if (!shipmentData) return null;
+          return {
+            id: shipmentData.id,
+            batchNumber: shipmentData.batchNumber,
+            exporterId: shipmentData.exporterId,
+            importerId: shipmentData.importerId,
+            status: ship.status,
+            productDescription: shipmentData.productDescription,
+            totalKilograms: shipmentData.totalKilograms,
+            containers: shipmentData.containers,
+            forests: shipmentData.forests,
+          };
+        })
+        .filter((s) => s !== null);
+
+      const recordsMap = {};
+      if (targetImporter.currentSupplierRecords) {
+        targetImporter.currentSupplierRecords.forEach((record) => {
+          recordsMap[record.batchNumber] = record;
+        });
+      }
+
+      setShipments(shipmentList);
+      setCurrentRecords(recordsMap);
+    }
+  }, [targetImporter, demoData]);
+
+  // Load verifier's existing verification for this tab
+  useEffect(() => {
+    if (isVerifier && targetImporter && user) {
+      const reports = user.verificationReports || [];
+      const report = reports.find((r) => r.companyId === targetImporter.id);
+      if (report) {
+        const artFindings = report.findings?.find(
+          (f) => f.tab === "current-due-diligence",
+        );
+        if (artFindings) {
+          setVerificationStatus(artFindings.status || null);
+          setInitialVerificationStatus(artFindings.status || null);
+          const articles = artFindings.articles || [];
+          const notesMap = {
+            article7: [],
+            article8: [],
+            article9: [],
+            article10: [],
+            article11: [],
+          };
+          articles.forEach((art) => {
+            const mappedKey = art.article.replace("-", "");
+            if (notesMap[mappedKey]) {
+              notesMap[mappedKey] = art.notes || [];
+            }
+          });
+          setVerificationNotesByArticle(notesMap);
+          setInitialVerificationNotesByArticle(
+            JSON.parse(JSON.stringify(notesMap)),
+          );
         }
       }
-    }));
+    }
+  }, [isVerifier, targetImporter, user]);
+
+  // ---------- Load verification history for importer (grouped by verifier) ----------
+  useEffect(() => {
+    if (!isVerifier && targetImporter) {
+      const linkedVerifiers = targetImporter.linkedVerifiers || [];
+      const grouped = {};
+
+      linkedVerifiers.forEach((verifierLink) => {
+        const verifier = demoData.users[verifierLink.id];
+        if (!verifier || !verifier.verificationReports) return;
+
+        const report = verifier.verificationReports.find(
+          (r) => r.companyId === targetImporter.id,
+        );
+        if (report) {
+          const artFindings = report.findings?.find(
+            (f) => f.tab === "current-due-diligence",
+          );
+          if (artFindings && artFindings.articles && artFindings.articles.length > 0) {
+            const verifierName = verifier.basicInfo?.firstName
+              ? `${verifier.basicInfo.firstName} ${verifier.basicInfo.lastName}`
+              : verifier.basicInfo?.email || verifier.id;
+
+            if (!grouped[verifier.id]) {
+              grouped[verifier.id] = {
+                verifierName,
+                status: artFindings.status,
+                articles: [],
+                date: report.date,
+              };
+            }
+
+            // Add articles
+            artFindings.articles.forEach((article) => {
+              if (article.notes && article.notes.length > 0) {
+                grouped[verifier.id].articles.push({
+                  article: article.article,
+                  title: articleTitles[article.article] || article.article,
+                  notes: article.notes,
+                });
+              }
+            });
+          }
+        }
+      });
+
+      // Convert grouped object to array
+      const historyArray = Object.values(grouped);
+      setVerificationHistory(historyArray);
+    }
+  }, [isVerifier, targetImporter, demoData]);
+
+  // Helper to check if all records are ready for verification
+  const areAllRecordsReady = () => {
+    if (shipments.length === 0) return true;
+    return shipments.every((ship) => {
+      const record = currentRecords[ship.batchNumber];
+      if (!record) return false; // not started
+      if (!record.risks?.riskAssessment) return false;
+      if (
+        record.risks.riskAssessment.riskLevel === "high risk" &&
+        !record.risks?.riskMitigation
+      )
+        return false;
+      return true;
+    });
   };
 
-  const updateIndependentAuditDoc = (description) => {
-    setMitigationData(prev => ({
+  const hasVerificationChanges = () => {
+    return (
+      verificationStatus !== initialVerificationStatus ||
+      JSON.stringify(verificationNotesByArticle) !==
+        JSON.stringify(initialVerificationNotesByArticle)
+    );
+  };
+
+  // Container management functions
+  const handleAddContainer = () => {
+    if (!newContainer.containerNumber.trim()) {
+      toast.error("Please enter container number");
+      return;
+    }
+    const kg = parseFloat(newContainer.kilograms);
+    if (isNaN(kg) || kg <= 0) {
+      toast.error("Please enter valid kilograms (positive number)");
+      return;
+    }
+    setFormData((prev) => ({
       ...prev,
-      policiesControls: {
-        ...prev.policiesControls,
-        independentAudit: [...prev.policiesControls.independentAudit, { name: description, url: 'dummy' }]
-      }
+      containers: [
+        ...prev.containers,
+        { containerNumber: newContainer.containerNumber.trim(), kilograms: kg },
+      ],
+    }));
+    setNewContainer({ containerNumber: "", kilograms: "" });
+  };
+
+  const handleRemoveContainer = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      containers: prev.containers.filter((_, i) => i !== index),
     }));
   };
 
-  const saveRiskMitigation = () => {
-    const updatedRecords = user.currentSupplierRecords.map(r =>
-      r.batchNumber === selectedShipment.batchNumber
-        ? { ...r, riskMitigation: mitigationData }
-        : r
-    );
-    const updatedUser = { ...user, currentSupplierRecords: updatedRecords };
-    const newDemoData = {
-      ...demoData,
-      users: {
-        ...demoData.users,
-        [user.id]: updatedUser,
-      },
+  // Calculate total net mass from containers
+  const calculateTotalNetMass = () => {
+    return formData.containers.reduce((sum, c) => sum + (c.kilograms || 0), 0);
+  };
+
+  // Importer: start due diligence
+  const handleStartDueDiligence = (shipment) => {
+    setSelectedShipment(shipment);
+    setModalMode("start");
+    setCurrentStep(1);
+    setFormData({
+      description: shipment.productDescription || "",
+      commonName: "",
+      scientificName: "",
+      hsCodes: [],
+      containers: [],
+      customerName: "",
+      customerAddress: "",
+      customerEmail: "",
+    });
+    setSelectedHsCodes([]);
+    setShowModal(true);
+  };
+
+  const handleSaveImporterInfo = () => {
+    if (
+      !formData.description ||
+      !formData.commonName ||
+      !formData.scientificName ||
+      !formData.hsCodes.length ||
+      !formData.containers.length ||
+      !formData.customerName ||
+      !formData.customerAddress ||
+      !formData.customerEmail
+    ) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+    setModalMode("payment");
+  };
+
+  const calculateAmount = (netMassKg) =>
+    Math.ceil((parseFloat(netMassKg) / 20000) * 10);
+
+  const handlePayment = () => {
+    const totalNetMass = calculateTotalNetMass();
+    if (totalNetMass <= 0) {
+      toast.error("Total net mass must be greater than 0");
+      return;
+    }
+    setPaymentLoading(true);
+    setTimeout(() => {
+      const amount = calculateAmount(totalNetMass);
+      const newRecord = {
+        batchNumber: selectedShipment.batchNumber,
+        supplierId: selectedShipment.exporterId,
+        supplierName:
+          demoData.users[selectedShipment.exporterId]?.basicInfo?.companyName ||
+          "Unknown",
+        supplierAddress:
+          demoData.users[selectedShipment.exporterId]?.facilities?.find(
+            (f) => f.type === "Corporate facility",
+          )?.address || "",
+        supplierEmail:
+          demoData.users[selectedShipment.exporterId]?.basicInfo?.email || "",
+        description: formData.description,
+        commonName: formData.commonName,
+        scientificName: formData.scientificName,
+        hsCodes: formData.hsCodes,
+        containers: formData.containers,
+        netMassKg: totalNetMass,
+        customerName: formData.customerName,
+        customerAddress: formData.customerAddress,
+        customerEmail: formData.customerEmail,
+        amount: amount,
+        paymentStatus: true,
+        status: "in-progress",
+        risks: null,
+        diligenceStatement: null,
+      };
+
+      const updatedImporter = { ...targetImporter };
+      if (!updatedImporter.currentSupplierRecords)
+        updatedImporter.currentSupplierRecords = [];
+      const existingIndex = updatedImporter.currentSupplierRecords.findIndex(
+        (r) => r.batchNumber === selectedShipment.batchNumber,
+      );
+      if (existingIndex >= 0) {
+        updatedImporter.currentSupplierRecords[existingIndex] = newRecord;
+      } else {
+        updatedImporter.currentSupplierRecords.push(newRecord);
+      }
+      updateUser(targetImporter.id, updatedImporter);
+
+      setCurrentRecords((prev) => ({
+        ...prev,
+        [selectedShipment.batchNumber]: newRecord,
+      }));
+      setPaymentLoading(false);
+      setShowModal(false);
+      setSelectedShipment(null);
+      toast.success("Payment successful! Waiting for verifier to assess risk.");
+    }, 2000);
+  };
+
+  // Importer: risk mitigation
+  const handlePerformMitigation = (shipment, record) => {
+    setSelectedShipment(shipment);
+    setSelectedRecord(record);
+    const existing = record.risks?.riskMitigation;
+    if (existing) {
+      setRiskMitigation(existing);
+    } else {
+      setRiskMitigation({
+        highRiskSection: {
+          additionalInfo: [],
+          independentSurveys: [],
+          otherMeasures: [],
+          capacityBuilding: [],
+        },
+        policiesControls: {
+          modelPractices: [],
+          independentAudit: [],
+        },
+        decisionsReview: [],
+      });
+    }
+    const officer = record.risks;
+    if (officer) {
+      setOfficerName(officer.officerName || "");
+      setOfficerIdCard(officer.officerIdCard || null);
+      setAppointmentLetter(officer.appointmentLetter || null);
+    } else {
+      setOfficerName("");
+      setOfficerIdCard(null);
+      setAppointmentLetter(null);
+    }
+    setModalMode("risk-mitigation");
+    setShowModal(true);
+  };
+
+  const handleAddDoc = () => {
+    if (!docModalData.description.trim()) {
+      toast.error("Please enter a document description");
+      return;
+    }
+    const newDoc = {
+      name: docModalData.description,
+      url: "dummy-document-url.pdf",
     };
-    updateDemoData(newDemoData);
-    completeDueDiligence(updatedRecords.find(r => r.batchNumber === selectedShipment.batchNumber));
+    setRiskMitigation((prev) => {
+      const updated = { ...prev };
+      if (docModalData.section === "highRiskSection") {
+        if (!updated.highRiskSection[docModalData.subsection])
+          updated.highRiskSection[docModalData.subsection] = [];
+        updated.highRiskSection[docModalData.subsection].push(newDoc);
+      } else if (docModalData.section === "policiesControls") {
+        if (docModalData.subsection === "modelPractices")
+          updated.policiesControls.modelPractices.push(newDoc);
+        else if (docModalData.subsection === "independentAudit")
+          updated.policiesControls.independentAudit.push(newDoc);
+      } else if (docModalData.section === "decisionsReview") {
+        updated.decisionsReview.push(newDoc);
+      }
+      return updated;
+    });
+    setDocModalData({ section: "", subsection: "", description: "" });
+    setShowDocModal(false);
+    toast.success("Document added");
   };
 
-  const completeDueDiligence = (record) => {
-    const updatedRecords = user.currentSupplierRecords.map(r =>
-      r.batchNumber === selectedShipment.batchNumber ? { ...r, status: 'approved' } : r
-    );
-    const updatedUser = { ...user, currentSupplierRecords: updatedRecords };
-    const newDemoData = {
-      ...demoData,
-      users: {
-        ...demoData.users,
-        [user.id]: updatedUser,
-      },
-    };
-    updateDemoData(newDemoData);
-    toast.success('Due diligence completed successfully!');
-    setModalOpen(false);
+  const removeMitigationDoc = (section, subsection, index) => {
+    setRiskMitigation((prev) => {
+      const updated = { ...prev };
+      if (section === "highRiskSection") {
+        updated.highRiskSection[subsection] = updated.highRiskSection[
+          subsection
+        ].filter((_, i) => i !== index);
+      } else if (section === "policiesControls") {
+        updated.policiesControls[subsection] = updated.policiesControls[
+          subsection
+        ].filter((_, i) => i !== index);
+      } else if (section === "decisionsReview") {
+        updated.decisionsReview = updated.decisionsReview.filter(
+          (_, i) => i !== index,
+        );
+      }
+      return updated;
+    });
   };
 
-  // ---------- Document display helpers (downloadable) ----------
-  const DocumentItem = ({ doc }) => {
-    const handleDownload = () => {
-      // In a real app, this would trigger download. For demo, we show an alert.
-      alert(`Downloading: ${doc.name}`);
-      // You could also open a URL: window.open(doc.url, '_blank');
-    };
-
-    return (
-      <div
-        onClick={handleDownload}
-        className="flex items-center gap-3 p-2 bg-white rounded-lg border border-gray-200 hover:border-emerald-300 hover:shadow-sm transition-all cursor-pointer group"
-      >
-        <div className="p-2 bg-emerald-100 rounded-lg flex-shrink-0">
-          <FaFileAlt className="text-emerald-600" />
-        </div>
-        <span className="flex-1 text-sm text-gray-700 break-words">{doc.name}</span>
-        <FaDownload className="text-gray-400 group-hover:text-emerald-600 transition-colors flex-shrink-0" />
-      </div>
-    );
-  };
-
-  const DocumentList = ({ docs }) => {
-    if (!docs || docs.length === 0) return <span className="text-gray-400 italic">None</span>;
-    return (
-      <div className="space-y-2">
-        {docs.map((doc, idx) => (
-          <DocumentItem key={idx} doc={doc} />
-        ))}
-      </div>
-    );
-  };
-
-  // ---------- Enhanced Details View ----------
-  const renderDetailsView = () => {
-    const record = existingRecord;
-    const shipment = selectedShipment;
-    if (!record || !shipment) return null;
-
-    return (
-      <div className="p-4 sm:p-6 md:p-8 max-h-[80vh] overflow-y-auto">
-        <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent mb-6 break-words">
-          Due Diligence Details
-        </h2>
-
-        <div className="space-y-6">
-          {/* Shipment Information */}
-          <div className="bg-white rounded-2xl border border-emerald-100 shadow-sm overflow-hidden">
-            <div className="bg-gradient-to-r from-emerald-50 to-green-50 px-4 sm:px-6 py-3 border-b border-emerald-100">
-              <h3 className="text-lg font-semibold text-emerald-800 flex items-center gap-2">
-                <FaBox className="text-emerald-600" />
-                Shipment Information
-              </h3>
-            </div>
-            <div className="p-4 sm:p-6">
-              <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Batch Number</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{shipment.batchNumber}</dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Product Description</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{shipment.productDescription || 'Not provided'}</dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-
-          {/* Importer's Record */}
-          <div className="bg-white rounded-2xl border border-emerald-100 shadow-sm overflow-hidden">
-            <div className="bg-gradient-to-r from-emerald-50 to-green-50 px-4 sm:px-6 py-3 border-b border-emerald-100">
-              <h3 className="text-lg font-semibold text-emerald-800 flex items-center gap-2">
-                <FaClipboardList className="text-emerald-600" />
-                Importer's Information
-              </h3>
-            </div>
-            <div className="p-4 sm:p-6 space-y-6">
-              {/* Basic Product Info */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Description</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{record.description || 'Not provided'}</dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Common Name</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{record.commonName || 'Not provided'}</dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Scientific Name</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{record.scientificName || 'Not provided'}</dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Net Mass (kg)</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{record.netMassKg}</dd>
-                </div>
-              </div>
-
-              {/* HS Codes */}
-              <div>
-                <dt className="text-sm font-medium text-gray-500 mb-2">HS Codes</dt>
-                <dd className="mt-1">
-                  {record.hsCodes && record.hsCodes.length > 0 ? (
-                    <div className="flex flex-wrap gap-2">
-                      {record.hsCodes.map((h, idx) => (
-                        <span key={idx} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-                          {h.code} - {h.name}
-                        </span>
-                      ))}
-                    </div>
-                  ) : (
-                    <span className="text-gray-400 italic">None</span>
-                  )}
-                </dd>
-              </div>
-
-              {/* Containers */}
-              <div>
-                <dt className="text-sm font-medium text-gray-500 mb-2">Containers</dt>
-                <dd className="mt-1">
-                  {record.containers && record.containers.length > 0 ? (
-                    <div className="bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-                      <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-100">
-                          <tr>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Container Number</th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kilograms</th>
-                          </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                          {record.containers.map((c, idx) => (
-                            <tr key={idx}>
-                              <td className="px-4 py-2 text-sm text-gray-900">{c.containerNumber}</td>
-                              <td className="px-4 py-2 text-sm text-gray-900">{c.kilograms}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  ) : (
-                    <span className="text-gray-400 italic">None</span>
-                  )}
-                </dd>
-              </div>
-
-              {/* Customer Info */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Customer Name</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{record.customerName || 'Not provided'}</dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Customer Email</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{record.customerEmail || 'Not provided'}</dd>
-                </div>
-                <div className="sm:col-span-2">
-                  <dt className="text-sm font-medium text-gray-500">Customer Address</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{record.customerAddress || 'Not provided'}</dd>
-                </div>
-              </div>
-
-              {/* Supplier Info */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Supplier Name</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{record.supplierName || 'Not provided'}</dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Supplier Email</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{record.supplierEmail || 'Not provided'}</dd>
-                </div>
-                <div className="sm:col-span-2">
-                  <dt className="text-sm font-medium text-gray-500">Supplier Address</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{record.supplierAddress || 'Not provided'}</dd>
-                </div>
-              </div>
-
-              {/* Financial & Status */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Amount ($)</dt>
-                  <dd className="mt-1 text-sm text-gray-900">${record.amount}</dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Payment Status</dt>
-                  <dd className="mt-1">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      record.paymentStatus ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {record.paymentStatus ? 'Paid' : 'Unpaid'}
-                    </span>
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Status</dt>
-                  <dd className="mt-1">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      record.status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      {record.status}
-                    </span>
-                  </dd>
-                </div>
-              </div>
-
-              {/* Risk Assessment */}
-              {record.riskAssessment && (
-                <div className="border-t border-gray-200 pt-4">
-                  <h4 className="text-md font-semibold text-gray-700 mb-3">Risk Assessment</h4>
-                  <dl className="space-y-3">
-                    <div>
-                      <dt className="text-sm font-medium text-gray-500">Risk Level</dt>
-                      <dd className="mt-1">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          record.riskAssessment.riskLevel === 'high risk' ? 'bg-red-100 text-red-800' :
-                          record.riskAssessment.riskLevel === 'low risk' ? 'bg-green-100 text-green-800' :
-                          'bg-blue-100 text-blue-800'
-                        }`}>
-                          {record.riskAssessment.riskLevel}
-                        </span>
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="text-sm font-medium text-gray-500">Assessment Documents</dt>
-                      <dd className="mt-1">
-                        <DocumentList docs={record.riskAssessment.assessmentDocs} />
-                      </dd>
-                    </div>
-                  </dl>
-                </div>
-              )}
-
-              {/* Risk Mitigation */}
-              {record.riskMitigation && (
-                <div className="border-t border-gray-200 pt-4">
-                  <h4 className="text-md font-semibold text-gray-700 mb-3">Risk Mitigation</h4>
-                  <dl className="space-y-4">
-                    {record.riskMitigation.additionalInfo?.length > 0 && (
-                      <div>
-                        <dt className="text-sm font-medium text-gray-500">Additional Info</dt>
-                        <dd className="mt-2"><DocumentList docs={record.riskMitigation.additionalInfo} /></dd>
-                      </div>
-                    )}
-                    {record.riskMitigation.independentSurveys?.length > 0 && (
-                      <div>
-                        <dt className="text-sm font-medium text-gray-500">Independent Surveys</dt>
-                        <dd className="mt-2"><DocumentList docs={record.riskMitigation.independentSurveys} /></dd>
-                      </div>
-                    )}
-                    {record.riskMitigation.otherMeasures?.length > 0 && (
-                      <div>
-                        <dt className="text-sm font-medium text-gray-500">Other Measures</dt>
-                        <dd className="mt-2"><DocumentList docs={record.riskMitigation.otherMeasures} /></dd>
-                      </div>
-                    )}
-                    {record.riskMitigation.capacityBuilding?.length > 0 && (
-                      <div>
-                        <dt className="text-sm font-medium text-gray-500">Capacity Building</dt>
-                        <dd className="mt-2"><DocumentList docs={record.riskMitigation.capacityBuilding} /></dd>
-                      </div>
-                    )}
-                    {record.riskMitigation.policiesControls && (
-                      <div>
-                        <dt className="text-sm font-medium text-gray-500">Policies, Controls & Procedures</dt>
-                        <dd className="mt-2">
-                          <div className="bg-gray-50 rounded-lg p-4 space-y-3">
-                            {/* Model Practices */}
-                            {record.riskMitigation.policiesControls.modelPractices && (
-                              <div>
-                                <span className="font-medium text-gray-700 block mb-2">Model Risk Management Practices</span>
-                                <div className="ml-4 space-y-3">
-                                  {record.riskMitigation.policiesControls.modelPractices.isSme !== undefined && (
-                                    <div className="flex items-center gap-2">
-                                      <span className="text-sm text-gray-600">SME:</span>
-                                      <span className={`text-sm px-2 py-0.5 rounded-full ${record.riskMitigation.policiesControls.modelPractices.isSme ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'}`}>
-                                        {record.riskMitigation.policiesControls.modelPractices.isSme ? 'Yes' : 'No'}
-                                      </span>
-                                    </div>
-                                  )}
-                                  {record.riskMitigation.policiesControls.modelPractices.officerName && (
-                                    <div>
-                                      <span className="text-sm text-gray-600">Officer Name:</span>
-                                      <p className="text-sm text-gray-900 ml-2">{record.riskMitigation.policiesControls.modelPractices.officerName}</p>
-                                    </div>
-                                  )}
-                                  {record.riskMitigation.policiesControls.modelPractices.officerIdCard && (
-                                    <div>
-                                      <span className="text-sm text-gray-600">Officer ID Card:</span>
-                                      <div className="ml-2 mt-1">
-                                        <DocumentItem doc={record.riskMitigation.policiesControls.modelPractices.officerIdCard} />
-                                      </div>
-                                    </div>
-                                  )}
-                                  {record.riskMitigation.policiesControls.modelPractices.appointmentLetter && (
-                                    <div>
-                                      <span className="text-sm text-gray-600">Letter of Appointment:</span>
-                                      <div className="ml-2 mt-1">
-                                        <DocumentItem doc={record.riskMitigation.policiesControls.modelPractices.appointmentLetter} />
-                                      </div>
-                                    </div>
-                                  )}
-                                  {record.riskMitigation.policiesControls.modelPractices.Docs?.length > 0 && (
-                                    <div>
-                                      <span className="text-sm text-gray-600">Additional Docs:</span>
-                                      <div className="ml-2 mt-1">
-                                        <DocumentList docs={record.riskMitigation.policiesControls.modelPractices.Docs} />
-                                      </div>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            )}
-                            {/* Independent Audit */}
-                            {record.riskMitigation.policiesControls.independentAudit?.length > 0 && (
-                              <div>
-                                <span className="font-medium text-gray-700 block mb-2">Independent Audit</span>
-                                <div className="ml-4">
-                                  <DocumentList docs={record.riskMitigation.policiesControls.independentAudit} />
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </dd>
-                      </div>
-                    )}
-                    {record.riskMitigation.decisionsReview?.length > 0 && (
-                      <div>
-                        <dt className="text-sm font-medium text-gray-500">Decisions Review</dt>
-                        <dd className="mt-2"><DocumentList docs={record.riskMitigation.decisionsReview} /></dd>
-                      </div>
-                    )}
-                  </dl>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  // ---------- Modal Content ----------
-  const renderModalContent = () => {
-    if (modalStep === 0) {
-      return renderDetailsView();
+  const handleSaveRiskMitigation = () => {
+    if (!officerName.trim() || !officerIdCard || !appointmentLetter) {
+      toast.error(
+        "Officer details are missing. Please contact the verifier to complete risk assessment first.",
+      );
+      return;
     }
 
-    return (
-      <div className="p-4 sm:p-6 md:p-8 max-h-[80vh] overflow-y-auto">
-        <StepIndicator currentStep={modalStep} steps={steps} />
-
-        <div className="mt-6 sm:mt-8">
-          {modalStep === 1 && (
-            <div className="space-y-4 sm:space-y-6">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-800 break-words">Provide Importer Information</h2>
-
-              <div className="bg-gradient-to-r from-emerald-50 to-green-50 p-4 sm:p-6 rounded-2xl border border-emerald-200">
-                <h3 className="font-semibold text-emerald-800 mb-3 text-sm sm:text-base">Supplier Details</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div className="bg-white p-3 rounded-lg">
-                    <p className="text-xs text-gray-500">Company Name</p>
-                    <p className="font-medium text-gray-800 text-sm break-words">{formData.supplierName}</p>
-                  </div>
-                  <div className="bg-white p-3 rounded-lg">
-                    <p className="text-xs text-gray-500">Address</p>
-                    <p className="font-medium text-gray-800 text-sm break-words">{formData.supplierAddress}</p>
-                  </div>
-                  <div className="bg-white p-3 rounded-lg sm:col-span-2">
-                    <p className="text-xs text-gray-500">Email</p>
-                    <p className="font-medium text-gray-800 text-sm break-words">{formData.supplierEmail}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                <Input label="Description (trade name, type)" name="description" value={formData.description} onChange={handleInputChange} />
-                <Input label="Common Name" name="commonName" value={formData.commonName} onChange={handleInputChange} />
-                <Input label="Scientific Name" name="scientificName" value={formData.scientificName} onChange={handleInputChange} />
-              </div>
-
-              <div className="bg-gray-50 p-4 sm:p-6 rounded-2xl">
-                <label className="block font-semibold text-gray-700 mb-3 text-sm sm:text-base">HS Codes (EUDR supported)</label>
-                <div className="border border-gray-200 rounded-xl p-3 sm:p-4 max-h-60 overflow-y-auto bg-white">
-                  {demoData.commodities.map(commodity => (
-                    <div key={commodity.commodity} className="mb-4">
-                      <p className="font-semibold text-emerald-700 mb-2 text-sm">{commodity.commodity}</p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        {commodity.products.map(prod => (
-                          <label key={prod.code} className="flex items-start gap-2 p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={formData.hsCodes.some(h => h.code === prod.code)}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  addHsCode(commodity.commodity, prod.code, prod.name);
-                                } else {
-                                  removeHsCode(prod.code);
-                                }
-                              }}
-                              className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500 mt-1 flex-shrink-0"
-                            />
-                            <span className="text-xs sm:text-sm text-gray-700 break-words">{prod.code} - {prod.name}</span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                {formData.hsCodes.length > 0 && (
-                  <div className="mt-4">
-                    <p className="font-medium text-gray-700 mb-2 text-sm">Selected HS Codes:</p>
-                    <div className="flex flex-wrap gap-2">
-                      {formData.hsCodes.map(h => (
-                        <span key={h.code} className="inline-flex items-center gap-1 bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full text-xs">
-                          {h.code}
-                          <button onClick={() => removeHsCode(h.code)} className="hover:text-red-600 ml-1">
-                            <FaTrash className="text-xs" />
-                          </button>
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="bg-gray-50 p-4 sm:p-6 rounded-2xl">
-                <label className="block font-semibold text-gray-700 mb-3 text-sm sm:text-base">Containers</label>
-                {formData.containers.map((c, idx) => (
-                  <div key={idx} className="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-3">
-                    <input
-                      type="text"
-                      placeholder="Container number"
-                      value={c.containerNumber}
-                      onChange={(e) => updateContainer(idx, 'containerNumber', e.target.value)}
-                      className="flex-1 px-3 sm:px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none text-sm"
-                    />
-                    <div className="flex gap-2">
-                      <div className="relative flex-1">
-                        <input
-                          type="number"
-                          placeholder="kg"
-                          value={c.kilograms}
-                          onChange={(e) => updateContainer(idx, 'kilograms', e.target.value)}
-                          className="w-full px-3 sm:px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none text-sm pr-12"
-                        />
-                        <span className="absolute right-3 top-3 text-gray-400 text-xs">kg</span>
-                      </div>
-                      <button
-                        onClick={() => removeContainer(idx)}
-                        className="px-3 py-2.5 bg-red-100 text-red-600 rounded-xl hover:bg-red-200 transition-all flex-shrink-0"
-                      >
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-                <button
-                  onClick={addContainer}
-                  className="mt-3 text-emerald-600 hover:text-emerald-700 flex items-center gap-2 font-medium text-sm"
-                >
-                  <FaPlus className="text-sm" /> Add Container
-                </button>
-                <div className="mt-4 p-4 bg-emerald-50 rounded-xl">
-                  <p className="text-base sm:text-lg font-semibold text-emerald-800 break-words">
-                    Total Net Mass: {formData.netMassKg} kg
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                <Input label="Customer Name" name="customerName" value={formData.customerName} onChange={handleInputChange} />
-                <Input label="Customer Postal Address" name="customerAddress" value={formData.customerAddress} onChange={handleInputChange} />
-                <Input label="Customer Email" name="customerEmail" value={formData.customerEmail} onChange={handleInputChange} type="email" />
-              </div>
-
-              <button
-                onClick={handleSaveInfo}
-                className="w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 sm:gap-3"
-              >
-                <FaSave className="flex-shrink-0" />
-                <span className="truncate">Save & Continue to Payment</span>
-                <FaArrowRight className="flex-shrink-0" />
-              </button>
-            </div>
-          )}
-
-          {modalStep === 2 && (
-            <div className="space-y-4 sm:space-y-6">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Payment</h2>
-
-              <div className="bg-gradient-to-r from-emerald-50 to-green-50 p-6 sm:p-8 rounded-2xl border border-emerald-200 text-center">
-                <p className="text-gray-600 mb-2 text-sm sm:text-base">Amount to pay</p>
-                <p className="text-3xl sm:text-5xl font-bold text-emerald-700 mb-2 break-words">${formData.amount}</p>
-                <p className="text-xs sm:text-sm text-gray-500">({formData.containers.length} containers × $100)</p>
-              </div>
-
-              <button
-                onClick={handlePayment}
-                className="w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 sm:gap-3"
-              >
-                <FaMoneyBillWave className="flex-shrink-0" /> Pay ${formData.amount}
-              </button>
-            </div>
-          )}
-
-          {modalStep === 3 && (
-            <div className="space-y-4 sm:space-y-6">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Risk Assessment</h2>
-
-              <div className="bg-gray-50 p-4 sm:p-6 rounded-2xl">
-                <label className="block font-semibold text-gray-700 mb-3 text-sm sm:text-base">Risk Level</label>
-                <select
-                  value={riskLevel}
-                  onChange={(e) => setRiskLevel(e.target.value)}
-                  className="w-full px-3 sm:px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none bg-white text-sm"
-                >
-                  <option value="">Select risk level</option>
-                  <option value="low risk" className="text-emerald-600">Low Risk</option>
-                  <option value="negligible risk" className="text-blue-600">Negligible Risk</option>
-                  <option value="high risk" className="text-red-600">High Risk</option>
-                </select>
-              </div>
-
-              <div className="bg-gray-50 p-4 sm:p-6 rounded-2xl">
-                <label className="block font-semibold text-gray-700 mb-3 text-sm sm:text-base">Upload Assessment Documents</label>
-                <DocumentUploader docs={assessmentDocs} onAdd={addAssessmentDoc} />
-              </div>
-
-              <button
-                onClick={saveRiskAssessment}
-                className="w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all"
-              >
-                Save Assessment
-              </button>
-            </div>
-          )}
-
-          {modalStep === 4 && (
-            <div className="space-y-4 sm:space-y-6">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Risk Mitigation</h2>
-              <p className="text-red-600 bg-red-50 p-3 sm:p-4 rounded-xl flex items-center gap-2 text-sm sm:text-base">
-                <FaExclamationTriangle className="text-xl flex-shrink-0" />
-                <span className="break-words">High Risk - Additional measures required</span>
-              </p>
-
-              <MitigationSection
-                title="Additional information, data or documents"
-                docs={mitigationData.additionalInfo}
-                onAdd={(desc) => addMitigationDoc('additionalInfo', desc)}
-              />
-
-              <MitigationSection
-                title="Independent surveys or audits"
-                docs={mitigationData.independentSurveys}
-                onAdd={(desc) => addMitigationDoc('independentSurveys', desc)}
-              />
-
-              <MitigationSection
-                title="Other measures per Article 9"
-                docs={mitigationData.otherMeasures}
-                onAdd={(desc) => addMitigationDoc('otherMeasures', desc)}
-              />
-
-              <MitigationSection
-                title="Capacity building and investments"
-                docs={mitigationData.capacityBuilding}
-                onAdd={(desc) => addMitigationDoc('capacityBuilding', desc)}
-              />
-
-              <div className="bg-gray-50 p-4 sm:p-6 rounded-2xl">
-                <h3 className="font-bold text-gray-800 mb-4 text-base sm:text-lg">Policies, controls and procedures</h3>
-
-                <div className="mb-6">
-                  <p className="font-medium text-gray-700 mb-3 text-sm">Model risk management practices</p>
-                  <DocumentUploader
-                    docs={mitigationData.policiesControls.modelPractices.Docs}
-                    onAdd={updateModelPracticesDoc}
-                  />
-
-                  <div className="mt-4">
-                    <label className="flex items-start gap-2 p-3 bg-white rounded-lg cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={!isSme}
-                        onChange={(e) => setIsSme(!e.target.checked)}
-                        className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500 mt-1 flex-shrink-0"
-                      />
-                      <span className="text-gray-700 text-sm break-words">Non-SME (uncheck if SME)</span>
-                    </label>
-                  </div>
-
-                  {!isSme && (
-                    <div className="mt-4 space-y-4">
-                      <Input
-                        label="Officer Name"
-                        value={nonSmeFields.officerName}
-                        onChange={(e) => setNonSmeFields({...nonSmeFields, officerName: e.target.value})}
-                      />
-                      <SingleDocumentUpload
-                        label="Officer ID Card"
-                        value={nonSmeFields.officerIdCard}
-                        onChange={(doc) => setNonSmeFields(prev => ({ ...prev, officerIdCard: doc }))}
-                      />
-                      <SingleDocumentUpload
-                        label="Letter of Appointment"
-                        value={nonSmeFields.appointmentLetter}
-                        onChange={(doc) => setNonSmeFields(prev => ({ ...prev, appointmentLetter: doc }))}
-                      />
-                    </div>
-                  )}
-                </div>
-
-                <div>
-                  <p className="font-medium text-gray-700 mb-3 text-sm">Independent audit function</p>
-                  <DocumentUploader
-                    docs={mitigationData.policiesControls.independentAudit}
-                    onAdd={updateIndependentAuditDoc}
-                  />
-                </div>
-              </div>
-
-              <MitigationSection
-                title="Annual review of procedures"
-                docs={mitigationData.decisionsReview}
-                onAdd={(desc) => addMitigationDoc('decisionsReview', desc)}
-              />
-
-              <button
-                onClick={saveRiskMitigation}
-                className="w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all"
-              >
-                Complete Mitigation
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
+    const updatedImporter = { ...targetImporter };
+    const recordIndex = updatedImporter.currentSupplierRecords.findIndex(
+      (r) => r.batchNumber === selectedRecord.batchNumber,
     );
+    if (recordIndex >= 0) {
+      const record = updatedImporter.currentSupplierRecords[recordIndex];
+      if (!record.risks) record.risks = {};
+      record.risks.riskMitigation = riskMitigation;
+      if (!record.risks.officerName) {
+        record.risks.officerName = officerName;
+        record.risks.officerIdCard = officerIdCard;
+        record.risks.appointmentLetter = appointmentLetter;
+      }
+      record.status = "approved";
+      updateUser(targetImporter.id, updatedImporter);
+
+      const updatedShipmentIds = targetImporter.shipmentId.map((s) =>
+        s.id === selectedShipment.id ? { ...s, status: "approved" } : s,
+      );
+      const finalImporter = {
+        ...updatedImporter,
+        shipmentId: updatedShipmentIds,
+      };
+      updateUser(targetImporter.id, finalImporter);
+
+      const updatedRecord = {
+        ...selectedRecord,
+        risks: record.risks,
+        status: "approved",
+      };
+      setCurrentRecords((prev) => ({
+        ...prev,
+        [selectedRecord.batchNumber]: updatedRecord,
+      }));
+      setShipments((prev) =>
+        prev.map((s) =>
+          s.id === selectedShipment.id ? { ...s, status: "approved" } : s,
+        ),
+      );
+      toast.success("Risk mitigation complete. Due diligence finalized!");
+      setShowModal(false);
+      setSelectedShipment(null);
+      setSelectedRecord(null);
+    }
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent break-words">
-            Current Due Diligence
-          </h1>
-          <p className="text-sm sm:text-base text-gray-600 mt-2">Manage your ongoing due diligence processes</p>
+  // Verifier: risk assessment
+  const handleRiskAssessment = (shipment, record) => {
+    setSelectedShipment(shipment);
+    setSelectedRecord(record);
+    const existing = record?.risks?.riskAssessment;
+    if (existing) {
+      setRiskLevel(existing.riskLevel || "");
+      setAssessmentDocs(existing.assessmentDocs || []);
+    } else {
+      setRiskLevel("");
+      setAssessmentDocs([]);
+    }
+    const officer = record?.risks;
+    if (officer) {
+      setOfficerName(officer.officerName || "");
+      setOfficerIdCard(officer.officerIdCard || null);
+      setAppointmentLetter(officer.appointmentLetter || null);
+    } else {
+      setOfficerName("");
+      setOfficerIdCard(null);
+      setAppointmentLetter(null);
+    }
+    setModalMode("risk-assessment");
+    setShowModal(true);
+  };
+
+  const handleSaveRiskAssessmentForVerifier = () => {
+    if (!riskLevel) {
+      toast.error("Please select a risk level");
+      return;
+    }
+    if (assessmentDocs.length === 0) {
+      toast.error(
+        "Please upload at least one document to support your risk assessment",
+      );
+      return;
+    }
+    if (!officerName.trim()) {
+      toast.error("Please enter responsible officer name");
+      return;
+    }
+    if (!officerIdCard) {
+      toast.error("Please upload officer ID card");
+      return;
+    }
+    if (!appointmentLetter) {
+      toast.error("Please upload appointment letter");
+      return;
+    }
+
+    const updatedImporter = { ...targetImporter };
+    const recordIndex = updatedImporter.currentSupplierRecords.findIndex(
+      (r) => r.batchNumber === selectedRecord.batchNumber,
+    );
+    if (recordIndex >= 0) {
+      const record = updatedImporter.currentSupplierRecords[recordIndex];
+      if (!record.risks) record.risks = {};
+      record.risks.riskAssessment = { riskLevel, assessmentDocs };
+      record.risks.officerName = officerName;
+      record.risks.officerIdCard = officerIdCard;
+      record.risks.appointmentLetter = appointmentLetter;
+
+      let newStatus = "approved";
+      if (riskLevel === "high risk") {
+        newStatus = "awaiting-mitigation";
+      }
+      record.status = newStatus;
+
+      updateUser(targetImporter.id, updatedImporter);
+
+      const updatedRecord = {
+        ...selectedRecord,
+        risks: record.risks,
+        status: newStatus,
+        riskAssessmentDone: true,
+        riskLevel,
+      };
+      setCurrentRecords((prev) => ({
+        ...prev,
+        [selectedRecord.batchNumber]: updatedRecord,
+      }));
+      toast.success("Risk assessment saved successfully");
+      setShowModal(false);
+      setSelectedShipment(null);
+      setSelectedRecord(null);
+    }
+  };
+
+  const handleViewDetails = (shipment, record) => {
+    setSelectedShipment(shipment);
+    setViewingRecord(record);
+    setModalMode("details");
+    setViewTab("importer-info");
+    setShowModal(true);
+    if (record.diligenceStatement) {
+      setDiligenceForm({
+        name: record.diligenceStatement.name || "",
+        function: record.diligenceStatement.function || "",
+        eoriNumber: record.diligenceStatement.eoriNumber || "",
+        signature: record.diligenceStatement.signature || null,
+        url: record.diligenceStatement.url || null,
+      });
+    } else {
+      setDiligenceForm({
+        name: "",
+        function: "",
+        eoriNumber: "",
+        signature: null,
+        url: null,
+      });
+    }
+  };
+
+  // Helper: render document box
+  const getFileIcon = (fileName) => {
+    const ext = fileName.split(".").pop().toLowerCase();
+    switch (ext) {
+      case "pdf":
+        return <FaFilePdf className="text-red-500 flex-shrink-0" />;
+      case "doc":
+      case "docx":
+        return <FaFileWord className="text-blue-500 flex-shrink-0" />;
+      case "xls":
+      case "xlsx":
+        return <FaFileExcel className="text-green-500 flex-shrink-0" />;
+      case "jpg":
+      case "jpeg":
+      case "png":
+      case "gif":
+        return <FaFileImage className="text-purple-500 flex-shrink-0" />;
+      default:
+        return <FaFileGeneric className="text-gray-500 flex-shrink-0" />;
+    }
+  };
+
+  const renderDocumentBox = (doc, index) => (
+    <div
+      key={index}
+      className="bg-gray-50 rounded-lg p-3 border border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+    >
+      <div className="flex items-center space-x-3 min-w-0">
+        {getFileIcon(doc.url)}
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-medium text-gray-800 truncate">
+            {doc.name}
+          </p>
+          <p className="text-xs text-gray-500 truncate">{doc.url}</p>
+        </div>
+      </div>
+      <div className="flex space-x-2 sm:ml-auto">
+        <button
+          className="p-1.5 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors"
+          onClick={() =>
+            toast.info(
+              "Document viewing will be available in the final implementation",
+            )
+          }
+          title="View document"
+        >
+          <FaEye size={14} />
+        </button>
+        <button
+          className="p-1.5 text-green-600 hover:text-green-800 hover:bg-green-50 rounded transition-colors"
+          onClick={() =>
+            toast.info(
+              "Document download will be available in the final implementation",
+            )
+          }
+          title="Download document"
+        >
+          <FaDownload size={14} />
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderImporterInfo = (record) => (
+    <div className="space-y-4 sm:space-y-6">
+      <div className="bg-green-50 p-3 sm:p-4 rounded-lg">
+        <h3 className="font-semibold text-green-800 mb-3 flex items-center text-sm sm:text-base">
+          <FaInfoCircle className="mr-2 flex-shrink-0" /> Trade Information
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <div className="min-w-0 col-span-1 sm:col-span-2">
+            <p className="text-xs sm:text-sm text-gray-600">Description</p>
+            <p className="font-medium text-sm sm:text-base break-words">
+              {record.description}
+            </p>
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm text-gray-600">Common Name</p>
+            <p className="font-medium text-sm sm:text-base break-words">
+              {record.commonName}
+            </p>
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm text-gray-600">Scientific Name</p>
+            <p className="font-medium text-sm sm:text-base break-words">
+              {record.scientificName}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
+        <h3 className="font-semibold text-blue-800 mb-3 flex items-center text-sm sm:text-base">
+          <FaBoxes className="mr-2 flex-shrink-0" /> HS Codes
+        </h3>
+        <div className="space-y-2">
+          {record.hsCodes.map((code, idx) => (
+            <div
+              key={idx}
+              className="bg-white p-2 sm:p-3 rounded border border-blue-200"
+            >
+              <p className="text-xs sm:text-sm font-medium break-words">
+                {code.code} - {code.name}
+              </p>
+              <p className="text-xs text-gray-600 break-words">
+                Commodity: {code.commodity}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="bg-amber-50 p-3 sm:p-4 rounded-lg">
+        <h3 className="font-semibold text-amber-800 mb-3 flex items-center text-sm sm:text-base">
+          <FaShippingFast className="mr-2 flex-shrink-0" /> Container
+          Information
+        </h3>
+        <div className="space-y-2">
+          {record.containers?.map((container, idx) => (
+            <div
+              key={idx}
+              className="bg-white p-2 sm:p-3 rounded border border-amber-200"
+            >
+              <p className="font-medium text-sm">
+                Container: {container.containerNumber}
+              </p>
+              <p className="text-xs text-gray-600">
+                Net Mass: {container.kilograms} kg
+              </p>
+            </div>
+          ))}
+          <div className="mt-2 pt-2 border-t border-amber-200">
+            <p className="font-medium text-sm">
+              Total Net Mass: {record.netMassKg.toLocaleString()} kg
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-purple-50 p-3 sm:p-4 rounded-lg">
+        <h3 className="font-semibold text-purple-800 mb-3 flex items-center text-sm sm:text-base">
+          <FaUser className="mr-2 flex-shrink-0" /> Customer Information
+        </h3>
+        <div className="space-y-2">
+          <p className="text-sm sm:text-base break-words">
+            <span className="text-xs sm:text-sm text-gray-600">Name:</span>{" "}
+            {record.customerName}
+          </p>
+          <p className="text-sm sm:text-base break-words">
+            <span className="text-xs sm:text-sm text-gray-600">Address:</span>{" "}
+            {record.customerAddress}
+          </p>
+          <p className="text-sm sm:text-base break-words">
+            <span className="text-xs sm:text-sm text-gray-600">Email:</span>{" "}
+            {record.customerEmail}
+          </p>
+        </div>
+      </div>
+
+      <div className="bg-amber-50 p-3 sm:p-4 rounded-lg">
+        <h3 className="font-semibold text-amber-800 mb-3 flex items-center text-sm sm:text-base">
+          <FaMoneyBillWave className="mr-2 flex-shrink-0" /> Payment Information
+        </h3>
+        <div className="space-y-2">
+          <p className="text-sm sm:text-base">
+            <span className="text-xs sm:text-sm text-gray-600">
+              Amount Paid:
+            </span>{" "}
+            ${record.amount}
+          </p>
+          <div className="flex flex-col xs:flex-row xs:items-center gap-2">
+            <span className="text-xs sm:text-sm text-gray-600">
+              Payment Status:
+            </span>
+            <span
+              className={`inline-flex px-2 py-1 rounded-full text-xs font-semibold w-fit ${record.paymentStatus ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
+            >
+              {record.paymentStatus ? "Paid" : "Unpaid"}
+            </span>
+          </div>
+          <div className="flex flex-col xs:flex-row xs:items-center gap-2">
+            <span className="text-xs sm:text-sm text-gray-600">
+              Due Diligence Status:
+            </span>
+            <span
+              className={`inline-flex px-2 py-1 rounded-full text-xs font-semibold w-fit ${
+                record.status === "approved"
+                  ? "bg-green-100 text-green-800"
+                  : record.status === "awaiting-mitigation"
+                    ? "bg-yellow-100 text-yellow-800"
+                    : record.status === "in-progress"
+                      ? "bg-blue-100 text-blue-800"
+                      : "bg-gray-100 text-gray-800"
+              }`}
+            >
+              {record.status === "approved"
+                ? "Approved"
+                : record.status === "awaiting-mitigation"
+                  ? "Awaiting Mitigation"
+                  : record.status === "in-progress"
+                    ? "Waiting for Assessment"
+                    : "Not Started"}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {record.risks?.officerName && (
+        <div className="bg-indigo-50 p-3 sm:p-4 rounded-lg">
+          <h3 className="font-semibold text-indigo-800 mb-3 flex items-center text-sm sm:text-base">
+            <FaIdCard className="mr-2 flex-shrink-0" /> Responsible Officer
+          </h3>
+          <div className="space-y-2">
+            <p className="text-sm sm:text-base break-words">
+              <span className="text-xs sm:text-sm text-gray-600">Name:</span>{" "}
+              {record.risks.officerName}
+            </p>
+            {record.risks.officerIdCard && (
+              <div>
+                <p className="text-xs sm:text-sm text-gray-600 mb-1">
+                  ID Card:
+                </p>
+                {renderDocumentBox(record.risks.officerIdCard, "officer-id")}
+              </div>
+            )}
+            {record.risks.appointmentLetter && (
+              <div>
+                <p className="text-xs sm:text-sm text-gray-600 mb-1">
+                  Appointment Letter:
+                </p>
+                {renderDocumentBox(
+                  record.risks.appointmentLetter,
+                  "appointment",
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  const renderExporterInfo = (record, shipment) => {
+    const exporter = demoData.users[shipment.exporterId];
+    if (!exporter)
+      return (
+        <div className="text-center py-8 bg-gray-50 rounded-lg">
+          <p>No exporter information available</p>
+        </div>
+      );
+    return (
+      <div className="space-y-4 sm:space-y-6">
+        <div className="bg-green-50 p-3 sm:p-4 rounded-lg">
+          <h3 className="font-semibold text-green-800 mb-3 flex items-center text-sm sm:text-base">
+            <FaInfoCircle className="mr-2 flex-shrink-0" /> Exporter Basic
+            Information
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-gray-600">Company Name</p>
+              <p className="font-medium">{exporter.basicInfo.companyName}</p>
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-gray-600">Country</p>
+              <p className="font-medium">{exporter.basicInfo.country}</p>
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-gray-600">Email</p>
+              <p className="font-medium">{exporter.basicInfo.email}</p>
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-gray-600">
+                Registration No.
+              </p>
+              <p className="font-medium">{exporter.basicInfo.rcNumber}</p>
+            </div>
+          </div>
         </div>
 
-        {shipments.length === 0 ? (
-          <div className="text-center py-12 sm:py-16 bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-gray-100 px-4">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <FaBox className="text-2xl sm:text-3xl lg:text-4xl text-emerald-600" />
-            </div>
-            <p className="text-gray-600 text-base sm:text-lg">No shipments connected to you yet.</p>
-            <p className="text-gray-400 text-sm sm:text-base mt-2">New shipments will appear here when assigned.</p>
+        <div className="bg-amber-50 p-3 sm:p-4 rounded-lg">
+          <h3 className="font-semibold text-amber-800 mb-3 flex items-center text-sm sm:text-base">
+            <FaShippingFast className="mr-2 flex-shrink-0" /> Shipment Details
+          </h3>
+          <div className="space-y-2">
+            <p>
+              <span className="font-medium">Batch Number:</span>{" "}
+              {shipment.batchNumber}
+            </p>
+            <p>
+              <span className="font-medium">Product Description:</span>{" "}
+              {shipment.productDescription}
+            </p>
+            {shipment.containers && shipment.containers.length > 0 && (
+              <>
+                <p>
+                  <span className="font-medium">Containers:</span>{" "}
+                  {shipment.containers.length}
+                </p>
+                {shipment.containers.map((c, idx) => (
+                  <div
+                    key={idx}
+                    className="ml-4 p-2 bg-white rounded border border-amber-200"
+                  >
+                    <p>
+                      <span className="font-medium">Container:</span>{" "}
+                      {c.containerNumber}
+                    </p>
+                    <p>
+                      <span className="font-medium">Kilograms:</span>{" "}
+                      {c.kilograms}
+                    </p>
+                    {c.packingList && (
+                      <div>
+                        <span className="font-medium">Packing List:</span>{" "}
+                        {renderDocumentBox(c.packingList, `packing-${idx}`)}
+                      </div>
+                    )}
+                  </div>
+                ))}
+                <p>
+                  <span className="font-medium">Total Kilograms:</span>{" "}
+                  {shipment.totalKilograms} kg
+                </p>
+              </>
+            )}
           </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {shipments.map((shipment, index) => (
-              <div key={shipment.id}>
-                <ShipmentCard
-                  shipment={shipment}
-                  status={getShipmentStatus(shipment)}
-                  onClick={() => handleShipmentClick(shipment)}
-                />
+        </div>
+
+        {shipment.forests && shipment.forests.length > 0 && (
+          <div className="bg-green-50 p-3 sm:p-4 rounded-lg">
+            <h3 className="font-semibold text-green-800 mb-3 flex items-center text-sm sm:text-base">
+              <FaTree className="mr-2 flex-shrink-0" /> Forest Information
+            </h3>
+            {shipment.forests.map((forest, idx) => (
+              <div key={idx} className="mb-4 last:mb-0">
+                <p>
+                  <span className="font-medium">Forest ID:</span>{" "}
+                  {forest.forestId}
+                </p>
+                <p>
+                  <span className="font-medium">Selected Products:</span>{" "}
+                  {forest.selectedProducts
+                    ?.map((p) => `${p.name} (${p.code})`)
+                    .join(", ") || "N/A"}
+                </p>
+                <p>
+                  <span className="font-medium">Quantity:</span> {forest.quantity}
+                </p>
+
+                {forest.harvestAreas && forest.harvestAreas.length > 0 && (
+                  <div className="mt-3">
+                    <p className="font-medium">Harvest Areas:</p>
+                    {forest.harvestAreas.map((area, areaIdx) => (
+                      <div
+                        key={areaIdx}
+                        className="ml-4 mt-2 p-2 bg-white rounded border border-green-200"
+                      >
+                        <p>
+                          <span className="font-medium">Name:</span> {area.name}
+                        </p>
+                        <p>
+                          <span className="font-medium">Hectares:</span>{" "}
+                          {area.hectares}
+                        </p>
+                        {area.coordinates && area.coordinates.length > 0 && (
+                          <div className="mt-1">
+                            <p className="font-medium text-xs">Coordinates:</p>
+                            <div className="text-xs font-mono text-gray-600 max-h-32 overflow-y-auto">
+                              {area.coordinates.map((coord, coordIdx) => (
+                                <div key={coordIdx}>
+                                  {coordIdx + 1}.{" "}
+                                  {Array.isArray(coord)
+                                    ? `${coord[0]}, ${coord[1]}`
+                                    : `${coord.lat}, ${coord.lng}`}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>
         )}
       </div>
+    );
+  };
 
-      {modalOpen && (
+  const renderRiskAssessment = (risks) => {
+    if (!risks?.riskAssessment) return null;
+    return (
+      <div className="space-y-4 sm:space-y-6">
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4"
-          onClick={() => setModalOpen(false)}
+          className={`p-3 sm:p-4 rounded-lg ${
+            risks.riskAssessment.riskLevel === "high risk"
+              ? "bg-red-50"
+              : risks.riskAssessment.riskLevel === "low risk"
+                ? "bg-green-50"
+                : "bg-yellow-50"
+          }`}
         >
-          <div
-            className="bg-white rounded-2xl sm:rounded-3xl max-w-5xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
+          <h3 className="font-semibold mb-3 flex items-center text-sm sm:text-base">
+            <FaExclamationTriangle className="mr-2 flex-shrink-0" /> Risk Level
+          </h3>
+          <p
+            className={`text-base sm:text-lg font-bold break-words ${
+              risks.riskAssessment.riskLevel === "high risk"
+                ? "text-red-800"
+                : risks.riskAssessment.riskLevel === "low risk"
+                  ? "text-green-800"
+                  : "text-yellow-800"
+            }`}
           >
-            <div className="relative">
+            {risks.riskAssessment.riskLevel.charAt(0).toUpperCase() +
+              risks.riskAssessment.riskLevel.slice(1)}
+          </p>
+        </div>
+        <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
+          <h3 className="font-semibold text-blue-800 mb-3 flex items-center text-sm sm:text-base">
+            <FaFileAlt className="mr-2 flex-shrink-0" /> Supporting Documents
+          </h3>
+          <div className="space-y-2">
+            {risks.riskAssessment.assessmentDocs?.map((doc, idx) =>
+              renderDocumentBox(doc, idx),
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderRiskMitigation = (risks) => {
+    if (!risks?.riskMitigation) return null;
+    const mitigation = risks.riskMitigation;
+    return (
+      <div className="space-y-4 sm:space-y-6">
+        {mitigation.highRiskSection && (
+          <div className="bg-red-50 p-3 sm:p-4 rounded-lg">
+            <h3 className="font-semibold text-red-800 mb-3 text-sm sm:text-base">
+              High Risk Section
+            </h3>
+            {mitigation.highRiskSection.additionalInfo?.length > 0 && (
+              <div>
+                <p className="text-xs sm:text-sm font-medium mb-2">
+                  Additional Information
+                </p>
+                <div className="space-y-2">
+                  {mitigation.highRiskSection.additionalInfo.map((d, i) =>
+                    renderDocumentBox(d, i),
+                  )}
+                </div>
+              </div>
+            )}
+            {mitigation.highRiskSection.independentSurveys?.length > 0 && (
+              <div>
+                <p className="text-xs sm:text-sm font-medium mb-2">
+                  Independent Surveys/Audits
+                </p>
+                <div className="space-y-2">
+                  {mitigation.highRiskSection.independentSurveys.map((d, i) =>
+                    renderDocumentBox(d, i),
+                  )}
+                </div>
+              </div>
+            )}
+            {mitigation.highRiskSection.otherMeasures?.length > 0 && (
+              <div>
+                <p className="text-xs sm:text-sm font-medium mb-2">
+                  Other Measures
+                </p>
+                <div className="space-y-2">
+                  {mitigation.highRiskSection.otherMeasures.map((d, i) =>
+                    renderDocumentBox(d, i),
+                  )}
+                </div>
+              </div>
+            )}
+            {mitigation.highRiskSection.capacityBuilding?.length > 0 && (
+              <div>
+                <p className="text-xs sm:text-sm font-medium mb-2">
+                  Capacity Building & Investments
+                </p>
+                <div className="space-y-2">
+                  {mitigation.highRiskSection.capacityBuilding.map((d, i) =>
+                    renderDocumentBox(d, i),
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+        {mitigation.policiesControls && (
+          <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
+            <h3 className="font-semibold text-blue-800 mb-3 text-sm sm:text-base">
+              Policies, Controls & Procedures
+            </h3>
+            {mitigation.policiesControls.modelPractices?.length > 0 && (
+              <div>
+                <p className="text-xs sm:text-sm font-medium mb-2">
+                  Model Risk Management Practices
+                </p>
+                <div className="space-y-2">
+                  {mitigation.policiesControls.modelPractices.map((d, i) =>
+                    renderDocumentBox(d, i),
+                  )}
+                </div>
+              </div>
+            )}
+            {mitigation.policiesControls.independentAudit?.length > 0 && (
+              <div>
+                <p className="text-xs sm:text-sm font-medium mb-2">
+                  Independent Audit Function
+                </p>
+                <div className="space-y-2">
+                  {mitigation.policiesControls.independentAudit.map((d, i) =>
+                    renderDocumentBox(d, i),
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+        {mitigation.decisionsReview?.length > 0 && (
+          <div className="bg-green-50 p-3 sm:p-4 rounded-lg">
+            <h3 className="font-semibold text-green-800 mb-2">
+              Decisions on Risk Mitigation Procedures
+            </h3>
+            <p className="text-xs text-gray-600 mb-3">
+              Reviewed at least on an annual basis
+            </p>
+            <div className="space-y-2">
+              {mitigation.decisionsReview.map((d, i) =>
+                renderDocumentBox(d, i),
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // ========== DUE DILIGENCE STATEMENT RENDERER (with coordinates) ==========
+  const renderDiligenceStatement = (record, shipment, diligenceData) => {
+    const importer = targetImporter;
+    const importerName = importer?.basicInfo?.companyName || "Importer Name";
+    const importerAddress =
+      importer?.facilities?.find((f) => f.type === "Corporate facility")
+        ?.address || "Importer Address";
+    const eoriNumber = diligenceData?.eoriNumber || "Not provided";
+    const signeeName = diligenceData?.name || "";
+    const signeeFunction = diligenceData?.function || "";
+    const signatureUrl = diligenceData?.signature || "";
+
+    const hsCodesList =
+      record.hsCodes?.map((h) => `${h.code} (${h.name})`).join(", ") ||
+      "Not specified";
+    const products =
+      record.scientificName && record.commonName
+        ? `${record.commonName} (${record.scientificName})`
+        : "Various commodities";
+    const netMass = record.netMassKg?.toLocaleString() || "N/A";
+    const productionLocation = record.supplierAddress || "Unknown";
+    const currentDate = new Date().toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    // Build geolocation string from harvest areas
+    let geolocation = "Not available";
+    if (shipment?.forests && shipment.forests.length > 0) {
+      const harvestAreas = shipment.forests.flatMap((f) => f.harvestAreas || []);
+      if (harvestAreas.length > 0) {
+        const areasList = harvestAreas
+          .map((area) => {
+            const coordsList = (area.coordinates || [])
+              .map((coord) =>
+                Array.isArray(coord)
+                  ? `${coord[0]},${coord[1]}`
+                  : `${coord.lat},${coord.lng}`
+              )
+              .join("; ");
+            return `${area.name} (${area.hectares} ha) - Coordinates: ${coordsList}`;
+          })
+          .join(" | ");
+        geolocation = areasList;
+      }
+    }
+
+    return (
+      <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold text-green-800">
+            DUE DILIGENCE STATEMENT
+          </h2>
+          <div className="h-1 w-32 bg-green-600 mx-auto mt-2"></div>
+        </div>
+
+        <div className="space-y-6 text-sm">
+          <p>
+            <strong>1.</strong> <strong>{importerName}</strong>, of{" "}
+            <strong>{importerAddress}</strong> and, in the event of our relevant
+            commodities and relevant products entering or leaving the EU market,
+            the Economic Operators Registration and Identification (EORI) number
+            of <strong>{importerName}</strong> is <strong>{eoriNumber}</strong>{" "}
+            in accordance with Article 9 of Regulation (EU) No 952/2013.
+          </p>
+
+          <p>
+            <strong>2.</strong> Harmonised System code, free-text description,
+            including the trade name as well as, where applicable, the full
+            scientific name, and quantity of the relevant product that the
+            operator intends to place on the market or export:
+            <br />
+            <strong>HS Codes:</strong> {hsCodesList}
+            <br />
+            <strong>Trade Name/Description:</strong> {record.description}
+            <br />
+            <strong>Scientific Name:</strong> {record.scientificName}
+            <br />
+            <strong>Common Name:</strong> {record.commonName}
+            <br />
+            <strong>Net Mass:</strong> {netMass} kg
+          </p>
+
+          <p>
+            <strong>3.</strong> Country of production:{" "}
+            <strong>{productionLocation}</strong>
+            <br />
+            Geolocation of all plots of land where the relevant commodities were
+            produced: <strong>{geolocation}</strong>
+          </p>
+
+          <p>
+            <strong>4.</strong> Reference number of this due diligence
+            statement (if applicable): <strong>{record.batchNumber}</strong>
+          </p>
+
+          <p>
+            <strong>5.</strong> By submitting this due diligence statement the
+            operator confirms that due diligence in accordance with Regulation
+            (EU) 2023/1115 was carried out and that no or only a negligible risk
+            was found that the relevant products do not comply with Article 3,
+            point (a) or (b), of that Regulation.
+          </p>
+
+          <div className="mt-8 pt-4">
+            <p>
+              <strong>6. Signature</strong>
+            </p>
+            <p className="mt-2">
+              Signed for and on behalf of: <strong>{importerName}</strong>
+              <br />
+              Date: <strong>{currentDate}</strong>
+              <br />
+              Name and function: <strong>{signeeName}</strong>{" "}
+              {signeeFunction && `- ${signeeFunction}`}
+              <br />
+              Signature:{" "}
+              {signatureUrl ? (
+                <img
+                  src={signatureUrl}
+                  alt="Signature"
+                  className="h-12 mt-1 border rounded p-1"
+                />
+              ) : (
+                <span className="text-gray-500">Not provided</span>
+              )}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Handler to save diligence statement
+  const handleSaveDiligenceStatement = () => {
+    if (!viewingRecord) return;
+    if (
+      !diligenceForm.name.trim() ||
+      !diligenceForm.function.trim() ||
+      !diligenceForm.eoriNumber.trim()
+    ) {
+      toast.error("Please fill in all fields (Name, Function, EORI Number)");
+      return;
+    }
+    if (!diligenceForm.signature) {
+      setDiligenceForm((prev) => ({
+        ...prev,
+        signature: "https://cloud-storage.com/demo/signature.png",
+        url: "https://cloud-storage.com/demo/signature.png",
+      }));
+    }
+
+    const statementData = {
+      name: diligenceForm.name,
+      function: diligenceForm.function,
+      eoriNumber: diligenceForm.eoriNumber,
+      signature:
+        diligenceForm.signature ||
+        "https://cloud-storage.com/demo/signature.png",
+      url:
+        diligenceForm.url || "https://cloud-storage.com/demo/signature.png",
+    };
+
+    const updatedImporter = { ...targetImporter };
+    const recordIndex = updatedImporter.currentSupplierRecords.findIndex(
+      (r) => r.batchNumber === viewingRecord.batchNumber,
+    );
+    if (recordIndex >= 0) {
+      updatedImporter.currentSupplierRecords[recordIndex].diligenceStatement =
+        statementData;
+      updateUser(targetImporter.id, updatedImporter);
+
+      const updatedRecords = { ...currentRecords };
+      updatedRecords[viewingRecord.batchNumber] = {
+        ...viewingRecord,
+        diligenceStatement: statementData,
+      };
+      setCurrentRecords(updatedRecords);
+      setViewingRecord({ ...viewingRecord, diligenceStatement: statementData });
+      toast.success("Due Diligence Statement saved successfully");
+    }
+  };
+
+  const VerifierRiskAssessmentModal = () => (
+    <div className="space-y-4 sm:space-y-6">
+      <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
+        <p className="text-xs sm:text-sm text-blue-800 flex items-start">
+          <FaInfoCircle className="inline mr-2 flex-shrink-0 mt-0.5" />
+          <span>
+            Please assess the risk level of this trade and provide supporting
+            documentation. Officer details are required.
+          </span>
+        </p>
+      </div>
+      <div>
+        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2 sm:mb-3">
+          Risk Level *
+        </label>
+        <div className="space-y-2">
+          {["low risk", "negligible risk", "high risk"].map((level) => (
+            <label
+              key={level}
+              className="flex items-start space-x-3 p-2 sm:p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+            >
+              <input
+                type="radio"
+                name="riskLevel"
+                value={level}
+                checked={riskLevel === level}
+                onChange={(e) => setRiskLevel(e.target.value)}
+                className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0"
+              />
+              <span className="text-xs sm:text-sm font-medium text-gray-700">
+                {level
+                  .split(" ")
+                  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                  .join(" ")}
+              </span>
+            </label>
+          ))}
+        </div>
+      </div>
+      <div>
+        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2 sm:mb-3">
+          Responsible Officer Information *
+        </label>
+        <div className="space-y-3 bg-gray-50 p-3 sm:p-4 rounded-lg">
+          <input
+            type="text"
+            placeholder="Full Name of Responsible Officer"
+            value={officerName}
+            onChange={(e) => setOfficerName(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+          />
+          <div className="flex flex-col sm:flex-row gap-2">
+            <button
+              onClick={() => {
+                setOfficerIdCard({
+                  name: "Officer ID Card",
+                  url: "dummy-id-card.pdf",
+                });
+                toast.info("Officer ID card added (dummy)");
+              }}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm flex items-center justify-center"
+            >
+              <FaUpload className="mr-2" size={12} /> Upload ID Card
+            </button>
+            <button
+              onClick={() => {
+                setAppointmentLetter({
+                  name: "Appointment Letter",
+                  url: "dummy-appointment.pdf",
+                });
+                toast.info("Appointment letter added (dummy)");
+              }}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm flex items-center justify-center"
+            >
+              <FaUpload className="mr-2" size={12} /> Upload Appointment Letter
+            </button>
+          </div>
+          {officerIdCard && appointmentLetter && (
+            <div className="mt-2 p-2 bg-green-50 rounded-lg">
+              <p className="text-sm text-green-700">
+                ✓ Officer information saved successfully
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+      <div>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-3">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700">
+            Supporting Documents *
+          </label>
+          <button
+            onClick={() => setShowAssessmentDocModal(true)}
+            className="w-full sm:w-auto px-3 py-1.5 bg-blue-600 text-white text-xs sm:text-sm rounded-lg hover:bg-blue-700 flex items-center justify-center"
+          >
+            <FaUpload className="mr-2" size={12} /> Add Document
+          </button>
+        </div>
+        <div className="space-y-2">
+          {assessmentDocs.map((doc, idx) => (
+            <div
+              key={idx}
+              className="bg-gray-50 p-2 sm:p-3 rounded-lg border border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2"
+            >
+              <div className="flex items-center space-x-3 min-w-0">
+                {getFileIcon(doc.url)}
+                <span className="text-xs sm:text-sm font-medium break-words">
+                  {doc.name}
+                </span>
+              </div>
               <button
-                onClick={() => setModalOpen(false)}
-                className="absolute top-2 right-2 sm:top-4 sm:right-4 w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600 hover:text-gray-800 transition-all z-10"
+                onClick={() =>
+                  setAssessmentDocs(assessmentDocs.filter((_, i) => i !== idx))
+                }
+                className="text-red-600 hover:text-red-800 self-end sm:self-center"
               >
-                <FaTimes className="text-sm sm:text-base" />
+                <FaTimes />
               </button>
-              {renderModalContent()}
+            </div>
+          ))}
+          {assessmentDocs.length === 0 && (
+            <p className="text-xs sm:text-sm text-gray-500 text-center py-4">
+              No documents added yet
+            </p>
+          )}
+        </div>
+      </div>
+      <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:space-x-3">
+        <button
+          onClick={() => setShowModal(false)}
+          className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={handleSaveRiskAssessmentForVerifier}
+          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
+        >
+          Save Risk Assessment
+        </button>
+      </div>
+    </div>
+  );
+
+  const ImporterRiskMitigationModal = () => (
+    <div className="space-y-6 sm:space-y-8">
+      <div className="bg-red-50 p-3 sm:p-4 rounded-lg">
+        <p className="text-xs sm:text-sm text-red-800 flex items-start">
+          <FaExclamationTriangle className="inline mr-2 flex-shrink-0 mt-0.5" />
+          <span>
+            High risk trade detected. Please complete all required risk
+            mitigation steps.
+          </span>
+        </p>
+      </div>
+      <div className="bg-indigo-50 p-3 sm:p-4 rounded-lg">
+        <h3 className="text-base sm:text-lg font-semibold text-indigo-800 mb-3">
+          Responsible Officer
+        </h3>
+        <p className="text-sm mb-2">
+          <span className="font-medium">Name:</span> {officerName}
+        </p>
+        {officerIdCard && (
+          <div className="mb-2">
+            <p className="text-sm font-medium mb-1">ID Card:</p>
+            {renderDocumentBox(officerIdCard, "officer-id")}
+          </div>
+        )}
+        {appointmentLetter && (
+          <div>
+            <p className="text-sm font-medium mb-1">Appointment Letter:</p>
+            {renderDocumentBox(appointmentLetter, "appointment")}
+          </div>
+        )}
+      </div>
+      <div className="border border-red-200 rounded-lg p-3 sm:p-4">
+        <h3 className="text-base sm:text-lg font-semibold text-red-800 mb-3 sm:mb-4">
+          High Risk Section
+        </h3>
+        <div className="space-y-4">
+          {[
+            "additionalInfo",
+            "independentSurveys",
+            "otherMeasures",
+            "capacityBuilding",
+          ].map((sub) => (
+            <div key={sub}>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+                <label className="text-xs sm:text-sm font-medium text-gray-700">
+                  {sub === "additionalInfo" &&
+                    "(a) Requiring additional information, data or documents"}
+                  {sub === "independentSurveys" &&
+                    "(b) Carrying out independent surveys or audits"}
+                  {sub === "otherMeasures" &&
+                    "(c) Taking other measures pertaining to information requirements"}
+                  {sub === "capacityBuilding" &&
+                    "(d) Capacity building and investments"}
+                </label>
+                <button
+                  onClick={() => {
+                    setDocModalData({
+                      section: "highRiskSection",
+                      subsection: sub,
+                      description: "",
+                    });
+                    setShowDocModal(true);
+                  }}
+                  className="w-full sm:w-auto px-3 py-1.5 bg-blue-600 text-white text-xs sm:text-sm rounded-lg hover:bg-blue-700"
+                >
+                  Add Document
+                </button>
+              </div>
+              <div className="space-y-2">
+                {riskMitigation.highRiskSection[sub]?.map((doc, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-gray-50 p-2 sm:p-3 rounded-lg border border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2"
+                  >
+                    <div className="flex items-center space-x-3 min-w-0">
+                      {getFileIcon(doc.url)}
+                      <span className="text-xs sm:text-sm font-medium break-words">
+                        {doc.name}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() =>
+                        removeMitigationDoc("highRiskSection", sub, idx)
+                      }
+                      className="text-red-600 hover:text-red-800 self-end sm:self-center"
+                    >
+                      <FaTimes />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="border border-blue-200 rounded-lg p-3 sm:p-4">
+        <h3 className="text-base sm:text-lg font-semibold text-blue-800 mb-3 sm:mb-4">
+          Policies, Controls and Procedures
+        </h3>
+        <div className="space-y-4 sm:space-y-6">
+          <div>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+              <label className="text-xs sm:text-sm font-medium text-gray-700">
+                (a) Model risk management practices, reporting, record-keeping
+              </label>
+              <button
+                onClick={() => {
+                  setDocModalData({
+                    section: "policiesControls",
+                    subsection: "modelPractices",
+                    description: "",
+                  });
+                  setShowDocModal(true);
+                }}
+                className="w-full sm:w-auto px-3 py-1.5 bg-blue-600 text-white text-xs sm:text-sm rounded-lg hover:bg-blue-700"
+              >
+                Add Document
+              </button>
+            </div>
+            <div className="space-y-2">
+              {riskMitigation.policiesControls.modelPractices.map(
+                (doc, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-gray-50 p-2 sm:p-3 rounded-lg border border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2"
+                  >
+                    <div className="flex items-center space-x-3 min-w-0">
+                      {getFileIcon(doc.url)}
+                      <span className="text-xs sm:text-sm font-medium break-words">
+                        {doc.name}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() =>
+                        removeMitigationDoc(
+                          "policiesControls",
+                          "modelPractices",
+                          idx,
+                        )
+                      }
+                      className="text-red-600 hover:text-red-800 self-end sm:self-center"
+                    >
+                      <FaTimes />
+                    </button>
+                  </div>
+                ),
+              )}
+            </div>
+          </div>
+          <div>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+              <label className="text-xs sm:text-sm font-medium text-gray-700">
+                (b) Independent audit function
+              </label>
+              <button
+                onClick={() => {
+                  setDocModalData({
+                    section: "policiesControls",
+                    subsection: "independentAudit",
+                    description: "",
+                  });
+                  setShowDocModal(true);
+                }}
+                className="w-full sm:w-auto px-3 py-1.5 bg-blue-600 text-white text-xs sm:text-sm rounded-lg hover:bg-blue-700"
+              >
+                Add Document
+              </button>
+            </div>
+            <div className="space-y-2">
+              {riskMitigation.policiesControls.independentAudit?.map(
+                (doc, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-gray-50 p-2 sm:p-3 rounded-lg border border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2"
+                  >
+                    <div className="flex items-center space-x-3 min-w-0">
+                      {getFileIcon(doc.url)}
+                      <span className="text-xs sm:text-sm font-medium break-words">
+                        {doc.name}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() =>
+                        removeMitigationDoc(
+                          "policiesControls",
+                          "independentAudit",
+                          idx,
+                        )
+                      }
+                      className="text-red-600 hover:text-red-800 self-end sm:self-center"
+                    >
+                      <FaTimes />
+                    </button>
+                  </div>
+                ),
+              )}
             </div>
           </div>
         </div>
-      )}
+      </div>
+      <div className="border border-green-200 rounded-lg p-3 sm:p-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-3 sm:mb-4">
+          <h3 className="text-base sm:text-lg font-semibold text-green-800">
+            Decisions on Risk Mitigation Procedures
+          </h3>
+          <button
+            onClick={() => {
+              setDocModalData({
+                section: "decisionsReview",
+                subsection: "",
+                description: "",
+              });
+              setShowDocModal(true);
+            }}
+            className="w-full sm:w-auto px-3 py-1.5 bg-blue-600 text-white text-xs sm:text-sm rounded-lg hover:bg-blue-700"
+          >
+            Add Document
+          </button>
+        </div>
+        <p className="text-xs sm:text-sm text-gray-600 mb-3">
+          Reviewed at least on an annual basis
+        </p>
+        <div className="space-y-2">
+          {riskMitigation.decisionsReview?.map((doc, idx) => (
+            <div
+              key={idx}
+              className="bg-gray-50 p-2 sm:p-3 rounded-lg border border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2"
+            >
+              <div className="flex items-center space-x-3 min-w-0">
+                {getFileIcon(doc.url)}
+                <span className="text-xs sm:text-sm font-medium break-words">
+                  {doc.name}
+                </span>
+              </div>
+              <button
+                onClick={() => removeMitigationDoc("decisionsReview", null, idx)}
+                className="text-red-600 hover:text-red-800 self-end sm:self-center"
+              >
+                <FaTimes />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:space-x-3">
+        <button
+          onClick={() => setShowModal(false)}
+          className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={handleSaveRiskMitigation}
+          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center justify-center text-sm"
+        >
+          <FaSave className="mr-2 flex-shrink-0" /> Complete Mitigation
+        </button>
+      </div>
     </div>
   );
+
+  // Verifier notes handlers
+  const handleAddNote = (article) => {
+    const note = newNoteByArticle[article];
+    if (note && note.trim()) {
+      setVerificationNotesByArticle((prev) => ({
+        ...prev,
+        [article]: [...(prev[article] || []), note.trim()],
+      }));
+      setNewNoteByArticle((prev) => ({ ...prev, [article]: "" }));
+    }
+  };
+  const handleRemoveNote = (article, index) => {
+    setVerificationNotesByArticle((prev) => ({
+      ...prev,
+      [article]: prev[article].filter((_, i) => i !== index),
+    }));
+  };
+  const handleSaveVerification = () => {
+    if (!targetImporter || !user) return;
+    const verifierId = user.id;
+    const baseVerifier = demoData.users[verifierId];
+    if (!baseVerifier) return;
+    let reports = [...(baseVerifier.verificationReports || [])];
+    let reportIndex = reports.findIndex(
+      (r) => r.companyId === targetImporter.id,
+    );
+    const articles = [];
+    for (const [articleKey, notes] of Object.entries(
+      verificationNotesByArticle,
+    )) {
+      if (notes && notes.length > 0) {
+        const storeKey = articleKey.replace("article", "article-");
+        articles.push({ article: storeKey, notes });
+      }
+    }
+    const artFindings = {
+      tab: "current-due-diligence",
+      status: verificationStatus || "non-compliant",
+      articles,
+    };
+    if (reportIndex >= 0) {
+      const report = reports[reportIndex];
+      let findings = report.findings || [];
+      const existingIdx = findings.findIndex(
+        (f) => f.tab === "current-due-diligence",
+      );
+      if (existingIdx >= 0) findings[existingIdx] = artFindings;
+      else findings.push(artFindings);
+      reports[reportIndex] = { ...report, findings };
+    } else {
+      const newReport = {
+        id: `ver-report-${Date.now()}`,
+        companyId: targetImporter.id,
+        companyType: targetImporter.role,
+        date: new Date().toISOString().split("T")[0],
+        type: "compliance audit",
+        status: "pending",
+        findings: [artFindings],
+      };
+      reports.push(newReport);
+    }
+    const updatedVerifier = {
+      ...baseVerifier,
+      verificationReports: reports,
+      loggedInAs: user.loggedInAs,
+    };
+    updateUser(verifierId, updatedVerifier);
+    setInitialVerificationStatus(verificationStatus);
+    setInitialVerificationNotesByArticle(
+      JSON.parse(JSON.stringify(verificationNotesByArticle)),
+    );
+    toast.success("Verification saved successfully!");
+  };
+
+  const articles = [
+    {
+      id: "article7",
+      title:
+        "Article 7 – Placing on the market by operators established in third countries",
+    },
+    { id: "article8", title: "Article 8 – Due Diligence" },
+    { id: "article9", title: "Article 9 – Information Requirements" },
+    { id: "article10", title: "Article 10 – Risk Assessment" },
+    { id: "article11", title: "Article 11 – Risk Mitigation" },
+  ];
+
+  const handleHsCodeSelect = (commodity, product) => {
+    const existing = selectedHsCodes.find(
+      (h) => h.commodity === commodity && h.code === product.code,
+    );
+    if (existing) {
+      setSelectedHsCodes(
+        selectedHsCodes.filter(
+          (h) => !(h.commodity === commodity && h.code === product.code),
+        ),
+      );
+    } else {
+      setSelectedHsCodes([
+        ...selectedHsCodes,
+        { commodity, code: product.code, name: product.name },
+      ]);
+    }
+  };
+  const handleAddHsCodes = () => {
+    setFormData({ ...formData, hsCodes: selectedHsCodes });
+    setShowHsCodeSelector(false);
+  };
+
+  const handleAddOfficerInfo = () => {
+    if (!officerName.trim()) {
+      toast.error("Please enter officer name");
+      return;
+    }
+    setOfficerIdCard({ name: "Officer ID Card", url: "dummy-id-card.pdf" });
+    setAppointmentLetter({
+      name: "Appointment Letter",
+      url: "dummy-appointment.pdf",
+    });
+    toast.success("Officer information saved");
+  };
+  const handleRemoveAssessmentDoc = (index) => {
+    setAssessmentDocs(assessmentDocs.filter((_, i) => i !== index));
+  };
+
+  if (!targetImporter) {
+    return (
+      <div className="p-6 text-center">
+        <p className="text-gray-600">Loading company data...</p>
+      </div>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="p-4 sm:p-6"
+    >
+      <div className="flex justify-between items-center mb-4 sm:mb-6">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-800">
+          Current Due Diligence (Articles 7,8,9,10,11)
+        </h1>
+        {!isVerifier && verificationHistory.length > 0 && (
+          <button
+            onClick={() => setShowNotesModal(true)}
+            className="flex items-center gap-2 bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-2 rounded-lg transition-colors"
+          >
+            <FaComment className="w-4 h-4" />
+            <span className="text-sm font-medium">
+              {verificationHistory.length} Verifier
+              {verificationHistory.length > 1 ? "s" : ""} left notes
+            </span>
+          </button>
+        )}
+      </div>
+
+      {isVerifier && (
+        <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-green-100 mb-6">
+          <div className="flex items-center gap-2 mb-4">
+            <FaClipboardCheck className="w-5 h-5 text-green-600" />
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
+              Verification – Current Due Diligence (Articles 7‑11)
+            </h2>
+            <span
+              className={`px-2 py-1 text-xs rounded-full ${
+                verificationStatus === "compliant"
+                  ? "bg-green-100 text-green-800"
+                  : verificationStatus === "non-compliant"
+                    ? "bg-red-100 text-red-800"
+                    : "bg-gray-100 text-gray-600"
+              }`}
+            >
+              {verificationStatus
+                ? verificationStatus.replace("-", " ")
+                : "Not set"}
+            </span>
+          </div>
+          <div className="mb-4 flex gap-4">
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="status"
+                value="compliant"
+                checked={verificationStatus === "compliant"}
+                onChange={() => setVerificationStatus("compliant")}
+                className="text-green-600"
+              />
+              <span>Compliant</span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="status"
+                value="non-compliant"
+                checked={verificationStatus === "non-compliant"}
+                onChange={() => setVerificationStatus("non-compliant")}
+                className="text-red-600"
+              />
+              <span>Non‑compliant</span>
+            </label>
+          </div>
+          {articles.map((article) => (
+            <div
+              key={article.id}
+              className="mb-6 border-t pt-4 first:border-t-0 first:pt-0"
+            >
+              <h3 className="text-md font-semibold text-gray-700 mb-2">
+                {article.title}
+              </h3>
+              {verificationNotesByArticle[article.id]?.length > 0 && (
+                <div className="mb-3 space-y-2">
+                  {verificationNotesByArticle[article.id].map((note, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-start gap-2 bg-gray-50 p-3 rounded-lg border border-gray-200"
+                    >
+                      <FaComment className="text-gray-400 mt-0.5" size={14} />
+                      <span className="flex-1 text-gray-700">{note}</span>
+                      <button
+                        onClick={() => handleRemoveNote(article.id, idx)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <FaTimes size={12} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newNoteByArticle[article.id]}
+                  onChange={(e) =>
+                    setNewNoteByArticle((prev) => ({
+                      ...prev,
+                      [article.id]: e.target.value,
+                    }))
+                  }
+                  placeholder={`Add a note for ${article.title}...`}
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                />
+                <button
+                  onClick={() => handleAddNote(article.id)}
+                  disabled={!newNoteByArticle[article.id]?.trim()}
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+                >
+                  Add Note
+                </button>
+              </div>
+            </div>
+          ))}
+          <div className="flex justify-end mt-4">
+            <button
+              onClick={handleSaveVerification}
+              disabled={!areAllRecordsReady() || !hasVerificationChanges()}
+              className={`px-6 py-2 rounded-lg flex items-center gap-2 ${!areAllRecordsReady() || !hasVerificationChanges() ? "bg-gray-300 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 text-white"}`}
+            >
+              <FaSave size={16} /> Save Verification
+            </button>
+          </div>
+          {!areAllRecordsReady() && shipments.length > 0 && (
+            <p className="text-xs text-amber-600 mt-2">
+              Verification can only be saved after all shipments have completed
+              due diligence.
+            </p>
+          )}
+        </div>
+      )}
+
+      <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-green-100">
+        <div className="mb-4">
+          <h2 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">
+            Current Shipments
+          </h2>
+          <p className="text-sm text-gray-500">
+            These are the active shipments that require due diligence.
+          </p>
+        </div>
+        {shipments.length === 0 ? (
+          <div className="text-center py-8 bg-gray-50 rounded-lg border border-gray-200">
+            <FaShippingFast className="w-12 h-12 mx-auto text-gray-400 mb-3" />
+            <p className="text-gray-600">No current shipments found.</p>
+          </div>
+        ) : (
+          <div className="space-y-3 sm:space-y-4">
+            {shipments.map((shipment) => {
+              const record = currentRecords[shipment.batchNumber];
+              const recordExists = !!record;
+              const paymentStatus = record?.paymentStatus || false;
+              const status =
+                record?.status ||
+                (shipment.status === "approved" ? "approved" : "not-started");
+              const riskAssessmentDone = record?.risks?.riskAssessment
+                ? true
+                : false;
+              const riskMitigationDone = record?.risks?.riskMitigation
+                ? true
+                : false;
+              const riskLevel =
+                record?.risks?.riskAssessment?.riskLevel || null;
+
+              let button = null;
+              if (!isVerifier) {
+                // Importer view
+                if (!recordExists) {
+                  button = (
+                    <button
+                      onClick={() => handleStartDueDiligence(shipment)}
+                      className="w-full sm:w-auto px-3 sm:px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center text-sm sm:text-base"
+                    >
+                      <FaPlus className="mr-2" size={14} /> Start
+                    </button>
+                  );
+                } else if (paymentStatus && status === "in-progress") {
+                  button = (
+                    <div className="flex items-center gap-2 text-yellow-600 bg-yellow-50 px-3 py-2 rounded-lg">
+                      <FaHourglassHalf className="w-4 h-4" />
+                      <span className="text-sm">Waiting for Assessment</span>
+                    </div>
+                  );
+                } else if (status === "awaiting-mitigation") {
+                  button = (
+                    <button
+                      onClick={() => handlePerformMitigation(shipment, record)}
+                      className="w-full sm:w-auto px-3 sm:px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors flex items-center justify-center text-sm sm:text-base"
+                    >
+                      <FaShieldAlt className="mr-2" size={14} /> Perform
+                      Mitigation
+                    </button>
+                  );
+                } else if (status === "approved") {
+                  button = (
+                    <button
+                      onClick={() => handleViewDetails(shipment, record)}
+                      className="w-full sm:w-auto px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center text-sm sm:text-base"
+                    >
+                      <FaEye className="mr-2" size={14} /> View Details
+                    </button>
+                  );
+                }
+              } else {
+                // Verifier view
+                if (!recordExists) {
+                  button = (
+                    <span className="text-gray-400 text-sm">
+                      Awaiting Importer
+                    </span>
+                  );
+                } else if (!riskAssessmentDone) {
+                  button = (
+                    <button
+                      onClick={() => handleRiskAssessment(shipment, record)}
+                      className="w-full sm:w-auto px-3 sm:px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center text-sm sm:text-base"
+                    >
+                      <FaShieldAlt className="mr-2" size={14} /> Assess Risk
+                    </button>
+                  );
+                } else {
+                  button = (
+                    <button
+                      onClick={() => handleViewDetails(shipment, record)}
+                      className="w-full sm:w-auto px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center text-sm sm:text-base"
+                    >
+                      <FaEye className="mr-2" size={14} /> View Details
+                    </button>
+                  );
+                }
+              }
+
+              return (
+                <motion.div
+                  key={shipment.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="bg-gray-50 rounded-lg p-3 sm:p-4 border border-gray-200 hover:shadow-md transition-shadow"
+                >
+                  <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs sm:text-sm text-gray-500 break-words">
+                        Batch: {shipment.batchNumber}
+                      </p>
+                      <h4 className="font-semibold text-gray-800 text-sm sm:text-base break-words">
+                        {demoData.users[shipment.exporterId]?.basicInfo
+                          ?.companyName || "Unknown"}
+                      </h4>
+                      <p className="text-xs sm:text-sm text-gray-600 mt-1 break-words">
+                        {shipment.productDescription}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-2 mt-2">
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                            status === "approved"
+                              ? "bg-green-100 text-green-800"
+                              : status === "awaiting-mitigation"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : status === "in-progress"
+                                  ? "bg-blue-100 text-blue-800"
+                                  : "bg-gray-100 text-gray-800"
+                          }`}
+                        >
+                          {status === "approved"
+                            ? "Approved"
+                            : status === "awaiting-mitigation"
+                              ? "Awaiting Mitigation"
+                              : status === "in-progress"
+                                ? "Waiting for Assessment"
+                                : "Not Started"}
+                        </span>
+                        {paymentStatus && (
+                          <span className="px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+                            Paid
+                          </span>
+                        )}
+                        {riskAssessmentDone && (
+                          <span className="px-2 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">
+                            Risk: {riskLevel}
+                          </span>
+                        )}
+                        {riskMitigationDone && (
+                          <span className="px-2 py-1 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800">
+                            Mitigated
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="w-full sm:w-auto flex flex-col sm:flex-row gap-2">
+                      {button}
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Modal for Start, Payment, Details, Risk Assessment, Risk Mitigation */}
+      <AnimatePresence>
+        {showModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-2 sm:p-4"
+            onClick={() => setShowModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="sticky top-0 bg-white border-b border-gray-200 p-3 sm:p-4 flex justify-between items-center">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-800 break-words pr-4">
+                  {modalMode === "start" && "Start Due Diligence"}
+                  {modalMode === "payment" && "Complete Payment"}
+                  {modalMode === "details" && "Due Diligence Details"}
+                  {modalMode === "risk-assessment" &&
+                    (isVerifier
+                      ? "Risk Assessment (Verifier)"
+                      : "Risk Assessment")}
+                  {modalMode === "risk-mitigation" && "Risk Mitigation"}
+                </h2>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-full flex-shrink-0"
+                >
+                  <FaTimes />
+                </button>
+              </div>
+              <div className="p-4 sm:p-6">
+                {modalMode === "start" && !isVerifier && (
+                  <div className="space-y-4 sm:space-y-6">
+                    {currentStep === 1 && (
+                      <>
+                        <div className="bg-blue-50 p-3 sm:p-4 rounded-lg mb-4">
+                          <p className="text-xs sm:text-sm text-blue-800 flex items-start">
+                            <FaInfoCircle className="inline mr-2 flex-shrink-0 mt-0.5" />
+                            <span>
+                              Please provide information about this shipment
+                            </span>
+                          </p>
+                        </div>
+                        <div className="space-y-4">
+                          <div>
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                              Description (include trade name and type of
+                              products) *
+                            </label>
+                            <textarea
+                              value={formData.description}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  description: e.target.value,
+                                })
+                              }
+                              className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
+                              rows="3"
+                              placeholder="e.g., Import of certified mahogany logs for furniture manufacturing"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                              Common Name of Species *
+                            </label>
+                            <input
+                              type="text"
+                              value={formData.commonName}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  commonName: e.target.value,
+                                })
+                              }
+                              className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
+                              placeholder="e.g., Mahogany"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                              Scientific Name *
+                            </label>
+                            <input
+                              type="text"
+                              value={formData.scientificName}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  scientificName: e.target.value,
+                                })
+                              }
+                              className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
+                              placeholder="e.g., Swietenia macrophylla"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                              HS Codes (EUDR supported products) *
+                            </label>
+                            <button
+                              type="button"
+                              onClick={() => setShowHsCodeSelector(true)}
+                              className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-left flex items-center justify-between hover:bg-gray-50 text-sm"
+                            >
+                              <span className="truncate">
+                                {formData.hsCodes.length > 0
+                                  ? `${formData.hsCodes.length} product(s) selected`
+                                  : "Select HS Codes"}
+                              </span>
+                              <FaChevronDown className="flex-shrink-0" />
+                            </button>
+                            {formData.hsCodes.length > 0 && (
+                              <div className="mt-2 space-y-2">
+                                {formData.hsCodes.map((code, idx) => (
+                                  <div
+                                    key={idx}
+                                    className="bg-green-50 p-2 rounded border border-green-200"
+                                  >
+                                    <p className="text-xs sm:text-sm font-medium break-words">
+                                      {code.code} - {code.name}
+                                    </p>
+                                    <p className="text-xs text-gray-600 break-words">
+                                      Commodity: {code.commodity}
+                                    </p>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Container Management */}
+                          <div className="border border-gray-200 rounded-lg p-3">
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                              Container Details *
+                            </label>
+                            <div className="space-y-2 mb-3">
+                              {formData.containers.map((container, idx) => (
+                                <div
+                                  key={idx}
+                                  className="flex items-center gap-2 bg-gray-50 p-2 rounded"
+                                >
+                                  <div className="flex-1 grid grid-cols-2 gap-2">
+                                    <input
+                                      type="text"
+                                      value={container.containerNumber}
+                                      disabled
+                                      className="px-2 py-1 border border-gray-300 rounded text-sm bg-gray-100"
+                                      placeholder="Container number"
+                                    />
+                                    <input
+                                      type="number"
+                                      value={container.kilograms}
+                                      disabled
+                                      className="px-2 py-1 border border-gray-300 rounded text-sm bg-gray-100"
+                                      placeholder="Kilograms"
+                                    />
+                                  </div>
+                                  <button
+                                    onClick={() => handleRemoveContainer(idx)}
+                                    className="text-red-500 hover:text-red-700"
+                                  >
+                                    <FaTrashAlt size={14} />
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                            <div className="flex flex-col sm:flex-row gap-2">
+                              <input
+                                type="text"
+                                placeholder="Container Number"
+                                value={newContainer.containerNumber}
+                                onChange={(e) =>
+                                  setNewContainer({
+                                    ...newContainer,
+                                    containerNumber: e.target.value,
+                                  })
+                                }
+                                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                              />
+                              <input
+                                type="number"
+                                placeholder="Kilograms"
+                                value={newContainer.kilograms}
+                                onChange={(e) =>
+                                  setNewContainer({
+                                    ...newContainer,
+                                    kilograms: e.target.value,
+                                  })
+                                }
+                                className="w-32 px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                              />
+                              <button
+                                onClick={handleAddContainer}
+                                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm whitespace-nowrap"
+                              >
+                                Add Container
+                              </button>
+                            </div>
+                            {formData.containers.length > 0 && (
+                              <div className="mt-3 p-2 bg-blue-50 rounded-lg">
+                                <p className="text-sm font-medium">
+                                  Total Net Mass:{" "}
+                                  <span className="font-bold">
+                                    {calculateTotalNetMass().toLocaleString()}{" "}
+                                    kg
+                                  </span>
+                                </p>
+                              </div>
+                            )}
+                          </div>
+
+                          <div>
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                              Customer Name *
+                            </label>
+                            <input
+                              type="text"
+                              value={formData.customerName}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  customerName: e.target.value,
+                                })
+                              }
+                              className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
+                              placeholder="e.g., Adroitsoft Nigeria Limited"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                              Customer Postal Address *
+                            </label>
+                            <input
+                              type="text"
+                              value={formData.customerAddress}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  customerAddress: e.target.value,
+                                })
+                              }
+                              className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
+                              placeholder="e.g., Lagos, Nigeria"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                              Customer Email Address *
+                            </label>
+                            <input
+                              type="email"
+                              value={formData.customerEmail}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  customerEmail: e.target.value,
+                                })
+                              }
+                              className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
+                              placeholder="e.g., customer@company.com"
+                            />
+                          </div>
+                        </div>
+                        <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:space-x-3">
+                          <button
+                            onClick={() => setShowModal(false)}
+                            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            onClick={handleSaveImporterInfo}
+                            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
+                          >
+                            Continue to Payment
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
+                {modalMode === "payment" && !isVerifier && (
+                  <div className="space-y-4 sm:space-y-6">
+                    <div className="bg-yellow-50 p-4 sm:p-6 rounded-lg text-center">
+                      <FaMoneyBillWave className="text-3xl sm:text-5xl text-yellow-600 mx-auto mb-3 sm:mb-4" />
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">
+                        Payment Required
+                      </h3>
+                      <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">
+                        Amount to pay:{" "}
+                        <span className="text-xl sm:text-2xl font-bold text-green-600">
+                          ${calculateAmount(calculateTotalNetMass())}
+                        </span>
+                      </p>
+                      <p className="text-xs sm:text-sm text-gray-500">
+                        (Calculated as $10 per 20,000kg)
+                      </p>
+                    </div>
+                    <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
+                      <p className="text-xs sm:text-sm text-blue-800 flex items-start">
+                        <FaInfoCircle className="inline mr-2 flex-shrink-0 mt-0.5" />
+                        <span>
+                          This is a dummy payment system for demonstration
+                          purposes. Click "Pay Now" to simulate payment.
+                        </span>
+                      </p>
+                    </div>
+                    <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:space-x-3">
+                      <button
+                        onClick={() => setModalMode("start")}
+                        className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
+                      >
+                        Back
+                      </button>
+                      <button
+                        onClick={handlePayment}
+                        disabled={paymentLoading}
+                        className="px-4 sm:px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 flex items-center justify-center text-sm"
+                      >
+                        {paymentLoading ? (
+                          <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                            Processing...
+                          </>
+                        ) : (
+                          "Pay Now"
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {modalMode === "details" &&
+                  viewingRecord &&
+                  selectedShipment && (
+                    <div className="space-y-4 sm:space-y-6">
+                      <div className="flex flex-nowrap gap-1 sm:gap-2 border-b border-gray-200 overflow-x-auto pb-1 -mx-4 sm:-mx-6 px-4 sm:px-6">
+                        <button
+                          onClick={() => setViewTab("importer-info")}
+                          className={`px-3 sm:px-4 py-2 font-medium text-xs sm:text-sm whitespace-nowrap flex-shrink-0 ${viewTab === "importer-info" ? "border-b-2 border-green-600 text-green-600" : "text-gray-500 hover:text-gray-700"}`}
+                        >
+                          Importer Info
+                        </button>
+                        <button
+                          onClick={() => setViewTab("exporter-info")}
+                          className={`px-3 sm:px-4 py-2 font-medium text-xs sm:text-sm whitespace-nowrap flex-shrink-0 ${viewTab === "exporter-info" ? "border-b-2 border-green-600 text-green-600" : "text-gray-500 hover:text-gray-700"}`}
+                        >
+                          Exporter Info
+                        </button>
+                        {viewingRecord.risks?.riskAssessment && (
+                          <button
+                            onClick={() => setViewTab("risk-assessment")}
+                            className={`px-3 sm:px-4 py-2 font-medium text-xs sm:text-sm whitespace-nowrap flex-shrink-0 ${viewTab === "risk-assessment" ? "border-b-2 border-green-600 text-green-600" : "text-gray-500 hover:text-gray-700"}`}
+                          >
+                            Risk Assessment
+                          </button>
+                        )}
+                        {viewingRecord.risks?.riskMitigation && (
+                          <button
+                            onClick={() => setViewTab("risk-mitigation")}
+                            className={`px-3 sm:px-4 py-2 font-medium text-xs sm:text-sm whitespace-nowrap flex-shrink-0 ${viewTab === "risk-mitigation" ? "border-b-2 border-green-600 text-green-600" : "text-gray-500 hover:text-gray-700"}`}
+                          >
+                            Risk Mitigation
+                          </button>
+                        )}
+                        <button
+                          onClick={() => setViewTab("diligence-statement")}
+                          className={`px-3 sm:px-4 py-2 font-medium text-xs sm:text-sm whitespace-nowrap flex-shrink-0 ${viewTab === "diligence-statement" ? "border-b-2 border-green-600 text-green-600" : "text-gray-500 hover:text-gray-700"}`}
+                        >
+                          Due Diligence Statement
+                        </button>
+                      </div>
+                      <div className="mt-4">
+                        {viewTab === "importer-info" &&
+                          renderImporterInfo(viewingRecord)}
+                        {viewTab === "exporter-info" &&
+                          renderExporterInfo(viewingRecord, selectedShipment)}
+                        {viewTab === "risk-assessment" &&
+                          renderRiskAssessment(viewingRecord.risks)}
+                        {viewTab === "risk-mitigation" &&
+                          renderRiskMitigation(viewingRecord.risks)}
+                        {viewTab === "diligence-statement" && (
+                          <div className="space-y-6">
+                            {!viewingRecord.diligenceStatement ? (
+                              // Form to fill diligence statement
+                              <div className="space-y-4 bg-white rounded-lg p-6 border border-gray-200">
+                                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                                  Due Diligence Statement Information
+                                </h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                  <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                      Signatory Name *
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={diligenceForm.name}
+                                      onChange={(e) =>
+                                        setDiligenceForm((prev) => ({
+                                          ...prev,
+                                          name: e.target.value,
+                                        }))
+                                      }
+                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                                      placeholder="Enter full name"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                      Function *
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={diligenceForm.function}
+                                      onChange={(e) =>
+                                        setDiligenceForm((prev) => ({
+                                          ...prev,
+                                          function: e.target.value,
+                                        }))
+                                      }
+                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                                      placeholder="e.g., Managing Director"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                      EORI Number *
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={diligenceForm.eoriNumber}
+                                      onChange={(e) =>
+                                        setDiligenceForm((prev) => ({
+                                          ...prev,
+                                          eoriNumber: e.target.value,
+                                        }))
+                                      }
+                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                                      placeholder="e.g., GB123456789000"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                      Signature (upload dummy)
+                                    </label>
+                                    <button
+                                      onClick={() => {
+                                        setDiligenceForm((prev) => ({
+                                          ...prev,
+                                          signature:
+                                            "https://cloud-storage.com/demo/signature.png",
+                                          url: "https://cloud-storage.com/demo/signature.png",
+                                        }));
+                                        toast.info("Dummy signature added");
+                                      }}
+                                      className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+                                    >
+                                      Add Dummy Signature
+                                    </button>
+                                  </div>
+                                </div>
+                                <div className="flex justify-end mt-4">
+                                  <button
+                                    onClick={handleSaveDiligenceStatement}
+                                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                                  >
+                                    Save Statement
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              renderDiligenceStatement(
+                                viewingRecord,
+                                selectedShipment,
+                                viewingRecord.diligenceStatement,
+                              )
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex justify-end">
+                        <button
+                          onClick={() => setShowModal(false)}
+                          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 text-sm"
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                {modalMode === "risk-assessment" &&
+                  (isVerifier ? <VerifierRiskAssessmentModal /> : null)}
+                {modalMode === "risk-mitigation" && !isVerifier && (
+                  <ImporterRiskMitigationModal />
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* HS Code Selector Modal */}
+      <AnimatePresence>
+        {showHsCodeSelector && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-2 sm:p-4"
+            onClick={() => setShowHsCodeSelector(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[80vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="sticky top-0 bg-white border-b border-gray-200 p-3 sm:p-4 flex justify-between items-center">
+                <h3 className="text-base sm:text-lg font-bold text-gray-800">
+                  Select HS Codes
+                </h3>
+                <button
+                  onClick={() => setShowHsCodeSelector(false)}
+                  className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-full"
+                >
+                  <FaTimes />
+                </button>
+              </div>
+              <div className="p-4">
+                <div className="mb-4">
+                  <input
+                    type="text"
+                    placeholder="Search HS codes..."
+                    value={hsCodeSearch}
+                    onChange={(e) => setHsCodeSearch(e.target.value)}
+                    className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-sm"
+                  />
+                </div>
+                <div className="space-y-4">
+                  {demoData.commodities.map((commodity, idx) => {
+                    const filtered = commodity.products.filter(
+                      (p) =>
+                        p.code.includes(hsCodeSearch) ||
+                        p.name
+                          .toLowerCase()
+                          .includes(hsCodeSearch.toLowerCase()),
+                    );
+                    if (filtered.length === 0) return null;
+                    return (
+                      <div
+                        key={idx}
+                        className="border border-gray-200 rounded-lg"
+                      >
+                        <div className="bg-gray-50 px-3 sm:px-4 py-2 rounded-t-lg font-semibold text-gray-700 text-sm sm:text-base">
+                          {commodity.commodity}
+                        </div>
+                        <div className="p-3 sm:p-4 space-y-2">
+                          {filtered.map((product, pidx) => (
+                            <label
+                              key={pidx}
+                              className="flex items-start space-x-3 p-2 hover:bg-gray-50 rounded cursor-pointer"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={selectedHsCodes.some(
+                                  (h) =>
+                                    h.commodity === commodity.commodity &&
+                                    h.code === product.code,
+                                )}
+                                onChange={() =>
+                                  handleHsCodeSelect(
+                                    commodity.commodity,
+                                    product,
+                                  )
+                                }
+                                className="mt-1 h-4 w-4 text-green-600 flex-shrink-0"
+                              />
+                              <div className="min-w-0">
+                                <p className="text-xs sm:text-sm font-medium text-gray-800 break-words">
+                                  {product.code}
+                                </p>
+                                <p className="text-xs sm:text-sm text-gray-600 break-words">
+                                  {product.name}
+                                </p>
+                              </div>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="sticky bottom-0 bg-white border-t border-gray-200 p-3 sm:p-4 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:space-x-3">
+                  <button
+                    onClick={() => setShowHsCodeSelector(false)}
+                    className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleAddHsCodes}
+                    className="w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
+                  >
+                    Add Selected ({selectedHsCodes.length})
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Assessment Document Modal */}
+      <AnimatePresence>
+        {showAssessmentDocModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-2 sm:p-4"
+            onClick={() => setShowAssessmentDocModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-xl shadow-lg w-full max-w-md"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-4 sm:p-6">
+                <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-4">
+                  Add Supporting Document
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                      Document Description *
+                    </label>
+                    <input
+                      type="text"
+                      value={assessmentDocDesc}
+                      onChange={(e) => setAssessmentDocDesc(e.target.value)}
+                      className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-sm"
+                      placeholder="e.g., Risk Assessment Report"
+                      autoFocus
+                    />
+                  </div>
+                  <div className="bg-blue-50 p-3 rounded-lg">
+                    <p className="text-xs sm:text-sm text-blue-800 flex items-start">
+                      <FaInfoCircle className="inline mr-2 flex-shrink-0 mt-0.5" />
+                      <span>
+                        In this demo, a dummy document will be created with the
+                        description above.
+                      </span>
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:space-x-3 mt-6">
+                  <button
+                    onClick={() => setShowAssessmentDocModal(false)}
+                    className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (assessmentDocDesc.trim()) {
+                        setAssessmentDocs([
+                          ...assessmentDocs,
+                          {
+                            name: assessmentDocDesc,
+                            url: "dummy-document-url.pdf",
+                          },
+                        ]);
+                        setAssessmentDocDesc("");
+                        setShowAssessmentDocModal(false);
+                      } else toast.error("Please enter a document description");
+                    }}
+                    className="w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
+                  >
+                    Add Document
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Risk Mitigation Document Modal */}
+      <AnimatePresence>
+        {showDocModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-2 sm:p-4"
+            onClick={() => setShowDocModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-xl shadow-lg w-full max-w-md"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-4 sm:p-6">
+                <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-4">
+                  Add Document
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                      Document Description *
+                    </label>
+                    <input
+                      type="text"
+                      value={docModalData.description}
+                      onChange={(e) =>
+                        setDocModalData({
+                          ...docModalData,
+                          description: e.target.value,
+                        })
+                      }
+                      className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-sm"
+                      placeholder="e.g., Audit Report"
+                      autoFocus
+                    />
+                  </div>
+                  <div className="bg-blue-50 p-3 rounded-lg">
+                    <p className="text-xs sm:text-sm text-blue-800 flex items-start">
+                      <FaInfoCircle className="inline mr-2 flex-shrink-0 mt-0.5" />
+                      <span>
+                        In this demo, a dummy document will be created with the
+                        description above.
+                      </span>
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:space-x-3 mt-6">
+                  <button
+                    onClick={() => setShowDocModal(false)}
+                    className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleAddDoc}
+                    className="w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
+                  >
+                    Add Document
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Verification History Modal */}
+      {showNotesModal && (
+        <div
+          className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+          onClick={() => setShowNotesModal(false)}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-xl shadow-xl max-w-3xl w-full max-h-[80vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-bold text-green-800">
+                  Verification Notes
+                </h2>
+                <button
+                  onClick={() => setShowNotesModal(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <FaTimes size={24} />
+                </button>
+              </div>
+              <div className="space-y-6">
+                {verificationHistory.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-gray-50 rounded-lg p-4 border border-gray-200"
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <FaUser size={16} className="text-gray-500" />
+                        <span className="font-medium text-gray-700">
+                          {item.verifierName}
+                        </span>
+                        {item.date && (
+                          <span className="text-xs text-gray-400">
+                            {new Date(item.date).toLocaleDateString()}
+                          </span>
+                        )}
+                      </div>
+                      <span
+                        className={`px-2 py-1 text-xs rounded-full ${
+                          item.status === "compliant"
+                            ? "bg-green-100 text-green-800"
+                            : item.status === "non-compliant"
+                              ? "bg-red-100 text-red-800"
+                              : "bg-gray-100 text-gray-600"
+                        }`}
+                      >
+                        {item.status ? item.status.replace("-", " ") : "Not set"}
+                      </span>
+                    </div>
+                    <div className="space-y-4">
+                      {item.articles.map((article, artIdx) => (
+                        <div key={artIdx}>
+                          <h4 className="text-sm font-semibold text-gray-800 mb-2">
+                            {article.title}
+                          </h4>
+                          <div className="space-y-1">
+                            {article.notes.map((note, noteIdx) => (
+                              <div
+                                key={noteIdx}
+                                className="text-sm text-gray-600 pl-6 border-l-2 border-green-200 ml-2"
+                              >
+                                • {note}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </motion.div>
+  );
 };
-
-const Input = ({ label, name, value, onChange, type = 'text' }) => (
-  <div className="space-y-1">
-    <label className="block font-medium text-gray-700 text-xs sm:text-sm">{label}</label>
-    <input
-      type={type}
-      name={name}
-      value={value}
-      onChange={onChange}
-      className="w-full px-3 sm:px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all bg-white text-sm"
-    />
-  </div>
-);
-
-const MitigationSection = ({ title, docs, onAdd }) => (
-  <div className="bg-gray-50 p-4 sm:p-6 rounded-2xl">
-    <h3 className="font-bold text-gray-800 mb-4 text-base sm:text-lg break-words">{title}</h3>
-    <DocumentUploader docs={docs} onAdd={onAdd} />
-  </div>
-);
 
 export default CurrentDueDiligence;

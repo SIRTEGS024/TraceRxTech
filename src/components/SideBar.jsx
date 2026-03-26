@@ -1,9 +1,9 @@
-// Sidebar.js - UPDATED to show padlock for locked tabs
+// Sidebar.js - Add warning icon
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as FiIcons from 'react-icons/fi';
-import { FaSignOutAlt, FaLock } from 'react-icons/fa';
+import { FaSignOutAlt, FaLock, FaExclamationTriangle } from 'react-icons/fa';
 
 const Sidebar = ({ activeTab, setActiveTab, isSidebarOpen, setIsSidebarOpen, isMobile, navbarHeight, availableTabs, onLogout }) => {
   // Fallback icon component in case of import issues
@@ -88,6 +88,7 @@ const Sidebar = ({ activeTab, setActiveTab, isSidebarOpen, setIsSidebarOpen, isM
               const IconComponent = getIconComponent(tab.icon);
               const isActive = activeTab === tab.id;
               const hasAccess = tab.hasAccess !== false; // Default to true if not specified
+              const hasWarning = tab.hasWarning === true;
               
               return (
                 <motion.button
@@ -103,16 +104,21 @@ const Sidebar = ({ activeTab, setActiveTab, isSidebarOpen, setIsSidebarOpen, isM
                       : 'text-gray-400 cursor-not-allowed bg-gray-100'
                   }`}
                   disabled={!hasAccess}
-                  title={!hasAccess ? "You don't have access to this tab" : ""}
+                  title={!hasAccess ? "You don't have access to this tab" : hasWarning ? "This tab has non-compliant findings in a verifier's report" : ""}
                 >
                   <div className="flex items-center space-x-3">
                     <IconComponent className="w-4 h-4 flex-shrink-0" />
                     <span className="text-left font-medium whitespace-normal break-words">{tab.name}</span>
                   </div>
                   
-                  {!hasAccess && (
-                    <FaLock className="w-3 h-3 flex-shrink-0 text-gray-400" />
-                  )}
+                  <div className="flex items-center space-x-2">
+                    {hasWarning && (
+                      <FaExclamationTriangle className="w-3 h-3 text-yellow-500 flex-shrink-0" />
+                    )}
+                    {!hasAccess && (
+                      <FaLock className="w-3 h-3 text-gray-400 flex-shrink-0" />
+                    )}
+                  </div>
                 </motion.button>
               );
             })}

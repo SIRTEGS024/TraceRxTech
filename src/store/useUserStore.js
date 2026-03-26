@@ -257,6 +257,237 @@ const demoData = {
                 totalHectares: 50,
               },
             ],
+            2022: [
+              {
+                id: "record-2022-1",
+                description: "Export of certified mahogany logs",
+                commonName: "Mahogany",
+                scientificName: "Swietenia macrophylla",
+                hsCodes: [
+                  {
+                    commodity: "Wood",
+                    code: "4403",
+                    name: "Wood in the rough",
+                  },
+                ],
+                netMassKg: 40000,
+                amount: 20,
+                paymentStatus: true,
+                productionLocation: "Amazonas,Brazil",
+                productionDateRange: {
+                  from: "2022-03-01",
+                  to: "2022-08-31",
+                },
+                customerName: "European Timber Importers GmbH",
+                customerAddress: "Hamburg, Germany",
+                customerEmail: "orders@eti-gmbh.de",
+                customerId: "importer-1",
+                deforestationFreeDocs: [
+                  {
+                    name: "Deforestation-Free Certification",
+                    url: "https://cloud-storage.com/docs/2022/defree-1.pdf",
+                  },
+                ],
+                legalComplianceDocs: [
+                  {
+                    name: "Legal Compliance Certificate",
+                    url: "https://cloud-storage.com/docs/2022/legal-1.pdf",
+                  },
+                ],
+                plantingAreas: [
+                  {
+                    id: "planting-area-1-2021",
+                    name: "2021 Planting Zone A",
+                    coordinates: [
+                      [-3.4561, -61.7466],
+                      [-3.4564, -61.747],
+                      [-3.4562, -61.7471],
+                      [-3.4561, -61.7466],
+                    ],
+                    hectares: 25,
+                  },
+                  {
+                    id: "planting-area-2-2021",
+                    name: "2021 Planting Zone B",
+                    coordinates: [
+                      [-3.4565, -61.7473],
+                      [-3.4567, -61.7475],
+                      [-3.456, -61.7477],
+                      [-3.4565, -61.7473],
+                    ],
+                    hectares: 25,
+                  },
+                ],
+                totalHectares: 50,
+              },
+            ],
+            2023: [],
+            2024: [],
+            2025: [],
+          },
+          supportedProducts: [
+            {
+              commodity: "Wood",
+              products: [
+                {
+                  code: "4403",
+                  name: "Wood in the rough",
+                },
+                {
+                  code: "4407",
+                  name: "Wood sawn or chipped lengthwise",
+                },
+              ],
+            },
+            {
+              commodity: "Coffee",
+              products: [
+                {
+                  code: "ex 0901 11 00",
+                  name: "Coffee, not roasted, not decaffeinated",
+                },
+              ],
+            },
+          ],
+          totalHectares: 5000,
+        },
+        {
+          id: "fac-3",
+          type: "production/forest site",
+          name: "Amazon Forest Plot B",
+          address: "Amazonas, Brazil",
+          documents: {
+            landUseRights: [
+              {
+                name: "Land Title Deed",
+                url: "https://cloud-storage.com/forest/land-1.pdf",
+              },
+            ],
+            environmentalProtection: [
+              {
+                name: "Environmental Impact Assessment",
+                url: "https://cloud-storage.com/docs/forest/env-1.pdf",
+              },
+            ],
+            forestRelatedRules: [
+              {
+                name: "Forest Management Plan",
+                url: "https://cloud-storage.com/docs/forest/forest-1.pdf",
+              },
+            ],
+            thirdPartiesRights: [
+              {
+                name: "Community Agreement",
+                url: "https://cloud-storage.com/docs/forest/community-1.pdf",
+              },
+            ],
+            labourRights: [
+              {
+                name: "Labor Compliance Certificate",
+                url: "https://cloud-storage.com/docs/forest/labor-1.pdf",
+              },
+            ],
+            humanRights: [
+              {
+                name: "Human Rights Assessment",
+                url: "https://cloud-storage.com/docs/forest/hr-1.pdf",
+              },
+            ],
+            fpic: [
+              {
+                name: "FPIC Documentation",
+                url: "https://cloud-storage.com/docs/forest/fpic-1.pdf",
+              },
+            ],
+            taxAntiCorruptionTradeCustoms: [
+              {
+                name: "Tax Compliance Certificate",
+                url: "https://cloud-storage.com/docs/forest/tax-1.pdf",
+              },
+              {
+                name: "Anti-corruption Policy",
+                url: "https://cloud-storage.com/docs/forest/anti-corrupt-1.pdf",
+              },
+            ],
+          },
+          areas: [
+            {
+              id: "area-1",
+              name: "Main Harvest Zone",
+              coordinates: [
+                [-3.456, -61.7464],
+                [-3.457, -61.7475],
+                [-3.455, -61.748],
+                [-3.456, -61.7464],
+              ],
+              hectares: 500,
+            },
+          ],
+          pastRecords: {
+            2021: [
+              {
+                id: "record-2021-1",
+                description: "Export of certified mahogany logs",
+                commonName: "Mahogany",
+                scientificName: "Swietenia macrophylla",
+                hsCodes: [
+                  {
+                    commodity: "Wood",
+                    code: "4403",
+                    name: "Wood in the rough",
+                  },
+                ],
+                netMassKg: 40000,
+                amount: 20,
+                paymentStatus: true,
+                productionLocation: "Amazonas,Brazil",
+                productionDateRange: {
+                  from: "2021-03-01",
+                  to: "2021-08-31",
+                },
+                customerName: "European Timber Importers GmbH",
+                customerAddress: "Hamburg, Germany",
+                customerEmail: "orders@eti-gmbh.de",
+                customerId: "importer-1",
+                deforestationFreeDocs: [
+                  {
+                    name: "Deforestation-Free Certification",
+                    url: "https://cloud-storage.com/docs/2021/defree-1.pdf",
+                  },
+                ],
+                legalComplianceDocs: [
+                  {
+                    name: "Legal Compliance Certificate",
+                    url: "https://cloud-storage.com/docs/2021/legal-1.pdf",
+                  },
+                ],
+                plantingAreas: [
+                  {
+                    id: "planting-area-1-2021",
+                    name: "2021 Planting Zone A",
+                    coordinates: [
+                      [-3.4561, -61.7466],
+                      [-3.4564, -61.747],
+                      [-3.4562, -61.7471],
+                      [-3.4561, -61.7466],
+                    ],
+                    hectares: 25,
+                  },
+                  {
+                    id: "planting-area-2-2021",
+                    name: "2021 Planting Zone B",
+                    coordinates: [
+                      [-3.4565, -61.7473],
+                      [-3.4567, -61.7475],
+                      [-3.456, -61.7477],
+                      [-3.4565, -61.7473],
+                    ],
+                    hectares: 25,
+                  },
+                ],
+                totalHectares: 50,
+              },
+            ],
             2022: [],
             2023: [],
             2024: [],
@@ -468,7 +699,7 @@ const demoData = {
       id: "importer-1",
       role: "importer",
       password: "germanyImport789",
-      isVerified: true,  
+      isVerified: true,
       currentOtpKey: null,
       isRegistered: true,
       undertaken: {
@@ -586,69 +817,75 @@ const demoData = {
           amount: 100,
           paymentStatus: true,
           status: "approved",
-          riskAssessment: {
-            riskLevel: "high risk",
-            assessmentDocs: [
-              {
-                name: "Risk Assessment Report 2021 - Exporter 1",
-                url: "https://cloud-storage.com/docs/risk/2021-exporter1.pdf",
-              },
-            ],
+          diligenceStatement: {
+            name: "John Adeyemi",
+            function: "Managing Director",
+            eoriNumber: "AB123456",
+            signature: "https://cloud-storage.com/docs/john-adeyemi.pdf",
+            url: "https://cloud-storage.com/docs/john-adeyem8i.pdf",
           },
-          riskMitigation: {
-            highRiskSection: {
-              additionalInfo: [
+          risks: {
+            riskAssessment: {
+              riskLevel: "high risk",
+              assessmentDocs: [
                 {
-                  name: "Additional Supplier Info - Exporter 2",
-                  url: "https://cloud-storage.com/docs/mitigation/add-info-ex2.pdf",
-                },
-              ],
-              independentSurveys: [
-                {
-                  name: "Third-Party Audit Report - Exporter 2",
-                  url: "https://cloud-storage.com/docs/mitigation/audit-ex2.pdf",
-                },
-              ],
-              otherMeasures: [],
-              capacityBuilding: [
-                {
-                  name: "Supplier Training Program - Exporter 2",
-                  url: "https://cloud-storage.com/docs/mitigation/training-ex2.pdf",
+                  name: "Risk Assessment Report 2021 - Exporter 1",
+                  url: "https://cloud-storage.com/docs/risk/2021-exporter1.pdf",
                 },
               ],
             },
-            policiesControls: {
-              modelPractices: {
-                isSme: false,
-                officerName: "Anna Weber",
-                officerIdCard: {
-                  name: "officer id card",
-                  url: "https://cloud-storage.com/docs/mitigation/officer-id.pdf",
-                },
-                appointmentLetter: {
-                  name: "appointment letter",
-                  url: "https://cloud-storage.com/docs/mitigation/appointment.pdf",
-                },
-                Docs: [
+            riskMitigation: {
+              highRiskSection: {
+                additionalInfo: [
+                  {
+                    name: "Additional Supplier Info - Exporter 2",
+                    url: "https://cloud-storage.com/docs/mitigation/add-info-ex2.pdf",
+                  },
+                ],
+                independentSurveys: [
+                  {
+                    name: "Third-Party Audit Report - Exporter 2",
+                    url: "https://cloud-storage.com/docs/mitigation/audit-ex2.pdf",
+                  },
+                ],
+                otherMeasures: [],
+                capacityBuilding: [
+                  {
+                    name: "Supplier Training Program - Exporter 2",
+                    url: "https://cloud-storage.com/docs/mitigation/training-ex2.pdf",
+                  },
+                ],
+              },
+              policiesControls: {
+                modelPractices: [
                   {
                     name: "Risk Management Policy - Exporter 2",
                     url: "https://cloud-storage.com/docs/mitigation/policy-ex2.pdf",
                   },
                 ],
+                independentAudit: [
+                  {
+                    name: "Annual Internal Audit - Exporter 2",
+                    url: "https://cloud-storage.com/docs/mitigation/internal-audit-ex2.pdf",
+                  },
+                ],
               },
-              independentAudit: [
+              decisionsReview: [
                 {
-                  name: "Annual Internal Audit - Exporter 2",
-                  url: "https://cloud-storage.com/docs/mitigation/internal-audit-ex2.pdf",
+                  name: "Annual Risk Mitigation Review - Exporter 2",
+                  url: "https://cloud-storage.com/docs/mitigation/review-2023-ex2.pdf",
                 },
               ],
             },
-            decisionsReview: [
-              {
-                name: "Annual Risk Mitigation Review - Exporter 2",
-                url: "https://cloud-storage.com/docs/mitigation/review-2023-ex2.pdf",
-              },
-            ],
+            officerName: "Anna Weber",
+            officerIdCard: {
+              name: "officer id card",
+              url: "https://cloud-storage.com/docs/mitigation/officer-id.pdf",
+            },
+            appointmentLetter: {
+              name: "appointment letter",
+              url: "https://cloud-storage.com/docs/mitigation/appointment.pdf",
+            },
           },
         },
       ],
@@ -685,69 +922,75 @@ const demoData = {
             amount: 10,
             paymentStatus: true,
             status: "approved",
-            riskAssessment: {
-              riskLevel: "high risk",
-              assessmentDocs: [
-                {
-                  name: "Risk Assessment Report 2021 - Exporter 1",
-                  url: "https://cloud-storage.com/docs/risk/2021-exporter1.pdf",
-                },
-              ],
+            diligenceStatement: {
+              name: "John Adeyemi",
+              function: "Managing Director",
+              eoriNumber: "AB123456",
+              signature: "https://cloud-storage.com/docs/john-adeyemi.pdf",
+              url: "https://cloud-storage.com/docs/john-adeyem8i.pdf",
             },
-            riskMitigation: {
-              highRiskSection: {
-                additionalInfo: [
+            risks: {
+              riskAssessment: {
+                riskLevel: "high risk",
+                assessmentDocs: [
                   {
-                    name: "Additional Supplier Info - Exporter 2",
-                    url: "https://cloud-storage.com/docs/mitigation/add-info-ex2.pdf",
-                  },
-                ],
-                independentSurveys: [
-                  {
-                    name: "Third-Party Audit Report - Exporter 2",
-                    url: "https://cloud-storage.com/docs/mitigation/audit-ex2.pdf",
-                  },
-                ],
-                otherMeasures: [],
-                capacityBuilding: [
-                  {
-                    name: "Supplier Training Program - Exporter 2",
-                    url: "https://cloud-storage.com/docs/mitigation/training-ex2.pdf",
+                    name: "Risk Assessment Report 2021 - Exporter 1",
+                    url: "https://cloud-storage.com/docs/risk/2021-exporter1.pdf",
                   },
                 ],
               },
-              policiesControls: {
-                modelPractices: {
-                  isSme: false,
-                  officerName: "Anna Weber",
-                  officerIdCard: {
-                    name: "officer id card",
-                    url: "https://cloud-storage.com/docs/mitigation/officer-id.pdf",
-                  },
-                  appointmentLetter: {
-                    name: "appointment letter",
-                    url: "https://cloud-storage.com/docs/mitigation/appointment.pdf",
-                  },
-                  Docs: [
+              riskMitigation: {
+                highRiskSection: {
+                  additionalInfo: [
+                    {
+                      name: "Additional Supplier Info - Exporter 2",
+                      url: "https://cloud-storage.com/docs/mitigation/add-info-ex2.pdf",
+                    },
+                  ],
+                  independentSurveys: [
+                    {
+                      name: "Third-Party Audit Report - Exporter 2",
+                      url: "https://cloud-storage.com/docs/mitigation/audit-ex2.pdf",
+                    },
+                  ],
+                  otherMeasures: [],
+                  capacityBuilding: [
+                    {
+                      name: "Supplier Training Program - Exporter 2",
+                      url: "https://cloud-storage.com/docs/mitigation/training-ex2.pdf",
+                    },
+                  ],
+                },
+                policiesControls: {
+                  modelPractices: [
                     {
                       name: "Risk Management Policy - Exporter 2",
                       url: "https://cloud-storage.com/docs/mitigation/policy-ex2.pdf",
                     },
                   ],
+                  independentAudit: [
+                    {
+                      name: "Annual Internal Audit - Exporter 2",
+                      url: "https://cloud-storage.com/docs/mitigation/internal-audit-ex2.pdf",
+                    },
+                  ],
                 },
-                independentAudit: [
+                decisionsReview: [
                   {
-                    name: "Annual Internal Audit - Exporter 2",
-                    url: "https://cloud-storage.com/docs/mitigation/internal-audit-ex2.pdf",
+                    name: "Annual Risk Mitigation Review - Exporter 2",
+                    url: "https://cloud-storage.com/docs/mitigation/review-2023-ex2.pdf",
                   },
                 ],
               },
-              decisionsReview: [
-                {
-                  name: "Annual Risk Mitigation Review - Exporter 2",
-                  url: "https://cloud-storage.com/docs/mitigation/review-2023-ex2.pdf",
-                },
-              ],
+              officerName: "Anna Weber",
+              officerIdCard: {
+                name: "officer id card",
+                url: "https://cloud-storage.com/docs/mitigation/officer-id.pdf",
+              },
+              appointmentLetter: {
+                name: "appointment letter",
+                url: "https://cloud-storage.com/docs/mitigation/appointment.pdf",
+              },
             },
           },
         ],
@@ -1008,40 +1251,139 @@ const demoData = {
           companyType: "exporter",
           date: "2026-11-15",
           type: "compliance audit",
-          status: "compliant",
+          status: "non-compliant",
           reportUrl:
             "https://cloud-storage.com/docs/verification/ver-report-1.pdf",
           findings: [
             {
-              tab: "informationRequirements",
+              tab: "subject-matter",
               status: "compliant",
-              notes: [
-                "All forest management plans are up to date and compliant with EUDR regulations.",
+              articles: [
+                {
+                  article: "article-1",
+                  notes: [
+                    "All forest management plans are up to date and compliant with EUDR regulations.",
+                  ],
+                },
               ],
             },
             {
-              tab: "currentDueDiligence",
+              tab: "eudr-definitions",
               status: "compliant",
-              notes: [
-                "Due diligence process properly documented and implemented.",
+              articles: [
+                {
+                  article: "article-2",
+                  notes: [
+                    "All forest management plans are up to date and compliant with EUDR regulations.",
+                  ],
+                },
+              ],
+            },
+            {
+              tab: "informationRequirements",
+              status: "compliant",
+              articles: [
+                {
+                  article: "article-9",
+                  notes: ["Some past years have no information"],
+                },
               ],
             },
           ],
         },
         {
-          id: "ver-report-3",
-          companyId: "exporter-2",
-          companyType: "exporter",
+          id: "ver-report-2",
+          companyId: "importer-1",
+          companyType: "importer",
           date: "2026-09-20",
           type: "compliance audit",
           status: "non-compliant",
           reportUrl:
-            "https://cloud-storage.com/docs/verification/ver-report-3.pdf",
+            "https://cloud-storage.com/docs/verification/ver-report-2.pdf",
           findings: [
             {
-              tab: "companyDetails",
+              tab: "subject-matter",
               status: "compliant",
-              notes: ["Company registration and licenses are not valid."],
+              articles: [
+                {
+                  article: "article-1",
+                  notes: [
+                    "All forest management plans are up to date and compliant with EUDR regulations.",
+                  ],
+                },
+              ],
+            },
+            {
+              tab: "past-due-diligence",
+              status: "compliant",
+              articles: [
+                {
+                  article: "article-7",
+                  notes: [
+                    "All forest management plans are up to date and compliant with EUDR regulations.",
+                  ],
+                },
+                {
+                  article: "article-8",
+                  notes: [
+                    "All forest management plans are up to date and compliant with EUDR regulations.",
+                  ],
+                },
+                {
+                  article: "article-9",
+                  notes: [
+                    "All forest management plans are up to date and compliant with EUDR regulations.",
+                  ],
+                },
+                {
+                  article: "article-10",
+                  notes: [
+                    "All forest management plans are up to date and compliant with EUDR regulations.",
+                  ],
+                },
+                {
+                  article: "article-11",
+                  notes: [
+                    "All forest management plans are up to date and compliant with EUDR regulations.",
+                  ],
+                },
+              ],
+            },
+            {
+              tab: "current-due-diligence",
+              status: "non-compliant",
+              articles: [
+                {
+                  article: "article-7",
+                  notes: [
+                    "All forest management plans are up to date and compliant with EUDR regulations.",
+                  ],
+                },
+                {
+                  article: "article-8",
+                  notes: [
+                    "All forest management plans are up to date and compliant with EUDR regulations.",
+                  ],
+                },
+                {
+                  article: "article-9",
+                  notes: [
+                    "All forest management plans are up to date and compliant with EUDR regulations.",
+                  ],
+                },
+                {
+                  article: "article-10",
+                  notes: [
+                    "All forest management plans are up to date and compliant with EUDR regulations.",
+                  ],
+                },
+                {
+                  article: "article-11",
+                  notes: [
+                    "All forest management plans are up to date and compliant with EUDR regulations.",
+                  ],
+                },
+              ],
             },
           ],
         },
@@ -1113,9 +1455,40 @@ const demoData = {
             "https://cloud-storage.com/docs/verification/ver-report-2.pdf",
           findings: [
             {
-              tab: "shipments",
+              tab: "subject-matter",
               status: "compliant",
-              notes: ["Shipment documentation complete and accurate."],
+              articles: [
+                {
+                  article: "article-1",
+                  notes: [
+                    "All forest management plans are up to date and compliant with EUDR regulations.",
+                  ],
+                },
+              ],
+            },
+            {
+              tab: "eudr-definitions",
+              status: "compliant",
+              articles: [
+                {
+                  article: "article-2",
+                  notes: [
+                    "All forest management plans are up to date and compliant with EUDR regulations.",
+                  ],
+                },
+              ],
+            },
+            {
+              tab: "informationRequirements",
+              status: "compliant",
+              articles: [
+                {
+                  article: "article-9",
+                  notes: [
+                    "All forest management plans are up to date and compliant with EUDR regulations.",
+                  ],
+                },
+              ],
             },
           ],
         },
