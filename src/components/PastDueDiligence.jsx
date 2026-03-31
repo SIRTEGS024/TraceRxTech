@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUserStore } from "../store/useUserStore";
 import { toast } from "react-toastify";
@@ -43,6 +43,212 @@ import {
   FaCheckDouble,
 } from "react-icons/fa";
 
+// Map imports
+import { GoogleMap, Polygon, InfoWindow } from "@react-google-maps/api";
+import { Layers, Info, X, MapPin } from "lucide-react";
+
+// Helper to convert [lat, lng] array to {lat, lng} object
+const convertToLatLng = (coord) => {
+  if (Array.isArray(coord)) {
+    return { lat: coord[0], lng: coord[1] };
+  }
+  return coord;
+};
+
+// Custom hook to check if Google Maps is loaded
+const useGoogleMapsLoaded = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const checkGoogleMaps = () => {
+      if (window.google && window.google.maps) {
+        setIsLoaded(true);
+        return true;
+      }
+      return false;
+    };
+    if (checkGoogleMaps()) return;
+    const interval = setInterval(() => {
+      if (checkGoogleMaps()) clearInterval(interval);
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
+
+  return isLoaded;
+};
+
+// Map Component (view‑only)
+const MapViewOnly = ({ coordinates = [], facilityAreas = [], facilityName = "", facilityAddress = "" }) => {
+  const isLoaded = useGoogleMapsLoaded();
+  const [selectedArea, setSelectedArea] = useState(null);
+  const [showInfoWindow, setShowInfoWindow] = useState(false);
+  const [infoWindowPosition, setInfoWindowPosition] = useState(null);
+  const [map, setMap] = useState(null);
+
+  const calculateCenter = () => {
+    if (facilityAreas.length > 0 && facilityAreas[0].coordinates && facilityAreas[0].coordinates.length > 0) {
+      const coord = convertToLatLng(facilityAreas[0].coordinates[0]);
+      return { lat: coord.lat, lng: coord.lng };
+    }
+    if (coordinates.length > 0 && coordinates[0].coordinates && coordinates[0].coordinates.length > 0) {
+      const coord = convertToLatLng(coordinates[0].coordinates[0]);
+      return { lat: coord.lat, lng: coord.lng };
+    }
+    return { lat: 0, lng: 0 };
+  };
+
+  const onLoad = useCallback((mapInstance) => setMap(mapInstance), []);
+  const onUnmount = useCallback(() => setMap(null), []);
+
+  const getPolygonPaths = (coords) => coords.map(coord => convertToLatLng(coord));
+
+  const handleAreaClick = (area, event) => {
+    event.stop();
+    setSelectedArea(area);
+    setInfoWindowPosition({ lat: event.latLng.lat(), lng: event.latLng.lng() });
+    setShowInfoWindow(true);
+  };
+
+  useEffect(() => {
+    if (map && (facilityAreas.length > 0 || coordinates.length > 0)) {
+      const bounds = new window.google.maps.LatLngBounds();
+      facilityAreas.forEach(area => {
+        area.coordinates?.forEach(coord => bounds.extend(convertToLatLng(coord)));
+      });
+      coordinates.forEach(plot => {
+        plot.coordinates?.forEach(coord => bounds.extend(convertToLatLng(coord)));
+      });
+      map.fitBounds(bounds);
+    }
+  }, [map, facilityAreas, coordinates]);
+
+  if (!isLoaded) {
+    return (
+      <div className="relative h-[400px] rounded-lg overflow-hidden border border-gray-300 bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading Google Maps...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-blue-500 opacity-30 border-2 border-blue-600 rounded"></div>
+          <span className="text-sm text-gray-700">Facility Main Harvest Zone</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-green-500 opacity-40 border-2 border-green-600 rounded"></div>
+          <span className="text-sm text-gray-700">Planting Areas</span>
+        </div>
+      </div>
+
+      <div className="relative h-[500px] rounded-lg overflow-hidden border border-gray-300">
+        {facilityAddress && (
+          <div className="absolute top-4 right-4 z-20 bg-white bg-opacity-90 px-4 py-2 rounded-lg shadow-lg border border-gray-200">
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-green-600" />
+              <span className="text-sm font-medium text-gray-700">{facilityName}</span>
+              <span className="text-xs text-gray-500">| {facilityAddress}</span>
+            </div>
+          </div>
+        )}
+
+        <GoogleMap
+          mapContainerStyle={{ width: '100%', height: '100%' }}
+          center={calculateCenter()}
+          zoom={15}
+          onLoad={onLoad}
+          onUnmount={onUnmount}
+          options={{
+            mapTypeId: 'satellite',
+            streetViewControl: false,
+            mapTypeControl: false,
+            zoomControl: true,
+            fullscreenControl: true,
+          }}
+        >
+          {/* Facility areas (blue) */}
+          {facilityAreas.map((area, index) => (
+            area.coordinates && area.coordinates.length >= 3 && (
+              <Polygon
+                key={`facility-${index}`}
+                paths={getPolygonPaths(area.coordinates)}
+                options={{
+                  fillColor: '#3b82f6',
+                  fillOpacity: 0.2,
+                  strokeColor: '#2563eb',
+                  strokeWeight: 2,
+                  strokeOpacity: 0.8,
+                  zIndex: 1,
+                  clickable: true
+                }}
+                onClick={(e) => handleAreaClick({
+                  type: 'facility',
+                  name: area.name || facilityName || 'Production Site',
+                  hectares: area.hectares || 0,
+                  points: area.coordinates.length
+                }, e)}
+              />
+            )
+          ))}
+
+          {/* Planting areas (green) */}
+          {coordinates.map((plot) => (
+            plot.coordinates && plot.coordinates.length >= 3 && (
+              <Polygon
+                key={plot.id}
+                paths={getPolygonPaths(plot.coordinates)}
+                options={{
+                  fillColor: '#22c55e',
+                  fillOpacity: 0.4,
+                  strokeColor: '#16a34a',
+                  strokeWeight: 2,
+                  zIndex: 2,
+                  clickable: true
+                }}
+                onClick={(e) => handleAreaClick({
+                  type: 'planting',
+                  name: plot.name,
+                  hectares: plot.hectares,
+                  points: plot.coordinates.length,
+                  coordinates: plot.coordinates
+                }, e)}
+              />
+            )
+          ))}
+
+          {showInfoWindow && selectedArea && infoWindowPosition && (
+            <InfoWindow
+              position={infoWindowPosition}
+              onCloseClick={() => setShowInfoWindow(false)}
+            >
+              <div className="p-2 max-w-xs">
+                <h4 className="font-semibold text-gray-900 mb-1">{selectedArea.name}</h4>
+                <div className="text-sm space-y-1">
+                  <p className="text-gray-600">
+                    <span className="font-medium">Type:</span> {selectedArea.type === 'facility' ? 'Production Site' : 'Planting Area'}
+                  </p>
+                  <p className="text-gray-600">
+                    <span className="font-medium">Area:</span> {selectedArea.hectares} hectares
+                  </p>
+                  <p className="text-gray-600">
+                    <span className="font-medium">Points:</span> {selectedArea.points}
+                  </p>
+                </div>
+              </div>
+            </InfoWindow>
+          )}
+        </GoogleMap>
+      </div>
+    </div>
+  );
+};
+
+// ========== PastDueDiligence Component ==========
 const PastDueDiligence = () => {
   const { user, demoData, updateUser } = useUserStore();
 
@@ -678,186 +884,208 @@ const PastDueDiligence = () => {
 
   // Helper: render exporter info (used in details modal)
   const renderExporterInfo = (record) => {
-    if (!record || !record.exporterPastRecord) {
-      return (
-        <div className="text-center py-8 bg-gray-50 rounded-lg">
-          <FaInfoCircle className="text-4xl text-gray-400 mx-auto mb-3" />
-          <p className="text-gray-500">
-            No exporter information available for this record
-          </p>
-        </div>
-      );
-    }
-
-    const pastRecord = record.exporterPastRecord;
-
+  if (!record || !record.exporterPastRecord) {
     return (
-      <div className="space-y-4 sm:space-y-6">
-        <div className="bg-green-50 p-3 sm:p-4 rounded-lg">
-          <h3 className="font-semibold text-green-800 mb-3 flex items-center text-sm sm:text-base">
-            <FaInfoCircle className="mr-2 flex-shrink-0" /> Basic Information
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-            <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-600">Description</p>
-              <p className="font-medium text-sm sm:text-base break-words">
-                {pastRecord.description}
-              </p>
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-600">Common Name</p>
-              <p className="font-medium text-sm sm:text-base break-words">
-                {pastRecord.commonName}
-              </p>
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-600">
-                Scientific Name
-              </p>
-              <p className="font-medium text-sm sm:text-base break-words">
-                {pastRecord.scientificName}
-              </p>
-            </div>
-            <div className="min-w-0 col-span-1 sm:col-span-2">
-              <p className="text-xs sm:text-sm text-gray-600">
-                Production Location
-              </p>
-              <p className="font-medium text-sm sm:text-base break-words">
-                {pastRecord.productionLocation}
-              </p>
-            </div>
-            <div className="min-w-0 col-span-1 sm:col-span-2">
-              <p className="text-xs sm:text-sm text-gray-600">
-                Production Date Range
-              </p>
-              <p className="font-medium text-sm sm:text-base break-words">
-                {pastRecord.productionDateRange?.from || "N/A"} to{" "}
-                {pastRecord.productionDateRange?.to || "N/A"}
-              </p>
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-600">Net Mass (kg)</p>
-              <p className="font-medium text-sm sm:text-base">
-                {pastRecord.netMassKg?.toLocaleString() || "N/A"}
-              </p>
-            </div>
+      <div className="text-center py-8 bg-gray-50 rounded-lg">
+        <FaInfoCircle className="text-4xl text-gray-400 mx-auto mb-3" />
+        <p className="text-gray-500">
+          No exporter information available for this record
+        </p>
+      </div>
+    );
+  }
+
+  const pastRecord = record.exporterPastRecord;
+
+  return (
+    <div className="space-y-4 sm:space-y-6">
+      <div className="bg-green-50 p-3 sm:p-4 rounded-lg">
+        <h3 className="font-semibold text-green-800 mb-3 flex items-center text-sm sm:text-base">
+          <FaInfoCircle className="mr-2 flex-shrink-0" /> Basic Information
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm text-gray-600">Description</p>
+            <p className="font-medium text-sm sm:text-base break-words">
+              {pastRecord.description}
+            </p>
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm text-gray-600">Common Name</p>
+            <p className="font-medium text-sm sm:text-base break-words">
+              {pastRecord.commonName}
+            </p>
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm text-gray-600">
+              Scientific Name
+            </p>
+            <p className="font-medium text-sm sm:text-base break-words">
+              {pastRecord.scientificName}
+            </p>
+          </div>
+          <div className="min-w-0 col-span-1 sm:col-span-2">
+            <p className="text-xs sm:text-sm text-gray-600">
+              Production Location
+            </p>
+            <p className="font-medium text-sm sm:text-base break-words">
+              {pastRecord.productionLocation}
+            </p>
+          </div>
+          <div className="min-w-0 col-span-1 sm:col-span-2">
+            <p className="text-xs sm:text-sm text-gray-600">
+              Production Date Range
+            </p>
+            <p className="font-medium text-sm sm:text-base break-words">
+              {pastRecord.productionDateRange?.from || "N/A"} to{" "}
+              {pastRecord.productionDateRange?.to || "N/A"}
+            </p>
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm text-gray-600">Net Mass (kg)</p>
+            <p className="font-medium text-sm sm:text-base">
+              {pastRecord.netMassKg?.toLocaleString() || "N/A"}
+            </p>
           </div>
         </div>
+      </div>
 
-        <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
-          <h3 className="font-semibold text-blue-800 mb-3 flex items-center text-sm sm:text-base">
-            <FaBoxes className="mr-2 flex-shrink-0" /> HS Codes
-          </h3>
-          <div className="space-y-2">
-            {pastRecord.hsCodes?.map((code, idx) => (
-              <div
-                key={idx}
-                className="bg-white p-2 sm:p-3 rounded border border-blue-200"
-              >
-                <p className="text-xs sm:text-sm font-medium break-words">
-                  {code.code} - {code.name}
-                </p>
-                <p className="text-xs text-gray-600 break-words">
-                  Commodity: {code.commodity}
-                </p>
-              </div>
-            ))}
-          </div>
+      <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
+        <h3 className="font-semibold text-blue-800 mb-3 flex items-center text-sm sm:text-base">
+          <FaBoxes className="mr-2 flex-shrink-0" /> HS Codes
+        </h3>
+        <div className="space-y-2">
+          {pastRecord.hsCodes?.map((code, idx) => (
+            <div
+              key={idx}
+              className="bg-white p-2 sm:p-3 rounded border border-blue-200"
+            >
+              <p className="text-xs sm:text-sm font-medium break-words">
+                {code.code} - {code.name}
+              </p>
+              <p className="text-xs text-gray-600 break-words">
+                Commodity: {code.commodity}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="bg-purple-50 p-3 sm:p-4 rounded-lg">
+        <h3 className="font-semibold text-purple-800 mb-3 flex items-center text-sm sm:text-base">
+          <FaTree className="mr-2 flex-shrink-0" /> Planting Areas
+        </h3>
+        
+        {/* Map Component */}
+        <div className="space-y-4">
+          <MapViewOnly
+            coordinates={pastRecord.plantingAreas || []}
+            facilityAreas={record.exporterFacility?.areas || []}
+            facilityName={record.exporterFacility?.name || ""}
+            facilityAddress={record.exporterFacility?.address || ""}
+          />
         </div>
 
-        <div className="bg-purple-50 p-3 sm:p-4 rounded-lg">
-          <h3 className="font-semibold text-purple-800 mb-3 flex items-center text-sm sm:text-base">
-            <FaTree className="mr-2 flex-shrink-0" /> Planting Areas
-          </h3>
-          <div className="space-y-3 sm:space-y-4">
-            {pastRecord.plantingAreas?.map((area, idx) => (
-              <div
-                key={idx}
-                className="bg-white p-2 sm:p-3 rounded border border-purple-200"
-              >
-                <p className="font-medium text-sm sm:text-base break-words">
-                  {area.name}
+        {/* Detailed coordinates in text (restored from original) */}
+        {pastRecord.plantingAreas && pastRecord.plantingAreas.length > 0 && (
+          <div className="mt-4 space-y-4">
+            <h4 className="font-medium text-gray-700">Coordinates Details</h4>
+            {pastRecord.plantingAreas.map((area, idx) => (
+              <div key={idx} className="bg-white p-3 rounded border border-purple-200">
+                <p className="font-medium text-sm text-gray-800 mb-2">
+                  {area.name} – {area.hectares} hectares
                 </p>
-                <p className="text-xs sm:text-sm text-gray-600">
-                  Hectares: {area.hectares}
-                </p>
-                <p className="text-xs text-gray-500">
-                  Coordinates: {area.coordinates?.length || 0} points
-                </p>
+                {area.coordinates && area.coordinates.length > 0 && (
+                  <div className="mt-2">
+                    <p className="text-xs font-medium text-gray-600 mb-1">Coordinates (lat, lng):</p>
+                    <div className="max-h-48 overflow-y-auto bg-gray-50 rounded p-2 text-xs font-mono">
+                      {area.coordinates.map((coord, coordIdx) => {
+                        const latLng = convertToLatLng(coord);
+                        return (
+                          <div key={coordIdx} className="py-0.5">
+                            {coordIdx + 1}. {latLng.lat.toFixed(6)}, {latLng.lng.toFixed(6)}
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Total points: {area.coordinates.length}
+                    </p>
+                  </div>
+                )}
               </div>
             ))}
+            {pastRecord.totalHectares && (
+              <div className="bg-purple-100 p-2 rounded">
+                <p className="font-medium text-sm">Total area: {pastRecord.totalHectares} hectares</p>
+              </div>
+            )}
           </div>
-          {pastRecord.totalHectares && (
-            <div className="mt-3 pt-3 border-t border-purple-200">
-              <p className="font-medium text-sm sm:text-base">
-                Total Hectares: {pastRecord.totalHectares}
+        )}
+      </div>
+
+      <div className="bg-amber-50 p-3 sm:p-4 rounded-lg">
+        <h3 className="font-semibold text-amber-800 mb-3 flex items-center text-sm sm:text-base">
+          <FaFileAlt className="mr-2 flex-shrink-0" /> Documents
+        </h3>
+        <div className="space-y-3">
+          {pastRecord.deforestationFreeDocs?.length > 0 && (
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                Deforestation-Free Documentation
               </p>
+              <div className="space-y-2">
+                {pastRecord.deforestationFreeDocs.map((doc, idx) =>
+                  renderDocumentBox(doc, idx),
+                )}
+              </div>
             </div>
           )}
-        </div>
-
-        <div className="bg-amber-50 p-3 sm:p-4 rounded-lg">
-          <h3 className="font-semibold text-amber-800 mb-3 flex items-center text-sm sm:text-base">
-            <FaFileAlt className="mr-2 flex-shrink-0" /> Documents
-          </h3>
-          <div className="space-y-3">
-            {pastRecord.deforestationFreeDocs?.length > 0 && (
-              <div>
-                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">
-                  Deforestation-Free Documentation
-                </p>
-                <div className="space-y-2">
-                  {pastRecord.deforestationFreeDocs.map((doc, idx) =>
-                    renderDocumentBox(doc, idx),
-                  )}
-                </div>
+          {pastRecord.legalComplianceDocs?.length > 0 && (
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                Legal Compliance Documentation
+              </p>
+              <div className="space-y-2">
+                {pastRecord.legalComplianceDocs.map((doc, idx) =>
+                  renderDocumentBox(doc, idx),
+                )}
               </div>
-            )}
-            {pastRecord.legalComplianceDocs?.length > 0 && (
-              <div>
-                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">
-                  Legal Compliance Documentation
-                </p>
-                <div className="space-y-2">
-                  {pastRecord.legalComplianceDocs.map((doc, idx) =>
-                    renderDocumentBox(doc, idx),
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
-          <h3 className="font-semibold text-gray-800 mb-3 flex items-center text-sm sm:text-base">
-            <FaBuilding className="mr-2 flex-shrink-0" /> Facility Information
-          </h3>
-          {record.exporterFacility && (
-            <div className="space-y-1">
-              <p className="text-sm sm:text-base break-words">
-                <span className="text-xs sm:text-sm text-gray-600">
-                  Facility Name:
-                </span>{" "}
-                {record.exporterFacility.name}
-              </p>
-              <p className="text-sm sm:text-base break-words">
-                <span className="text-xs sm:text-sm text-gray-600">
-                  Facility Type:
-                </span>{" "}
-                {record.exporterFacility.type}
-              </p>
-              <p className="text-sm sm:text-base break-words">
-                <span className="text-xs sm:text-sm text-gray-600">
-                  Facility Address:
-                </span>{" "}
-                {record.exporterFacility.address}
-              </p>
             </div>
           )}
         </div>
       </div>
-    );
-  };
+
+      <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+        <h3 className="font-semibold text-gray-800 mb-3 flex items-center text-sm sm:text-base">
+          <FaBuilding className="mr-2 flex-shrink-0" /> Facility Information
+        </h3>
+        {record.exporterFacility && (
+          <div className="space-y-1">
+            <p className="text-sm sm:text-base break-words">
+              <span className="text-xs sm:text-sm text-gray-600">
+                Facility Name:
+              </span>{" "}
+              {record.exporterFacility.name}
+            </p>
+            <p className="text-sm sm:text-base break-words">
+              <span className="text-xs sm:text-sm text-gray-600">
+                Facility Type:
+              </span>{" "}
+              {record.exporterFacility.type}
+            </p>
+            <p className="text-sm sm:text-base break-words">
+              <span className="text-xs sm:text-sm text-gray-600">
+                Facility Address:
+              </span>{" "}
+              {record.exporterFacility.address}
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
   const renderImporterInfo = (data) => (
     <div className="space-y-4 sm:space-y-6">

@@ -1555,6 +1555,12 @@ const demoData = {
       ],
       status: "completed",
       createdOn: "2023-09-15",
+      edits:[
+        {
+          editedBy: "exporter-1",
+          editedOn: "2023-09-20",
+        },
+      ],
       images: [
         {
           name: "Loading Process",
@@ -1624,6 +1630,7 @@ const demoData = {
       ],
       status: "active",
       createdOn: "2023-10-20",
+       edits:[],
       images: [
         {
           name: "Loading Process",

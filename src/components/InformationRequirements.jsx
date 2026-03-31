@@ -2731,4 +2731,4 @@ const InformationRequirements = () => {
   );
 };
 
-export default InformationRequirements;
+export default InformationRequirements;  

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUserStore } from "../store/useUserStore";
 import { toast } from "react-toastify";
@@ -45,6 +45,211 @@ import {
   FaHourglassHalf,
   FaTrashAlt,
 } from "react-icons/fa";
+
+// Map imports
+import { GoogleMap, Polygon, InfoWindow } from "@react-google-maps/api";
+import { Layers, Info, X, MapPin } from "lucide-react";
+
+// Helper to convert [lat, lng] array to {lat, lng} object
+const convertToLatLng = (coord) => {
+  if (Array.isArray(coord)) {
+    return { lat: coord[0], lng: coord[1] };
+  }
+  return coord;
+};
+
+// Custom hook to check if Google Maps is loaded
+const useGoogleMapsLoaded = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const checkGoogleMaps = () => {
+      if (window.google && window.google.maps) {
+        setIsLoaded(true);
+        return true;
+      }
+      return false;
+    };
+    if (checkGoogleMaps()) return;
+    const interval = setInterval(() => {
+      if (checkGoogleMaps()) clearInterval(interval);
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
+
+  return isLoaded;
+};
+
+// Map Component (view‑only)
+const MapViewOnly = ({ coordinates = [], facilityAreas = [], facilityName = "", facilityAddress = "" }) => {
+  const isLoaded = useGoogleMapsLoaded();
+  const [selectedArea, setSelectedArea] = useState(null);
+  const [showInfoWindow, setShowInfoWindow] = useState(false);
+  const [infoWindowPosition, setInfoWindowPosition] = useState(null);
+  const [map, setMap] = useState(null);
+
+  const calculateCenter = () => {
+    if (facilityAreas.length > 0 && facilityAreas[0].coordinates && facilityAreas[0].coordinates.length > 0) {
+      const coord = convertToLatLng(facilityAreas[0].coordinates[0]);
+      return { lat: coord.lat, lng: coord.lng };
+    }
+    if (coordinates.length > 0 && coordinates[0].coordinates && coordinates[0].coordinates.length > 0) {
+      const coord = convertToLatLng(coordinates[0].coordinates[0]);
+      return { lat: coord.lat, lng: coord.lng };
+    }
+    return { lat: 0, lng: 0 };
+  };
+
+  const onLoad = useCallback((mapInstance) => setMap(mapInstance), []);
+  const onUnmount = useCallback(() => setMap(null), []);
+
+  const getPolygonPaths = (coords) => coords.map(coord => convertToLatLng(coord));
+
+  const handleAreaClick = (area, event) => {
+    event.stop();
+    setSelectedArea(area);
+    setInfoWindowPosition({ lat: event.latLng.lat(), lng: event.latLng.lng() });
+    setShowInfoWindow(true);
+  };
+
+  useEffect(() => {
+    if (map && (facilityAreas.length > 0 || coordinates.length > 0)) {
+      const bounds = new window.google.maps.LatLngBounds();
+      facilityAreas.forEach(area => {
+        area.coordinates?.forEach(coord => bounds.extend(convertToLatLng(coord)));
+      });
+      coordinates.forEach(plot => {
+        plot.coordinates?.forEach(coord => bounds.extend(convertToLatLng(coord)));
+      });
+      map.fitBounds(bounds);
+    }
+  }, [map, facilityAreas, coordinates]);
+
+  if (!isLoaded) {
+    return (
+      <div className="relative h-[400px] rounded-lg overflow-hidden border border-gray-300 bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading Google Maps...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-blue-500 opacity-30 border-2 border-blue-600 rounded"></div>
+          <span className="text-sm text-gray-700">Facility Main Harvest Zone</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-green-500 opacity-40 border-2 border-green-600 rounded"></div>
+          <span className="text-sm text-gray-700">Harvest Areas</span>
+        </div>
+      </div>
+
+      <div className="relative h-[500px] rounded-lg overflow-hidden border border-gray-300">
+        {facilityAddress && (
+          <div className="absolute top-4 right-4 z-20 bg-white bg-opacity-90 px-4 py-2 rounded-lg shadow-lg border border-gray-200">
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-green-600" />
+              <span className="text-sm font-medium text-gray-700">{facilityName}</span>
+              <span className="text-xs text-gray-500">| {facilityAddress}</span>
+            </div>
+          </div>
+        )}
+
+        <GoogleMap
+          mapContainerStyle={{ width: '100%', height: '100%' }}
+          center={calculateCenter()}
+          zoom={15}
+          onLoad={onLoad}
+          onUnmount={onUnmount}
+          options={{
+            mapTypeId: 'satellite',
+            streetViewControl: false,
+            mapTypeControl: false,
+            zoomControl: true,
+            fullscreenControl: true,
+          }}
+        >
+          {/* Facility areas (blue) */}
+          {facilityAreas.map((area, index) => (
+            area.coordinates && area.coordinates.length >= 3 && (
+              <Polygon
+                key={`facility-${index}`}
+                paths={getPolygonPaths(area.coordinates)}
+                options={{
+                  fillColor: '#3b82f6',
+                  fillOpacity: 0.2,
+                  strokeColor: '#2563eb',
+                  strokeWeight: 2,
+                  strokeOpacity: 0.8,
+                  zIndex: 1,
+                  clickable: true
+                }}
+                onClick={(e) => handleAreaClick({
+                  type: 'facility',
+                  name: area.name || facilityName || 'Production Site',
+                  hectares: area.hectares || 0,
+                  points: area.coordinates.length
+                }, e)}
+              />
+            )
+          ))}
+
+          {/* Harvest areas (green) */}
+          {coordinates.map((plot) => (
+            plot.coordinates && plot.coordinates.length >= 3 && (
+              <Polygon
+                key={plot.id || `plot-${Math.random()}`}
+                paths={getPolygonPaths(plot.coordinates)}
+                options={{
+                  fillColor: '#22c55e',
+                  fillOpacity: 0.4,
+                  strokeColor: '#16a34a',
+                  strokeWeight: 2,
+                  zIndex: 2,
+                  clickable: true
+                }}
+                onClick={(e) => handleAreaClick({
+                  type: 'planting',
+                  name: plot.name,
+                  hectares: plot.hectares,
+                  points: plot.coordinates.length,
+                  coordinates: plot.coordinates
+                }, e)}
+              />
+            )
+          ))}
+
+          {showInfoWindow && selectedArea && infoWindowPosition && (
+            <InfoWindow
+              position={infoWindowPosition}
+              onCloseClick={() => setShowInfoWindow(false)}
+            >
+              <div className="p-2 max-w-xs">
+                <h4 className="font-semibold text-gray-900 mb-1">{selectedArea.name}</h4>
+                <div className="text-sm space-y-1">
+                  <p className="text-gray-600">
+                    <span className="font-medium">Type:</span> {selectedArea.type === 'facility' ? 'Production Site' : 'Harvest Area'}
+                  </p>
+                  <p className="text-gray-600">
+                    <span className="font-medium">Area:</span> {selectedArea.hectares} hectares
+                  </p>
+                  <p className="text-gray-600">
+                    <span className="font-medium">Points:</span> {selectedArea.points}
+                  </p>
+                </div>
+              </div>
+            </InfoWindow>
+          )}
+        </GoogleMap>
+      </div>
+    </div>
+  );
+};
 
 const CurrentDueDiligence = () => {
   const { user, demoData, updateUser } = useUserStore();
@@ -955,6 +1160,33 @@ const CurrentDueDiligence = () => {
           <p>No exporter information available</p>
         </div>
       );
+
+    // Extract facility areas from exporter's facilities (production/forest sites)
+    const facilities = exporter.facilities?.filter(f => f.type === 'production/forest site') || [];
+    const facilityAreas = facilities.flatMap(f => f.areas || []); // assuming each facility has areas
+
+    // Extract harvest areas from shipment forests
+    const harvestAreas = [];
+    if (shipment.forests) {
+      shipment.forests.forEach(forest => {
+        if (forest.harvestAreas) {
+          forest.harvestAreas.forEach(area => {
+            harvestAreas.push({
+              id: `${forest.forestId}-${area.name}`,
+              name: area.name,
+              hectares: area.hectares,
+              coordinates: area.coordinates,
+            });
+          });
+        }
+      });
+    }
+
+    // Use the first facility for map display (or all)
+    const primaryFacility = facilities[0];
+    const facilityName = primaryFacility?.name || "";
+    const facilityAddress = primaryFacility?.address || "";
+
     return (
       <div className="space-y-4 sm:space-y-6">
         <div className="bg-green-50 p-3 sm:p-4 rounded-lg">
@@ -1090,6 +1322,21 @@ const CurrentDueDiligence = () => {
                 )}
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Map View - added here */}
+        {(facilityAreas.length > 0 || harvestAreas.length > 0) && (
+          <div className="bg-white p-3 sm:p-4 rounded-lg border border-gray-200">
+            <h3 className="font-semibold text-gray-800 mb-3 flex items-center text-sm sm:text-base">
+              <FaMapMarkerAlt className="mr-2 flex-shrink-0" /> Geographic View
+            </h3>
+            <MapViewOnly
+              coordinates={harvestAreas}
+              facilityAreas={facilityAreas}
+              facilityName={facilityName}
+              facilityAddress={facilityAddress}
+            />
           </div>
         )}
       </div>

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useUserStore } from "../store/useUserStore";
-import { Package, ChevronRightIcon } from "lucide-react";
+import { Package, ChevronRightIcon, Edit, Save, X } from "lucide-react";
 
 const Overview = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -15,7 +15,24 @@ const Overview = () => {
     verifiers: 0,
   });
 
-  const { user, demoData } = useUserStore();
+  // Workbook state
+  const [shipments, setShipments] = useState([]);
+  const [editingShipmentId, setEditingShipmentId] = useState(null);
+  const [editedShipmentData, setEditedShipmentData] = useState({});
+
+  const { user, demoData, updateDemoData } = useUserStore();
+
+  // Helper: get user's name or ID for lastEditedBy
+  const getCurrentUserName = () => {
+    if (!user) return "unknown";
+    if (user.role === "exporter" || user.role === "importer") {
+      return user.basicInfo?.companyName || user.id;
+    }
+    // For agents, use their name or email
+    return user.basicInfo?.firstName
+      ? `${user.basicInfo.firstName} ${user.basicInfo.lastName}`
+      : user.basicInfo?.email || user.id;
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -94,6 +111,32 @@ const Overview = () => {
     setLinkedCompanies(groupedArray);
   }, [user, demoData]);
 
+  // Load shipments when companyData is available and is exporter
+  useEffect(() => {
+    if (!companyData || companyData.role !== "exporter") return;
+
+    const shipmentIds = companyData.shipments || [];
+    const loadedShipments = shipmentIds
+      .map((id) => demoData.shipments[id])
+      .filter(Boolean)
+      .map((shipment) => {
+        // Add extra fields for display
+        const importer = demoData.users[shipment.importerId];
+        return {
+          ...shipment,
+          exporterName: companyData.basicInfo?.companyName,
+          importerName: importer?.basicInfo?.companyName || "Unknown",
+          lastEditedOn: shipment.edits?.length
+            ? shipment.edits[shipment.edits.length - 1].editedOn
+            : null,
+          lastEditedBy: shipment.edits?.length
+            ? shipment.edits[shipment.edits.length - 1].editedBy
+            : null,
+        };
+      });
+    setShipments(loadedShipments);
+  }, [companyData, demoData]);
+
   // Helper function to get country code from country name (simplified)
   const getCountryCode = (countryName) => {
     const countryCodeMap = {
@@ -117,7 +160,7 @@ const Overview = () => {
     if (!companyData?.facilities) return "";
 
     const corporateFacilities = companyData.facilities.filter(
-      (facility) => facility.type === "Corporate facility",
+      (facility) => facility.type === "Corporate facility"
     );
 
     if (corporateFacilities.length > 0) {
@@ -127,13 +170,13 @@ const Overview = () => {
     return companyData.basicInfo?.country || "";
   };
 
-  // Pagination settings
+  // Pagination settings for linked companies
   const itemsPerPage = 3;
   const totalPages = Math.ceil(linkedCompanies.length / itemsPerPage);
   const startIndex = currentPage * itemsPerPage;
   const currentCountries = linkedCompanies.slice(
     startIndex,
-    startIndex + itemsPerPage,
+    startIndex + itemsPerPage
   );
 
   // Country code to flag URL mapping
@@ -186,54 +229,6 @@ const Overview = () => {
   };
 
   // Don't render if user is not logged in or not an exporter/importer
-  // Dummy shipment data for workbook preview
-const dummyShipments = [
-  {
-    batchNumber: 'SH-2024-001',
-    status: 'active',
-    exporter: 'GreenWood Exports Ltd',
-    importer: 'Atlantic Timber Co',
-    destination: 'Rotterdam',
-    createdOn: '2024-03-15',
-    updates: 2
-  },
-  {
-    batchNumber: 'SH-2024-002',
-    status: 'pending',
-    exporter: 'Amazonia Hardwoods',
-    importer: 'European Timber Group',
-    destination: 'Hamburg',
-    createdOn: '2024-03-14',
-    updates: 0
-  },
-  {
-    batchNumber: 'SH-2024-003',
-    status: 'completed',
-    exporter: 'Nordic Forest Products',
-    importer: 'UK Timber Importers',
-    destination: 'Liverpool',
-    createdOn: '2024-03-12',
-    updates: 0
-  },
-  {
-    batchNumber: 'SH-2024-004',
-    status: 'active',
-    exporter: 'GreenWood Exports Ltd',
-    importer: 'Mediterranean Woods',
-    destination: 'Marseille',
-    createdOn: '2024-03-10',
-    updates: 1
-  },
-  {
-    batchNumber: 'SH-2024-005',
-    status: 'pending',
-    exporter: 'Pacific Lumber Co',
-    importer: 'Asian Timber Partners',
-    destination: 'Shanghai',
-    createdOn: '2024-03-08',
-    updates: 3
-  }
-];
   if (!user || !companyData) {
     return (
       <motion.div
@@ -250,6 +245,69 @@ const dummyShipments = [
       </motion.div>
     );
   }
+
+  // Workbook editing handlers
+  const handleEdit = (shipmentId) => {
+    const shipment = shipments.find((s) => s.id === shipmentId);
+    setEditingShipmentId(shipmentId);
+    setEditedShipmentData({
+      productionDate: shipment.productionDate || "",
+      processingLoadingDate: shipment.processingLoadingDate || "",
+      importerConsignee: shipment.importerConsignee || "",
+      batchNumber: shipment.batchNumber || "",
+      status: shipment.status || "",
+    });
+  };
+
+  const handleCancel = () => {
+    setEditingShipmentId(null);
+    setEditedShipmentData({});
+  };
+
+  const handleFieldChange = (field, value) => {
+    setEditedShipmentData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSave = async (shipmentId) => {
+    const shipmentToUpdate = shipments.find((s) => s.id === shipmentId);
+    if (!shipmentToUpdate) return;
+
+    // Create updated shipment object
+    const updatedShipment = {
+      ...shipmentToUpdate,
+      productionDate: editedShipmentData.productionDate,
+      processingLoadingDate: editedShipmentData.processingLoadingDate,
+      importerConsignee: editedShipmentData.importerConsignee,
+      batchNumber: editedShipmentData.batchNumber,
+      status: editedShipmentData.status,
+      edits: [
+        ...(shipmentToUpdate.edits || []),
+        {
+          editedBy: getCurrentUserName(),
+          editedOn: new Date().toISOString().split("T")[0], // YYYY-MM-DD
+        },
+      ],
+    };
+
+    // Update the global demoData
+    const updatedDemoData = {
+      ...demoData,
+      shipments: {
+        ...demoData.shipments,
+        [shipmentId]: updatedShipment,
+      },
+    };
+
+    updateDemoData(updatedDemoData);
+    setEditingShipmentId(null);
+    setEditedShipmentData({});
+  };
+
+  // Helper to format date for display
+  const formatDate = (dateString) => {
+    if (!dateString) return "—";
+    return dateString;
+  };
 
   return (
     <motion.div
@@ -455,7 +513,7 @@ const dummyShipments = [
                               {companyName}
                             </p>
                           </div>
-                        ),
+                        )
                       )}
                     </div>
                   </div>
@@ -495,7 +553,7 @@ const dummyShipments = [
                   <button
                     onClick={() =>
                       setCurrentPage((prev) =>
-                        Math.min(totalPages - 1, prev + 1),
+                        Math.min(totalPages - 1, prev + 1)
                       )
                     }
                     disabled={currentPage === totalPages - 1}
@@ -520,155 +578,235 @@ const dummyShipments = [
           )}
         </div>
       </div>
-      <div className="mt-6 lg:mt-8">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl lg:text-2xl font-bold text-green-800 flex items-center gap-2">
-            <Package size={24} className="text-green-600" />
-            Shipment Workbook
-          </h2>
-          <button className="text-sm text-green-600 hover:text-green-700 font-medium flex items-center gap-1">
-            View All <ChevronRightIcon size={16} />
-          </button>
-        </div>
 
-        <div className="bg-white rounded-xl shadow border border-green-100 overflow-hidden">
-          {/* Table for larger screens */}
-          <div className="hidden md:block overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-green-50 border-b border-green-100">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-green-700 uppercase tracking-wider">
-                    Batch #
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-green-700 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-green-700 uppercase tracking-wider">
-                    Exporter
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-green-700 uppercase tracking-wider">
-                    Importer
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-green-700 uppercase tracking-wider">
-                    Destination
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-green-700 uppercase tracking-wider">
-                    Created
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-green-700 uppercase tracking-wider">
-                    Updates
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {dummyShipments.map((shipment, idx) => (
-                  <tr
-                    key={idx}
-                    className="hover:bg-green-50/50 transition-colors"
-                  >
-                    <td className="px-4 py-3 text-sm font-medium text-gray-900">
-                      {shipment.batchNumber}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          shipment.status === "active"
-                            ? "bg-blue-100 text-blue-800"
-                            : shipment.status === "pending"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-green-100 text-green-800"
-                        }`}
-                      >
-                        {shipment.status.charAt(0).toUpperCase() +
-                          shipment.status.slice(1)}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-sm text-gray-700">
-                      {shipment.exporter}
-                    </td>
-                    <td className="px-4 py-3 text-sm text-gray-700">
-                      {shipment.importer}
-                    </td>
-                    <td className="px-4 py-3 text-sm text-gray-700">
-                      {shipment.destination}
-                    </td>
-                    <td className="px-4 py-3 text-sm text-gray-500">
-                      {shipment.createdOn}
-                    </td>
-                    <td className="px-4 py-3">
-                      {shipment.updates > 0 ? (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          {shipment.updates} new
-                        </span>
-                      ) : (
-                        <span className="text-xs text-gray-400">—</span>
-                      )}
-                    </td>
+      {/* Shipment Workbook - only for exporters */}
+      {companyData.role === "exporter" && (
+        <div className="mt-6 lg:mt-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl lg:text-2xl font-bold text-green-800 flex items-center gap-2">
+              <Package size={24} className="text-green-600" />
+              Shipment Workbook
+            </h2>
+            <button className="text-sm text-green-600 hover:text-green-700 font-medium flex items-center gap-1">
+              View All <ChevronRightIcon size={16} />
+            </button>
+          </div>
+
+          <div className="bg-white rounded-xl shadow border border-green-100 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[1000px]">
+                <thead className="bg-green-50 border-b border-green-100">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-green-700 uppercase tracking-wider">
+                      Batch #
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-green-700 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-green-700 uppercase tracking-wider">
+                      Exporter
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-green-700 uppercase tracking-wider">
+                      Importer / Consignee
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-green-700 uppercase tracking-wider">
+                      Production Date
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-green-700 uppercase tracking-wider">
+                      Processing / Loading Date
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-green-700 uppercase tracking-wider">
+                      Created On
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-green-700 uppercase tracking-wider">
+                      Last Edited
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-green-700 uppercase tracking-wider">
+                      Actions
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {shipments.map((shipment) => {
+                    const isEditing = editingShipmentId === shipment.id;
+                    return (
+                      <tr
+                        key={shipment.id}
+                        className="hover:bg-green-50/50 transition-colors"
+                      >
+                        {/* Batch Number */}
+                        <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                          {isEditing ? (
+                            <input
+                              type="text"
+                              value={editedShipmentData.batchNumber}
+                              onChange={(e) =>
+                                handleFieldChange("batchNumber", e.target.value)
+                              }
+                              className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                            />
+                          ) : (
+                            shipment.batchNumber
+                          )}
+                        </td>
 
-          {/* Mobile card layout */}
-          <div className="md:hidden divide-y divide-gray-100">
-            {dummyShipments.map((shipment, idx) => (
-              <div
-                key={idx}
-                className="p-4 hover:bg-green-50/50 transition-colors"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-semibold text-gray-900">
-                    {shipment.batchNumber}
-                  </span>
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                      shipment.status === "active"
-                        ? "bg-blue-100 text-blue-800"
-                        : shipment.status === "pending"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-green-100 text-green-800"
-                    }`}
-                  >
-                    {shipment.status.charAt(0).toUpperCase() +
-                      shipment.status.slice(1)}
-                  </span>
-                </div>
-                <div className="grid grid-cols-2 gap-2 text-sm mb-2">
-                  <div>
-                    <p className="text-xs text-green-600">Exporter</p>
-                    <p className="text-gray-700 truncate">
-                      {shipment.exporter}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-green-600">Importer</p>
-                    <p className="text-gray-700 truncate">
-                      {shipment.importer}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-green-600">Destination</p>
-                    <p className="text-gray-700">{shipment.destination}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-green-600">Created</p>
-                    <p className="text-gray-700">{shipment.createdOn}</p>
-                  </div>
-                </div>
-                {shipment.updates > 0 && (
-                  <div className="flex justify-end">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      {shipment.updates} new update
-                      {shipment.updates > 1 ? "s" : ""}
-                    </span>
-                  </div>
-                )}
+                        {/* Status */}
+                        <td className="px-4 py-3">
+                          {isEditing ? (
+                            <select
+                              value={editedShipmentData.status}
+                              onChange={(e) =>
+                                handleFieldChange("status", e.target.value)
+                              }
+                              className="border border-gray-300 rounded px-2 py-1 text-sm"
+                            >
+                              <option value="pending">Pending</option>
+                              <option value="active">Active</option>
+                              <option value="completed">Completed</option>
+                            </select>
+                          ) : (
+                            <span
+                              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                shipment.status === "active"
+                                  ? "bg-blue-100 text-blue-800"
+                                  : shipment.status === "pending"
+                                  ? "bg-yellow-100 text-yellow-800"
+                                  : "bg-green-100 text-green-800"
+                              }`}
+                            >
+                              {shipment.status.charAt(0).toUpperCase() +
+                                shipment.status.slice(1)}
+                            </span>
+                          )}
+                        </td>
+
+                        {/* Exporter (read-only) */}
+                        <td className="px-4 py-3 text-sm text-gray-700">
+                          {shipment.exporterName}
+                        </td>
+
+                        {/* Importer / Consignee */}
+                        <td className="px-4 py-3 text-sm text-gray-700">
+                          {isEditing ? (
+                            <input
+                              type="text"
+                              value={editedShipmentData.importerConsignee}
+                              onChange={(e) =>
+                                handleFieldChange(
+                                  "importerConsignee",
+                                  e.target.value
+                                )
+                              }
+                              className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                            />
+                          ) : (
+                            shipment.importerConsignee ||
+                            shipment.importerName
+                          )}
+                        </td>
+
+                        {/* Production Date */}
+                        <td className="px-4 py-3 text-sm text-gray-700">
+                          {isEditing ? (
+                            <input
+                              type="date"
+                              value={editedShipmentData.productionDate}
+                              onChange={(e) =>
+                                handleFieldChange(
+                                  "productionDate",
+                                  e.target.value
+                                )
+                              }
+                              className="border border-gray-300 rounded px-2 py-1 text-sm"
+                            />
+                          ) : (
+                            formatDate(shipment.productionDate)
+                          )}
+                        </td>
+
+                        {/* Processing / Loading Date */}
+                        <td className="px-4 py-3 text-sm text-gray-700">
+                          {isEditing ? (
+                            <input
+                              type="date"
+                              value={editedShipmentData.processingLoadingDate}
+                              onChange={(e) =>
+                                handleFieldChange(
+                                  "processingLoadingDate",
+                                  e.target.value
+                                )
+                              }
+                              className="border border-gray-300 rounded px-2 py-1 text-sm"
+                            />
+                          ) : (
+                            formatDate(shipment.processingLoadingDate)
+                          )}
+                        </td>
+
+                        {/* Created On (read-only) */}
+                        <td className="px-4 py-3 text-sm text-gray-500">
+                          {formatDate(shipment.createdOn)}
+                        </td>
+
+                        {/* Last Edited */}
+                        <td className="px-4 py-3 text-sm text-gray-500">
+                          {shipment.lastEditedOn && shipment.lastEditedBy ? (
+                            <div>
+                              <div>{formatDate(shipment.lastEditedOn)}</div>
+                              <div className="text-xs text-gray-400">
+                                by {shipment.lastEditedBy}
+                              </div>
+                            </div>
+                          ) : (
+                            "—"
+                          )}
+                        </td>
+
+                        {/* Actions */}
+                        <td className="px-4 py-3">
+                          {isEditing ? (
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => handleSave(shipment.id)}
+                                className="text-green-600 hover:text-green-800"
+                                title="Save"
+                              >
+                                <Save size={18} />
+                              </button>
+                              <button
+                                onClick={handleCancel}
+                                className="text-red-600 hover:text-red-800"
+                                title="Cancel"
+                              >
+                                <X size={18} />
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => handleEdit(shipment.id)}
+                              className="text-blue-600 hover:text-blue-800"
+                              title="Edit"
+                            >
+                              <Edit size={18} />
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            {shipments.length === 0 && (
+              <div className="text-center py-8">
+                <p className="text-gray-500 text-sm">
+                  No shipments found for this exporter.
+                </p>
               </div>
-            ))}
+            )}
           </div>
         </div>
-      </div>
+      )}
     </motion.div>
   );
 };
