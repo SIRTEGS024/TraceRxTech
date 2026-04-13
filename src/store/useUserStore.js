@@ -1544,14 +1544,7 @@ const demoData = {
       totalHectares: 1231,
       totalKilograms: 25000,
       containers: [
-        {
-          containerNumber: "MAEU-1234567",
-          packingList: {
-            name: "packing list",
-            url: "https://cloud-storage.com/docs/shipment/packing-1.pdf",
-          },
-          kilograms: 20000,
-        },
+        { },
       ],
       status: "completed",
       createdOn: "2023-09-15",
