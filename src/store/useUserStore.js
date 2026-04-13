@@ -765,10 +765,12 @@ const demoData = {
             {
               code: "4403",
               name: "Wood in the rough",
+              supplier:"exporter-1"
             },
             {
               code: "4407",
               name: "Wood sawn or chipped lengthwise",
+              supplier:"exporter-2"
             },
           ],
         },
@@ -778,6 +780,7 @@ const demoData = {
             {
               code: "ex 0901 11 00",
               name: "Coffee, not roasted, not decaffeinated",
+               supplier:"exporter-2"
             },
           ],
         },
@@ -1077,6 +1080,7 @@ const demoData = {
             {
               code: "4407",
               name: "Wood sawn or chipped lengthwise",
+              supplier:"exporter-1"
             },
           ],
         },
