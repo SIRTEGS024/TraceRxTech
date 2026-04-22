@@ -54,12 +54,14 @@ export default function Navbar() {
               <img src={logo} alt="TraceRx Logo" className="h-10" />
               <div className="hidden lg:flex items-center gap-2 text-sm text-gray-600">
                 <FaLeaf size={16} className="text-emerald-600" />
-                <span>Traceability, Sustainability, Legality, Due Diligence</span>
+                <span>
+                  Traceability, Sustainability, Legality, Due Diligence
+                </span>
               </div>
             </Link>
           </div>
 
-          <div className="hidden lg:flex items-center gap-4">
+          {/* <div className="hidden lg:flex items-center gap-4">
             <a href="mailto:contact@example.com">
               <MdEmail size={18} className="text-gray-700" />
             </a>
@@ -72,7 +74,7 @@ export default function Navbar() {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </form>
-          </div>
+          </div> */}
 
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -85,7 +87,7 @@ export default function Navbar() {
 
         <div className="h-px w-full mt-2 bg-emerald-200" />
 
-        <form onSubmit={handleSearch} className="lg:hidden my-4">
+        {/* <form onSubmit={handleSearch} className="lg:hidden my-4">
           <ReusableInput
             placeholder="Search"
             icon={FaSearch}
@@ -93,7 +95,7 @@ export default function Navbar() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-        </form>
+        </form> */}
 
         <div
           className={`w-full flex-col lg:flex lg:flex-row justify-between items-center p-1 ${
@@ -120,12 +122,17 @@ export default function Navbar() {
                   <>
                     {/* Desktop submenu */}
                     <div className="hidden lg:block">
-                      <div className="relative pb-2 group" onMouseEnter={() => setOpenDropdown(link.name)}>
+                      <div
+                        className="relative pb-2 group"
+                        onMouseEnter={() => setOpenDropdown(link.name)}
+                      >
                         <button
                           className="flex items-center text-gray-700 text-sm font-medium h-[28px] relative"
                           onClick={(e) => {
                             e.stopPropagation();
-                            setOpenDropdown(openDropdown === link.name ? null : link.name);
+                            setOpenDropdown(
+                              openDropdown === link.name ? null : link.name,
+                            );
                           }}
                         >
                           {link.name}
@@ -161,7 +168,7 @@ export default function Navbar() {
                         onClick={(e) => {
                           e.stopPropagation();
                           setMobileOpenDropdown(
-                            mobileOpenDropdown === link.name ? null : link.name
+                            mobileOpenDropdown === link.name ? null : link.name,
                           );
                         }}
                       >
@@ -174,7 +181,9 @@ export default function Navbar() {
                       </button>
                       <div
                         className={`pl-4 overflow-hidden transition-all duration-300 ease-in-out bg-white ${
-                          mobileOpenDropdown === link.name ? "max-h-96" : "max-h-0"
+                          mobileOpenDropdown === link.name
+                            ? "max-h-96"
+                            : "max-h-0"
                         }`}
                       >
                         {link.subLinks.map((s) => (
@@ -204,7 +213,7 @@ export default function Navbar() {
             ))}
           </div>
 
-          <div className="flex flex-col lg:flex-row items-center gap-4 mt-4 lg:mt-0 w-full lg:w-auto">
+          {/* <div className="flex flex-col lg:flex-row items-center gap-4 mt-4 lg:mt-0 w-full lg:w-auto">
             <Link
               to="/partners"
               onClick={handleMobileLinkClick}
@@ -228,7 +237,7 @@ export default function Navbar() {
             >
               SIGN IN
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

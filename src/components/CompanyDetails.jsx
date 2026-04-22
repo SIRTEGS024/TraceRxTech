@@ -1979,17 +1979,16 @@ const FacilityLocation = ({
   );
 };
 
-// Section 1: Company Information Form (Now Editable) - Updated flag display
+// Section 1: Company Information Form (Corrected - Independent Address)
 const Section1 = ({ companyData, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [companyInfo, setCompanyInfo] = useState({
     companyName: "",
     country: "",
     countryCode: "us",
-    address: "",
+    address: "", // ← independent address, stored in basicInfo.address
     registrationNumber: "",
     taxId: "",
-    exportLicense: "",
     licenseNumber: "",
   });
 
@@ -2001,35 +2000,16 @@ const Section1 = ({ companyData, onUpdate }) => {
         companyName: companyData.basicInfo.companyName || "",
         country: companyData.basicInfo.country || "",
         countryCode: getCountryCode(companyData.basicInfo.country) || "us",
-        address: getCorporateOfficeAddress() || "",
+        address: companyData.basicInfo.address || "", // ← load existing address
         registrationNumber: companyData.basicInfo.rcNumber || "",
         taxId: companyData.basicInfo.tinNumber || "",
-        exportLicense: companyData.basicInfo.licenseNumber || "",
         licenseNumber: companyData.basicInfo.licenseNumber || "",
       });
     }
   }, [companyData]);
 
-  // Get corporate office address from facilities
-  const getCorporateOfficeAddress = () => {
-    if (!companyData?.facilities) return "";
-
-    const corporateFacilities = companyData.facilities.filter(
-      (facility) =>
-        facility.type === "Corporate facility" || facility.type === "corporate",
-    );
-
-    if (corporateFacilities.length > 0) {
-      return corporateFacilities[0].address || "";
-    }
-
-    return "";
-  };
-
-  // Helper function to get country code
   const getCountryCode = (countryName) => {
     if (!countryName) return "us";
-
     const countryCodeMap = {
       "United States": "us",
       Canada: "ca",
@@ -2041,25 +2021,23 @@ const Section1 = ({ companyData, onUpdate }) => {
       Japan: "jp",
       China: "cn",
       India: "in",
-      // Add more as needed
     };
     return countryCodeMap[countryName] || "us";
   };
 
   const handleSave = () => {
-    // Update company data in store
     const updatedCompanyData = {
       ...companyData,
       basicInfo: {
         ...companyData.basicInfo,
         companyName: companyInfo.companyName,
         country: companyInfo.country,
+        address: companyInfo.address, // ← saved to basicInfo.address
         rcNumber: companyInfo.registrationNumber,
         tinNumber: companyInfo.taxId,
         licenseNumber: companyInfo.licenseNumber,
       },
     };
-
     onUpdate(updatedCompanyData);
     setIsEditing(false);
     toast.success("Company information updated successfully!", {
@@ -2071,7 +2049,6 @@ const Section1 = ({ companyData, onUpdate }) => {
     setCompanyInfo((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Handle country selection
   const handleCountrySelect = (e) => {
     const selectedCountry = countries.find((c) => c.name === e.target.value);
     if (selectedCountry) {
@@ -2083,15 +2060,10 @@ const Section1 = ({ companyData, onUpdate }) => {
     }
   };
 
-  // Get license label based on role
   const getLicenseLabel = () => {
     if (!companyData) return "License";
-
-    if (companyData.role === "exporter") {
-      return "Export License";
-    } else if (companyData.role === "importer") {
-      return "Import License";
-    }
+    if (companyData.role === "exporter") return "Export License";
+    if (companyData.role === "importer") return "Import License";
     return "License";
   };
 
@@ -2187,10 +2159,10 @@ const Section1 = ({ companyData, onUpdate }) => {
           )}
         </div>
 
-        {/* Corporate Office Address */}
+        {/* Company Address (independent, stored in basicInfo.address) */}
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-green-600 uppercase tracking-wide mb-2">
-            Corporate Office Address
+            Company Address
           </label>
           {isEditing ? (
             <textarea
@@ -2198,11 +2170,12 @@ const Section1 = ({ companyData, onUpdate }) => {
               onChange={(e) => handleChange("address", e.target.value)}
               rows="3"
               className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              placeholder="Enter the company's main address"
             />
           ) : (
             <div className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg break-words">
               <p className="text-gray-800 whitespace-pre-line">
-                {companyInfo.address}
+                {companyInfo.address || "Not provided"}
               </p>
             </div>
           )}
@@ -2250,7 +2223,7 @@ const Section1 = ({ companyData, onUpdate }) => {
           )}
         </div>
 
-        {/* Export/Import Certificate Number */}
+        {/* Export/Import License Number */}
         <div>
           <label className="block text-sm font-medium text-green-600 uppercase tracking-wide mb-2">
             {getLicenseLabel()}
@@ -4812,6 +4785,225 @@ const Section5 = ({ linkedCompanies, onUpdate, demoData, currentUserRole }) => {
   );
 };
 
+// Section 6: EU Customers (Only for Importers)
+const EUCustomersSection = ({ euCustomers, onUpdate }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [editingCustomer, setEditingCustomer] = useState(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    address: "",
+    email: "",
+  });
+
+  const handleOpenModal = (customer = null) => {
+    if (customer) {
+      setEditingCustomer(customer);
+      setFormData({
+        name: customer.name,
+        address: customer.address,
+        email: customer.email,
+      });
+    } else {
+      setEditingCustomer(null);
+      setFormData({ name: "", address: "", email: "" });
+    }
+    setShowModal(true);
+  };
+
+  const handleSave = () => {
+    if (!formData.name || !formData.address || !formData.email) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    let updatedCustomers = [...(euCustomers || [])];
+    if (editingCustomer) {
+      // Update existing
+      const index = updatedCustomers.findIndex(
+        (c) => c.id === editingCustomer.id,
+      );
+      if (index !== -1) {
+        updatedCustomers[index] = { ...formData, id: editingCustomer.id };
+      }
+      toast.success("EU customer updated successfully!");
+    } else {
+      // Add new
+      const newCustomer = { ...formData, id: Date.now() };
+      updatedCustomers.push(newCustomer);
+      toast.success("EU customer added successfully!");
+    }
+
+    onUpdate(updatedCustomers);
+    setShowModal(false);
+    setEditingCustomer(null);
+  };
+
+  const handleDelete = (customerId) => {
+    if (window.confirm("Are you sure you want to remove this EU customer?")) {
+      const updatedCustomers = (euCustomers || []).filter(
+        (c) => c.id !== customerId,
+      );
+      onUpdate(updatedCustomers);
+      toast.info("EU customer removed");
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-xl p-4 md:p-6 shadow-lg border border-green-100">
+      <h2 className="text-xl font-bold text-green-800 mb-6 flex items-center gap-2">
+        <Globe className="w-5 h-5" />
+        6. EU Customers
+      </h2>
+
+      <div className="mb-6">
+        <button
+          onClick={() => handleOpenModal()}
+          className="flex items-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors w-full sm:w-auto"
+        >
+          <Plus className="w-5 h-5" />
+          Add EU Customer
+        </button>
+      </div>
+
+      {!euCustomers || euCustomers.length === 0 ? (
+        <div className="text-center py-12 border-2 border-dashed border-gray-300 rounded-xl">
+          <Users className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+          <h3 className="text-lg font-medium text-gray-600 mb-2">
+            No EU Customers Added
+          </h3>
+          <p className="text-gray-500">
+            Click "Add EU Customer" to add your first customer
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {euCustomers.map((customer) => (
+            <div
+              key={customer.id}
+              className="border border-green-200 rounded-lg p-4 bg-green-50/50 hover:bg-green-50 transition-colors"
+            >
+              <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-bold text-green-800 break-words">
+                    {customer.name}
+                  </h4>
+                  <div className="mt-2 space-y-1">
+                    <p className="text-sm text-gray-600 flex items-start gap-2">
+                      <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <span className="break-words">{customer.address}</span>
+                    </p>
+                    <p className="text-sm text-gray-600 flex items-start gap-2">
+                      <Mail className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <span className="break-words">{customer.email}</span>
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 self-end sm:self-start mt-2 sm:mt-0">
+                  <button
+                    onClick={() => handleOpenModal(customer)}
+                    className="p-1.5 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
+                    title="Edit Customer"
+                  >
+                    <Edit className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(customer.id)}
+                    className="p-1.5 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors"
+                    title="Delete Customer"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Add/Edit Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-4 md:p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-bold text-green-800 break-words">
+                {editingCustomer ? "Edit EU Customer" : "Add EU Customer"}
+              </h3>
+              <button onClick={() => setShowModal(false)}>
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-green-700 mb-1">
+                  Customer Name *
+                </label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-green-200 rounded-lg"
+                  placeholder="Enter customer name"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-green-700 mb-1">
+                  Address *
+                </label>
+                <textarea
+                  value={formData.address}
+                  onChange={(e) =>
+                    setFormData({ ...formData, address: e.target.value })
+                  }
+                  rows="3"
+                  className="w-full px-3 py-2 border border-green-200 rounded-lg"
+                  placeholder="Enter full address"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-green-700 mb-1">
+                  Email *
+                </label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-green-200 rounded-lg"
+                  placeholder="customer@example.com"
+                />
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSave}
+                  disabled={
+                    !formData.name || !formData.address || !formData.email
+                  }
+                  className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+                >
+                  {editingCustomer ? "Update" : "Add"} Customer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 // Main Component - UPDATED to fix demoData.filter error
 const CompanyDetails = () => {
   const { user, demoData, setUser, updateUser } = useUserStore();
@@ -4933,6 +5125,16 @@ const CompanyDetails = () => {
           demoData={demoData}
           currentUserRole={companyData.role}
         />
+
+        {/* Section 6: EU Customers (only for importers) */}
+        {companyData.role === "importer" && (
+          <EUCustomersSection
+            euCustomers={companyData.euCustomers || []}
+            onUpdate={(euCustomers) =>
+              updateSection("euCustomers", euCustomers)
+            }
+          />
+        )}
       </div>
     </motion.div>
   );

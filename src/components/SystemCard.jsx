@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"; // Import Link from react-router-dom
 const SystemCard = ({ image, title, subtext, buttonText, url }) => {
   return (
     <motion.div
-      className="relative bg-white shadow-lg rounded-2xl overflow-hidden w-56 h-96 lg:w-64 lg:h-[26rem] flex-shrink-0"
+      className="relative bg-white shadow-lg rounded-2xl overflow-hidden w-56 h-86 lg:w-64 lg:h-[20rem] flex-shrink-0"
       whileHover={{
         x: 10,
         scale: 1.03,

@@ -19,6 +19,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUserStore } from "./store/useUserStore";
 import { GoogleMapsLoader } from "./components/GoogleMapsLoader";
+import Payments from "./pages/Payments";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -124,6 +125,7 @@ function RoutesContent({ hideLayout, isDashboard, apiKey }) {
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="/partners" element={<PartnerDirectory />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/payments" element={<Payments />} />
 
       {/* Auth routes */}
       <Route path="/signup" element={<SignupPage />} />

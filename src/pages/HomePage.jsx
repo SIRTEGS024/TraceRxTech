@@ -34,7 +34,7 @@ const HomePage = () => {
         subTitle={SECTION_HEADERS.system.subTitle}
         systemData={SYSTEM_CARD_DATA}
       />
-      <MapComponent/>
+      {/* <MapComponent/> */}
       {/* <ImpactSection
         regulationsData={REGULATIONS_DATA}
         contentSection={CONTENT_SECTIONS}
@@ -57,7 +57,7 @@ const HomePage = () => {
         color={FONT.color.dark}
       /> */}
       {/* <TextImage {...TEXT_IMAGE.homeSection} /> */}
-     <TrustedCompanies
+     {/* <TrustedCompanies
         companyLogos={COMPANY_LOGOS_CAROUSEL.euCompanies}
         title={SECTION_HEADERS.eu.title}
         subTitle={SECTION_HEADERS.eu.subTitle}
@@ -69,7 +69,7 @@ const HomePage = () => {
         title={SECTION_HEADERS.power.title}
         size={FONT.size.medium}
         color={FONT.color.dark}
-      />
+      /> */}
       {/* <BlueSection {...BLUE_SECTION.homeSection} /> */}
     </>
   );

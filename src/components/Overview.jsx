@@ -157,17 +157,7 @@ const Overview = () => {
 
   // Get first corporate office address
   const getCorporateOfficeAddress = () => {
-    if (!companyData?.facilities) return "";
-
-    const corporateFacilities = companyData.facilities.filter(
-      (facility) => facility.type === "Corporate facility"
-    );
-
-    if (corporateFacilities.length > 0) {
-      return corporateFacilities[0].address || "";
-    }
-
-    return companyData.basicInfo?.country || "";
+    return companyData?.basicInfo?.address || "";
   };
 
   // Pagination settings for linked companies
@@ -176,7 +166,7 @@ const Overview = () => {
   const startIndex = currentPage * itemsPerPage;
   const currentCountries = linkedCompanies.slice(
     startIndex,
-    startIndex + itemsPerPage
+    startIndex + itemsPerPage,
   );
 
   // Country code to flag URL mapping
@@ -513,7 +503,7 @@ const Overview = () => {
                               {companyName}
                             </p>
                           </div>
-                        )
+                        ),
                       )}
                     </div>
                   </div>
@@ -553,7 +543,7 @@ const Overview = () => {
                   <button
                     onClick={() =>
                       setCurrentPage((prev) =>
-                        Math.min(totalPages - 1, prev + 1)
+                        Math.min(totalPages - 1, prev + 1),
                       )
                     }
                     disabled={currentPage === totalPages - 1}
@@ -670,8 +660,8 @@ const Overview = () => {
                                 shipment.status === "active"
                                   ? "bg-blue-100 text-blue-800"
                                   : shipment.status === "pending"
-                                  ? "bg-yellow-100 text-yellow-800"
-                                  : "bg-green-100 text-green-800"
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : "bg-green-100 text-green-800"
                               }`}
                             >
                               {shipment.status.charAt(0).toUpperCase() +
@@ -694,14 +684,13 @@ const Overview = () => {
                               onChange={(e) =>
                                 handleFieldChange(
                                   "importerConsignee",
-                                  e.target.value
+                                  e.target.value,
                                 )
                               }
                               className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
                             />
                           ) : (
-                            shipment.importerConsignee ||
-                            shipment.importerName
+                            shipment.importerConsignee || shipment.importerName
                           )}
                         </td>
 
@@ -714,7 +703,7 @@ const Overview = () => {
                               onChange={(e) =>
                                 handleFieldChange(
                                   "productionDate",
-                                  e.target.value
+                                  e.target.value,
                                 )
                               }
                               className="border border-gray-300 rounded px-2 py-1 text-sm"
@@ -733,7 +722,7 @@ const Overview = () => {
                               onChange={(e) =>
                                 handleFieldChange(
                                   "processingLoadingDate",
-                                  e.target.value
+                                  e.target.value,
                                 )
                               }
                               className="border border-gray-300 rounded px-2 py-1 text-sm"

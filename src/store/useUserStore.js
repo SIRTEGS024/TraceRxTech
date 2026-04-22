@@ -40,6 +40,7 @@ const demoData = {
         email: "contact@greentimber.com",
         country: "Brazil",
         tinNumber: "BR-123456789",
+        address:"Av. Paulista 1000, São Paulo",
         rcNumber: "RC-987654",
         licenseNumber: "EX-2023-0456",
       },
@@ -629,6 +630,7 @@ const demoData = {
         email: "export@brazilcoffee.com",
         country: "Brazil",
         tinNumber: "BR-987654321",
+        address:"Av. Paulista 1000, São Paulo",
         rcNumber: "RC-112233",
         licenseNumber: "EX-2023-0789",
       },
@@ -714,6 +716,7 @@ const demoData = {
         email: "info@eti-gmbh.de",
         country: "Germany",
         tinNumber: "DE-987654321",
+        address:"Av. Paulista 1000, São Paulo",
         rcNumber: "HRB-123456",
         licenseNumber: "IM-2023-0789",
       },
@@ -765,12 +768,12 @@ const demoData = {
             {
               code: "4403",
               name: "Wood in the rough",
-              supplier:"exporter-1"
+              supplier: "exporter-1",
             },
             {
               code: "4407",
               name: "Wood sawn or chipped lengthwise",
-              supplier:"exporter-2"
+              supplier: "exporter-2",
             },
           ],
         },
@@ -780,7 +783,7 @@ const demoData = {
             {
               code: "ex 0901 11 00",
               name: "Coffee, not roasted, not decaffeinated",
-               supplier:"exporter-2"
+              supplier: "exporter-2",
             },
           ],
         },
@@ -790,6 +793,13 @@ const demoData = {
         url: "https://cloud-storage.com/logo/importer-logo.png",
       },
       exporters: ["exporter-1", "exporter-2"],
+      euCustomers: [
+        {
+          name: "Adroitsoft Nigeria Ltd",
+          address: "77 Yaya Abatan, Ogba. Lagos",
+          email: "info@acedu.camp",
+        },
+      ],
       currentSupplierRecords: [
         {
           supplierId: "exporter-1",
@@ -1063,6 +1073,7 @@ const demoData = {
         email: "imports@ukfurniture.com",
         country: "United Kingdom",
         tinNumber: "GB-112233445",
+        address:"Av. Paulista 1000, São Paulo",
         rcNumber: "RC-998877",
         licenseNumber: "IM-2023-0567",
       },
@@ -1080,7 +1091,7 @@ const demoData = {
             {
               code: "4407",
               name: "Wood sawn or chipped lengthwise",
-              supplier:"exporter-1"
+              supplier: "exporter-1",
             },
           ],
         },
@@ -1090,6 +1101,13 @@ const demoData = {
         url: "https://cloud-storage.com/logo/uk-logo.png",
       },
       exporters: ["exporter-1"],
+      euCustomers: [
+        {
+          name: "Adroitsoft Nigeria Ltd",
+          address: "77 Yaya Abatan, Ogba. Lagos",
+          email: "info@acedu.camp",
+        },
+      ],
       currentSupplierRecords: [],
       pastSupplierRecords: {
         2021: [],
@@ -1547,12 +1565,10 @@ const demoData = {
       totalShippingFee: 100,
       totalHectares: 1231,
       totalKilograms: 25000,
-      containers: [
-        { },
-      ],
+      containers: [{}],
       status: "completed",
       createdOn: "2023-09-15",
-      edits:[
+      edits: [
         {
           editedBy: "exporter-1",
           editedOn: "2023-09-20",
@@ -1627,7 +1643,7 @@ const demoData = {
       ],
       status: "active",
       createdOn: "2023-10-20",
-       edits:[],
+      edits: [],
       images: [
         {
           name: "Loading Process",

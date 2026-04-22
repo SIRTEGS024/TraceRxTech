@@ -246,34 +246,34 @@ export const NAV_LINKS = [
       { name: "Importer", url: "#" },
     ]
   },
-  {
-    name: "B2B Platform",
-    url: "/industries",
-    subLinks: [
-      // { name: "Agribusiness", url: "/agribusiness" },
-      // { name: "Carbon Project Developer", url: "/carbon-project-developer" },
-      // { name: "Processor", url: "/processor" },
-      // { name: "Foundations", url: "/foundations" },
-      // { name: "Consultants", url: "/consultants" }
-    ]
-  },
+  // {
+  //   name: "B2B Platform",
+  //   url: "/industries",
+  //   subLinks: [
+  //     { name: "Agribusiness", url: "/agribusiness" },
+  //     { name: "Carbon Project Developer", url: "/carbon-project-developer" },
+  //     { name: "Processor", url: "/processor" },
+  //     { name: "Foundations", url: "/foundations" },
+  //     { name: "Consultants", url: "/consultants" }
+  //   ]
+  // },
   {
     name: "Make a Payment",
-    url: "/payment",
+    url: "/payments",
     subLinks: [
-      { name: "Tree Planting", url: "#" },
-      { name: "Forest Management", url: "#" },
-      { name: "Forest/Plantation Establishment", url: "#" },
-      { name: "Consultancy", url: "#" },
-      { name: "Verification", url: "#" },
-      { name: "Risk Assessment", url: "#" },
-      { name: "Gaps-Assessment", url: "#" },
-      { name: "Audit", url: "#" },
-      { name: "Training/ Certification/ Seminar", url: "#" },
-      { name: "Management Plan", url: "#" },
-      { name: "Inventory", url: "#" },
-      { name: "Mapping", url: "#" },
-      { name: "Forest/ Plantation Establishment", url: "#" },
+      // { name: "Tree Planting", url: "#" },
+      // { name: "Forest Management", url: "#" },
+      // { name: "Forest/Plantation Establishment", url: "#" },
+      // { name: "Consultancy", url: "#" },
+      // { name: "Verification", url: "#" },
+      // { name: "Risk Assessment", url: "#" },
+      // { name: "Gaps-Assessment", url: "#" },
+      // { name: "Audit", url: "#" },
+      // { name: "Training/ Certification/ Seminar", url: "#" },
+      // { name: "Management Plan", url: "#" },
+      // { name: "Inventory", url: "#" },
+      // { name: "Mapping", url: "#" },
+      // { name: "Forest/ Plantation Establishment", url: "#" },
     ]
   },
   {
@@ -518,21 +518,33 @@ export const HERO_SECTIONS = {
 
 export const COMPANY_LOGOS_CAROUSEL = {
   regCompanies: [
-    {
-      src: company2,
-      url: "https://ogunstate.gov.ng/"
+    // {
+    //   src: company2,
+    //   url: "https://ogunstate.gov.ng/"
+    // },
+    // {
+    //   src: company1,
+    //   url: "https://environment.gov.ng/"
+    // },
+    // {
+    //   src: company3,
+    //   url: "https://environment.oyostate.gov.ng/"
+    // },
+    // {
+    //   src: company4,
+    //   url: "http://nid.fmiti.gov.ng/"
+    // },
+     {
+      src: company5,
+      url: "https://www.scsglobalservices.com/"
     },
     {
-      src: company1,
-      url: "https://environment.gov.ng/"
+      src: company6,
+      url: "https://terea.net/"
     },
     {
-      src: company3,
-      url: "https://environment.oyostate.gov.ng/"
-    },
-    {
-      src: company4,
-      url: "http://nid.fmiti.gov.ng/"
+      src: company7,
+      url: "https://acedu.camp/"
     },
     {
       src: company8,
@@ -1298,16 +1310,16 @@ export const FOOTER_LINKS = [
       { name: "Blogs", url: "/blog" },
     ],
   },
-  {
-    heading: "Make a Payment",
-    links: [
-      { name: "Tree Planting", url: "#" },
-      { name: "Forest Management", url: "#" },
-      { name: "Consultancy", url: "#" },
-      { name: "Verification", url: "#" },
-      { name: "IT Support", url: "#" }
-    ],
-  },
+  // {
+  //   heading: "Make a Payment",
+  //   links: [
+  //     { name: "Tree Planting", url: "#" },
+  //     { name: "Forest Management", url: "#" },
+  //     { name: "Consultancy", url: "#" },
+  //     { name: "Verification", url: "#" },
+  //     { name: "IT Support", url: "#" }
+  //   ],
+  // },
   {
     heading: "Quick Links",
     links: [
@@ -2733,7 +2745,7 @@ export const SYSTEM_CARD_DATA = [
   {
     image: gallery27,
     title: "Freight Agent Portal",
-    subtext: "Click here to Register on the portal with your registration documents and Exporter/Importer authorization Port documentation: Pre Shipment Inspection, Nigerian Customs Service, Relevant Regulatory Agencies Joint examination, Shipping lines & Airlines, others.",
+    subtext: "Click here to Register on the portal with your registration documents and Exporter/Importer authorization Port documentation.",
     buttonText: "GO TO PORTAL",
     url: "/login", // Added url property
   },
