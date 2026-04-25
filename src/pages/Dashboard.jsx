@@ -1,5 +1,4 @@
-// Dashboard.js - Add warning icon logic
-
+// Dashboard.js (full corrected version)
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CompanyDetails from "../components/CompanyDetails";
@@ -22,10 +21,10 @@ import AgentManagement from "../components/AgentManagement";
 import PastDueDiligence from "../components/PastDueDiligence";
 import CurrentDueDiligence from "../components/CurrentDueDiligence";
 import AgentRequests from "../components/AgentRequests";
+import VerifierVerification from "../components/VerifierVerification";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../store/useUserStore";
 
-// Map tabs to their corresponding article types
 const tabToArticleMap = {
   "subject-matter": "subject-matter",
   "eudr-definitions": "eudr-definitions",
@@ -35,17 +34,15 @@ const tabToArticleMap = {
   "past-due-diligence": "due-diligence",
 };
 
-// Tabs that should show regulations on first visit
 const tabsWithRegulations = [
   "subject-matter",
   "eudr-definitions",
   "information-requirements",
   "new-shipment",
-  "current-due-diligence", 
-  "past-due-diligence", 
+  "current-due-diligence",
+  "past-due-diligence",
 ];
 
-// Main Dashboard Component
 const Dashboard = ({ isMapsLoaded }) => {
   const [activeTab, setActiveTab] = useState("overview");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -61,62 +58,47 @@ const Dashboard = ({ isMapsLoaded }) => {
 
   const { user, logout, demoData } = useUserStore();
 
-  // Check if user is logged in
   useEffect(() => {
     if (!user) {
       navigate("/login");
     }
   }, [user, navigate]);
 
-  // Helper to get the actual company we're acting as (either user or the company agent is logged in as)
   const getTargetCompany = () => {
     if (!user) return null;
     if (user.loggedInAs?.companyId) {
-      // Agent logged in for a company
       return demoData.users[user.loggedInAs.companyId];
     }
-    // User is the company itself
     if (user.role === "exporter" || user.role === "importer") {
       return user;
     }
     return null;
   };
 
-  // Compute warning status for tabs based on verifier reports
   const computeTabWarnings = (company) => {
     if (!company) return {};
-
     const warnings = {};
     const linkedVerifiers = company.linkedVerifiers || [];
-
     for (const verifierLink of linkedVerifiers) {
       const verifier = demoData.users[verifierLink.id];
       if (!verifier || !verifier.verificationReports) continue;
-
-      // Find reports for this company
       const reports = verifier.verificationReports.filter(
-        (report) => report.companyId === company.id
+        (report) => report.companyId === company.id,
       );
-
       for (const report of reports) {
         const findings = report.findings || [];
         for (const finding of findings) {
-          const tabId = finding.tab;
           if (finding.status === "non-compliant") {
-            // Mark tab as warning
-            warnings[tabId] = true;
+            warnings[finding.tab] = true;
           }
         }
       }
     }
-
     return warnings;
   };
 
-  // Get available tabs with access information - UPDATED to include warnings
   const getAvailableTabs = () => {
     const allTabs = {
-      // Common tabs
       overview: {
         id: "overview",
         name: "Overview",
@@ -171,8 +153,6 @@ const Dashboard = ({ isMapsLoaded }) => {
         icon: "FiUsers",
         accessKey: "overview",
       },
-
-      // Exporter-specific tabs
       "eudr-definitions": {
         id: "eudr-definitions",
         name: "EUDR Definition of terms",
@@ -191,8 +171,6 @@ const Dashboard = ({ isMapsLoaded }) => {
         icon: "FiTruck",
         accessKey: "newShipmentOrigin",
       },
-
-      // Importer-specific tabs
       "current-due-diligence": {
         id: "current-due-diligence",
         name: "Current Due Diligence",
@@ -205,13 +183,17 @@ const Dashboard = ({ isMapsLoaded }) => {
         icon: "FiShield",
         accessKey: "pastDueDiligence",
       },
-
-      // Agent-specific tab
       "agent-requests": {
         id: "agent-requests",
         name: "Company Access",
         icon: "FiSend",
         accessKey: "overview",
+      },
+      verification: {
+        id: "verification",
+        name: "Verification",
+        icon: "FiClipboard",
+        accessKey: "verification",
       },
     };
 
@@ -222,42 +204,41 @@ const Dashboard = ({ isMapsLoaded }) => {
     const companyType = user.loggedInAs?.companyType;
     const agentAccessTabs = user.loggedInAs?.accessTabs || {};
 
-    // Determine which tabs are available based on user role and login status
     let availableTabKeys = [];
 
     if (isLoggedInAsCompany && companyType) {
-      // Agent logged in for a company
-      if (companyType === "exporter") {
-        availableTabKeys = [
-          "overview",
-          "company-details",
-          "subject-matter",
-          "eudr-definitions",
-          "information-requirements",
-          "new-shipment",
-          "shipments",
-          "reports",
-          "gps-camera",
-          "supply-chain",
-        ];
-      } else if (companyType === "importer") {
-        availableTabKeys = [
-          "overview",   
-          "company-details",
-          "subject-matter",
-          "past-due-diligence",
-          "current-due-diligence",
-          "shipments",
-          "reports",
-          "gps-camera",
-          "supply-chain",
-        ];
+      if (userRole === "verifier" || userRole === "freight agent") {
+        availableTabKeys = ["bio-data", "agent-requests", "verification"];
+      } else {
+        if (companyType === "exporter") {
+          availableTabKeys = [
+            "overview",
+            "company-details",
+            "subject-matter",
+            "eudr-definitions",
+            "information-requirements",
+            "new-shipment",
+            "shipments",
+            "reports",
+            "gps-camera",
+            "supply-chain",
+          ];
+        } else if (companyType === "importer") {
+          availableTabKeys = [
+            "overview",
+            "company-details",
+            "subject-matter",
+            "past-due-diligence",
+            "current-due-diligence",
+            "shipments",
+            "reports",
+            "gps-camera",
+            "supply-chain",
+          ];
+        }
+        availableTabKeys.push("bio-data", "agent-requests");
       }
-
-      // ALWAYS show bio-data and agent-requests for agents logged in for a company
-      availableTabKeys.push("bio-data", "agent-requests");
     } else {
-      // User logged in as themselves
       if (userRole === "exporter") {
         availableTabKeys = [
           "overview",
@@ -286,95 +267,68 @@ const Dashboard = ({ isMapsLoaded }) => {
           "agent-management",
         ];
       } else if (userRole === "verifier" || userRole === "freight agent") {
-        // Agents only see bio-data and agent-requests when logged in as themselves
         availableTabKeys = ["bio-data", "agent-requests"];
       }
     }
 
-    // Compute warnings for the current company (if any)
     const targetCompany = getTargetCompany();
     const warnings = computeTabWarnings(targetCompany);
 
-    // Convert keys to tab objects with access information
     const tabs = availableTabKeys
       .filter((key) => allTabs[key])
       .map((key) => {
         const tab = { ...allTabs[key] };
-
-        // Determine if tab has access
         let hasAccess = true;
-
-        // For agents logged in for a company, check access from company's accessTabs
         if (isLoggedInAsCompany && companyType) {
-          if (tab.id === "bio-data" || tab.id === "agent-requests") {
-            // Bio-data and agent-requests are always accessible for agents
+          if (
+            tab.id === "bio-data" ||
+            tab.id === "agent-requests" ||
+            tab.id === "verification"
+          ) {
             hasAccess = true;
           } else {
-            // Get the correct access key for this tab
             const accessKey = tab.accessKey;
             hasAccess = agentAccessTabs[accessKey] === true;
           }
-        } else {
-          // For non-agents or agents logged in as themselves, all tabs have access
-          hasAccess = true;
         }
-
-        // Add warning flag if the tab has a non-compliant finding in any report
         const hasWarning = warnings[tab.id] === true;
-
-        return {
-          ...tab,
-          hasAccess,
-          hasWarning,
-        };
+        return { ...tab, hasAccess, hasWarning };
       });
 
     return tabs;
   };
 
-  // Update available tabs and set initial active tab when user changes
   useEffect(() => {
     if (user) {
       const tabs = getAvailableTabs();
-      console.log("DEBUG: Setting available tabs:", tabs);
       setAvailableTabs(tabs);
-
-      // Set initial active tab (first tab that has access in the list)
       if (tabs.length > 0 && !initialTabSet) {
         const firstAccessibleTab = tabs.find((tab) => tab.hasAccess);
-        console.log("DEBUG: First accessible tab:", firstAccessibleTab);
         if (firstAccessibleTab) {
           setActiveTab(firstAccessibleTab.id);
         } else if (tabs.length > 0) {
-          // If no tab has access (shouldn't happen), fall back to first tab
           setActiveTab(tabs[0].id);
         }
         setInitialTabSet(true);
       }
     }
-  }, [user, demoData]); // Re-run when demoData changes (reports may update)
+  }, [user, demoData]);
 
-  // Detect screen size and handle sidebar state
   useEffect(() => {
     const checkScreenSize = () => {
       const mobile = window.innerWidth < 1024;
       setIsMobile(mobile);
-
       if (navbarRef.current) {
-        const height = navbarRef.current.offsetHeight;
-        setNavbarHeight(height);
+        setNavbarHeight(navbarRef.current.offsetHeight);
       }
-
       if (!mobile) {
         setIsSidebarOpen(true);
       } else {
         setIsSidebarOpen(false);
       }
     };
-
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
-
     const observer = new MutationObserver(checkScreenSize);
     if (navbarRef.current) {
       observer.observe(navbarRef.current, {
@@ -383,39 +337,28 @@ const Dashboard = ({ isMapsLoaded }) => {
         characterData: true,
       });
     }
-
     return () => {
       window.removeEventListener("resize", checkScreenSize);
       observer.disconnect();
     };
   }, []);
 
-  // Update navbar height after mount
   useEffect(() => {
     if (navbarRef.current) {
-      const height = navbarRef.current.offsetHeight;
-      setNavbarHeight(height);
+      setNavbarHeight(navbarRef.current.offsetHeight);
     }
   }, []);
 
-  // Handle tab change
   const handleTabChange = (tabId) => {
     const selectedTab = availableTabs.find((tab) => tab.id === tabId);
     if (selectedTab && selectedTab.hasAccess) {
       setActiveTab(tabId);
-
-      // Show targeted regulations for specific tabs on first visit
       if (tabsWithRegulations.includes(tabId) && !hasVisitedTab[tabId]) {
-        // Mark as visited after showing regulations
         setTimeout(() => {
           setHasVisitedTab((prev) => ({ ...prev, [tabId]: true }));
         }, 100);
-
-        // Show the targeted regulations modal
         setShowTargetedRegulations(true);
       }
-
-      // Close sidebar on mobile after selection
       if (isMobile) {
         setIsSidebarOpen(false);
       }
@@ -423,14 +366,12 @@ const Dashboard = ({ isMapsLoaded }) => {
   };
 
   const renderContent = () => {
-    // Check if current active tab is accessible
     const currentTab = availableTabs.find((tab) => tab.id === activeTab);
     if (currentTab && !currentTab.hasAccess) {
-      // Find first accessible tab to show instead
       const firstAccessibleTab = availableTabs.find((tab) => tab.hasAccess);
       if (firstAccessibleTab) {
         setActiveTab(firstAccessibleTab.id);
-        return null; // Will re-render with new tab
+        return null;
       }
     }
 
@@ -448,14 +389,12 @@ const Dashboard = ({ isMapsLoaded }) => {
       case "information-requirements":
         return <InformationRequirements />;
       case "new-shipment":
-        // Google Maps is already loaded by the parent component
         return <NewShipmentOrigin />;
       case "shipments":
         return <Shipments />;
       case "reports":
         return <Reports />;
       case "gps-camera":
-        // Google Maps is already loaded by the parent component
         return <GPSCamera />;
       case "supply-chain":
         return <SupplyChain />;
@@ -467,33 +406,30 @@ const Dashboard = ({ isMapsLoaded }) => {
         return <AgentManagement />;
       case "agent-requests":
         return <AgentRequests />;
+      case "verification":
+        return <VerifierVerification />;
       default:
         return <Overview />;
     }
   };
 
   if (!user) {
-    return null; // Will redirect in useEffect
+    return null;
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
-      {/* Fixed Navbar with ref for height measurement */}
       <div ref={navbarRef} className="fixed top-0 left-0 right-0 z-50">
         <DashboardNavbar />
       </div>
 
-      {/* Mobile Menu Button */}
       {isMobile && navbarHeight > 0 && (
         <motion.button
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           onClick={() => setIsSidebarOpen(true)}
           className="fixed z-40 bg-green-600 text-white p-2 rounded-lg shadow-lg hover:bg-green-700 transition-colors"
-          style={{
-            top: `${navbarHeight + 16}px`,
-            left: "1rem",
-          }}
+          style={{ top: `${navbarHeight + 16}px`, left: "1rem" }}
         >
           <svg
             className="w-5 h-5"
@@ -511,7 +447,6 @@ const Dashboard = ({ isMapsLoaded }) => {
         </motion.button>
       )}
 
-      {/* Sidebar */}
       <Sidebar
         activeTab={activeTab}
         setActiveTab={handleTabChange}
@@ -523,7 +458,6 @@ const Dashboard = ({ isMapsLoaded }) => {
         onLogout={logout}
       />
 
-      {/* Main Content Area */}
       <div
         className={`transition-all duration-300 ${isSidebarOpen && !isMobile ? "lg:ml-72" : ""}`}
         style={{
@@ -531,21 +465,16 @@ const Dashboard = ({ isMapsLoaded }) => {
           minHeight: `calc(100vh - ${navbarHeight}px)`,
         }}
       >
-        <div className={`p-2 lg:p-6`}>
+        <div className="p-2 lg:p-6">
           <AnimatePresence mode="wait">{renderContent()}</AnimatePresence>
         </div>
       </div>
 
-      {/* Regulations Badge */}
       <RegulationsBadge onClick={() => setShowRegulations(!showRegulations)} />
-
-      {/* Full Regulations Panel */}
       <Regulations
         isOpen={showRegulations}
         onClose={() => setShowRegulations(false)}
       />
-
-      {/* Targeted Regulations Modal */}
       <TargetedRegulations
         isOpen={showTargetedRegulations}
         onClose={() => setShowTargetedRegulations(false)}

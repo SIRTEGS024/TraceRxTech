@@ -11,17 +11,13 @@ import {
   Camera,
   X,
   CreditCard,
-  Ship,
-  Package,
-  Info,
-  CheckCircle,
   Square,
   Circle,
-  Maximize2,
   Calendar,
   Navigation,
+  Plus,
   Trash2,
-  Eye,
+  CheckCircle,
 } from "lucide-react";
 import Webcam from "react-webcam";
 import {
@@ -44,45 +40,66 @@ const getAddressFromCoords = async (lat, lng) => {
   }
 };
 
-// ---------- Map Location Picker (same as before) ----------
-const MapLocationPicker = ({
-  onLocationChange,
-  initialLat = 6.5244,
-  initialLng = 3.3792,
+// ---------- Map Picker for Origin & Destination (same map) ----------
+const OriginDestinationMapPicker = ({
+  onOriginChange,
+  onDestinationChange,
+  initialCenter = { lat: 6.5244, lng: 3.3792 },
 }) => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     libraries: ["places"],
   });
   const [map, setMap] = useState(null);
-  const [markerPos, setMarkerPos] = useState({
-    lat: initialLat,
-    lng: initialLng,
-  });
-  const [address, setAddress] = useState("");
+  const [origin, setOrigin] = useState(null);
+  const [destination, setDestination] = useState(null);
+  const [mode, setMode] = useState("origin"); // "origin" or "destination"
+  const [originAddress, setOriginAddress] = useState("");
+  const [destinationAddress, setDestinationAddress] = useState("");
   const autocompleteRef = useRef(null);
 
   useEffect(() => {
-    if (markerPos) {
-      getAddressFromCoords(markerPos.lat, markerPos.lng).then(setAddress);
-      onLocationChange?.({ lat: markerPos.lat, lng: markerPos.lng, address });
+    if (origin) {
+      getAddressFromCoords(origin.lat, origin.lng).then(setOriginAddress);
+      onOriginChange?.({ ...origin, address: originAddress });
     }
-  }, [markerPos, onLocationChange]);
+  }, [origin]);
+  useEffect(() => {
+    if (destination) {
+      getAddressFromCoords(destination.lat, destination.lng).then(
+        setDestinationAddress,
+      );
+      onDestinationChange?.({ ...destination, address: destinationAddress });
+    }
+  }, [destination]);
 
-  const onMapClick = useCallback((e) => {
-    if (e.latLng) {
-      setMarkerPos({ lat: e.latLng.lat(), lng: e.latLng.lng() });
-    }
-  }, []);
+  const onMapClick = useCallback(
+    (e) => {
+      if (!e.latLng) return;
+      const pos = { lat: e.latLng.lat(), lng: e.latLng.lng() };
+      if (mode === "origin") {
+        setOrigin(pos);
+      } else {
+        setDestination(pos);
+      }
+    },
+    [mode],
+  );
 
   const onPlaceChanged = () => {
     if (autocompleteRef.current) {
       const place = autocompleteRef.current.getPlace();
       if (place.geometry?.location) {
-        const lat = place.geometry.location.lat();
-        const lng = place.geometry.location.lng();
-        setMarkerPos({ lat, lng });
-        map?.panTo({ lat, lng });
+        const pos = {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng(),
+        };
+        if (mode === "origin") {
+          setOrigin(pos);
+        } else {
+          setDestination(pos);
+        }
+        map?.panTo(pos);
         map?.setZoom(16);
       }
     }
@@ -96,8 +113,24 @@ const MapLocationPicker = ({
     );
 
   return (
-    <div className="space-y-2">
-      <div className="flex gap-2">
+    <div className="space-y-3">
+      <div className="flex gap-2 items-center">
+        <div className="flex-1 flex gap-2">
+          <button
+            type="button"
+            onClick={() => setMode("origin")}
+            className={`px-3 py-1 rounded-full text-sm flex items-center gap-1 ${mode === "origin" ? "bg-green-600 text-white" : "bg-gray-200"}`}
+          >
+            <MapPin size={14} /> Set Origin
+          </button>
+          <button
+            type="button"
+            onClick={() => setMode("destination")}
+            className={`px-3 py-1 rounded-full text-sm flex items-center gap-1 ${mode === "destination" ? "bg-red-600 text-white" : "bg-gray-200"}`}
+          >
+            <MapPin size={14} /> Set Destination
+          </button>
+        </div>
         <Autocomplete
           onLoad={(ref) => (autocompleteRef.current = ref)}
           onPlaceChanged={onPlaceChanged}
@@ -105,67 +138,87 @@ const MapLocationPicker = ({
           <input
             type="text"
             placeholder="Search location..."
-            className="flex-1 p-2 border rounded-lg focus:ring-green-500"
+            className="flex-1 p-2 border rounded-lg text-sm"
           />
         </Autocomplete>
       </div>
       <div className="h-64 rounded-lg overflow-hidden border">
         <GoogleMap
           mapContainerStyle={{ width: "100%", height: "100%" }}
-          center={markerPos}
-          zoom={14}
+          center={initialCenter}
+          zoom={12}
           onLoad={setMap}
           onClick={onMapClick}
           options={{ mapTypeId: "satellite", mapTypeControl: false }}
         >
-          <Marker
-            position={markerPos}
-            draggable
-            onDragEnd={(e) =>
-              e.latLng &&
-              setMarkerPos({ lat: e.latLng.lat(), lng: e.latLng.lng() })
-            }
-          />
+          {origin && (
+            <Marker
+              position={origin}
+              label={{ text: "O", color: "white" }}
+              icon={{
+                url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+              }}
+            />
+          )}
+          {destination && (
+            <Marker
+              position={destination}
+              label={{ text: "D", color: "white" }}
+              icon={{
+                url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+              }}
+            />
+          )}
         </GoogleMap>
       </div>
-      <p className="text-xs text-gray-500 truncate">
-        📍 {address || "Click on map to select location"}
-      </p>
+      <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
+        <div className="truncate">📍 Origin: {originAddress || "Not set"}</div>
+        <div className="truncate">
+          📍 Destination: {destinationAddress || "Not set"}
+        </div>
+      </div>
     </div>
   );
 };
 
-// ---------- FIXED MEDIA CAPTURE COMPONENT ----------
-const MediaCapture = ({ onMediaCaptured, existingMedia = [] }) => {
+// ---------- Media Capture Component (same as before) ----------
+const MediaCapture = ({
+  onMediaCaptured,
+  existingMedia = [],
+  label = "Add Media",
+}) => {
   const [showCamera, setShowCamera] = useState(false);
-  const [captureMode, setCaptureMode] = useState('photo');
+  const [captureMode, setCaptureMode] = useState("photo");
   const [isRecording, setIsRecording] = useState(false);
   const [location, setLocation] = useState(null);
-  const [address, setAddress] = useState('');
+  const [address, setAddress] = useState("");
   const [currentTime, setCurrentTime] = useState(new Date());
   const [viewingMedia, setViewingMedia] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const webcamRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const [recordedChunks, setRecordedChunks] = useState([]);
   const timeIntervalRef = useRef(null);
   const videoRef = useRef(null);
 
-  // Get GPS location on mount
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(async (pos) => {
-      const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-      setLocation(coords);
-      const addr = await getAddressFromCoords(coords.lat, coords.lng);
-      setAddress(addr);
-    }, () => toast.error('GPS location denied'));
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        setLocation(coords);
+        const addr = await getAddressFromCoords(coords.lat, coords.lng);
+        setAddress(addr);
+      },
+      () => toast.error("GPS location denied"),
+    );
   }, []);
 
-  // Update time every second when camera is open
   useEffect(() => {
     if (showCamera) {
-      timeIntervalRef.current = setInterval(() => setCurrentTime(new Date()), 1000);
+      timeIntervalRef.current = setInterval(
+        () => setCurrentTime(new Date()),
+        1000,
+      );
     } else {
       clearInterval(timeIntervalRef.current);
     }
@@ -178,14 +231,14 @@ const MediaCapture = ({ onMediaCaptured, existingMedia = [] }) => {
       if (imgSrc) {
         const mediaObj = {
           id: Date.now(),
-          type: 'image',
+          type: "image",
           data: imgSrc,
           location,
           address,
           timestamp: new Date().toISOString(),
         };
         onMediaCaptured(mediaObj);
-        toast.success('Photo captured');
+        toast.success("Photo captured");
         setShowCamera(false);
       }
     }
@@ -196,13 +249,14 @@ const MediaCapture = ({ onMediaCaptured, existingMedia = [] }) => {
       const recorder = new MediaRecorder(webcamRef.current.stream);
       mediaRecorderRef.current = recorder;
       setRecordedChunks([]);
-      recorder.ondataavailable = (e) => e.data.size && setRecordedChunks(prev => [...prev, e.data]);
+      recorder.ondataavailable = (e) =>
+        e.data.size && setRecordedChunks((prev) => [...prev, e.data]);
       recorder.onstop = () => {
-        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+        const blob = new Blob(recordedChunks, { type: "video/webm" });
         const url = URL.createObjectURL(blob);
         const mediaObj = {
           id: Date.now(),
-          type: 'video',
+          type: "video",
           data: url,
           blob,
           location,
@@ -210,7 +264,7 @@ const MediaCapture = ({ onMediaCaptured, existingMedia = [] }) => {
           timestamp: new Date().toISOString(),
         };
         onMediaCaptured(mediaObj);
-        toast.success('Video recorded');
+        toast.success("Video recorded");
         setShowCamera(false);
       };
       recorder.start();
@@ -224,48 +278,58 @@ const MediaCapture = ({ onMediaCaptured, existingMedia = [] }) => {
   };
 
   const deleteMedia = (id) => {
-    const updated = existingMedia.filter(m => m.id !== id);
+    const updated = existingMedia.filter((m) => m.id !== id);
     onMediaCaptured(updated, true);
     if (viewingMedia?.id === id) setIsModalOpen(false);
   };
 
-  const formatDateTime = (isoString) => {
-    const d = new Date(isoString);
-    return d.toLocaleString();
-  };
+  const formatDateTime = (isoString) => new Date(isoString).toLocaleString();
 
   return (
     <div className="space-y-3">
-      <button onClick={() => setShowCamera(true)} className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-lg text-sm hover:bg-green-200 transition">
-        <Camera size={16} /> Add Media
+      <button
+        onClick={() => setShowCamera(true)}
+        className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-lg text-sm hover:bg-green-200 transition"
+      >
+        <Camera size={16} /> {label}
       </button>
-
-      {/* Gallery Grid */}
       {existingMedia.length > 0 && (
         <div className="grid grid-cols-3 gap-2">
           {existingMedia.map((med) => (
             <div key={med.id} className="relative group">
-              {med.type === 'image' ? (
-                <img 
-                  src={med.data} 
-                  className="h-20 w-full object-cover rounded-lg cursor-pointer border border-gray-200" 
-                  onClick={() => { setViewingMedia(med); setIsModalOpen(true); }} 
-                  alt="thumb" 
+              {med.type === "image" ? (
+                <img
+                  src={med.data}
+                  className="h-20 w-full object-cover rounded-lg cursor-pointer border"
+                  onClick={() => {
+                    setViewingMedia(med);
+                    setIsModalOpen(true);
+                  }}
+                  alt="thumb"
                 />
               ) : (
-                <div 
-                  className="relative h-20 w-full bg-gray-800 rounded-lg cursor-pointer flex items-center justify-center border border-gray-200"
-                  onClick={() => { setViewingMedia(med); setIsModalOpen(true); }}
+                <div
+                  className="relative h-20 w-full bg-gray-800 rounded-lg cursor-pointer flex items-center justify-center border"
+                  onClick={() => {
+                    setViewingMedia(med);
+                    setIsModalOpen(true);
+                  }}
                 >
-                  <video 
+                  <video
                     ref={videoRef}
-                    src={med.data} 
+                    src={med.data}
                     className="h-full w-full object-cover rounded-lg"
                     preload="metadata"
                   />
                   <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-lg">
                     <div className="bg-white/80 rounded-full p-1">
-                      <svg className="w-6 h-6 text-gray-800" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                      <svg
+                        className="w-6 h-6 text-gray-800"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
                     </div>
                   </div>
                 </div>
@@ -283,22 +347,28 @@ const MediaCapture = ({ onMediaCaptured, existingMedia = [] }) => {
           ))}
         </div>
       )}
-
-      {/* Camera Modal - smaller and smoother */}
       {showCamera && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onClick={() => setShowCamera(false)}>
-          <div className="relative max-w-md w-full bg-black rounded-xl overflow-hidden shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            {/* Close button */}
-            <button onClick={() => setShowCamera(false)} className="absolute top-2 right-2 z-20 bg-black/50 text-white p-1 rounded-full">
+        <div
+          className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowCamera(false)}
+        >
+          <div
+            className="relative max-w-md w-full bg-black rounded-xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowCamera(false)}
+              className="absolute top-2 right-2 z-20 bg-black/50 text-white p-1 rounded-full"
+            >
               <X size={18} />
             </button>
-
-            {/* Live Overlay (top left) */}
             {location && (
               <div className="absolute top-2 left-2 z-20 bg-black/70 text-white text-xs p-2 rounded-lg backdrop-blur-sm space-y-1 max-w-[70%]">
                 <div className="flex items-center gap-1">
                   <Navigation size={10} />
-                  <span>{location.lat.toFixed(5)}, {location.lng.toFixed(5)}</span>
+                  <span>
+                    {location.lat.toFixed(5)}, {location.lng.toFixed(5)}
+                  </span>
                 </div>
                 <div className="flex items-center gap-1">
                   <MapPin size={10} />
@@ -310,71 +380,111 @@ const MediaCapture = ({ onMediaCaptured, existingMedia = [] }) => {
                 </div>
               </div>
             )}
-
-            {/* Recording indicator */}
             {isRecording && (
               <div className="absolute top-2 right-12 z-20 flex items-center gap-1 bg-red-600 text-white px-2 py-1 rounded-full text-xs">
                 <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                 REC
               </div>
             )}
-
-            {/* Mode switcher */}
             <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-20 flex gap-2 bg-black/50 rounded-full p-1">
-              <button onClick={() => setCaptureMode('photo')} className={`px-3 py-1 rounded-full text-xs ${captureMode === 'photo' ? 'bg-green-600 text-white' : 'text-white'}`}>Photo</button>
-              <button onClick={() => setCaptureMode('video')} className={`px-3 py-1 rounded-full text-xs ${captureMode === 'video' ? 'bg-green-600 text-white' : 'text-white'}`}>Video</button>
+              <button
+                onClick={() => setCaptureMode("photo")}
+                className={`px-3 py-1 rounded-full text-xs ${captureMode === "photo" ? "bg-green-600 text-white" : "text-white"}`}
+              >
+                Photo
+              </button>
+              <button
+                onClick={() => setCaptureMode("video")}
+                className={`px-3 py-1 rounded-full text-xs ${captureMode === "video" ? "bg-green-600 text-white" : "text-white"}`}
+              >
+                Video
+              </button>
             </div>
-
-            {/* Webcam feed */}
             <Webcam
               ref={webcamRef}
               audio={true}
               screenshotFormat="image/jpeg"
-              videoConstraints={{ facingMode: 'environment' }}
+              videoConstraints={{ facingMode: "environment" }}
               className="w-full h-auto"
             />
-
-            {/* Capture button */}
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20">
-              {captureMode === 'photo' ? (
-                <button onClick={capturePhoto} className="bg-white rounded-full p-3 shadow-lg hover:scale-105 transition">
+              {captureMode === "photo" ? (
+                <button
+                  onClick={capturePhoto}
+                  className="bg-white rounded-full p-3 shadow-lg hover:scale-105 transition"
+                >
                   <Camera size={24} className="text-gray-800" />
                 </button>
               ) : (
-                <button onClick={isRecording ? stopRecording : startRecording} className={`rounded-full p-3 shadow-lg transition ${isRecording ? 'bg-red-600' : 'bg-white'}`}>
-                  {isRecording ? <Square size={24} className="text-white" /> : <Circle size={24} className="text-gray-800" />}
+                <button
+                  onClick={isRecording ? stopRecording : startRecording}
+                  className={`rounded-full p-3 shadow-lg transition ${isRecording ? "bg-red-600" : "bg-white"}`}
+                >
+                  {isRecording ? (
+                    <Square size={24} className="text-white" />
+                  ) : (
+                    <Circle size={24} className="text-gray-800" />
+                  )}
                 </button>
               )}
             </div>
           </div>
         </div>
       )}
-
-      {/* View Media Modal - with working video player */}
       {isModalOpen && viewingMedia && (
-        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onClick={() => setIsModalOpen(false)}>
-          <div className="relative max-w-3xl w-full bg-black rounded-xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
-            <button onClick={() => setIsModalOpen(false)} className="absolute top-2 right-2 z-20 bg-black/50 text-white p-1 rounded-full">
+        <div
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+          onClick={() => setIsModalOpen(false)}
+        >
+          <div
+            className="relative max-w-3xl w-full bg-black rounded-xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-2 right-2 z-20 bg-black/50 text-white p-1 rounded-full"
+            >
               <X size={20} />
             </button>
             <div className="max-h-[70vh] overflow-auto">
-              {viewingMedia.type === 'image' ? (
-                <img src={viewingMedia.data} className="w-full h-auto" alt="full" />
+              {viewingMedia.type === "image" ? (
+                <img
+                  src={viewingMedia.data}
+                  className="w-full h-auto"
+                  alt="full"
+                />
               ) : (
-                <video 
-                  src={viewingMedia.data} 
-                  controls 
-                  autoPlay 
+                <video
+                  src={viewingMedia.data}
+                  controls
+                  autoPlay
                   className="w-full"
                   controlsList="nodownload"
                 />
               )}
             </div>
             <div className="bg-gray-900 text-white p-3 text-xs space-y-1">
-              <div className="flex items-center gap-2"><Navigation size={12} /> Coordinates: {viewingMedia.location?.lat.toFixed(6)}, {viewingMedia.location?.lng.toFixed(6)}</div>
-              <div className="flex items-center gap-2"><MapPin size={12} /> Address: {viewingMedia.address}</div>
-              <div className="flex items-center gap-2"><Calendar size={12} /> Captured: {formatDateTime(viewingMedia.timestamp)}</div>
-              <button onClick={() => { deleteMedia(viewingMedia.id); setIsModalOpen(false); }} className="mt-2 flex items-center gap-1 bg-red-600 px-3 py-1 rounded text-xs">Delete</button>
+              <div>
+                <Navigation size={12} /> Coordinates:{" "}
+                {viewingMedia.location?.lat.toFixed(6)},{" "}
+                {viewingMedia.location?.lng.toFixed(6)}
+              </div>
+              <div>
+                <MapPin size={12} /> Address: {viewingMedia.address}
+              </div>
+              <div>
+                <Calendar size={12} /> Captured:{" "}
+                {formatDateTime(viewingMedia.timestamp)}
+              </div>
+              <button
+                onClick={() => {
+                  deleteMedia(viewingMedia.id);
+                  setIsModalOpen(false);
+                }}
+                className="mt-2 flex items-center gap-1 bg-red-600 px-3 py-1 rounded text-xs"
+              >
+                Delete
+              </button>
             </div>
           </div>
         </div>
@@ -383,12 +493,114 @@ const MediaCapture = ({ onMediaCaptured, existingMedia = [] }) => {
   );
 };
 
-// ---------- Main Landing Page (same as before, but with improved MediaCapture) ----------
-const Payments = () => {
+// ---------- Tags Input Component ----------
+const TagsInput = ({
+  tags = [],
+  onTagsChange,
+  placeholder = "Type and press Enter...",
+}) => {
+  const [inputValue, setInputValue] = useState("");
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && inputValue.trim()) {
+      e.preventDefault();
+      if (!tags.includes(inputValue.trim()))
+        onTagsChange([...tags, inputValue.trim()]);
+      setInputValue("");
+    }
+  };
+  const removeTag = (tagToRemove) =>
+    onTagsChange(tags.filter((tag) => tag !== tagToRemove));
+  return (
+    <div className="border rounded-lg p-2 focus-within:ring-2 focus-within:ring-green-500">
+      <div className="flex flex-wrap gap-2 mb-1">
+        {tags.map((tag, idx) => (
+          <span
+            key={idx}
+            className="inline-flex items gap-1 bg-green-100 text-green-800 rounded-full px-2 py-1 text-xs"
+          >
+            {tag}{" "}
+            <button
+              type="button"
+              onClick={() => removeTag(tag)}
+              className="hover:text-red-600"
+            >
+              <X size={12} />
+            </button>
+          </span>
+        ))}
+      </div>
+      <input
+        type="text"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyDown}
+        placeholder={placeholder}
+        className="w-full outline-none text-sm"
+      />
+    </div>
+  );
+};
+
+// ---------- Container List Component ----------
+const ContainerList = ({ containers = [], onContainersChange }) => {
+  const addContainer = () =>
+    onContainersChange([...containers, { containerNo: "", weightKg: 0 }]);
+  const updateContainer = (index, field, value) => {
+    const updated = [...containers];
+    updated[index][field] = field === "weightKg" ? parseInt(value) || 0 : value;
+    onContainersChange(updated);
+  };
+  const removeContainer = (index) =>
+    onContainersChange(containers.filter((_, i) => i !== index));
+  return (
+    <div className="space-y-2">
+      {containers.map((c, idx) => (
+        <div key={idx} className="flex gap-2 items-center">
+          <input
+            type="text"
+            placeholder="Container number"
+            value={c.containerNo}
+            onChange={(e) =>
+              updateContainer(idx, "containerNo", e.target.value)
+            }
+            className="flex-1 p-2 border rounded-lg"
+          />
+          <input
+            type="number"
+            placeholder="Weight (kg)"
+            value={c.weightKg}
+            onChange={(e) => updateContainer(idx, "weightKg", e.target.value)}
+            className="w-28 p-2 border rounded-lg"
+          />
+          <button
+            type="button"
+            onClick={() => removeContainer(idx)}
+            className="text-red-500"
+          >
+            <Trash2 size={18} />
+          </button>
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={addContainer}
+        className="text-sm text-green-600 flex items-center gap-1"
+      >
+        <Plus size={14} /> Add container
+      </button>
+    </div>
+  );
+};
+
+// ---------- Main Traceability Platform ----------
+const TraceabilityPlatform = () => {
   const [selectedLevy, setSelectedLevy] = useState("corporate");
   const [formData, setFormData] = useState({});
   const [coordinates, setCoordinates] = useState(null);
   const [media, setMedia] = useState([]);
+  const [originMedia, setOriginMedia] = useState([]);
+  const [destinationMedia, setDestinationMedia] = useState([]);
+  const [generalMediaVehicular, setGeneralMediaVehicular] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentResult, setPaymentResult] = useState(null);
 
@@ -400,14 +612,14 @@ const Payments = () => {
       case "corporate":
         return Math.max(
           100,
-          Math.ceil((formData.annualWoodKg || 0) / 1000) * 20,
+          Math.ceil((formData.annualForestProductKg || 0) / 1000) * 20,
         );
       case "residential":
         return Math.max(50, (formData.woodenAreaSqm || 0) * 2);
       case "vehicular":
         return Math.max(
           30,
-          Math.ceil((formData.transportedWeightKg || 0) / 500) * 10,
+          Math.ceil((formData.forestProductUtilizedKg || 0) / 500) * 10,
         );
       case "use":
         return Math.max(10, (formData.quantityKg || 0) * 0.05);
@@ -433,9 +645,9 @@ const Payments = () => {
     }
     if (
       selectedLevy === "vehicular" &&
-      (!formData.vehicleCat || !formData.transportedWeightKg)
+      (!formData.vehicleCat || !formData.forestProductUtilizedKg)
     ) {
-      toast.error("Please fill vehicle type and transported weight");
+      toast.error("Please fill vehicle type and forest product utilized");
       return;
     }
     if (
@@ -476,7 +688,8 @@ const Payments = () => {
       icon: Truck,
       color: "bg-cyan-100",
       textColor: "text-cyan-800",
-      description: "Cars, trucks, ships, aircraft, tractors transporting wood",
+      description:
+        "Cars, trucks, ships, aircraft, tractors transporting forest products",
     },
     {
       id: "use",
@@ -491,8 +704,6 @@ const Payments = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
       <ToastContainer position="top-right" autoClose={3000} />
-
-      {/* Hero Section */}
       <section className="relative bg-green-800 text-white py-20 px-6 overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-20"></div>
         <div className="relative max-w-6xl mx-auto text-center">
@@ -501,7 +712,7 @@ const Payments = () => {
             animate={{ y: 0, opacity: 1 }}
             className="text-4xl md:text-6xl font-bold mb-4"
           >
-            Forest Product Levy Platform
+            Traceability Platform
           </motion.h1>
           <motion.p
             initial={{ y: 20, opacity: 0 }}
@@ -531,10 +742,9 @@ const Payments = () => {
         </div>
       </section>
 
-      {/* Carousel */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
         <h2 className="text-2xl font-bold text-green-800 text-center mb-8">
-          Select Levy Category
+          Regulatory Compliance
         </h2>
         <div className="relative">
           <div className="flex overflow-x-auto gap-4 pb-4 scroll-smooth snap-x snap-mandatory hide-scrollbar">
@@ -546,6 +756,9 @@ const Payments = () => {
                   setSelectedLevy(levy.id);
                   setFormData({});
                   setMedia([]);
+                  setOriginMedia([]);
+                  setDestinationMedia([]);
+                  setGeneralMediaVehicular([]);
                   setPaymentResult(null);
                 }}
                 className={`snap-start min-w-[280px] p-6 rounded-2xl shadow-lg transition-all ${selectedLevy === levy.id ? "ring-4 ring-green-500 bg-white" : "bg-white hover:shadow-xl"}`}
@@ -565,7 +778,6 @@ const Payments = () => {
         </div>
       </section>
 
-      {/* Payment Form */}
       <section className="py-8 px-6 max-w-6xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-green-100">
           <div className="bg-green-50 px-6 py-4 border-b border-green-100">
@@ -574,7 +786,7 @@ const Payments = () => {
                 levies.find((l) => l.id === selectedLevy).icon,
                 { className: "w-6 h-6" },
               )}
-              {levies.find((l) => l.id === selectedLevy).label} Payment
+              {levies.find((l) => l.id === selectedLevy).label}
             </h3>
           </div>
           <div className="p-6 space-y-8">
@@ -586,7 +798,7 @@ const Payments = () => {
                 exit={{ opacity: 0 }}
                 className="space-y-6"
               >
-                {/* ========== CORPORATE ========== */}
+                {/* CORPORATE */}
                 {selectedLevy === "corporate" && (
                   <>
                     <div>
@@ -624,15 +836,15 @@ const Payments = () => {
                     </div>
                     <div>
                       <label className="block font-medium">
-                        Estimated Annual Wood Consumption (kg)
+                        Estimated Annual Forest Product Consumption (kg)
                       </label>
                       <input
                         type="number"
                         className="w-full p-2 border rounded-lg"
-                        value={formData.annualWoodKg || ""}
+                        value={formData.annualForestProductKg || ""}
                         onChange={(e) =>
                           updateForm(
-                            "annualWoodKg",
+                            "annualForestProductKg",
                             parseInt(e.target.value) || 0,
                           )
                         }
@@ -649,10 +861,29 @@ const Payments = () => {
                         onChange={(e) => updateForm("address", e.target.value)}
                       />
                     </div>
+                    <div className="border-t pt-4">
+                      <label className="block font-medium mb-2 flex items-center gap-2">
+                        <MapPin size={18} /> GPS Location
+                      </label>
+                      <MapLocationPicker onLocationChange={setCoordinates} />
+                    </div>
+                    <div className="border-t pt-4">
+                      <label className="block font-medium mb-2 flex items-center gap-2">
+                        <Camera size={18} /> Upload Evidence
+                      </label>
+                      <MediaCapture
+                        onMediaCaptured={(newMedia, replaceAll) =>
+                          replaceAll
+                            ? setMedia(newMedia)
+                            : setMedia((prev) => [...prev, newMedia])
+                        }
+                        existingMedia={media}
+                      />
+                    </div>
                   </>
                 )}
 
-                {/* ========== RESIDENTIAL ========== */}
+                {/* RESIDENTIAL */}
                 {selectedLevy === "residential" && (
                   <>
                     <div>
@@ -717,12 +948,47 @@ const Payments = () => {
                         <option>Demolition</option>
                       </select>
                     </div>
+                    <div className="border-t pt-4">
+                      <label className="block font-medium mb-2 flex items-center gap-2">
+                        <MapPin size={18} /> GPS Location
+                      </label>
+                      <MapLocationPicker onLocationChange={setCoordinates} />
+                    </div>
+                    <div className="border-t pt-4">
+                      <label className="block font-medium mb-2 flex items-center gap-2">
+                        <Camera size={18} /> Upload Evidence
+                      </label>
+                      <MediaCapture
+                        onMediaCaptured={(newMedia, replaceAll) =>
+                          replaceAll
+                            ? setMedia(newMedia)
+                            : setMedia((prev) => [...prev, newMedia])
+                        }
+                        existingMedia={media}
+                      />
+                    </div>
                   </>
                 )}
 
-                {/* ========== VEHICULAR ========== */}
+                {/* VEHICULAR - Map first, then fields */}
                 {selectedLevy === "vehicular" && (
                   <>
+                    <div className="border-b pb-4">
+                      <label className="block font-medium mb-2 flex items-center gap-2">
+                        <MapPin size={18} /> Origin & Destination (click on map
+                        to set)
+                      </label>
+                      <OriginDestinationMapPicker
+                        onOriginChange={(loc) => {
+                          updateForm("origin", loc.address);
+                          updateForm("originCoords", loc);
+                        }}
+                        onDestinationChange={(loc) => {
+                          updateForm("destination", loc.address);
+                          updateForm("destinationCoords", loc);
+                        }}
+                      />
+                    </div>
                     <div>
                       <label className="block font-medium">
                         Vehicle Category *
@@ -745,7 +1011,7 @@ const Payments = () => {
                     </div>
                     <div>
                       <label className="block font-medium">
-                        Registration / Identification Number
+                        Vehicle Registration Number
                       </label>
                       <input
                         className="w-full p-2 border rounded-lg"
@@ -755,15 +1021,15 @@ const Payments = () => {
                     </div>
                     <div>
                       <label className="block font-medium">
-                        Weight of Wood Transported (kg) *
+                        Forest Product Utilized (kg) *
                       </label>
                       <input
                         type="number"
                         className="w-full p-2 border rounded-lg"
-                        value={formData.transportedWeightKg || ""}
+                        value={formData.forestProductUtilizedKg || ""}
                         onChange={(e) =>
                           updateForm(
-                            "transportedWeightKg",
+                            "forestProductUtilizedKg",
                             parseInt(e.target.value) || 0,
                           )
                         }
@@ -771,65 +1037,74 @@ const Payments = () => {
                     </div>
                     <div>
                       <label className="block font-medium">
-                        Container Numbers (for ships/trucks)
+                        Container Numbers & Weight per Container
                       </label>
-                      <input
-                        className="w-full p-2 border rounded-lg"
-                        value={formData.containerNos || ""}
-                        onChange={(e) =>
-                          updateForm("containerNos", e.target.value)
+                      <ContainerList
+                        containers={formData.containers || []}
+                        onContainersChange={(containers) =>
+                          updateForm("containers", containers)
                         }
-                        placeholder="e.g., ABCU1234567"
-                      />
-                    </div>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block font-medium">
-                          Origin (pickup location)
-                        </label>
-                        <input
-                          className="w-full p-2 border rounded-lg"
-                          value={formData.origin || ""}
-                          onChange={(e) => updateForm("origin", e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <label className="block font-medium">
-                          Destination (delivery location)
-                        </label>
-                        <input
-                          className="w-full p-2 border rounded-lg"
-                          value={formData.destination || ""}
-                          onChange={(e) =>
-                            updateForm("destination", e.target.value)
-                          }
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block font-medium">
-                        Buyer (consignee)
-                      </label>
-                      <input
-                        className="w-full p-2 border rounded-lg"
-                        value={formData.buyer || ""}
-                        onChange={(e) => updateForm("buyer", e.target.value)}
                       />
                     </div>
                     <div>
                       <label className="block font-medium">
-                        Seller (exporter)
+                        Type of Goods/Products Conveyed
                       </label>
-                      <input
-                        className="w-full p-2 border rounded-lg"
-                        value={formData.seller || ""}
-                        onChange={(e) => updateForm("seller", e.target.value)}
+                      <TagsInput
+                        tags={formData.goodsTypes || []}
+                        onTagsChange={(tags) => updateForm("goodsTypes", tags)}
+                        placeholder="Type product and press Enter..."
+                      />
+                    </div>
+                    <div className="border-t pt-4">
+                      <label className="block font-medium mb-2 flex items-center gap-2">
+                        <Camera size={18} /> Origin Location Media
+                      </label>
+                      <MediaCapture
+                        label="Add Origin Media"
+                        onMediaCaptured={(newMedia, replaceAll) =>
+                          replaceAll
+                            ? setOriginMedia(newMedia)
+                            : setOriginMedia((prev) => [...prev, newMedia])
+                        }
+                        existingMedia={originMedia}
+                      />
+                    </div>
+                    <div className="border-t pt-4">
+                      <label className="block font-medium mb-2 flex items-center gap-2">
+                        <Camera size={18} /> Destination Location Media
+                      </label>
+                      <MediaCapture
+                        label="Add Destination Media"
+                        onMediaCaptured={(newMedia, replaceAll) =>
+                          replaceAll
+                            ? setDestinationMedia(newMedia)
+                            : setDestinationMedia((prev) => [...prev, newMedia])
+                        }
+                        existingMedia={destinationMedia}
+                      />
+                    </div>
+                    <div className="border-t pt-4">
+                      <label className="block font-medium mb-2 flex items-center gap-2">
+                        <Camera size={18} /> General Media
+                      </label>
+                      <MediaCapture
+                        label="Add General Media"
+                        onMediaCaptured={(newMedia, replaceAll) =>
+                          replaceAll
+                            ? setGeneralMediaVehicular(newMedia)
+                            : setGeneralMediaVehicular((prev) => [
+                                ...prev,
+                                newMedia,
+                              ])
+                        }
+                        existingMedia={generalMediaVehicular}
                       />
                     </div>
                   </>
                 )}
 
-                {/* ========== USE / CONSUMPTION ========== */}
+                {/* USE */}
                 {selectedLevy === "use" && (
                   <>
                     <div>
@@ -885,33 +1160,28 @@ const Payments = () => {
                         }
                       />
                     </div>
+                    <div className="border-t pt-4">
+                      <label className="block font-medium mb-2 flex items-center gap-2">
+                        <MapPin size={18} /> GPS Location
+                      </label>
+                      <MapLocationPicker onLocationChange={setCoordinates} />
+                    </div>
+                    <div className="border-t pt-4">
+                      <label className="block font-medium mb-2 flex items-center gap-2">
+                        <Camera size={18} /> Upload Evidence
+                      </label>
+                      <MediaCapture
+                        onMediaCaptured={(newMedia, replaceAll) =>
+                          replaceAll
+                            ? setMedia(newMedia)
+                            : setMedia((prev) => [...prev, newMedia])
+                        }
+                        existingMedia={media}
+                      />
+                    </div>
                   </>
                 )}
 
-                {/* Map Picker */}
-                <div className="border-t pt-4">
-                  <label className="block font-medium mb-2 flex items-center gap-2">
-                    <MapPin size={18} /> GPS Location (Drag marker or click map)
-                  </label>
-                  <MapLocationPicker onLocationChange={setCoordinates} />
-                </div>
-
-                {/* Media Capture - IMPROVED VERSION */}
-                <div className="border-t pt-4">
-                  <label className="block font-medium mb-2 flex items-center gap-2">
-                    <Camera size={18} /> Upload Evidence (Photos/Videos with GPS
-                    & timestamp)
-                  </label>
-                  <MediaCapture
-                    onMediaCaptured={(newMedia, replaceAll) => {
-                      if (replaceAll) setMedia(newMedia);
-                      else setMedia((prev) => [...prev, newMedia]);
-                    }}
-                    existingMedia={media}
-                  />
-                </div>
-
-                {/* Payment Preview */}
                 <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
                   <div className="flex justify-between items-center">
                     <span className="font-semibold">
@@ -926,7 +1196,6 @@ const Payments = () => {
                     verification.
                   </p>
                 </div>
-
                 <button
                   onClick={handlePayment}
                   disabled={isProcessing}
@@ -939,7 +1208,6 @@ const Payments = () => {
                   )}
                   {isProcessing ? "Processing..." : "Pay Now"}
                 </button>
-
                 {paymentResult?.success && (
                   <div className="bg-green-50 p-4 rounded-lg text-center text-green-800 flex items-center justify-center gap-2">
                     <CheckCircle size={20} /> Payment of ${paymentResult.amount}{" "}
@@ -951,7 +1219,6 @@ const Payments = () => {
           </div>
         </div>
       </section>
-
       <style jsx>{`
         .hide-scrollbar::-webkit-scrollbar {
           display: none;
@@ -965,4 +1232,91 @@ const Payments = () => {
   );
 };
 
-export default Payments;
+// Simple map picker for single location (used in other sections)
+const MapLocationPicker = ({
+  onLocationChange,
+  initialLat = 6.5244,
+  initialLng = 3.3792,
+  placeholder = "Search location...",
+}) => {
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    libraries: ["places"],
+  });
+  const [map, setMap] = useState(null);
+  const [markerPos, setMarkerPos] = useState({
+    lat: initialLat,
+    lng: initialLng,
+  });
+  const [address, setAddress] = useState("");
+  const autocompleteRef = useRef(null);
+  useEffect(() => {
+    if (markerPos) {
+      getAddressFromCoords(markerPos.lat, markerPos.lng).then(setAddress);
+      onLocationChange?.({ lat: markerPos.lat, lng: markerPos.lng, address });
+    }
+  }, [markerPos]);
+  const onMapClick = useCallback(
+    (e) =>
+      e.latLng && setMarkerPos({ lat: e.latLng.lat(), lng: e.latLng.lng() }),
+    [],
+  );
+  const onPlaceChanged = () => {
+    if (autocompleteRef.current) {
+      const place = autocompleteRef.current.getPlace();
+      if (place.geometry?.location) {
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+        setMarkerPos({ lat, lng });
+        map?.panTo({ lat, lng });
+        map?.setZoom(16);
+      }
+    }
+  };
+  if (!isLoaded)
+    return (
+      <div className="h-64 bg-gray-100 animate-pulse rounded-lg flex items-center justify-center">
+        Loading Map...
+      </div>
+    );
+  return (
+    <div className="space-y-2">
+      <div className="flex gap-2">
+        <Autocomplete
+          onLoad={(ref) => (autocompleteRef.current = ref)}
+          onPlaceChanged={onPlaceChanged}
+        >
+          <input
+            type="text"
+            placeholder={placeholder}
+            className="flex-1 p-2 border rounded-lg focus:ring-green-500"
+          />
+        </Autocomplete>
+      </div>
+      <div className="h-64 rounded-lg overflow-hidden border">
+        <GoogleMap
+          mapContainerStyle={{ width: "100%", height: "100%" }}
+          center={markerPos}
+          zoom={14}
+          onLoad={setMap}
+          onClick={onMapClick}
+          options={{ mapTypeId: "satellite", mapTypeControl: false }}
+        >
+          <Marker
+            position={markerPos}
+            draggable
+            onDragEnd={(e) =>
+              e.latLng &&
+              setMarkerPos({ lat: e.latLng.lat(), lng: e.latLng.lng() })
+            }
+          />
+        </GoogleMap>
+      </div>
+      <p className="text-xs text-gray-500 truncate">
+        📍 {address || "Click on map to select location"}
+      </p>
+    </div>
+  );
+};
+
+export default TraceabilityPlatform;
