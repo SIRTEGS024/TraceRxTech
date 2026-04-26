@@ -1323,10 +1323,10 @@ export const FOOTER_LINKS = [
   {
     heading: "Quick Links",
     links: [
-      { name: "Exporter", url: "#" },
-      { name: "Freight Agent", url: "#" },
-      { name: "MDA/ Certification/ Verification/ Audit", url: "#" },
-      { name: "Importer", url: "#" },
+      { name: "Exporter", url: "/login" },
+      { name: "Freight Agent", url: "/login" },
+      { name: "MDA/ Certification/ Verification/ Audit", url: "/login" },
+      { name: "Importer", url: "/login" },
     ],
   },
   // {

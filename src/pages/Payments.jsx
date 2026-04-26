@@ -18,6 +18,7 @@ import {
   Plus,
   Trash2,
   CheckCircle,
+  Search,
 } from "lucide-react";
 import Webcam from "react-webcam";
 import {
@@ -40,6 +41,18 @@ const getAddressFromCoords = async (lat, lng) => {
   }
 };
 
+// ---------- Predefined countries with currency symbols ----------
+const COUNTRIES = [
+  { code: "NG", name: "Nigeria", currencyCode: "NGN", symbol: "₦", flag: "🇳🇬" },
+  { code: "US", name: "United States", currencyCode: "USD", symbol: "$", flag: "🇺🇸" },
+  { code: "GB", name: "United Kingdom", currencyCode: "GBP", symbol: "£", flag: "🇬🇧" },
+  { code: "EU", name: "European Union", currencyCode: "EUR", symbol: "€", flag: "🇪🇺" },
+  { code: "CA", name: "Canada", currencyCode: "CAD", symbol: "C$", flag: "🇨🇦" },
+  { code: "AU", name: "Australia", currencyCode: "AUD", symbol: "A$", flag: "🇦🇺" },
+  { code: "IN", name: "India", currencyCode: "INR", symbol: "₹", flag: "🇮🇳" },
+  { code: "CN", name: "China", currencyCode: "CNY", symbol: "¥", flag: "🇨🇳" },
+];
+
 // ---------- Map Picker for Origin & Destination (same map) ----------
 const OriginDestinationMapPicker = ({
   onOriginChange,
@@ -53,7 +66,7 @@ const OriginDestinationMapPicker = ({
   const [map, setMap] = useState(null);
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
-  const [mode, setMode] = useState("origin"); // "origin" or "destination"
+  const [mode, setMode] = useState("origin");
   const [originAddress, setOriginAddress] = useState("");
   const [destinationAddress, setDestinationAddress] = useState("");
   const autocompleteRef = useRef(null);
@@ -119,14 +132,18 @@ const OriginDestinationMapPicker = ({
           <button
             type="button"
             onClick={() => setMode("origin")}
-            className={`px-3 py-1 rounded-full text-sm flex items-center gap-1 ${mode === "origin" ? "bg-green-600 text-white" : "bg-gray-200"}`}
+            className={`px-3 py-1 rounded-full text-sm flex items-center gap-1 ${
+              mode === "origin" ? "bg-green-600 text-white" : "bg-gray-200"
+            }`}
           >
             <MapPin size={14} /> Set Origin
           </button>
           <button
             type="button"
             onClick={() => setMode("destination")}
-            className={`px-3 py-1 rounded-full text-sm flex items-center gap-1 ${mode === "destination" ? "bg-red-600 text-white" : "bg-gray-200"}`}
+            className={`px-3 py-1 rounded-full text-sm flex items-center gap-1 ${
+              mode === "destination" ? "bg-red-600 text-white" : "bg-gray-200"
+            }`}
           >
             <MapPin size={14} /> Set Destination
           </button>
@@ -173,15 +190,13 @@ const OriginDestinationMapPicker = ({
       </div>
       <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
         <div className="truncate">📍 Origin: {originAddress || "Not set"}</div>
-        <div className="truncate">
-          📍 Destination: {destinationAddress || "Not set"}
-        </div>
+        <div className="truncate">📍 Destination: {destinationAddress || "Not set"}</div>
       </div>
     </div>
   );
 };
 
-// ---------- Media Capture Component (same as before) ----------
+// ---------- Media Capture Component (unchanged) ----------
 const MediaCapture = ({
   onMediaCaptured,
   existingMedia = [],
@@ -389,13 +404,17 @@ const MediaCapture = ({
             <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-20 flex gap-2 bg-black/50 rounded-full p-1">
               <button
                 onClick={() => setCaptureMode("photo")}
-                className={`px-3 py-1 rounded-full text-xs ${captureMode === "photo" ? "bg-green-600 text-white" : "text-white"}`}
+                className={`px-3 py-1 rounded-full text-xs ${
+                  captureMode === "photo" ? "bg-green-600 text-white" : "text-white"
+                }`}
               >
                 Photo
               </button>
               <button
                 onClick={() => setCaptureMode("video")}
-                className={`px-3 py-1 rounded-full text-xs ${captureMode === "video" ? "bg-green-600 text-white" : "text-white"}`}
+                className={`px-3 py-1 rounded-full text-xs ${
+                  captureMode === "video" ? "bg-green-600 text-white" : "text-white"
+                }`}
               >
                 Video
               </button>
@@ -418,7 +437,9 @@ const MediaCapture = ({
               ) : (
                 <button
                   onClick={isRecording ? stopRecording : startRecording}
-                  className={`rounded-full p-3 shadow-lg transition ${isRecording ? "bg-red-600" : "bg-white"}`}
+                  className={`rounded-full p-3 shadow-lg transition ${
+                    isRecording ? "bg-red-600" : "bg-white"
+                  }`}
                 >
                   {isRecording ? (
                     <Square size={24} className="text-white" />
@@ -594,6 +615,7 @@ const ContainerList = ({ containers = [], onContainersChange }) => {
 
 // ---------- Main Traceability Platform ----------
 const TraceabilityPlatform = () => {
+  const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedLevy, setSelectedLevy] = useState("corporate");
   const [formData, setFormData] = useState({});
   const [coordinates, setCoordinates] = useState(null);
@@ -603,9 +625,54 @@ const TraceabilityPlatform = () => {
   const [generalMediaVehicular, setGeneralMediaVehicular] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentResult, setPaymentResult] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchMatches, setSearchMatches] = useState([]);
 
   const updateForm = (key, value) =>
     setFormData((prev) => ({ ...prev, [key]: value }));
+
+  // Search logic (unchanged)
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchMatches([]);
+      return;
+    }
+    const query = searchQuery.toLowerCase();
+    const matches = [];
+
+    const includesQuery = (val) =>
+      val && val.toString().toLowerCase().includes(query);
+
+    if (selectedLevy === "vehicular") {
+      if (includesQuery(formData.regNo)) {
+        matches.push(`Vehicle registration: ${formData.regNo}`);
+      }
+      if (includesQuery(formData.origin)) {
+        matches.push(`Origin address: ${formData.origin}`);
+      }
+      if (includesQuery(formData.destination)) {
+        matches.push(`Destination address: ${formData.destination}`);
+      }
+      if (formData.containers) {
+        formData.containers.forEach((c, idx) => {
+          if (includesQuery(c.containerNo)) {
+            matches.push(`Container #${idx + 1}: ${c.containerNo}`);
+          }
+        });
+      }
+    } else {
+      const addressFields = {
+        "Business address": formData.address,
+        "Property address": formData.propertyAddress,
+        "Location of use": formData.locationUse,
+      };
+      Object.entries(addressFields).forEach(([label, val]) => {
+        if (includesQuery(val)) matches.push(`${label}: ${val}`);
+      });
+    }
+
+    setSearchMatches(matches);
+  }, [searchQuery, formData, selectedLevy]);
 
   const calculatePayment = () => {
     switch (selectedLevy) {
@@ -617,10 +684,8 @@ const TraceabilityPlatform = () => {
       case "residential":
         return Math.max(50, (formData.woodenAreaSqm || 0) * 2);
       case "vehicular":
-        return Math.max(
-          30,
-          Math.ceil((formData.forestProductUtilizedKg || 0) / 500) * 10,
-        );
+        const productCount = formData.forestProducts?.length || 0;
+        return Math.max(30, productCount * 15);
       case "use":
         return Math.max(10, (formData.quantityKg || 0) * 0.05);
       default:
@@ -629,6 +694,10 @@ const TraceabilityPlatform = () => {
   };
 
   const handlePayment = async () => {
+    if (!selectedCountry) {
+      toast.error("Please select your country first");
+      return;
+    }
     if (
       selectedLevy === "corporate" &&
       (!formData.businessName || !formData.businessType)
@@ -645,9 +714,9 @@ const TraceabilityPlatform = () => {
     }
     if (
       selectedLevy === "vehicular" &&
-      (!formData.vehicleCat || !formData.forestProductUtilizedKg)
+      (!formData.vehicleCat || !formData.forestProducts?.length)
     ) {
-      toast.error("Please fill vehicle type and forest product utilized");
+      toast.error("Please fill vehicle type and at least one forest product");
       return;
     }
     if (
@@ -660,8 +729,8 @@ const TraceabilityPlatform = () => {
     setIsProcessing(true);
     await new Promise((r) => setTimeout(r, 1500));
     const amount = calculatePayment();
-    setPaymentResult({ amount, success: true });
-    toast.success(`Payment of $${amount} processed successfully!`);
+    setPaymentResult({ amount, success: true, currency: selectedCountry.symbol });
+    toast.success(`Payment of ${selectedCountry.symbol}${amount} processed successfully!`);
     setIsProcessing(false);
   };
 
@@ -700,6 +769,9 @@ const TraceabilityPlatform = () => {
       description: "Firewood, charcoal, forest product usage",
     },
   ];
+
+  // Helper to get current currency symbol
+  const getCurrencySymbol = () => selectedCountry?.symbol || "$";
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
@@ -742,6 +814,49 @@ const TraceabilityPlatform = () => {
         </div>
       </section>
 
+      {/* Country Selection Section - First Step */}
+      <section className="py-8 px-6 max-w-6xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-xl p-6 border border-green-100">
+          <h2 className="text-xl font-bold text-green-800 mb-4 flex items-center gap-2">
+            <span className="text-2xl">🌍</span> Step 1: Select Your Country
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            {COUNTRIES.map((country) => (
+              <button
+                key={country.code}
+                onClick={() => {
+                  setSelectedCountry(country);
+                  // Reset payment result when country changes
+                  setPaymentResult(null);
+                  toast.info(`Currency set to ${country.symbol} (${country.currencyCode})`);
+                }}
+                className={`flex items-center gap-2 p-3 rounded-xl border transition-all ${
+                  selectedCountry?.code === country.code
+                    ? "border-green-600 bg-green-50 ring-2 ring-green-500"
+                    : "border-gray-200 hover:border-green-300 hover:bg-green-50"
+                }`}
+              >
+                <span className="text-2xl">{country.flag}</span>
+                <div className="text-left">
+                  <div className="font-medium text-gray-800">{country.name}</div>
+                  <div className="text-xs text-gray-500">
+                    {country.symbol} {country.currencyCode}
+                  </div>
+                </div>
+                {selectedCountry?.code === country.code && (
+                  <CheckCircle size={16} className="text-green-600 ml-auto" />
+                )}
+              </button>
+            ))}
+          </div>
+          {!selectedCountry && (
+            <p className="text-amber-600 text-sm mt-3 flex items-center gap-1">
+              ⚠️ Please select a country to continue – this determines your payment currency.
+            </p>
+          )}
+        </div>
+      </section>
+
       <section className="py-12 px-6 max-w-7xl mx-auto">
         <h2 className="text-2xl font-bold text-green-800 text-center mb-8">
           Regulatory Compliance
@@ -751,8 +866,12 @@ const TraceabilityPlatform = () => {
             {levies.map((levy) => (
               <motion.button
                 key={levy.id}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: selectedCountry ? 1.02 : 1 }}
                 onClick={() => {
+                  if (!selectedCountry) {
+                    toast.error("Please select your country first");
+                    return;
+                  }
                   setSelectedLevy(levy.id);
                   setFormData({});
                   setMedia([]);
@@ -760,8 +879,12 @@ const TraceabilityPlatform = () => {
                   setDestinationMedia([]);
                   setGeneralMediaVehicular([]);
                   setPaymentResult(null);
+                  setSearchQuery("");
                 }}
-                className={`snap-start min-w-[280px] p-6 rounded-2xl shadow-lg transition-all ${selectedLevy === levy.id ? "ring-4 ring-green-500 bg-white" : "bg-white hover:shadow-xl"}`}
+                className={`snap-start min-w-[280px] p-6 rounded-2xl shadow-lg transition-all ${
+                  selectedLevy === levy.id ? "ring-4 ring-green-500 bg-white" : "bg-white hover:shadow-xl"
+                } ${!selectedCountry ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
+                disabled={!selectedCountry}
               >
                 <div
                   className={`w-16 h-16 ${levy.color} rounded-2xl flex items-center justify-center mb-4`}
@@ -790,6 +913,42 @@ const TraceabilityPlatform = () => {
             </h3>
           </div>
           <div className="p-6 space-y-8">
+            {/* Global Search Bar */}
+            <div className="relative">
+              <div className="flex items-center border rounded-lg overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-green-500">
+                <div className="pl-3 text-gray-400">
+                  <Search size={18} />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search by container number, vehicle registration, or address..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full p-2 outline-none"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="pr-3 text-gray-400 hover:text-gray-600"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
+              </div>
+              {searchMatches.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-lg shadow-lg z-10 p-2 text-sm">
+                  <p className="font-semibold text-gray-700 mb-1">
+                    Matches found:
+                  </p>
+                  <ul className="list-disc pl-5 space-y-0.5 text-gray-600">
+                    {searchMatches.map((match, idx) => (
+                      <li key={idx}>{match}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+
             <AnimatePresence mode="wait">
               <motion.div
                 key={selectedLevy}
@@ -970,7 +1129,7 @@ const TraceabilityPlatform = () => {
                   </>
                 )}
 
-                {/* VEHICULAR - Map first, then fields */}
+                {/* VEHICULAR */}
                 {selectedLevy === "vehicular" && (
                   <>
                     <div className="border-b pb-4">
@@ -1021,19 +1180,18 @@ const TraceabilityPlatform = () => {
                     </div>
                     <div>
                       <label className="block font-medium">
-                        Forest Product Utilized (kg) *
+                        Forest Product Utilized (type names) *
                       </label>
-                      <input
-                        type="number"
-                        className="w-full p-2 border rounded-lg"
-                        value={formData.forestProductUtilizedKg || ""}
-                        onChange={(e) =>
-                          updateForm(
-                            "forestProductUtilizedKg",
-                            parseInt(e.target.value) || 0,
-                          )
+                      <TagsInput
+                        tags={formData.forestProducts || []}
+                        onTagsChange={(tags) =>
+                          updateForm("forestProducts", tags)
                         }
+                        placeholder="Type product name and press Enter (e.g., Teak logs)"
                       />
+                      <p className="text-xs text-gray-500 mt-1">
+                        List all forest products being transported.
+                      </p>
                     </div>
                     <div>
                       <label className="block font-medium">
@@ -1188,17 +1346,24 @@ const TraceabilityPlatform = () => {
                       Estimated Levy Amount:
                     </span>
                     <span className="text-2xl font-bold text-green-700">
-                      ${calculatePayment()}
+                      {selectedCountry ? getCurrencySymbol() : "$"}
+                      {calculatePayment()}
                     </span>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    Based on provided details. Final amount may adjust after
-                    verification.
+                    {selectedLevy === "vehicular"
+                      ? "Based on number of forest product types entered."
+                      : "Based on provided details. Final amount may adjust after verification."}
+                    {selectedCountry && (
+                      <span className="block mt-1">
+                        💱 Currency: {selectedCountry.currencyCode} ({selectedCountry.symbol})
+                      </span>
+                    )}
                   </p>
                 </div>
                 <button
                   onClick={handlePayment}
-                  disabled={isProcessing}
+                  disabled={isProcessing || !selectedCountry}
                   className="w-full flex items-center justify-center gap-2 bg-green-700 hover:bg-green-800 text-white font-bold py-3 rounded-xl transition disabled:opacity-50"
                 >
                   {isProcessing ? (
@@ -1206,12 +1371,11 @@ const TraceabilityPlatform = () => {
                   ) : (
                     <CreditCard size={20} />
                   )}
-                  {isProcessing ? "Processing..." : "Pay Now"}
+                  {isProcessing ? "Processing..." : `Pay ${selectedCountry ? getCurrencySymbol() : "$"}${calculatePayment()}`}
                 </button>
                 {paymentResult?.success && (
                   <div className="bg-green-50 p-4 rounded-lg text-center text-green-800 flex items-center justify-center gap-2">
-                    <CheckCircle size={20} /> Payment of ${paymentResult.amount}{" "}
-                    completed! Receipt sent.
+                    <CheckCircle size={20} /> Payment of {paymentResult.currency}{paymentResult.amount} completed! Receipt sent.
                   </div>
                 )}
               </motion.div>
@@ -1232,7 +1396,7 @@ const TraceabilityPlatform = () => {
   );
 };
 
-// Simple map picker for single location (used in other sections)
+// Simple map picker for single location (unchanged)
 const MapLocationPicker = ({
   onLocationChange,
   initialLat = 6.5244,

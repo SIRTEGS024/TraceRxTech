@@ -10,7 +10,6 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto p-8 md:p-12">
         {/* Top section with links */}
         <div className="flex flex-col md:flex-row pb-8 md:pb-12">
-          {/* Link columns */}
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-8 w-full">
             {FOOTER_LINKS.map((column, index) => (
               <div key={index} className="space-y-4">
@@ -35,7 +34,7 @@ const Footer = () => {
         {/* Full-width divider */}
         <div className="w-full h-px bg-white/30 mb-8 md:mb-12"></div>
 
-        {/* Bottom section divided by vertical line */}
+        {/* Bottom section */}
         <div className="flex flex-col lg:flex-row pt-0 gap-8 lg:gap-12">
           {/* Left side - Brand info */}
           <div className="flex-1 space-y-6">
@@ -48,8 +47,8 @@ const Footer = () => {
               </p>
             </div>
 
-            {/* Brand logos with background */}
-            <div className="bg-white/10 p-3 sm:p-4 rounded-lg">
+            {/* Brand logos - dynamic width background */}
+            <div className="bg-white/10 p-3 sm:p-4 rounded-lg w-fit mx-auto lg:mx-0">
               <div className="flex gap-3 sm:gap-4 md:gap-6 items-center justify-center lg:justify-start">
                 {AUDIT_LOGOS.map((logo, index) => (
                   <img

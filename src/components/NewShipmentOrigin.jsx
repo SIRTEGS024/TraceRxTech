@@ -2041,7 +2041,7 @@ const ShipmentCamera = ({
   );
 };
 
-// UPDATED: Container Management Component without image upload
+// UPDATED: Container Management Component with additional UI fields (preview only)
 const ContainerManagement = ({
   containers,
   onAddContainer,
@@ -2056,6 +2056,12 @@ const ContainerManagement = ({
     kilograms: "",
     packingList: null,
   });
+  
+  // NEW STATE: UI-only fields for preview (not saved)
+  const [blNumber, setBlNumber] = useState("");
+  const [customDocs, setCustomDocs] = useState(null);
+  const [terminalDoc, setTerminalDoc] = useState(null);
+  const [shippingDocs, setShippingDocs] = useState(null);
 
   // Calculate remaining quantity that can be allocated to containers
   const allocatedQuantity = containers.reduce(
@@ -2093,6 +2099,7 @@ const ContainerManagement = ({
         name: containerForm.packingList.name,
         url: "https://cloud-storage.com/docs/shipment/packing-list.pdf", // Dummy URL
       },
+      // Note: blNumber, customDocs, terminalDoc, shippingDocs are NOT saved - UI only
     };
 
     if (editingContainer) {
@@ -2101,7 +2108,12 @@ const ContainerManagement = ({
       onAddContainer(newContainer);
     }
 
+    // Reset all fields
     setContainerForm({ containerNumber: "", kilograms: "", packingList: null });
+    setBlNumber("");
+    setCustomDocs(null);
+    setTerminalDoc(null);
+    setShippingDocs(null);
     setShowContainerForm(false);
     setEditingContainer(null);
   };
@@ -2112,16 +2124,24 @@ const ContainerManagement = ({
       kilograms: container.kilograms.toString(),
       packingList: container.packingList,
     });
+    // Reset UI-only fields when editing
+    setBlNumber("");
+    setCustomDocs(null);
+    setTerminalDoc(null);
+    setShippingDocs(null);
     setEditingContainer(container);
     setShowContainerForm(true);
   };
 
-  const handleFileUpload = (e) => {
+  const handleFileUpload = (e, setter) => {
     const files = Array.from(e.target.files);
     if (files[0]) {
-      setContainerForm((prev) => ({ ...prev, packingList: files[0] }));
+      setter(files[0]);
     }
   };
+
+  // Helper to format file name
+  const getFileName = (file) => file?.name || "No file selected";
 
   return (
     <div className="space-y-4">
@@ -2305,7 +2325,7 @@ const ContainerManagement = ({
         </div>
       )}
 
-      {/* Container Form Modal */}
+      {/* Container Form Modal - UPDATED with additional UI fields (preview only) */}
       {showContainerForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <motion.div
@@ -2321,6 +2341,11 @@ const ContainerManagement = ({
                 onClick={() => {
                   setShowContainerForm(false);
                   setEditingContainer(null);
+                  // Reset UI fields
+                  setBlNumber("");
+                  setCustomDocs(null);
+                  setTerminalDoc(null);
+                  setShippingDocs(null);
                 }}
                 className="text-gray-500 hover:text-gray-700"
               >
@@ -2330,6 +2355,7 @@ const ContainerManagement = ({
 
             <div className="overflow-y-auto p-6 flex-1">
               <div className="space-y-4">
+                {/* --- EXISTING FIELDS --- */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Container Number *
@@ -2402,7 +2428,9 @@ const ContainerManagement = ({
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
                     <input
                       type="file"
-                      onChange={handleFileUpload}
+                      onChange={(e) => handleFileUpload(e, (file) => 
+                        setContainerForm(prev => ({ ...prev, packingList: file }))
+                      )}
                       className="hidden"
                       id="packing-list-upload"
                       accept=".pdf"
@@ -2422,6 +2450,103 @@ const ContainerManagement = ({
                       </p>
                       <p className="text-xs text-gray-500 mt-1">PDF only</p>
                     </label>
+                  </div>
+                </div>
+
+                {/* --- NEW UI-ONLY FIELDS (PREVIEW) --- */}
+                <div className="border-t border-gray-200 pt-4 mt-2">
+                  <div className="bg-blue-50 p-3 rounded-lg mb-3">
+                    <p className="text-xs text-blue-800 flex items-center gap-1">
+                      <Info size={12} />
+                      <span>Preview Mode: These additional fields are for demonstration only and will not be saved.</span>
+                    </p>
+                  </div>
+                  
+                  {/* 1. BL Number */}
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      B/L Number (Preview)
+                    </label>
+                    <input
+                      type="text"
+                      value={blNumber}
+                      onChange={(e) => setBlNumber(e.target.value)}
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                      placeholder="e.g., MSCU7890123"
+                    />
+                    <p className="text-xs text-gray-400 mt-1">Preview only - not saved</p>
+                  </div>
+
+                  {/* 2. Custom and other agencies documents */}
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Customs & Agencies Documents (Preview)
+                    </label>
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 text-center">
+                      <input
+                        type="file"
+                        onChange={(e) => handleFileUpload(e, setCustomDocs)}
+                        className="hidden"
+                        id="custom-docs-upload"
+                        accept=".pdf,.doc,.docx,.jpg,.png"
+                      />
+                      <label htmlFor="custom-docs-upload" className="cursor-pointer">
+                        <Upload className="mx-auto mb-1 text-gray-400" size={20} />
+                        <p className="text-sm text-gray-600">
+                          {getFileName(customDocs) || "Click to upload"}
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1">PDF, DOC, JPG, PNG</p>
+                      </label>
+                    </div>
+                    <p className="text-xs text-gray-400 mt-1">Preview only - not saved</p>
+                  </div>
+
+                  {/* 3. Terminal document */}
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Terminal Document (Preview)
+                    </label>
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 text-center">
+                      <input
+                        type="file"
+                        onChange={(e) => handleFileUpload(e, setTerminalDoc)}
+                        className="hidden"
+                        id="terminal-doc-upload"
+                        accept=".pdf,.doc,.docx"
+                      />
+                      <label htmlFor="terminal-doc-upload" className="cursor-pointer">
+                        <FileText className="mx-auto mb-1 text-gray-400" size={20} />
+                        <p className="text-sm text-gray-600">
+                          {getFileName(terminalDoc) || "Click to upload"}
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1">PDF, DOC</p>
+                      </label>
+                    </div>
+                    <p className="text-xs text-gray-400 mt-1">Preview only - not saved</p>
+                  </div>
+
+                  {/* 4. BL, Port/Shipping documents */}
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      BL / Port / Shipping Documents (Preview)
+                    </label>
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 text-center">
+                      <input
+                        type="file"
+                        onChange={(e) => handleFileUpload(e, setShippingDocs)}
+                        className="hidden"
+                        id="shipping-docs-upload"
+                        accept=".pdf,.doc,.docx,.xls,.xlsx"
+                      />
+                      <label htmlFor="shipping-docs-upload" className="cursor-pointer">
+                        <FileText className="mx-auto mb-1 text-gray-400" size={20} />
+                        <p className="text-sm text-gray-600">
+                          {getFileName(shippingDocs) || "Click to upload"}
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1">PDF, DOC, XLS</p>
+                      </label>
+                    </div>
+                    <p className="text-xs text-gray-400 mt-1">Preview only - not saved</p>
                   </div>
                 </div>
 
@@ -2455,6 +2580,10 @@ const ContainerManagement = ({
                 onClick={() => {
                   setShowContainerForm(false);
                   setEditingContainer(null);
+                  setBlNumber("");
+                  setCustomDocs(null);
+                  setTerminalDoc(null);
+                  setShippingDocs(null);
                 }}
                 className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 order-2 sm:order-1"
               >
