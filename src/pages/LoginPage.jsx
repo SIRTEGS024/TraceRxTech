@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaLock, FaEnvelope, FaShippingFast, FaCheckCircle, FaBox, FaTruck, FaChevronDown, FaUser, FaClipboardCheck, FaBuilding, FaIdCard, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaLock, FaEnvelope, FaShippingFast, FaCheckCircle, FaBox, FaTruck, FaChevronDown, FaUser, FaClipboardCheck, FaBuilding, FaIdCard, FaEye, FaEyeSlash, FaArrowLeft } from "react-icons/fa";
 import { LOGIN_BG_IMAGES } from "../constants";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -315,6 +315,15 @@ function LoginPage() {
 
       {/* Semi-transparent green gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-green-800/50 to-green-600/50" />
+
+      {/* Back to Home button */}
+      <button
+        onClick={() => navigate("/")}
+        className="absolute top-4 left-4 z-20 p-3 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition text-white"
+        aria-label="Back to Home"
+      >
+        <FaArrowLeft className="text-xl" />
+      </button>
 
       {/* Glass-effect form container */}
       <div

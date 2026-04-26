@@ -1345,7 +1345,7 @@ export const FOOTER_LINKS = [
 
 export const AUDIT_LOGOS = [
   { src: reg1, alt: "Brand Partner 1" },
-  { src: reg2, alt: "Brand Partner 2" },
+  // { src: reg2, alt: "Brand Partner 2" },
   // { src: auditLogo3, alt: "Brand Partner 3" },
 ];
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaUser, FaEnvelope, FaLock, FaBuilding, FaGlobe, FaIdCard, FaReceipt, FaChevronDown, FaSearch, FaShippingFast, FaCheckCircle, FaBox, FaTruck, FaClipboardCheck, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaLock, FaBuilding, FaGlobe, FaIdCard, FaReceipt, FaChevronDown, FaSearch, FaShippingFast, FaCheckCircle, FaBox, FaTruck, FaClipboardCheck, FaEye, FaEyeSlash, FaArrowLeft } from "react-icons/fa";
 import { SIGNUP_BG_IMAGES } from "../constants";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -286,6 +286,15 @@ function SignupPage() {
       {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-green-800/50 to-green-600/50" />
 
+      {/* Back to Home button */}
+      <button
+        onClick={() => navigate("/")}
+        className="absolute top-4 left-4 z-20 p-3 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition text-white"
+        aria-label="Back to Home"
+      >
+        <FaArrowLeft className="text-xl" />
+      </button>
+
       {/* Progress indicator */}
       <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-10">
         <div className="flex items-center space-x-4">
@@ -433,7 +442,7 @@ function SignupPage() {
                 type="checkbox"
                 id="agree"
                 checked={agreed}
-                onChange={(e) => setAgreed(e.target.value)}
+                onChange={(e) => setAgreed(e.target.checked)}
                 className="mt-1"
               />
               <label htmlFor="agree">
