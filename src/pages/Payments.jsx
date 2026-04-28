@@ -19,6 +19,7 @@ import {
   Trash2,
   CheckCircle,
   Search,
+  ChevronDown,
 } from "lucide-react";
 import Webcam from "react-webcam";
 import {
@@ -41,17 +42,131 @@ const getAddressFromCoords = async (lat, lng) => {
   }
 };
 
-// ---------- Predefined countries with currency symbols ----------
-const COUNTRIES = [
-  { code: "NG", name: "Nigeria", currencyCode: "NGN", symbol: "₦", flag: "🇳🇬" },
-  { code: "US", name: "United States", currencyCode: "USD", symbol: "$", flag: "🇺🇸" },
-  { code: "GB", name: "United Kingdom", currencyCode: "GBP", symbol: "£", flag: "🇬🇧" },
-  { code: "EU", name: "European Union", currencyCode: "EUR", symbol: "€", flag: "🇪🇺" },
-  { code: "CA", name: "Canada", currencyCode: "CAD", symbol: "C$", flag: "🇨🇦" },
-  { code: "AU", name: "Australia", currencyCode: "AUD", symbol: "A$", flag: "🇦🇺" },
-  { code: "IN", name: "India", currencyCode: "INR", symbol: "₹", flag: "🇮🇳" },
-  { code: "CN", name: "China", currencyCode: "CNY", symbol: "¥", flag: "🇨🇳" },
-];
+// ---------- Helper: Get currency symbol from currency code ----------
+const getCurrencySymbolFromCode = (currencyCode) => {
+  const symbols = {
+    USD: "$",
+    EUR: "€",
+    GBP: "£",
+    NGN: "₦",
+    CAD: "C$",
+    AUD: "A$",
+    INR: "₹",
+    CNY: "¥",
+    JPY: "¥",
+    KRW: "₩",
+    RUB: "₽",
+    BRL: "R$",
+    ZAR: "R",
+    CHF: "CHF",
+    SEK: "kr",
+    NOK: "kr",
+    DKK: "kr",
+    MXN: "$",
+    SGD: "S$",
+    HKD: "HK$",
+    NZD: "NZ$",
+  };
+  return symbols[currencyCode] || currencyCode;
+};
+
+// Simplified CountrySelector with minimal styling
+const CountrySelector = ({ selectedCountry, onSelectCountry }) => {
+  const [countries, setCountries] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    fetch("https://restcountries.com/v3.1/all?fields=name,cca2,currencies")
+      .then((res) => res.json())
+      .then((data) => {
+        const mapped = data.map((country) => {
+          const currencyCode = country.currencies
+            ? Object.keys(country.currencies)[0]
+            : "USD";
+          return {
+            code: country.cca2,
+            name: country.name.common,
+            currencyCode: currencyCode,
+            symbol: getCurrencySymbolFromCode(currencyCode),
+          };
+        });
+        mapped.sort((a, b) => a.name.localeCompare(b.name));
+        setCountries(mapped);
+        setLoading(false);
+      })
+      .catch(() => {
+        // Fallback list
+        const fallback = [
+          { code: "US", name: "United States", currencyCode: "USD", symbol: "$" },
+          { code: "GB", name: "United Kingdom", currencyCode: "GBP", symbol: "£" },
+          { code: "NG", name: "Nigeria", currencyCode: "NGN", symbol: "₦" },
+        ];
+        setCountries(fallback);
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const filteredCountries = countries.filter((c) =>
+    c.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleSelect = (country) => {
+    onSelectCountry(country);
+    setSearchTerm(country.name);
+    setIsOpen(false);
+  };
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <input
+        type="text"
+        value={searchTerm}
+        onChange={(e) => {
+          setSearchTerm(e.target.value);
+          setIsOpen(true);
+        }}
+        onFocus={() => setIsOpen(true)}
+        placeholder="Type country name..."
+        className="w-full p-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-green-500"
+      />
+      {isOpen && (
+        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded shadow-sm max-h-48 overflow-y-auto">
+          {loading ? (
+            <div className="p-2 text-xs text-gray-500">Loading...</div>
+          ) : filteredCountries.length === 0 ? (
+            <div className="p-2 text-xs text-gray-500">No countries</div>
+          ) : (
+            filteredCountries.map((country) => (
+              <button
+                key={country.code}
+                onClick={() => handleSelect(country)}
+                className="w-full text-left px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50"
+              >
+                <span>{country.name}</span>
+                <span className="text-xs text-gray-400 ml-2">
+                  {country.symbol} {country.currencyCode}
+                </span>
+              </button>
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
 
 // ---------- Map Picker for Origin & Destination (same map) ----------
 const OriginDestinationMapPicker = ({
@@ -625,33 +740,34 @@ const TraceabilityPlatform = () => {
   const [generalMediaVehicular, setGeneralMediaVehicular] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentResult, setPaymentResult] = useState(null);
+  const [receiptNumber, setReceiptNumber] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchMatches, setSearchMatches] = useState([]);
 
   const updateForm = (key, value) =>
     setFormData((prev) => ({ ...prev, [key]: value }));
 
-  // Search logic (unchanged)
+  // Search logic: container numbers, vehicle registration, receipt number
   useEffect(() => {
     if (!searchQuery.trim()) {
       setSearchMatches([]);
       return;
     }
-    const query = searchQuery.toLowerCase();
+    const query = searchQuery.toLowerCase().trim();
     const matches = [];
 
     const includesQuery = (val) =>
       val && val.toString().toLowerCase().includes(query);
 
+    // Always check receipt number
+    if (receiptNumber && includesQuery(receiptNumber)) {
+      matches.push(`Receipt Number: ${receiptNumber}`);
+    }
+
+    // For vehicular levy, also check registration and container numbers
     if (selectedLevy === "vehicular") {
       if (includesQuery(formData.regNo)) {
-        matches.push(`Vehicle registration: ${formData.regNo}`);
-      }
-      if (includesQuery(formData.origin)) {
-        matches.push(`Origin address: ${formData.origin}`);
-      }
-      if (includesQuery(formData.destination)) {
-        matches.push(`Destination address: ${formData.destination}`);
+        matches.push(`Vehicle Registration: ${formData.regNo}`);
       }
       if (formData.containers) {
         formData.containers.forEach((c, idx) => {
@@ -660,19 +776,10 @@ const TraceabilityPlatform = () => {
           }
         });
       }
-    } else {
-      const addressFields = {
-        "Business address": formData.address,
-        "Property address": formData.propertyAddress,
-        "Location of use": formData.locationUse,
-      };
-      Object.entries(addressFields).forEach(([label, val]) => {
-        if (includesQuery(val)) matches.push(`${label}: ${val}`);
-      });
     }
 
     setSearchMatches(matches);
-  }, [searchQuery, formData, selectedLevy]);
+  }, [searchQuery, formData, selectedLevy, receiptNumber]);
 
   const calculatePayment = () => {
     switch (selectedLevy) {
@@ -691,6 +798,12 @@ const TraceabilityPlatform = () => {
       default:
         return 100;
     }
+  };
+
+  const generateReceiptNumber = () => {
+    const timestamp = Date.now().toString(36).toUpperCase();
+    const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+    return `RCP-${timestamp}-${random}`;
   };
 
   const handlePayment = async () => {
@@ -729,8 +842,10 @@ const TraceabilityPlatform = () => {
     setIsProcessing(true);
     await new Promise((r) => setTimeout(r, 1500));
     const amount = calculatePayment();
-    setPaymentResult({ amount, success: true, currency: selectedCountry.symbol });
-    toast.success(`Payment of ${selectedCountry.symbol}${amount} processed successfully!`);
+    const newReceipt = generateReceiptNumber();
+    setReceiptNumber(newReceipt);
+    setPaymentResult({ amount, success: true, currency: selectedCountry.symbol, receipt: newReceipt });
+    toast.success(`Payment of ${selectedCountry.symbol}${amount} processed successfully! Receipt: ${newReceipt}`);
     setIsProcessing(false);
   };
 
@@ -770,13 +885,12 @@ const TraceabilityPlatform = () => {
     },
   ];
 
-  // Helper to get current currency symbol
   const getCurrencySymbol = () => selectedCountry?.symbol || "$";
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
       <ToastContainer position="top-right" autoClose={3000} />
-      <section className="relative bg-green-800 text-white py-20 px-6 overflow-hidden">
+      <section className="relative bg-green-800 text-white py-16 px-6 overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-20"></div>
         <div className="relative max-w-6xl mx-auto text-center">
           <motion.h1
@@ -814,44 +928,65 @@ const TraceabilityPlatform = () => {
         </div>
       </section>
 
-      {/* Country Selection Section - First Step */}
+      {/* Global Search Bar - Prominent and always visible */}
+      <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md shadow-md py-3 px-6 border-b border-green-100">
+        <div className="max-w-4xl mx-auto relative">
+          <div className="flex items-center bg-white border-2 border-green-200 rounded-full overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-green-500 focus-within:border-transparent">
+            <div className="pl-5 text-green-600">
+              <Search size={20} />
+            </div>
+            <input
+              type="text"
+              placeholder="Search by container number, vehicle registration number, or receipt number"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full p-3 outline-none text-gray-700 placeholder-gray-400"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="pr-5 text-gray-400 hover:text-gray-600"
+              >
+                <X size={18} />
+              </button>
+            )}
+          </div>
+          {searchMatches.length > 0 && (
+            <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-20 p-3 text-sm">
+              <p className="font-semibold text-gray-700 mb-2 flex items-center gap-1">
+                <Search size={14} /> Match(es) found:
+              </p>
+              <ul className="space-y-1">
+                {searchMatches.map((match, idx) => (
+                  <li key={idx} className="text-gray-600 flex items-center gap-2">
+                    <CheckCircle size={12} className="text-green-600" />
+                    {match}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Country Selection Section - Simplified dropdown */}
       <section className="py-8 px-6 max-w-6xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl p-6 border border-green-100">
           <h2 className="text-xl font-bold text-green-800 mb-4 flex items-center gap-2">
             <span className="text-2xl">🌍</span> Step 1: Select Your Country
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-            {COUNTRIES.map((country) => (
-              <button
-                key={country.code}
-                onClick={() => {
-                  setSelectedCountry(country);
-                  // Reset payment result when country changes
-                  setPaymentResult(null);
-                  toast.info(`Currency set to ${country.symbol} (${country.currencyCode})`);
-                }}
-                className={`flex items-center gap-2 p-3 rounded-xl border transition-all ${
-                  selectedCountry?.code === country.code
-                    ? "border-green-600 bg-green-50 ring-2 ring-green-500"
-                    : "border-gray-200 hover:border-green-300 hover:bg-green-50"
-                }`}
-              >
-                <span className="text-2xl">{country.flag}</span>
-                <div className="text-left">
-                  <div className="font-medium text-gray-800">{country.name}</div>
-                  <div className="text-xs text-gray-500">
-                    {country.symbol} {country.currencyCode}
-                  </div>
-                </div>
-                {selectedCountry?.code === country.code && (
-                  <CheckCircle size={16} className="text-green-600 ml-auto" />
-                )}
-              </button>
-            ))}
-          </div>
+          <CountrySelector
+            selectedCountry={selectedCountry}
+            onSelectCountry={(country) => {
+              setSelectedCountry(country);
+              setPaymentResult(null);
+              setReceiptNumber(null);
+              toast.info(`Currency set to ${country.symbol} (${country.currencyCode})`);
+            }}
+          />
           {!selectedCountry && (
             <p className="text-amber-600 text-sm mt-3 flex items-center gap-1">
-              ⚠️ Please select a country to continue – this determines your payment currency.
+              ⚠️ Please select a country – this determines your payment currency.
             </p>
           )}
         </div>
@@ -913,42 +1048,6 @@ const TraceabilityPlatform = () => {
             </h3>
           </div>
           <div className="p-6 space-y-8">
-            {/* Global Search Bar */}
-            <div className="relative">
-              <div className="flex items-center border rounded-lg overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-green-500">
-                <div className="pl-3 text-gray-400">
-                  <Search size={18} />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Search by container number, vehicle registration, or address..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full p-2 outline-none"
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery("")}
-                    className="pr-3 text-gray-400 hover:text-gray-600"
-                  >
-                    <X size={16} />
-                  </button>
-                )}
-              </div>
-              {searchMatches.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-lg shadow-lg z-10 p-2 text-sm">
-                  <p className="font-semibold text-gray-700 mb-1">
-                    Matches found:
-                  </p>
-                  <ul className="list-disc pl-5 space-y-0.5 text-gray-600">
-                    {searchMatches.map((match, idx) => (
-                      <li key={idx}>{match}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-
             <AnimatePresence mode="wait">
               <motion.div
                 key={selectedLevy}
@@ -1374,8 +1473,13 @@ const TraceabilityPlatform = () => {
                   {isProcessing ? "Processing..." : `Pay ${selectedCountry ? getCurrencySymbol() : "$"}${calculatePayment()}`}
                 </button>
                 {paymentResult?.success && (
-                  <div className="bg-green-50 p-4 rounded-lg text-center text-green-800 flex items-center justify-center gap-2">
-                    <CheckCircle size={20} /> Payment of {paymentResult.currency}{paymentResult.amount} completed! Receipt sent.
+                  <div className="bg-green-50 p-4 rounded-lg text-green-800 space-y-2">
+                    <div className="flex items-center justify-center gap-2 font-semibold">
+                      <CheckCircle size={20} /> Payment of {paymentResult.currency}{paymentResult.amount} completed!
+                    </div>
+                    <div className="text-sm text-center bg-white rounded p-2 border border-green-200">
+                      Receipt Number: <span className="font-mono font-bold">{paymentResult.receipt}</span>
+                    </div>
                   </div>
                 )}
               </motion.div>
