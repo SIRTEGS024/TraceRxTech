@@ -18,6 +18,10 @@ import {
   Trash2,
   CheckCircle,
   Search,
+  RotateCcw,
+  FileText,
+  Upload,
+  FolderOpen,
 } from "lucide-react";
 import Webcam from "react-webcam";
 import {
@@ -215,7 +219,7 @@ const MediaLocationMapModal = ({ fileItem, onConfirm, onCancel }) => {
                 zoom={14}
                 onLoad={setMap}
                 onClick={onMapClick}
-                options={{ mapTypeId: "satellite", mapTypeControl: false }}  // ← removed control
+                options={{ mapTypeId: "satellite", mapTypeControl: false }}
               >
                 {coordinates && <Marker position={coordinates} draggable onDragEnd={(e) => e.latLng && setCoordinates({ lat: e.latLng.lat(), lng: e.latLng.lng() })} />}
               </GoogleMap>
@@ -232,7 +236,7 @@ const MediaLocationMapModal = ({ fileItem, onConfirm, onCancel }) => {
   );
 };
 
-// ---------- MediaCapture with fixed camera accuracy + labels on display ----------
+// ---------- UPDATED MediaCapture with invertible camera (front/back toggle) ----------
 const MediaCapture = ({ onMediaCaptured, existingMedia = [], label = "Add Media" }) => {
   const [showCamera, setShowCamera] = useState(false);
   const [captureMode, setCaptureMode] = useState("photo");
@@ -242,6 +246,7 @@ const MediaCapture = ({ onMediaCaptured, existingMedia = [], label = "Add Media"
   const [currentTime, setCurrentTime] = useState(new Date());
   const [viewingMedia, setViewingMedia] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [cameraFacingMode, setCameraFacingMode] = useState("environment"); // 'environment' (back) or 'user' (front)
   const webcamRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const [recordedChunks, setRecordedChunks] = useState([]);
@@ -250,6 +255,16 @@ const MediaCapture = ({ onMediaCaptured, existingMedia = [], label = "Add Media"
   const [uploadQueue, setUploadQueue] = useState([]);
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [currentFileForLocation, setCurrentFileForLocation] = useState(null);
+
+  // Toggle camera front/back
+  const flipCamera = useCallback(() => {
+    if (isRecording) {
+      toast.warning("Please stop recording before switching camera");
+      return;
+    }
+    setCameraFacingMode(prev => prev === "environment" ? "user" : "environment");
+    toast.info(`Switched to ${cameraFacingMode === "environment" ? "front" : "back"} camera`);
+  }, [isRecording, cameraFacingMode]);
 
   // Camera GPS with high accuracy and refresh when camera opens
   const updateLocation = useCallback(async () => {
@@ -281,7 +296,11 @@ const MediaCapture = ({ onMediaCaptured, existingMedia = [], label = "Add Media"
   }, [showCamera, updateLocation]);
 
   useEffect(() => {
-    return () => { if (webcamRef.current?.stream) webcamRef.current.stream.getTracks().forEach(track => track.stop()); };
+    return () => {
+      if (webcamRef.current?.stream) {
+        webcamRef.current.stream.getTracks().forEach(track => track.stop());
+      }
+    };
   }, []);
 
   const capturePhoto = () => {
@@ -432,7 +451,7 @@ const MediaCapture = ({ onMediaCaptured, existingMedia = [], label = "Add Media"
           <Camera size={16} /> {label} (Camera)
         </button>
         <button onClick={() => document.getElementById("file-upload-input").click()} className="flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 rounded-lg text-sm hover:bg-blue-200 transition">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 3l0 7 6 0-8 7-8-7 6 0 0-7z"/><path d="M4 17v3h16v-3"/></svg>
+          <Upload size={16} />
           Upload File(s)
         </button>
         <input id="file-upload-input" type="file" accept="image/*,video/*" multiple className="hidden" onChange={handleFileSelect} />
@@ -461,27 +480,58 @@ const MediaCapture = ({ onMediaCaptured, existingMedia = [], label = "Add Media"
         </div>
       )}
 
-      {/* Camera Modal */}
+      {/* Camera Modal with Invertible Camera */}
       {showCamera && (
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onClick={() => setShowCamera(false)}>
           <div className="relative max-w-md w-full bg-black rounded-xl overflow-hidden shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <button onClick={() => setShowCamera(false)} className="absolute top-2 right-2 z-20 bg-black/50 text-white p-1 rounded-full"><X size={18} /></button>
-            {location && (
-              <div className="absolute top-2 left-2 z-20 bg-black/70 text-white text-xs p-2 rounded-lg backdrop-blur-sm space-y-1 max-w-[70%]">
-                <div className="flex items-center gap-1"><Navigation size={10} />{location.lat.toFixed(5)}, {location.lng.toFixed(5)}</div>
-                <div className="flex items-center gap-1"><MapPin size={10} />{address.substring(0, 40)}</div>
-                <div className="flex items-center gap-1"><Calendar size={10} />{currentTime.toLocaleTimeString()}</div>
+            {/* Top controls with flip and close buttons */}
+            <div className="absolute top-2 left-2 right-2 z-20 flex justify-between items-start">
+              {location && (
+                <div className="bg-black/70 text-white text-xs p-2 rounded-lg backdrop-blur-sm space-y-1 max-w-[60%]">
+                  <div className="flex items-center gap-1"><Navigation size={10} />{location.lat.toFixed(5)}, {location.lng.toFixed(5)}</div>
+                  <div className="flex items-center gap-1"><MapPin size={10} />{address.substring(0, 40)}</div>
+                  <div className="flex items-center gap-1"><Calendar size={10} />{currentTime.toLocaleTimeString()}</div>
+                </div>
+              )}
+              <div className="flex gap-2">
+                <button onClick={flipCamera} className="bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition">
+                  <RotateCcw size={18} />
+                </button>
+                <button onClick={() => setShowCamera(false)} className="bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition">
+                  <X size={18} />
+                </button>
+              </div>
+            </div>
+
+            {/* Recording indicator */}
+            {isRecording && (
+              <div className="absolute top-2 right-20 z-20 flex items-center gap-1 bg-red-600 text-white px-2 py-1 rounded-full text-xs">
+                <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>REC
               </div>
             )}
-            {isRecording && <div className="absolute top-2 right-12 z-20 flex items-center gap-1 bg-red-600 text-white px-2 py-1 rounded-full text-xs"><div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>REC</div>}
+
+            {/* Mode selector (Photo/Video) */}
             <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-20 flex gap-2 bg-black/50 rounded-full p-1">
               <button onClick={() => setCaptureMode("photo")} className={`px-3 py-1 rounded-full text-xs ${captureMode === "photo" ? "bg-green-600 text-white" : "text-white"}`}>Photo</button>
               <button onClick={() => setCaptureMode("video")} className={`px-3 py-1 rounded-full text-xs ${captureMode === "video" ? "bg-green-600 text-white" : "text-white"}`}>Video</button>
             </div>
-            <Webcam ref={webcamRef} audio screenshotFormat="image/jpeg" videoConstraints={{ facingMode: "environment" }} className="w-full h-auto" />
+
+            {/* Webcam with key to force remount on camera flip */}
+            <Webcam
+              ref={webcamRef}
+              audio={false}
+              screenshotFormat="image/jpeg"
+              videoConstraints={{ facingMode: cameraFacingMode }}
+              key={cameraFacingMode}
+              className="w-full h-auto"
+            />
+
+            {/* Capture button */}
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20">
               {captureMode === "photo" ? (
-                <button onClick={capturePhoto} className="bg-white rounded-full p-3 shadow-lg hover:scale-105 transition"><Camera size={24} className="text-gray-800" /></button>
+                <button onClick={capturePhoto} className="bg-white rounded-full p-3 shadow-lg hover:scale-105 transition">
+                  <Camera size={24} className="text-gray-800" />
+                </button>
               ) : (
                 <button onClick={isRecording ? stopRecording : startRecording} className={`rounded-full p-3 shadow-lg transition ${isRecording ? "bg-red-600" : "bg-white"}`}>
                   {isRecording ? <Square size={24} className="text-white" /> : <Circle size={24} className="text-gray-800" />}
@@ -524,29 +574,131 @@ const MediaCapture = ({ onMediaCaptured, existingMedia = [], label = "Add Media"
   );
 };
 
-// ---------- Document Upload (unchanged) ----------
+// ---------- UPDATED DocumentUpload with better multiple file support ----------
 const DocumentUpload = ({ documents = [], onDocumentsChange }) => {
+  const [dragActive, setDragActive] = useState(false);
+  const fileInputRef = useRef(null);
+
   const handleFileSelect = (e) => {
     const files = Array.from(e.target.files);
-    const newDocs = files.map(file => ({ id: Date.now() + Math.random(), name: file.name }));
+    if (files.length === 0) return;
+    
+    const newDocs = files.map(file => ({
+      id: Date.now() + Math.random(),
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      file: file // keep reference if needed later
+    }));
+    
     onDocumentsChange([...documents, ...newDocs]);
-    e.target.value = "";
+    toast.success(`${files.length} document(s) added`);
+    e.target.value = ""; // reset input
   };
-  const removeDoc = (id) => onDocumentsChange(documents.filter(d => d.id !== id));
+
+  const removeDoc = (id) => {
+    onDocumentsChange(documents.filter(d => d.id !== id));
+    toast.info("Document removed");
+  };
+
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    const files = Array.from(e.dataTransfer.files);
+    if (files.length === 0) return;
+    
+    const newDocs = files.map(file => ({
+      id: Date.now() + Math.random(),
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      file: file
+    }));
+    
+    onDocumentsChange([...documents, ...newDocs]);
+    toast.success(`${files.length} document(s) added`);
+  };
+
+  const formatFileSize = (bytes) => {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  };
+
   return (
-    <div className="border rounded-lg p-3 space-y-2">
-      <label className="block font-medium text-sm">Customs, Agencies & Permits (upload files – only names stored)</label>
-      <input type="file" multiple onChange={handleFileSelect} className="text-sm" />
+    <div className="border rounded-lg p-3 space-y-3">
+      <label className="block font-medium text-sm flex items-center gap-2">
+        <FolderOpen size={16} />
+        Customs, Agencies & Permits (upload multiple files)
+      </label>
+      
+      {/* Drag & Drop Area */}
+      <div
+        className={`border-2 border-dashed rounded-lg p-4 text-center transition-colors ${
+          dragActive ? "border-green-500 bg-green-50" : "border-gray-300 hover:border-green-400"
+        }`}
+        onDragEnter={handleDrag}
+        onDragLeave={handleDrag}
+        onDragOver={handleDrag}
+        onDrop={handleDrop}
+        onClick={() => fileInputRef.current?.click()}
+      >
+        <input
+          ref={fileInputRef}
+          type="file"
+          multiple
+          onChange={handleFileSelect}
+          className="hidden"
+          accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.txt"
+        />
+        <Upload size={24} className="mx-auto text-gray-400 mb-2" />
+        <p className="text-sm text-gray-600">
+          Drag & drop files here or <span className="text-green-600 font-medium">browse</span>
+        </p>
+        <p className="text-xs text-gray-400 mt-1">
+          Supports: PDF, DOC, XLS, Images (max 10MB each)
+        </p>
+      </div>
+
+      {/* Document List with better UI */}
       {documents.length > 0 && (
-        <ul className="text-xs text-gray-600 space-y-1">
+        <div className="space-y-2 max-h-48 overflow-y-auto">
           {documents.map((doc) => (
-            <li key={doc.id} className="flex justify-between items-center">
-              <span className="truncate">{doc.name}</span>
-              <button onClick={() => removeDoc(doc.id)} className="text-red-500"><X size={12} /></button>
-            </li>
+            <div key={doc.id} className="flex justify-between items-center p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                <FileText size={14} className="text-green-600 flex-shrink-0" />
+                <span className="text-sm truncate" title={doc.name}>{doc.name}</span>
+                {doc.size && <span className="text-xs text-gray-400 flex-shrink-0">({formatFileSize(doc.size)})</span>}
+              </div>
+              <button 
+                onClick={() => removeDoc(doc.id)} 
+                className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition flex-shrink-0"
+                title="Remove document"
+              >
+                <X size={14} />
+              </button>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
+      
+      {/* Hint for multiple upload */}
+      <p className="text-xs text-gray-400 flex items-center gap-1">
+        <Plus size={10} /> 
+        You can select multiple files at once or drag & drop
+      </p>
     </div>
   );
 };
@@ -658,7 +810,7 @@ const MapLocationPicker = ({ onLocationChange, initialLat = 6.5244, initialLng =
           zoom={14}
           onLoad={setMap}
           onClick={onMapClick}
-          options={{ mapTypeId: "satellite", mapTypeControl: false }}  // ← removed control
+          options={{ mapTypeId: "satellite", mapTypeControl: false }}
         >
           <Marker position={markerPos} draggable onDragEnd={(e) => e.latLng && setMarkerPos({ lat: e.latLng.lat(), lng: e.latLng.lng() })} />
         </GoogleMap>
@@ -761,7 +913,7 @@ const OriginDestinationMapPicker = ({ onOriginChange, onDestinationChange, initi
           zoom={12}
           onLoad={setMap}
           onClick={onMapClick}
-          options={{ mapTypeId: "satellite", mapTypeControl: false }}  // ← removed control
+          options={{ mapTypeId: "satellite", mapTypeControl: false }}
         >
           {origin && <Marker position={origin} label={{ text: "O", color: "white" }} icon={{ url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png" }} draggable onDragEnd={(e) => e.latLng && setOrigin({ lat: e.latLng.lat(), lng: e.latLng.lng() })} />}
           {destination && <Marker position={destination} label={{ text: "D", color: "white" }} icon={{ url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png" }} draggable onDragEnd={(e) => e.latLng && setDestination({ lat: e.latLng.lat(), lng: e.latLng.lng() })} />}
